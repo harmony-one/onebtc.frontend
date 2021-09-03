@@ -12,3 +12,4 @@ export * from './components/Inputs';
 export * from './components/Text';
 export * from './components/Title';
 export * from './components/DisableWrap';
+export * from './components/Divider';

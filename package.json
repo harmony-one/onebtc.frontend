@@ -21,6 +21,7 @@
     "@types/react-outside-click-handler": "^1.3.0",
     "async-validator": "1.11.5",
     "bignumber.js": "^8.1.1",
+    "bitcoinjs-lib": "^5.2.0",
     "classnames": "^2.2.6",
     "core-decorators": "^0.20.0",
     "eth-sig-util": "^2.5.3",
@@ -31,6 +32,7 @@
     "mobx-react": "6.1.4",
     "mobx-react-router": "4.0.7",
     "moment": "^2.24.0",
+    "onebtc.sdk": "^1.0.3",
     "query-string": "^6.10.1",
     "rc-table": "^7.4.5",
     "rc-tooltip": "^4.2.1",
@@ -47,7 +49,8 @@
     "react-tooltip": "^4.2.13",
     "superagent": "^6.0.0",
     "tslib": "^1.10.0",
-    "web3": "1.3.0"
+    "web3": "1.3.0",
+    "web3-utils": "^1.5.2"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.9",

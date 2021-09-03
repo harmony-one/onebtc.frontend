@@ -44,6 +44,35 @@ export const OperationType = (props: { type: EXCHANGE_MODE }) => {
   );
 };
 
+type PriceViewProps = {
+  tokenName: string;
+  value: number | string;
+  rate: number;
+  boxProps?: BoxProps;
+}
+
+export const PriceView: React.FC<PriceViewProps> = (props) => {
+    const {tokenName, value, rate, boxProps = {}} = props;
+
+    const usdValue = Number(value) * rate;
+    return (
+      <Box
+        direction="column"
+        align="end"
+        justify="center"
+        pad={{ right: 'medium' }}
+        {...boxProps}
+      >
+        <Text style={{ fontSize: 14 }}>
+          {formatWithSixDecimals(value)}&nbsp;{tokenName}
+        </Text>
+        <Text size="xsmall" color="rgba(102, 102, 102, 0.9)">
+          ${formatWithSixDecimals(usdValue)}
+        </Text>
+      </Box>
+    );
+  };
+
 export const Price = observer(
   (props: {
     value: number;

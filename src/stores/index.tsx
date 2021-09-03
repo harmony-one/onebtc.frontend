@@ -8,6 +8,7 @@ import { AdminOperations } from './AdminOperations';
 import { Tokens } from './Tokens';
 import { createStoresContext } from './create-context';
 import { Erc20SelectStore } from './Erc20SelectStore';
+import { IssueStore } from './IssueStore';
 
 export interface IStores {
   routing?: RouterStore;
@@ -19,11 +20,13 @@ export interface IStores {
   adminOperations?: AdminOperations;
   tokens?: Tokens;
   erc20Select?: Erc20SelectStore;
+  issue?: IssueStore;
 }
 
 const stores: IStores = {};
 
 stores.routing = new RouterStore();
+stores.issue = new IssueStore(stores);
 stores.exchange = new Exchange(stores);
 stores.operations = new Operations(stores);
 stores.adminOperations = new AdminOperations(stores);

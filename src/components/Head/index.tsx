@@ -81,7 +81,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             </Box>
             <Box>
               <Title size="medium" color="BlackTxt" bold>
-                Horizon by Harmony
+                OneBTC by Harmony
               </Title>
             </Box>
           </Box>
