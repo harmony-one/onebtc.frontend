@@ -52,26 +52,25 @@ type PriceViewProps = {
 }
 
 export const PriceView: React.FC<PriceViewProps> = (props) => {
-    const {tokenName, value, rate, boxProps = {}} = props;
+  const {tokenName, value, rate, boxProps = {}} = props;
 
-    const usdValue = Number(value) * rate;
-    return (
-      <Box
-        direction="column"
-        align="end"
-        justify="center"
-        pad={{ right: 'medium' }}
-        {...boxProps}
-      >
-        <Text style={{ fontSize: 14 }}>
-          {formatWithSixDecimals(value)}&nbsp;{tokenName}
-        </Text>
-        <Text size="xsmall" color="rgba(102, 102, 102, 0.9)">
-          ${formatWithSixDecimals(usdValue)}
-        </Text>
-      </Box>
-    );
-  };
+  const usdValue = Number(value) * rate;
+  return (
+    <Box
+      direction="column"
+      align="end"
+      justify="center"
+      {...boxProps}
+    >
+      <Text style={{ fontSize: 14 }}>
+        {formatWithSixDecimals(value)}&nbsp;{tokenName}
+      </Text>
+      <Text size="xsmall" color="rgba(102, 102, 102, 0.9)">
+        ${formatWithSixDecimals(usdValue)}
+      </Text>
+    </Box>
+  );
+};
 
 export const Price = observer(
   (props: {

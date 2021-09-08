@@ -5,7 +5,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.js --progress --colors --open",
-    "build": "node scripts/build.js --stats",
+    "build:prod": "node scripts/build.js --stats",
+    "build:testnet": "NODE_ENV=testnet node scripts/build.js --stats",
     "test": "jest --verbose",
     "test:watch": "jest --watch",
     "test:debug": "jest --config=jest.config.debug.js",
@@ -41,6 +42,7 @@
     "react-dom": "16.12.0",
     "react-in-viewport": "^1.0.0-alpha.11",
     "react-outside-click-handler": "^1.3.0",
+    "react-qrcodes": "^1.0.7",
     "react-router": "5.1.2",
     "react-router-dom": "5.1.2",
     "react-scrollbars-custom": "^4.0.21",

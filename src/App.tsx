@@ -5,7 +5,8 @@ import { Providers } from './Providers';
 import { Redirect, Route, Switch } from 'react-router';
 import { ActionModals } from './components/ActionModals';
 import { EthBridge } from './pages/EthBridge';
-import { OneBTC } from './pages/OneBTC';
+import { CreateIssuePage } from './pages/CreateIssuePage/CreateIssuePage';
+import { SandBoxPage } from './pages/Sandbox/SandBoxPage';
 import { Explorer } from './pages/Explorer';
 import { MintTokens } from './pages/MintTokens';
 import { Tokens } from './pages/Tokens';
@@ -20,7 +21,9 @@ export const App: React.FC = () => (
   <Providers>
     <React.Suspense fallback={<div />}>
       <Switch>
-        <Route exact path="/" component={OneBTC} />
+        <Route exact path="/" component={CreateIssuePage} />
+        <Route exact path="/sandbox" component={SandBoxPage} />
+        <Redirect to="/" />
         {/*{process.env.GET_TOKENS_SERVICE === 'true' ? (*/}
         {/*  <Route exact path="/get-tokens" component={MintTokens} />*/}
         {/*) : null}*/}

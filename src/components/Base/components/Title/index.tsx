@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { get } from 'lodash';
 import { TEdgeSize, getMarginCSS, getPaddingCSS } from '../../utils';
+import { prop } from 'bitcoinjs-lib/types/payments/lazy';
 
 type TTitleSize = 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 
@@ -37,13 +38,14 @@ interface ITitleProps {
   style?: React.CSSProperties;
   pad?: TEdgeSize;
   margin?: TEdgeSize;
+  align?: 'left' | 'center' | 'right';
 }
 
 const TitleWrap = styled.div<ITitleProps>`
   font-family: ${props => getFont(props.fontFamily, props.theme)}};
   font-size: ${props => getFontSize(props.size, props.theme)};
   font-weight: ${props => (props.bold ? '700' : '500')};
-  text-align: left;
+  text-align: ${props => (props.align ? props.align : 'left')};
   color: ${props =>
     props.theme.palette[props.color] || props.color || props.theme.titleColor || 'black'};
 

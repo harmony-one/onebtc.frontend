@@ -30,6 +30,8 @@ const ModalWrap = styled.div`
   display: flex;
   align-items: center;
   flex: 1 0 auto;
+  max-width: 100%;
+  justify-content: center;
 
   @media (max-width: ${(props): string => props.theme.global.breakpoints.small.value}px) {
     position: absolute;
@@ -82,7 +84,7 @@ export const ModalView: React.FC<
     config.scrollTo = () => {
       overlayRef.current.scrollTo(0, modalWrapRef.current.offsetHeight);
     };
-  }, []);
+  }, [config.scrollTo]);
 
   return ReactDOM.createPortal(
     <ModalOverlay

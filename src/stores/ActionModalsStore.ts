@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { action, observable } from 'mobx';
 import { guid } from 'utils';
-import {statusFetching} from "../constants";
+import { statusFetching } from '../constants';
 
 export type ActionModalBody = (data: {
   actionData?: any;
@@ -12,7 +12,7 @@ export interface ActionModalOptions {
   position?: 'flex-start' | 'center';
   title: string;
   onApply: (data?: any) => Promise<any>;
-  onClose?: (data?: any) => any;
+  onClose?: (data?: any) => Promise<any>;
   applyText: string;
   closeText?: string;
   noValidation?: boolean;
@@ -58,6 +58,26 @@ export class ActionModalsStore {
 
             return Promise.reject(err);
           });
+
+      const onClose = options.onClose || (() => Promise.resolve());
+
+      console.log('### onClose', onClose);
+      options.onClose = () => {
+        return onClose()
+          .then(resolve)
+          .then(() => this.close(id))
+          .catch(err => {
+            const currentModal = this.pool.find(m => m.id === id);
+
+            if (currentModal) {
+              currentModal.error = err.message;
+            }
+
+            reject(err);
+
+            return Promise.reject(err);
+          });
+      };
     });
 
     this.pool.push(modalConfig);
@@ -70,10 +90,6 @@ export class ActionModalsStore {
     const modalConfig = this.pool.find(modal => modal.id === id);
 
     if (modalConfig) {
-      if (modalConfig.options.onClose) {
-        modalConfig.options.onClose();
-      }
-
       this.pool = this.pool.filter(modal => modal.id !== id);
     }
   };

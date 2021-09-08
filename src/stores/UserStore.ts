@@ -16,6 +16,7 @@ import { EXCHANGE_MODE, IOperation, NETWORK_TYPE, TOKEN } from './interfaces';
 import { divDecimals } from '../utils';
 import { HarmonyAddress } from '@harmony-js/crypto';
 import { NETWORK_ERC20_TOKEN, NETWORK_NAME } from './names';
+import { getHmyClient } from '../services/hmyClient';
 
 const Web3 = require('web3');
 
@@ -54,6 +55,7 @@ export class UserStoreEx extends StoreConstructor {
   @observable public oneRate = 0;
   @observable public ethRate = 0;
   @observable public bnbRate = 0;
+  @observable public btcRate = 0;
 
   @observable public hrc20Address = '';
   @observable public hrc20Balance = '';
@@ -62,6 +64,8 @@ export class UserStoreEx extends StoreConstructor {
   @observable public isInfoNewReading = false;
 
   @observable metamaskChainId = 0;
+
+  @observable oneBTCBalance = 0;
 
   constructor(stores) {
     super(stores);
@@ -74,6 +78,12 @@ export class UserStoreEx extends StoreConstructor {
 
       // await this.getBalances();
       // await this.getOneBalance();
+    }, 3000);
+
+    setInterval(async () => {
+      if (this.isAuthorized) {
+        this.oneBTCBalance = await this.loadOneBTCBalance();
+      }
     }, 3000);
 
     setInterval(() => this.getBalances(), 3 * 1000);
@@ -160,7 +170,7 @@ export class UserStoreEx extends StoreConstructor {
 
   @action.bound
   handleAccountsChanged(...args) {
-    console.log(args);
+    console.log('### handleAccountsChanged', args);
 
     if (args[0].length === 0) {
       return this.setError('Please connect to MetaMask');
@@ -208,9 +218,14 @@ export class UserStoreEx extends StoreConstructor {
         this.address = null;
       });
 
+      autorun(() => {
+        console.log('### this.metamaskChainId', this.metamaskChainId);
+      });
+
       this.provider
         .request({ method: 'eth_requestAccounts' })
         .then(async params => {
+          console.log('### params', params);
           const web3 = new Web3(window.web3.currentProvider);
           this.metamaskChainId = await web3.eth.net.getId();
 
@@ -256,6 +271,8 @@ export class UserStoreEx extends StoreConstructor {
         this.isAuthorized = true;
 
         this.stores.exchange.transaction.oneAddress = this.address;
+
+        debugger;
 
         this.syncLocalStorage();
 
@@ -310,6 +327,15 @@ export class UserStoreEx extends StoreConstructor {
       let res = await getHmyBalance(this.address);
       this.balance = res && res.result;
     }
+  };
+
+  @action.bound
+  public loadOneBTCBalance = async () => {
+    const address = this.stores.user.address;
+
+    const hmyClient = await getHmyClient();
+
+    return hmyClient.methods.balanceOf(address);
   };
 
   @action public signOut() {
@@ -375,6 +401,12 @@ export class UserStoreEx extends StoreConstructor {
     );
 
     this.bnbRate = res.body.lastPrice;
+
+    res = await agent.get<{ body: IOperation }>(
+      'https://api.binance.com/api/v1/ticker/24hr?symbol=BTCUSDT',
+    );
+
+    this.btcRate = res.body.lastPrice;
   }
 
   @action public setHRC20Token(token: string) {

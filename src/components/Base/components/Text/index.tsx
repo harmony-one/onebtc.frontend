@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { get } from 'lodash';
 import { TEdgeSize, getMarginCSS, getPaddingCSS } from '../../utils';
+import { IPalette } from '../../../../themes';
 
 type TTextSize = 'xxsmall' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 
@@ -31,13 +32,14 @@ function getFont(font: string, theme: any) {
 interface ITitleProps {
   size?: TTextSize;
   text?: string;
-  color?: string;
+  color?: keyof IPalette | string;
   bold?: boolean;
   fontFamily?: string;
   style?: React.CSSProperties;
   pad?: TEdgeSize;
   margin?: TEdgeSize;
   className?: string;
+  inline?: boolean;
 }
 
 const TextWrap = styled.div<ITitleProps>`
@@ -49,6 +51,7 @@ const TextWrap = styled.div<ITitleProps>`
 
   ${props => props.pad && getPaddingCSS(props.pad, props.theme)}
   ${props => props.margin && getMarginCSS(props.margin, props.theme)}
+  display: ${props => props.inline ? 'inline-block' : 'inline'}
   
   letter-spacing: 0.5px;
 `;

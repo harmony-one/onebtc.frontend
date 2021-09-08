@@ -23,7 +23,7 @@ export const ApproveAmountField = observer<any>(({ tokenInfo }) => {
     <>
       {exchange.allowanceError ? (
         <Box>
-          <Text color="red">{exchange.allowanceError}</Text>
+          <Text color="Red">{exchange.allowanceError}</Text>
         </Box>
       ) : null}
       <Box direction="column" align="end" fill={true} margin={{ top: 'small' }}>

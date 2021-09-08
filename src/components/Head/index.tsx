@@ -1,15 +1,11 @@
 import * as React from 'react';
 import styled, { withTheme } from 'styled-components';
-import { Box, BoxProps, Text } from 'grommet';
-import { useHistory } from 'react-router';
+import { Box, BoxProps } from 'grommet';
 import { observer } from 'mobx-react-lite';
 import { IStyledChildrenProps } from 'interfaces';
-import { Title } from '../Base/components/Title';
-import { useStores } from '../../stores';
-import * as styles from './styles.styl';
-import cn from 'classnames';
-import { TOKEN } from '../../stores/interfaces';
-// import { formatWithTwoDecimals } from '../../utils';
+import { Title } from '../Base';
+import { SignInButton } from './components/SignInButton';
+import { HeadBalance } from './components/HeadBalance';
 
 const MainLogo = styled.img`
   width: auto;
@@ -17,32 +13,10 @@ const MainLogo = styled.img`
   margin-bottom: 4px;
 `;
 
-const getTokenServiceEnable = process.env.GET_TOKENS_SERVICE === 'true';
-
 export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
   observer(({ theme, ...props }: IStyledChildrenProps<BoxProps>) => {
-    const history = useHistory();
-    const { routing, user, exchange, actionModals } = useStores();
     const { palette, container } = theme;
     const { minWidth, maxWidth } = container;
-
-    const isExplorer = history.location.pathname === '/explorer';
-    const isTokens = history.location.pathname === '/tokens';
-    const isGetTokens = history.location.pathname === '/get-tokens';
-    const isFaq = history.location.pathname === '/faq';
-    const isInfo = history.location.pathname === '/info';
-
-    const goToBridge = () => {
-      if (exchange.operation && exchange.operation.id) {
-        routing.push(
-          `/${exchange.token || TOKEN.BUSD}/operations/${
-            exchange.operation.id
-          }`,
-        );
-      } else {
-        routing.push(`/${exchange.token || TOKEN.BUSD}`);
-      }
-    };
 
     return (
       <Box
@@ -75,7 +49,6 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             <Box
               align="center"
               margin={{ right: 'small' }}
-              onClick={goToBridge}
             >
               <MainLogo src="/one.svg" />
             </Box>
@@ -86,91 +59,14 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             </Box>
           </Box>
 
-          <Box direction="row" align="center" gap="15px">
-            {getTokenServiceEnable ? (
-              <Box
-                className={cn(
-                  styles.itemToken,
-                  isGetTokens ? styles.selected : '',
-                )}
-                onClick={() => {
-                  routing.push(`/get-tokens`);
-                }}
-              >
-                <Text>Get tokens</Text>
-              </Box>
-            ) : null}
-
-            <Box
-              className={cn(
-                styles.itemToken,
-                !isInfo && !isFaq && !isExplorer && !isGetTokens && !isTokens
-                  ? styles.selected
-                  : '',
-              )}
-              onClick={goToBridge}
-            >
-              <Text>Bridge</Text>
-            </Box>
-
-            <Box
-              className={cn(styles.itemToken, isTokens ? styles.selected : '')}
-              onClick={() => {
-                routing.push(`/tokens`);
-              }}
-            >
-              <Text>Assets</Text>
-            </Box>
-
-            <Box
-              className={cn(
-                styles.itemToken,
-                isExplorer ? styles.selected : '',
-              )}
-              onClick={() => {
-                routing.push(`/explorer`);
-              }}
-            >
-              <Text>Transactions</Text>
-            </Box>
-
-            {/*<Box*/}
-            {/*  className={cn(styles.itemToken, isInfo ? styles.selected : '')}*/}
-            {/*  onClick={() => routing.push('/info')}*/}
-            {/*>*/}
-            {/*  <Text>Info</Text>*/}
-            {/*</Box>*/}
-
-            <Box
-              className={cn(styles.itemToken, isFaq ? styles.selected : '')}
-              onClick={() => routing.push('/faq')}
-            >
-              <Text>FAQ</Text>
-            </Box>
-
-            {/*<Box*/}
-            {/*  direction="column"*/}
-            {/*  align="center"*/}
-            {/*  gap="10px"*/}
-            {/*  style={{ maxWidth: 300 }}*/}
-            {/*  margin={{ left: '50px' }}*/}
-            {/*>*/}
-            {/*  <Box direction="row" fill={true} justify="between">*/}
-            {/*    Total BUSD locked:{' '}*/}
-            {/*    <b style={{ marginLeft: 10 }}>*/}
-            {/*      {formatWithTwoDecimals(user.hmyBUSDBalanceManager)}*/}
-            {/*    </b>*/}
-            {/*  </Box>*/}
-            {/*  <Box direction="row" fill={true} justify="between">*/}
-            {/*    Total LINK locked:{' '}*/}
-            {/*    <b style={{ marginLeft: 10 }}>*/}
-            {/*      {formatWithTwoDecimals(user.hmyLINKBalanceManager)}*/}
-            {/*    </b>*/}
-            {/*  </Box>*/}
-            {/*</Box>*/}
+          <Box direction="row" align="center" gap="small">
+            <HeadBalance />
+            <SignInButton />
           </Box>
         </Box>
       </Box>
     );
   }),
 );
+
+Head.displayName = 'Head';

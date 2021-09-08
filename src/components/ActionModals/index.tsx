@@ -4,9 +4,10 @@ import { useStores } from 'stores';
 import { Header } from './components';
 import { Footer } from '../Footer';
 import { ActionModalConfig } from 'stores/ActionModalsStore';
-import { useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { observable } from 'mobx';
 import { ModalView, Button } from 'components/Base';
+import { Simulate } from 'react-dom/test-utils';
 
 export type TActionModalProps<T = any> = {
   config: ActionModalConfig;
@@ -42,14 +43,28 @@ export const ActionModal = observer<{
         isValid: config.options.noValidation,
         data: config.options.initData || {},
       }),
-    [],
+    [config.options.initData, config.options.noValidation],
   );
 
   const bodyRef = useRef<{ onValidate?: () => Promise<any> }>();
 
   const { width = '750px', position = 'center' } = options;
 
-  const onClose = () => actionModals.close(id);
+  const onClose = () => {
+    config.actionStatus = 'fetching';
+
+    return options
+      .onClose()
+      .then(res => {
+        config.actionStatus = 'success';
+        return res;
+      })
+      .catch((err: any) => {
+        config.actionStatus = 'error';
+
+        throw err;
+      });
+  };
 
   const isActionLoading = config.actionStatus === 'fetching';
 
@@ -60,7 +75,6 @@ export const ActionModal = observer<{
       .onApply(data)
       .then(res => {
         config.actionStatus = 'success';
-
         return res;
       })
       .catch((err: any) => {
@@ -97,42 +111,44 @@ export const ActionModal = observer<{
           ref={bodyRef}
         />
       )}
-      <Footer>
-        {options.closeText && (
-          <Button
-            size="auto"
-            transparent
-            onClick={onClose}
-            color="Basic700"
-            disabled={isActionLoading}
-          >
-            {options.closeText}
-          </Button>
-        )}
-        {options.applyText ? (
-          <Button
-            margin="0 0 0 24px"
-            size="auto"
-            onClick={() => {
-              if (bodyRef && bodyRef.current && onValidate.callback) {
-                onValidate
-                  .callback()
-                  .then(onApply)
-                  .catch((err: any) => {
-                    config.actionStatus = 'error';
-                    actionModals.rejectError(config.id, err);
-                    throw err;
-                  });
-              } else {
-                onApply(actionData.data);
-              }
-            }}
-            disabled={isActionLoading || !actionData.isValid}
-          >
-            {options.applyText || 'Ok'}
-          </Button>
-        ) : null}
-      </Footer>
+      {(options.applyText || options.closeText) && (
+        <Footer>
+          {options.closeText && (
+            <Button
+              size="auto"
+              transparent
+              onClick={onClose}
+              color="Basic700"
+              disabled={isActionLoading}
+            >
+              {options.closeText}
+            </Button>
+          )}
+          {options.applyText ? (
+            <Button
+              margin="0 0 0 24px"
+              size="auto"
+              onClick={() => {
+                if (bodyRef && bodyRef.current && onValidate.callback) {
+                  onValidate
+                    .callback()
+                    .then(onApply)
+                    .catch((err: any) => {
+                      config.actionStatus = 'error';
+                      actionModals.rejectError(config.id, err);
+                      throw err;
+                    });
+                } else {
+                  onApply(actionData.data);
+                }
+              }}
+              disabled={isActionLoading || !actionData.isValid}
+            >
+              {options.applyText || 'Ok'}
+            </Button>
+          ) : null}
+        </Footer>
+      )}
     </ModalView>
   );
 });

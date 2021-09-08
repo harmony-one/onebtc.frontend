@@ -7,12 +7,7 @@ export const WalletButton = (props: any) => {
   const { error, children, ...buttonProps } = props;
 
   return (
-    <Box
-      direction="row"
-      justify="start"
-      align="baseline"
-      margin={{ bottom: 'small' }}
-    >
+    <Box direction="column" justify="center" align="center">
       <Button
         margin={{ right: 10 }}
         pad={{ vertical: 'xsmall' }}
