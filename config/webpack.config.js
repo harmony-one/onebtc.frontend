@@ -50,7 +50,8 @@ const configProd = {
 
 // DEV
 const configDev = {
-  app: ['react-dev-utils/webpackHotDevClient', `${sourcePath}/index.tsx`],
+  mode: 'development',
+  app: ['react-hot-loader/patch', `${sourcePath}/index.tsx`],
   appFilename: 'app-debug.js',
   vendorFilename: 'vendor-debug.js',
   // devtool: 'source-map',

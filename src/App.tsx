@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 import { baseTheme } from 'themes';
 import { GlobalStyle } from './GlobalStyle';
@@ -17,7 +18,7 @@ import { TransactionExample, Hrc20ContractExample } from './pages/Examples';
 import { StuckOperations } from './pages/Explorer/StuckOperations';
 import { AdminExplorer } from './pages/Explorer/AdminExplorer';
 
-export const App: React.FC = () => (
+const App: React.FC = () => (
   <Providers>
     <React.Suspense fallback={<div />}>
       <Switch>
@@ -49,3 +50,5 @@ export const App: React.FC = () => (
     <GlobalStyle theme={...baseTheme as any} />
   </Providers>
 );
+
+export default hot(App);
