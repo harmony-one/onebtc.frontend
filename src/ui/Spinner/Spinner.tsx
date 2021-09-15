@@ -15,8 +15,9 @@ export const Spinner: React.FC<React.SVGAttributes<SVGElement> & {
         {...props}
       >
         <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="rgba(0,173,232,1)" />
-          <stop offset="100%" stop-color="rgba(0,232,162,1)" />
+          <stop offset="0%" stopColor="rgba(0,173,232,1)" />
+          <stop offset="25%" stopColor="rgba(0,232,162,1)" />
+          <stop offset="50%" stopColor="rgba(255,255,255,1)" />
         </linearGradient>
         <circle
           r={radius}
