@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box } from 'grommet';
 import { Title, Text, Divider, Button } from 'components/Base';
-import { PriceView } from '../../Explorer/Components';
 import { DepositModalContent } from './DepositModal';
 import { useStores } from '../../../stores';
 import { useObserver } from 'mobx-react';
 import { formatWithSixDecimals } from '../../../utils';
 import { cutText } from '../../../services/cutText';
+import { PriceView } from '../../../components/PriceView';
 
 const IssueTransactionDetails = ({
   bitcoinAddress,

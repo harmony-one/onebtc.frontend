@@ -5,7 +5,7 @@ import { useObserver } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input } from 'components/Form';
 import { moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
-import { PriceView } from '../../../Explorer/Components';
+import { PriceView } from '../../../../components/PriceView';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 

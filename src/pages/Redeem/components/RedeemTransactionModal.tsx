@@ -1,12 +1,12 @@
 import React from 'react';
 import { Box } from 'grommet';
 import { Title, Text, Divider } from 'components/Base';
-import { PriceView } from '../../Explorer/Components';
 import { useStores } from '../../../stores';
 import { useObserver } from 'mobx-react';
 import { formatWithSixDecimals } from '../../../utils';
 import { cutText } from '../../../services/cutText';
 import { satoshiToBitcoin } from '../../../helpers/bitcoin';
+import { PriceView } from '../../../components/PriceView';
 
 export const RedeemTransactionDetails = ({
   bitcoinAddress,

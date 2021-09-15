@@ -7,7 +7,6 @@ import { Operations } from './Operations';
 import { AdminOperations } from './AdminOperations';
 import { Tokens } from './Tokens';
 import { createStoresContext } from './create-context';
-import { Erc20SelectStore } from './Erc20SelectStore';
 import { IssuePageStore } from '../pages/Issue/IssuePageStore';
 import { RedeemPageStore } from '../pages/Redeem/RedeemPageStore';
 import { UITransactionsStore } from './UITransactionsStore';
@@ -22,7 +21,6 @@ export interface IStores {
   operations?: Operations;
   adminOperations?: AdminOperations;
   tokens?: Tokens;
-  erc20Select?: Erc20SelectStore;
   issuePageStore?: IssuePageStore;
   redeemPageStore?: RedeemPageStore;
   transferPageStore?: TransferPageStore;
@@ -43,7 +41,6 @@ stores.tokens = new Tokens(stores);
 stores.actionModals = new ActionModalsStore();
 stores.user = new UserStoreEx(stores);
 stores.userMetamask = new UserStoreMetamask(stores);
-stores.erc20Select = new Erc20SelectStore(stores);
 
 if (!process.env.production) {
   window.stores = stores;
