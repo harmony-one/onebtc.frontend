@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'stores';
-import { Header } from './components';
 import { Footer } from '../Footer';
 import { ActionModalConfig } from 'stores/ActionModalsStore';
-import { useCallback, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { observable } from 'mobx';
 import { ModalView, Button } from 'components/Base';
-import { Simulate } from 'react-dom/test-utils';
 
 export type TActionModalProps<T = any> = {
   config: ActionModalConfig;
@@ -93,16 +91,10 @@ export const ActionModal = observer<{
       onClose={onClose}
       style={{ visibility: visible ? 'visible' : 'hidden' }}
       config={config}
+      isOverlayClose={options.isOverlayClose}
     >
-      {false ? (
-        <Header
-          title={options.title}
-          onClose={onClose}
-          pending={isActionLoading}
-        />
-      ) : null}
       {!isClassComponent(Render) ? (
-        Render({ actionData })
+        Render({ config, actionData, onValidate })
       ) : (
         <Render
           config={config}
