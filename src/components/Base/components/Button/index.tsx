@@ -9,7 +9,14 @@ import { getSize } from '../Inputs/common';
 
 import { TEdgeSize, getMarginCSS, getPaddingCSS } from '../../utils';
 
-type TButtonSize = 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'full' | 'auto';
+type TButtonSize =
+  | 'small'
+  | 'medium'
+  | 'large'
+  | 'xlarge'
+  | 'xxlarge'
+  | 'full'
+  | 'auto';
 type TBtnType = 'default' | 'href';
 
 interface IConfirmProps {
@@ -26,12 +33,12 @@ interface IButtonProps {
   transparent?: boolean;
   bordered?: boolean;
   theme?: any;
+  icon?: boolean;
   size?: TButtonSize;
   margin?: TEdgeSize;
   pad?: TEdgeSize;
   style?: React.CSSProperties;
   confirmOnClick?: IConfirmProps;
-  padding?: string;
   color?: string;
   bgColor?: string;
   bgHoverColor?: string;
@@ -91,7 +98,7 @@ const StyledLoader = styled(BlockChainLoader)`
 const StyledButton = styled.button<IStyledButtonProps & any>`
   position: relative;
   padding: ${props => props.theme.styled.button.padding || ''};
-  border-radius: 4px;
+  border-radius: ${props => (props.icon ? '16px' : '4px')};;
   font-family: ${props => props.theme.fontBase};
   font-size: ${props => props.fontSize || '18px'};
   letter-spacing: 0.5px;
@@ -99,7 +106,8 @@ const StyledButton = styled.button<IStyledButtonProps & any>`
   width: ${props => getSize(props.size, props.theme)};
   text-align: center;
   font-weight: 500;
-  border: ${props => (props.bordered ? props.theme.styled.button.border : 'none')};
+  border: ${props =>
+    props.bordered ? props.theme.styled.button.border : 'none'};
 
   display: flex;
   justify-content: center;
@@ -118,8 +126,10 @@ const StyledButton = styled.button<IStyledButtonProps & any>`
 
   &:hover {
     background-color: ${props =>
-      props.bgHoverColor || lighten(props.disabled ? 0 : 0.07, getButtonBgColor(props))};
-    color: ${props => lighten(props.disabled ? 0 : 0.07, getButtonTextColor(props))};
+      props.bgHoverColor ||
+      lighten(props.disabled ? 0 : 0.07, getButtonBgColor(props))};
+    color: ${props =>
+      lighten(props.disabled ? 0 : 0.07, getButtonTextColor(props))};
   }
 `;
 
@@ -221,7 +231,12 @@ class ButtonClass extends React.Component<IButtonProps> {
     return (
       <TooltipWrap position={position} theme={theme}>
         <div>{text}</div>
-        <Row jc="space-between" flex="1 0 auto" style={{ width: '100%' }} margin="16px 0 0">
+        <Row
+          jc="space-between"
+          flex="1 0 auto"
+          style={{ width: '100%' }}
+          margin="16px 0 0"
+        >
           <StyledButton
             transparent
             pad="8px"
@@ -246,7 +261,13 @@ class ButtonClass extends React.Component<IButtonProps> {
   };
 
   render() {
-    const { btnType = 'default', children, isLoading, className, ...rest } = this.props;
+    const {
+      btnType = 'default',
+      children,
+      isLoading,
+      className,
+      ...rest
+    } = this.props;
     const isButtonLoading = this.isLoading || isLoading;
 
     return (

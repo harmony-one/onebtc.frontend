@@ -4,9 +4,13 @@ import { useState } from 'react';
 import { Button, Icon, TextInput } from 'components/Base';
 import { CommonFilterBodyProps } from './common';
 
-export const SearchText: React.FunctionComponent<CommonFilterBodyProps> =
-  ({ value, fieldName, onChange, onClose, placeholder = 'Найти...' }) => {
-
+export const SearchText: React.FunctionComponent<CommonFilterBodyProps> = ({
+  value,
+  fieldName,
+  onChange,
+  onClose,
+  placeholder = 'Найти...',
+}) => {
   const [searchText, setSearchText] = useState(value);
 
   const handleFilterChange = () => {
@@ -53,17 +57,11 @@ export const SearchText: React.FunctionComponent<CommonFilterBodyProps> =
           color="#30303d"
           fontSize="13px"
           size="small"
-          padding="7px 16px"
           onClick={resetFilter}
         >
           Отменить
         </Button>
-        <Button
-          fontSize="13px"
-          size="small"
-          padding="0 16px"
-          onClick={handleFilterChange}
-        >
+        <Button fontSize="13px" size="small" onClick={handleFilterChange}>
           Применить
         </Button>
       </Box>
