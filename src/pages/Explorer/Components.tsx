@@ -7,7 +7,11 @@ import { useEffect } from 'react';
 import { EXCHANGE_MODE, NETWORK_TYPE, TOKEN } from 'stores/interfaces';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../stores';
-import { formatWithSixDecimals, sliceByLength } from '../../utils';
+import {
+  formatWithSixDecimals,
+  formatWithTenDecimals,
+  sliceByLength,
+} from '../../utils';
 import ReactTooltip from 'react-tooltip';
 import { NETWORK_BASE_TOKEN } from '../../stores/names';
 
@@ -49,21 +53,16 @@ type PriceViewProps = {
   value: number | string;
   rate: number;
   boxProps?: BoxProps;
-}
+};
 
-export const PriceView: React.FC<PriceViewProps> = (props) => {
-  const {tokenName, value, rate, boxProps = {}} = props;
+export const PriceView: React.FC<PriceViewProps> = props => {
+  const { tokenName, value, rate, boxProps = {} } = props;
 
   const usdValue = Number(value) * rate;
   return (
-    <Box
-      direction="column"
-      align="end"
-      justify="center"
-      {...boxProps}
-    >
+    <Box direction="column" align="end" justify="center" {...boxProps}>
       <Text style={{ fontSize: 14 }}>
-        {formatWithSixDecimals(value)}&nbsp;{tokenName}
+        {formatWithTenDecimals(value)}&nbsp;{tokenName}
       </Text>
       <Text size="xsmall" color="rgba(102, 102, 102, 0.9)">
         ${formatWithSixDecimals(usdValue)}

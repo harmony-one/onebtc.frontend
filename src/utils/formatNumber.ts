@@ -20,6 +20,15 @@ const sixDecimalsFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 6,
 });
 
+const tenDecimalsFormatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 10,
+});
+
+export function formatWithTenDecimals(value: number | string) {
+  return tenDecimalsFormatter.format(Number(value));
+}
+
 export function formatWithTwoDecimals(value: number | string) {
   return twoDecimalsFormatter.format(Number(value));
 }
