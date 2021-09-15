@@ -1,6 +1,6 @@
 import { Box } from 'grommet';
-import { Button } from '../../components/Base/components/Button';
-import { Error } from '../../ui/Error';
+import { Button } from './Base';
+import { Error } from '../ui';
 import * as React from 'react';
 
 export const WalletButton = (props: any) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletButton } from '../../../pages/OneBTC/WalletButton';
+import { WalletButton } from '../../WalletButton';
 import { Box } from 'grommet';
 import { Icon } from '../../Base';
 import { useStores } from '../../../stores';
