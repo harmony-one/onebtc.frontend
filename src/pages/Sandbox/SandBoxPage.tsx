@@ -1,172 +1,304 @@
 import React, { useCallback } from 'react';
 import { Box } from 'grommet';
-import { Button, Text } from '../../components/Base';
+import { Button, Divider } from '../../components/Base';
 import { BaseContainer, PageContainer } from '../../components';
-import { useStores } from '../../stores';
-import { observer } from 'mobx-react-lite';
-import {
-  DepositModal,
-  DepositModalContent,
-} from '../CreateIssuePage/components/DepositModal';
-import {
-  TransactionModal,
-  TransactionModalContent,
-} from '../CreateIssuePage/components/TransactionModal';
-import {
-  ProgressModal,
-  ProgressModalContent,
-} from '../CreateIssuePage/components/ProgressModal';
-import { ReceivedModal } from '../CreateIssuePage/components/ReceivedModal';
 import * as bitcoin from 'bitcoinjs-lib';
+import { issue_tx_mock } from 'onebtc.sdk/lib/helpers';
+import * as agent from 'superagent';
+import { getHmyClient } from '../../services/hmyClient';
+import utils from 'web3-utils';
+import { SandboxUiTX } from './SandboxUiTX';
+import { SandboxRedeem } from './SandboxRedeem';
+import { ModalHeader } from '../../components/ActionModals/components/ModalHeader';
+import { satoshiToBitcoin } from '../../helpers/bitcoin';
+import { useStores } from '../../stores';
+import { IssueConfirmModal } from '../Issue/components/IssueConfirmModal';
 
-export const SandBoxPage: React.FC = observer(({ children }) => {
+export const SandBoxPage: React.FC = () => {
+  type TVin = {};
+
+  interface ITransaction {
+    txId: string;
+    version: number;
+    vin: [];
+    vout: [];
+    size: number;
+    weight: number;
+    fee: number;
+    status: {
+      confirmed: boolean;
+      block_height: number;
+      block_hash: string;
+      block_time: number;
+    };
+  }
+
+  type TResponse = {
+    status: string;
+    data: {
+      network: string;
+      address: string;
+      txs: [
+        {
+          txid: string;
+          output_no: 1;
+          script_asm: string;
+          script_hex: string;
+          value: string;
+          confirmations: number;
+          time: number;
+        },
+      ];
+    };
+  };
+
+  /*
+btc_address: "0xBD9cb29ba8E32E0F307F3669F5e2CdaF124406e7"
+fee: "200"
+issue_id: "50135425367742375175424430003476035699384670747228878690484422876500053896398"
+requester: "0xC1Cff1Cc2a92355544F31518Bc5b234Adb562751"
+vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
+
+### btcBase58Address 1JHaRoXUBoLMyBj4YfUKyg3QfodK69pjud
+### btcAddress tb1qhkwt9xaguvhq7vrlxe5ltckd4ufygph873d5kl
+   */
+  const ONE_ADDRESS = '0xc1cff1cc2a92355544f31518bc5b234adb562751';
+  const ISSUE_ID =
+    '50135425367742375175424430003476035699384670747228878690484422876500053896398';
+  const BTC_ADDRESS = 'tb1qhkwt9xaguvhq7vrlxe5ltckd4ufygph873d5kl';
+  const BTC_ADDRESS_BASE_58 = '1JHaRoXUBoLMyBj4YfUKyg3QfodK69pjud';
+
+  const API_URL = `https://chain.so/api/v2/get_tx_unspent/BTCTEST/`;
+
+  const executeIssueTxMock = async (oneAddress, issueId, btcBase58Address) => {
+    const issueIdBn = utils.toBN(issueId);
+
+    const btcTx = issue_tx_mock(
+      // @ts-ignore
+      issueIdBn,
+      btcBase58Address,
+      0.0001 * 1e9,
+    );
+
+    console.log(btcTx.toHex());
+
+    return;
+
+    const hmyClient = await getHmyClient();
+    hmyClient.setUseOneWallet(true);
+
+    const btcBlockNumberMock = 1000;
+    const btcTxIndexMock = 2;
+    const heightAndIndex = (btcBlockNumberMock << 32) | btcTxIndexMock;
+    const headerMock = Buffer.alloc(0);
+    const proofMock = Buffer.alloc(0);
+
+    console.log('### btcTx.toHex()', btcTx.toHex());
+
+    const result = await hmyClient.methods.executeIssue(
+      oneAddress,
+      // @ts-ignore
+      issueIdBn,
+      proofMock,
+      btcTx.toBuffer(),
+      heightAndIndex,
+      headerMock,
+    );
+
+    return result;
+  };
+
+  const Number2Buffer = (num: number) => {
+    // bigendia
+    let str = num.toString(16);
+    if (str.length & 1) str = '0' + str;
+    return Buffer.from(str, 'hex');
+  };
+
+  const buildBtcTx = (txData, issueId, btcBase58Address, amount) => {
+    const tx = new bitcoin.Transaction();
+
+    const vaultScript = bitcoin.address.toOutputScript(btcBase58Address);
+    tx.addInput(
+      Buffer.from(txData.txid, 'hex'),
+      txData.output_no,
+      4294967295,
+      Buffer.alloc(32),
+    );
+    tx.getId();
+    tx.addOutput(vaultScript, amount);
+    const OpData = Number2Buffer(issueId);
+    const embed = bitcoin.payments.embed({ data: [OpData] });
+    tx.addOutput(embed.output, 0);
+    // tx.setVersion(1);
+
+    // const btcTx = tx.buildIncomplete();
+
+    console.log('### tx.toHex();', tx.toHex());
+
+    return tx;
+  };
+
+  const executeIssue = async (oneAddress, issueId, txData) => {
+    const issueIdBn = utils.toBN(issueId);
+    // const btcTx = buildBtcTx(txData, issueId, btcBase58Address, 0.0001 * 1e9);
+
+    const btcTx = bitcoin.Transaction.fromHex(
+      '01000000000101a9c3eeedbcef6a9eb3f4464b8c2b29b69c16fcefe25655925efd17af4dbdd60e0000000000ffffffff02c4a50000000000001600145edb81c0bf1c0f5e28b9259699d09671771afc2210270000000000001600143ab180ca557c18fe317565eadfef5e1eeb2ae58a02483045022100b0797c9b44b72e3d19c8d5e350ee63f991e703071dec820eafff9a03a7e2bb7d022065c440b31d4536dd01eeb7de21c067fed8392f2e41e78dc034c76078f8564dae0121038c2f842f7e0f5d4915ffa5a31a6a312579383ddac00989e2334b5e4df00b17d200000000',
+    );
+
+    const originId = btcTx.getId();
+    const originHash = btcTx.getHash();
+
+    /* START add opt */
+
+    // add recepient id
+    const vaultScript = bitcoin.address.toOutputScript(BTC_ADDRESS_BASE_58);
+    btcTx.addOutput(vaultScript, 0.0001 * 1e9);
+
+    // add issueId
+    // @ts-ignore
+    const OpData = Number2Buffer(utils.toBN(issueId));
+    const embed = bitcoin.payments.embed({ data: [OpData] });
+    btcTx.addOutput(embed.output, 0);
+
+    const injectedTxId = btcTx.getId();
+    const injectedTxHash = btcTx.getHash();
+
+    console.log('### injectedTxId', injectedTxId);
+    console.log('### injectedTxHash', injectedTxHash);
+    console.assert(originId === injectedTxId);
+    console.assert(originHash === injectedTxHash);
+
+    /* END add opt */
+
+    // const btcTx = buildBtcTx2();
+    const hmyClient = await getHmyClient();
+    hmyClient.setUseOneWallet(true);
+
+    const txId = btcTx.getId();
+    const txHex = btcTx.toHex();
+
+    console.log('### txId', txId);
+    console.log('### txHex', txHex);
+
+    const btcBlockNumberMock = 2092664;
+    const btcTxIndexMock = 0;
+    const heightAndIndex = (btcBlockNumberMock << 32) | btcTxIndexMock;
+    const headerMock = Buffer.alloc(0);
+    const proofMock = Buffer.alloc(0);
+
+    const result = await hmyClient.methods.executeIssue(
+      oneAddress,
+      // @ts-ignore
+      issueIdBn,
+      proofMock,
+      btcTx.toBuffer(),
+      heightAndIndex,
+      headerMock,
+    );
+
+    return result;
+  };
+
+  const loadWalletTrx = async btcAddress => {
+    const response = await agent.get<{ body: TResponse }>(API_URL + btcAddress);
+
+    console.log('### response', response.body);
+
+    const body = response.body as TResponse;
+    const txData = body.data.txs[0];
+
+    if (!txData) {
+      throw new Error('has no transaction');
+    }
+
+    return txData;
+  };
+
+  const handleExecuteIssue = async () => {
+    console.log('### handleExecuteIssue');
+
+    const txData = await loadWalletTrx(BTC_ADDRESS);
+
+    console.log('### txData', txData);
+
+    try {
+      const result = await executeIssue(ONE_ADDRESS, ISSUE_ID, txData);
+      console.log('### res', result);
+    } catch (err) {
+      console.log('### err', err);
+    }
+  };
+
+  const handleExecuteIssueMock = async () => {
+    console.log('### handleExecuteIssueMock');
+
+    try {
+      const txData = await loadWalletTrx(BTC_ADDRESS);
+
+      console.log('### txData', txData);
+
+      const result = await executeIssueTxMock(
+        ONE_ADDRESS,
+        ISSUE_ID,
+        BTC_ADDRESS_BASE_58,
+      );
+
+      console.log('### res', result);
+    } catch (err) {
+      console.log('### err', err);
+    }
+  };
+
   const { actionModals } = useStores();
-
-  const openProgressModal = useCallback(() => {
-    actionModals.open(ReceivedModal, {
-      title: 'Some Title',
-      applyText: 'Continue',
+  const openModal = useCallback(() => {
+    actionModals.open(IssueConfirmModal, {
       initData: {
-        total: '13123123',
+        total: satoshiToBitcoin(100000),
+        txHash: '123',
       },
+      applyText: '',
       closeText: '',
-      noValidation: true,
       width: '320px',
-      showOther: false,
-      onApply: () => {
-        return Promise.resolve();
-      },
-      onClose: () => {
-        return Promise.resolve();
-      },
-    });
-  }, [actionModals]);
-
-  const openTransactionModal = useCallback(() => {
-    actionModals.open(TransactionModal, {
-      title: 'Some Title',
-      initData: {
-        issueId:
-          '94720111882553504141518871593598895140913742168115403955140274340127851896228',
-        amount: 13123123,
-        vaultId: 'tb1q7d7jemxrl7zcqrgmr2pr36ask4n3fmjmq5c4fg',
-        total: Number(13123123) / 1e8,
-        bitcoinAddress: 'tb1q7d7jemxrl7zcqrgmr2pr36ask4n3fmjmq5c4fg',
-        bridgeFee: Number(13123123) / 1e8,
-      },
-      applyText: 'Close',
-      closeText: '',
       noValidation: true,
-      width: '80%',
       showOther: true,
       onApply: () => {
         return Promise.resolve();
       },
-      onClose: () => {
-        return Promise.resolve();
-      },
     });
   }, [actionModals]);
 
-  const openDepositModal = useCallback(() => {
-    actionModals.open(DepositModal, {
-      title: 'Some Title',
-      initData: {
-        issueId: 12312312321,
-        amount: 1000312,
-        bitcoinAddress: 'tb1q7d7jemxrl7zcqrgmr2pr36ask4n3fmjmq5c4fg',
-      },
-      applyText: 'I have made the payment',
-      closeText: 'Cancel',
-      noValidation: true,
-      width: '500px',
-      showOther: true,
-      onApply: () => {
-        return Promise.resolve();
-      },
-      onClose: () => {
-        return Promise.reject();
-      },
-    });
-  }, [actionModals]);
-
-  const btc = '0x88f99184FE19a8C118E802f249a08a1C60F87e28';
-  const btcBase58Address = bitcoin.address.toBase58Check(
-    Buffer.from(btc.slice(2), 'hex'),
-    0,
-  );
-
-  const btc2 = bitcoin.address.toBech32(
-    Buffer.from(btc.slice(2), 'hex'),
-    0,
-    'tb',
-  );
-
-  console.log('### btcBase58Address', btcBase58Address);
-  console.log('### toBech32', btc2);
-
-  // tb1ql23zvjyrhz76u2c2pdnmxvyc76gemdnjq60tya
-  // tb1q3ruerp87rx5vzx8gqteyngy2r3s0sl3gsxzpsw
   return (
     <BaseContainer>
       <PageContainer>
-        <Box>
-          <Text>{btcBase58Address}</Text>
-          <Text>{btc2}</Text>
-        </Box>
-        <Box>{Number('0.0001')}</Box>
-        <Box>{Number('0.0001') / 1e9}</Box>
-        <Box>{(Number('0.0001') / 1e9) * 1e9}</Box>
-        <Box>
-          <ProgressModalContent />
-        </Box>
+        <Button onClick={openModal}>open modal</Button>
+        <Box gap="medium">
+          <Box>
+            <ModalHeader onClose={() => {}} title="Deposit" />
+          </Box>
+          <Box>
+            <SandboxRedeem />
+          </Box>
 
-        <Button
-          bgColor="#00ADE8"
-          onClick={openProgressModal}
-          transparent={false}
-        >
-          openProgressModal
-        </Button>
+          <Divider fullwidth colorful />
 
-        <Box>
-          <TransactionModalContent
-            sendAmount={1}
-            sendUsdAmount={100}
-            bitcoinAddress="tb1q7d7jemxrl7zcqrgmr2pr36ask4n3fmjmq5c4fg"
-            bridgeFee={11111}
-            issueId="94720111882553504141518871593598895140913742168115403955140274340127851896228"
-            vaultId="tb1q7d7jemxrl7zcqrgmr2pr36ask4n3fmjmq5c4fg"
-          />
-        </Box>
-        <Box>
-          <Button
-            bgColor="#00ADE8"
-            onClick={openTransactionModal}
-            transparent={false}
-          >
-            openDepositModal
-          </Button>
-        </Box>
-        <Box>
-          <DepositModalContent
-            sendAmount={1231200}
-            sendUsdAmount={123}
-            bitcoinAddress="tb1q7d7jemxrl7zcqrgmr2pr36ask4n3fmjmq5c4fg"
-          />
-        </Box>
-        <Box>
-          <Button
-            bgColor="#00ADE8"
-            onClick={openDepositModal}
-            transparent={false}
-          >
-            openDepositModal
-          </Button>
+          <Box gap="small">
+            <SandboxUiTX />
+          </Box>
+
+          <Divider fullwidth colorful />
+
+          <Box gap="small">
+            <Button onClick={() => handleExecuteIssue()}>executeIssue</Button>
+            <Button onClick={() => handleExecuteIssueMock()}>
+              executeIssueMock
+            </Button>
+          </Box>
         </Box>
       </PageContainer>
     </BaseContainer>
   );
-});
+};
 
 SandBoxPage.displayName = 'SandBoxPage';

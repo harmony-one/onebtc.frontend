@@ -8,7 +8,10 @@ import { AdminOperations } from './AdminOperations';
 import { Tokens } from './Tokens';
 import { createStoresContext } from './create-context';
 import { Erc20SelectStore } from './Erc20SelectStore';
-import { IssueStore } from './IssueStore';
+import { IssuePageStore } from '../pages/Issue/IssuePageStore';
+import { RedeemPageStore } from '../pages/Redeem/RedeemPageStore';
+import { UITransactionsStore } from './UITransactionsStore';
+import { TransferPageStore } from '../pages/Transfer/TransferPageStore';
 
 export interface IStores {
   routing?: RouterStore;
@@ -20,13 +23,19 @@ export interface IStores {
   adminOperations?: AdminOperations;
   tokens?: Tokens;
   erc20Select?: Erc20SelectStore;
-  issue?: IssueStore;
+  issuePageStore?: IssuePageStore;
+  redeemPageStore?: RedeemPageStore;
+  transferPageStore?: TransferPageStore;
+  uiTransactionsStore?: UITransactionsStore;
 }
 
 const stores: IStores = {};
 
 stores.routing = new RouterStore();
-stores.issue = new IssueStore(stores);
+stores.uiTransactionsStore = new UITransactionsStore(stores);
+stores.issuePageStore = new IssuePageStore(stores);
+stores.redeemPageStore = new RedeemPageStore(stores);
+stores.transferPageStore = new TransferPageStore(stores);
 stores.exchange = new Exchange(stores);
 stores.operations = new Operations(stores);
 stores.adminOperations = new AdminOperations(stores);

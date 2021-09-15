@@ -7,29 +7,39 @@ import { moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../Explorer/Components';
 
-type Props = Pick<IStores, 'issue'>;
+type Props = Pick<IStores, 'issuePageStore'>;
 
-export const IssueForm: React.FC<Props> = () => {
-  const { issue, user } = useStores();
+export const RedeemForm: React.FC<Props> = () => {
+  const { redeemPageStore, user } = useStores();
   const [form, setForm] = useState();
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
-      issue.createIssue();
+      redeemPageStore.createRedeem();
     });
-  }, [form, issue]);
+  }, [form, redeemPageStore]);
 
   return useObserver(() => (
-    <Form ref={ref => setForm(ref)} data={issue.transaction}>
+    <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
       <NumberInput
-        label={`BTC Amount`}
-        name="amount"
+        label="OneBTC Amount"
+        name="oneBTCAmount"
         type="decimal"
         precision="6"
         delimiter="."
         placeholder="0.0"
         style={{ width: '100%' }}
         rules={[isRequired, moreThanZero]}
+      />
+
+      <Input
+        label="BTC Address"
+        name="bitcoinAddress"
+        type="string"
+        precision="6"
+        placeholder="Enter your BTC address"
+        style={{ width: '100%' }}
+        rules={[isRequired]}
       />
 
       <Input
@@ -52,7 +62,7 @@ export const IssueForm: React.FC<Props> = () => {
           Bridge Fee
         </Text>
         <PriceView
-          value={issue.bridgeFee}
+          value={redeemPageStore.bridgeFee}
           rate={user.btcRate}
           boxProps={{ pad: {} }}
           tokenName="BTC"
@@ -66,13 +76,13 @@ export const IssueForm: React.FC<Props> = () => {
         align="start"
       >
         <Text size="small" bold={true}>
-          Security Deposit
+          Bitcoin Network Fee
         </Text>
         <PriceView
-          value={1}
-          rate={user.oneRate}
+          value={0.00005}
+          rate={user.btcRate}
           boxProps={{ pad: {} }}
-          tokenName="ONE"
+          tokenName="BTC"
         />
       </Box>
 
@@ -88,10 +98,10 @@ export const IssueForm: React.FC<Props> = () => {
           You will receive
         </Text>
         <PriceView
-          value={issue.totalReceive}
+          value={redeemPageStore.form.totalReceive}
           rate={user.btcRate}
           boxProps={{ pad: {} }}
-          tokenName="OneBTC"
+          tokenName="BTC"
         />
       </Box>
 
@@ -100,8 +110,8 @@ export const IssueForm: React.FC<Props> = () => {
           bgColor="#00ADE8"
           onClick={handleSubmit}
           transparent={false}
-          disabled={issue.status === 'pending'}
-          isLoading={issue.status === 'pending'}
+          disabled={redeemPageStore.status === 'pending'}
+          isLoading={redeemPageStore.status === 'pending'}
         >
           Continue
         </Button>
@@ -110,4 +120,4 @@ export const IssueForm: React.FC<Props> = () => {
   ));
 };
 
-export default IssueForm;
+export default RedeemForm;

@@ -8,7 +8,7 @@ import { useObserver } from 'mobx-react';
 import { formatWithSixDecimals } from '../../../utils';
 import { cutText } from '../../../services/cutText';
 
-const TransactionDetails = ({
+const IssueTransactionDetails = ({
   bitcoinAddress,
   bridgeFee,
   vaultId = '',
@@ -98,7 +98,7 @@ const TransactionDetails = ({
   ));
 };
 
-export const TransactionModalContent = props => {
+export const IssueTransactionModalContent = props => {
   const {
     sendAmount,
     sendUsdAmount,
@@ -117,7 +117,7 @@ export const TransactionModalContent = props => {
       <Divider fullwidth colorful />
       <Box direction="row-responsive" gap="medium" basis="full" align="start">
         <Box basis="1/2">
-          <TransactionDetails
+          <IssueTransactionDetails
             bitcoinAddress={bitcoinAddress}
             bridgeFee={bridgeFee}
             vaultId={vaultId}
@@ -137,12 +137,10 @@ export const TransactionModalContent = props => {
   );
 };
 
-export const TransactionModal = props => {
+export const IssueTransactionModal = props => {
   const { transactionHash } = props.actionData.data;
-
-  const { issue: issueStore, user } = useStores();
-
-  const issue = issueStore.issuesMap[transactionHash];
+  const { issuePageStore, user } = useStores();
+  const issue = issuePageStore.issuesMap[transactionHash];
 
   const sendAmount = Number(issue.issueAmount) / 1e9;
   const sendUsdAmount = sendAmount * user.btcRate;
@@ -154,7 +152,7 @@ export const TransactionModal = props => {
   const totalReceivedUsd = totalReceived * user.btcRate;
 
   return useObserver(() => (
-    <TransactionModalContent
+    <IssueTransactionModalContent
       bitcoinAddress={bitcoinAddress}
       sendAmount={sendAmount}
       sendUsdAmount={sendUsdAmount}

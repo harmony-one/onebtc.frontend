@@ -6,21 +6,20 @@ import { formatWithSixDecimals } from '../../../utils';
 import { useStores } from '../../../stores';
 import { useObserver } from 'mobx-react';
 import { Input, isRequired, Form } from '../../../components/Form';
-import { TransactionModal } from './TransactionModal';
 
 export function DepositForm() {
-  const { issue } = useStores();
+  const { issuePageStore } = useStores();
 
   const [form, setForm] = useState();
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
-      // issue.createIssue();
+      // issuePageStore.createIssue();
     });
   }, [form]);
 
   return useObserver(() => (
-    <Form ref={ref => setForm(ref)} data={issue.transaction}>
+    <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
       <Input
         label={`Bitcoin transaction id`}
         name="bitcoinTX"
@@ -33,8 +32,8 @@ export function DepositForm() {
         bgColor="#00ADE8"
         onClick={handleSubmit}
         transparent={false}
-        // disabled={issue.status === 'pending'}
-        // isLoading={issue.status === 'pending'}
+        // disabled={issuePageStore.status === 'pending'}
+        // isLoading={issuePageStore.status === 'pending'}
       >
         Continue
       </Button>
@@ -42,42 +41,31 @@ export function DepositForm() {
   ));
 }
 
-export const DepositModalContent = ({
-  sendAmount,
-  sendUsdAmount,
+export const WithdrawModalContent = ({
+  receivedAmount,
+  receivedUsdAmount,
   bitcoinAddress,
 }) => {
-  const qrData = `bitcoin:${bitcoinAddress}?amount=${sendAmount}`;
-  const [qrRef] = useQRCode({
-    text: qrData,
-    options: {
-      level: 'H',
-      margin: 5,
-      scale: 8,
-      width: 128,
-      color: {
-        dark: '#000000',
-        light: '#ffffffff',
-      },
-    },
-  });
-
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box align="center">
+        <Text bold>Your Redeem request is being processed</Text>
+      </Box>
+
+      <Box align="center">
         <Text>
-          Send{' '}
+          You will receive&nbsp;
           <Text inline color="Orange500">
-            {sendAmount}
+            {receivedAmount} BTC
           </Text>
           &nbsp;BTC
         </Text>
         <Text color="#748695" size="small" inline>
-          ≈ ${formatWithSixDecimals(sendUsdAmount)}
+          ≈ ${formatWithSixDecimals(receivedUsdAmount)}
         </Text>
       </Box>
       <Box align="center" gap="xxsmall">
-        <Text>in a single transaction to</Text>
+        <Text>BTC destination address</Text>
         <Box round="xxsmall" style={{ padding: '16px' }} border="all">
           <Text
             bold
@@ -86,53 +74,39 @@ export const DepositModalContent = ({
             {bitcoinAddress}
           </Text>
         </Box>
-        <Text>Within 0 Days 23:54:22</Text>
       </Box>
 
       <Box alignSelf="start">
         <Text>
           <Text inline bold color="Red">
-            Warning:
-          </Text>{' '}
-          Some Bitcoin wallets display values in mBTC. Please ensure you send
-          the correct amount:1000 mBTC
-        </Text>
-      </Box>
-
-      <Box>
-        <canvas ref={qrRef} />
-      </Box>
-
-      <Box alignSelf="start" margin={{ bottom: 'small' }}>
-        <Text>
-          <Text inline bold color="Red">
             Note:
           </Text>{' '}
-          If you have already made the payment, please wait for a few minutes
-          for it to be confirmed in the table below.
+          We will inform you when the BTC payment is executed. This typically
+          takes only a few minutes but may sometimes take up to 6 hours.
         </Text>
       </Box>
     </Box>
   ));
 };
 
-export const DepositModal = props => {
+export const WithdrawModal = props => {
   const { transactionHash } = props.actionData.data;
-  const { issue: issueStore, user, actionModals } = useStores();
+  const { issuePageStore, user } = useStores();
 
-  const issue = issueStore.issuesMap[transactionHash];
-  const sendAmount = Number(issue.issueAmount) / 1e9;
+  const issue = issuePageStore.issuesMap[transactionHash];
   const bitcoinAddress = issue.btcAddress;
-  const sendUsdAmount = sendAmount * user.btcRate;
+
+  const receivedAmount = 0.001;
+  const receivedUsdAmount = receivedAmount * user.btcRate;
 
   return useObserver(() => (
     <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">
-      <Title align="center">Deposit</Title>
+      <Title align="center">Withdraw</Title>
       <Divider colorful fullwidth />
-      <DepositModalContent
+      <WithdrawModalContent
         bitcoinAddress={bitcoinAddress}
-        sendAmount={sendAmount}
-        sendUsdAmount={sendUsdAmount}
+        receivedAmount={receivedAmount}
+        receivedUsdAmount={receivedUsdAmount}
       />
     </Box>
   ));
