@@ -8,9 +8,10 @@ export type ActionModalBody = (data: {
 }) => React.ComponentElement<{ onClose?: () => any; actionData?: any }, any>;
 
 export interface ActionModalOptions {
+  id?: string;
   width?: string;
   position?: 'flex-start' | 'center';
-  title: string;
+  title?: string;
   onApply: (data?: any) => Promise<any>;
   onClose?: (data?: any) => Promise<any>;
   applyText: string;
@@ -18,6 +19,7 @@ export interface ActionModalOptions {
   noValidation?: boolean;
   initData?: any;
   showOther?: boolean;
+  isOverlayClose?: boolean;
 }
 
 export interface ActionModalConfig {
@@ -36,7 +38,7 @@ export class ActionModalsStore {
     render: ActionModalBody | any,
     options?: ActionModalOptions,
   ): Promise<any> => {
-    const id = guid();
+    const id = (options && options.id) || guid();
 
     const modalConfig: ActionModalConfig = { render, options, id };
 
@@ -61,7 +63,6 @@ export class ActionModalsStore {
 
       const onClose = options.onClose || (() => Promise.resolve());
 
-      console.log('### onClose', onClose);
       options.onClose = () => {
         return onClose()
           .then(resolve)

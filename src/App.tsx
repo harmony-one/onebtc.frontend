@@ -5,46 +5,21 @@ import { GlobalStyle } from './GlobalStyle';
 import { Providers } from './Providers';
 import { Redirect, Route, Switch } from 'react-router';
 import { ActionModals } from './components/ActionModals';
-import { EthBridge } from './pages/EthBridge';
-import { CreateIssuePage } from './pages/CreateIssuePage/CreateIssuePage';
+import { IssuePage } from './pages/Issue/IssuePage';
 import { SandBoxPage } from './pages/Sandbox/SandBoxPage';
-import { Explorer } from './pages/Explorer';
-import { MintTokens } from './pages/MintTokens';
-import { Tokens } from './pages/Tokens';
 import { InfoModal } from './components/InfoModal';
-import { FAQPage } from './pages/FAQ';
-import { InfoPage } from './pages/Info';
-import { TransactionExample, Hrc20ContractExample } from './pages/Examples';
-import { StuckOperations } from './pages/Explorer/StuckOperations';
-import { AdminExplorer } from './pages/Explorer/AdminExplorer';
+import { RedeemPage } from './pages/Redeem/RedeemPage';
+import { TransferPage } from './pages/Transfer/TransferPage';
 
 const App: React.FC = () => (
   <Providers>
-    <React.Suspense fallback={<div />}>
-      <Switch>
-        <Route exact path="/" component={CreateIssuePage} />
-        <Route exact path="/sandbox" component={SandBoxPage} />
-        <Redirect to="/" />
-        {/*{process.env.GET_TOKENS_SERVICE === 'true' ? (*/}
-        {/*  <Route exact path="/get-tokens" component={MintTokens} />*/}
-        {/*) : null}*/}
-        {/*<Route exact path="/tokens" component={Tokens} />*/}
-        {/*<Route exact path="/tx-example" component={TransactionExample} />*/}
-        {/*<Route exact path="/hrc20-example" component={Hrc20ContractExample} />*/}
-        {/*<Route exact path="/faq" component={FAQPage} />*/}
-        {/*<Route exact path="/info" component={InfoPage} />*/}
-        {/*<Route exact path="/explorer" component={Explorer} />*/}
-        {/*<Route exact path="/stuck-operations" component={StuckOperations} />} />*/}
-        {/*<Route exact path="/admin-explorer" component={AdminExplorer} />} />*/}
-        {/*<Route exact path="/:token" component={EthBridge} />*/}
-        {/*<Route*/}
-        {/*  exact*/}
-        {/*  path="/:token/operations/:operationId"*/}
-        {/*  component={EthBridge}*/}
-        {/*/>*/}
-        {/*<Redirect to="/busd" />*/}
-      </Switch>
-    </React.Suspense>
+    <Switch>
+      <Route exact path="/bridge/issue" component={IssuePage} />
+      <Route exact path="/bridge/redeem" component={RedeemPage} />
+      <Route exact path="/bridge/transfer" component={TransferPage} />
+      <Route exact path="/sandbox" component={SandBoxPage} />
+      <Redirect to="/bridge/issue" />
+    </Switch>
     <ActionModals />
     <InfoModal />
     <GlobalStyle theme={...baseTheme as any} />
