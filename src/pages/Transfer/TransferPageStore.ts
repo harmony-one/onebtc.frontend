@@ -1,8 +1,8 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, observable } from 'mobx';
-import { getHmyClient } from 'services/hmyClient';
+import { getHmyClient } from 'services/oneBtcClient';
 import { TransferConfirmModal } from './components/TransferConfirmModal';
-import { satoshiToBitcoin } from '../../helpers/bitcoin';
+import { satoshiToBitcoin } from '../../services/bitcoin';
 
 interface IIssueEvent {
   issue_id: string;

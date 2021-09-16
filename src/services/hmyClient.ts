@@ -1,22 +1,22 @@
-import * as onebtcSdk from 'onebtc.sdk';
+import Web3 from 'web3';
+const { Harmony } = require('@harmony-js/core');
+const { ChainType } = require('@harmony-js/utils');
 
-let client: onebtcSdk.IHmyClient = null;
+export const hmy = new Harmony(
+  // let's assume we deploy smart contract to this end-point URL
+  process.env.HMY_NODE_URL,
+  {
+    chainType: ChainType.Harmony,
+    chainId: Number(process.env.HMY_CHAIN_ID),
+  },
+);
 
-export async function getHmyClient() {
-  if (client) {
-    return client;
-  }
+const web3URL = window.web3
+  ? window.web3.currentProvider
+  : process.env.HMY_NODE_URL;
 
-  // new 0xBffa908aC951eD4fa224bd28f1291280E4220825
-  // old 0x45b24bE9F317054B4D5972E9d685f6e403772f6b
-  const hmyClient = await onebtcSdk.getHmyClient({
-    sdk: 'web3',
-    nodeURL: 'https://api.s0.b.hmny.io',
-    chainId: 2,
-    contractAddress: '0xBffa908aC951eD4fa224bd28f1291280E4220825',
-    gasLimit: 6721900,
-  });
+export const hmyWeb3 = new Web3(web3URL);
 
-  client = hmyClient;
-  return hmyClient;
-}
+export const getHmyBalance = address => {
+  return hmy.blockchain.getBalance({ address });
+};

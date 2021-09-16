@@ -2,7 +2,7 @@ import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import * as bitcoin from 'bitcoinjs-lib';
 import utils from 'web3-utils';
 import { action, autorun, computed, observable } from 'mobx';
-import { getHmyClient } from 'services/hmyClient';
+import { getHmyClient } from 'services/oneBtcClient';
 import { DepositModal } from './components/DepositModal';
 import { IssueTransactionModal } from './components/IssueTransactionModal';
 import { IssueConfirmModal } from './components/IssueConfirmModal';
@@ -14,7 +14,7 @@ import {
   satoshiToBitcoin,
   walletHexToBase58,
   walletHexToBech32,
-} from '../../helpers/bitcoin';
+} from '../../services/bitcoin';
 import { issue_tx_mock } from 'onebtc.sdk/lib/helpers';
 
 export interface ITransaction {

@@ -7,7 +7,6 @@ import { Redirect, Route, Switch } from 'react-router';
 import { ActionModals } from './components/ActionModals';
 import { IssuePage } from './pages/Issue/IssuePage';
 import { SandBoxPage } from './pages/Sandbox/SandBoxPage';
-import { InfoModal } from './components/InfoModal';
 import { RedeemPage } from './pages/Redeem/RedeemPage';
 import { TransferPage } from './pages/Transfer/TransferPage';
 
@@ -21,7 +20,6 @@ const App: React.FC = () => (
       <Redirect to="/bridge/issue" />
     </Switch>
     <ActionModals />
-    <InfoModal />
     <GlobalStyle theme={...baseTheme as any} />
   </Providers>
 );

@@ -5,7 +5,7 @@ import { useStores } from '../../../stores';
 import { useObserver } from 'mobx-react';
 import { formatWithSixDecimals } from '../../../utils';
 import { cutText } from '../../../services/cutText';
-import { satoshiToBitcoin } from '../../../helpers/bitcoin';
+import { satoshiToBitcoin } from '../../../services/bitcoin';
 import { PriceView } from '../../../components/PriceView';
 
 export const RedeemTransactionDetails = ({

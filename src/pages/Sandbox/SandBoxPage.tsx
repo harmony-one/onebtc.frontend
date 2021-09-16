@@ -5,12 +5,12 @@ import { BaseContainer, PageContainer } from '../../components';
 import * as bitcoin from 'bitcoinjs-lib';
 import { issue_tx_mock } from 'onebtc.sdk/lib/helpers';
 import * as agent from 'superagent';
-import { getHmyClient } from '../../services/hmyClient';
+import { getHmyClient } from '../../services/oneBtcClient';
 import utils from 'web3-utils';
 import { SandboxUiTX } from './SandboxUiTX';
 import { SandboxRedeem } from './SandboxRedeem';
 import { ModalHeader } from '../../components/ActionModals/components/ModalHeader';
-import { satoshiToBitcoin } from '../../helpers/bitcoin';
+import { satoshiToBitcoin } from '../../services/bitcoin';
 import { useStores } from '../../stores';
 import { IssueConfirmModal } from '../Issue/components/IssueConfirmModal';
 

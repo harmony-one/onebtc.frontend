@@ -2,25 +2,14 @@ import { action, autorun, computed, observable } from 'mobx';
 import { IStores } from 'stores';
 import { statusFetching } from '../constants';
 import detectEthereumProvider from '@metamask/detect-provider';
-import {
-  getExNetworkMethods,
-  getHmyBalance,
-  hmyMethodsBUSD,
-  hmyMethodsERC20,
-  hmyMethodsHRC20,
-  hmyMethodsLINK,
-} from '../blockchain-bridge';
+import { getHmyBalance } from '../services/hmyClient';
 import { StoreConstructor } from './core/StoreConstructor';
 import * as agent from 'superagent';
-import { EXCHANGE_MODE, IOperation, NETWORK_TYPE, TOKEN } from './interfaces';
-import { divDecimals } from '../utils';
+import { IOperation } from './interfaces';
 import { HarmonyAddress } from '@harmony-js/crypto';
-import { NETWORK_ERC20_TOKEN, NETWORK_NAME } from './names';
-import { getHmyClient } from '../services/hmyClient';
+import { getHmyClient } from '../services/oneBtcClient';
 
 const Web3 = require('web3');
-
-const defaults = {};
 
 export function isAddressEqual(a, b) {
   return (
@@ -33,7 +22,6 @@ export class UserStoreEx extends StoreConstructor {
   public stores: IStores;
   @observable public isAuthorized: boolean;
   public status: statusFetching;
-  redirectUrl: string;
 
   @observable error: string = '';
   @observable public isMetaMask = false;
@@ -46,26 +34,16 @@ export class UserStoreEx extends StoreConstructor {
   @observable public address: string;
 
   @observable public balance: string = '0';
-  @observable public hmyBUSDBalance: string = '0';
-  @observable public hmyLINKBalance: string = '0';
-
-  @observable public hmyBUSDBalanceManager: number = 0;
-  @observable public hmyLINKBalanceManager: number = 0;
 
   @observable public oneRate = 0;
-  @observable public ethRate = 0;
-  @observable public bnbRate = 0;
   @observable public btcRate = 0;
-
-  @observable public hrc20Address = '';
-  @observable public hrc20Balance = '';
 
   @observable public isInfoReading = false;
   @observable public isInfoNewReading = false;
 
   @observable metamaskChainId = 0;
 
-  @observable oneBTCBalance = 0;
+  @observable public oneBTCBalance = 0;
 
   constructor(stores) {
     super(stores);
@@ -75,18 +53,14 @@ export class UserStoreEx extends StoreConstructor {
       this.isOneWallet = window.onewallet && window.onewallet.isOneWallet;
       // @ts-ignore
       this.onewallet = window.onewallet;
-
-      // await this.getBalances();
-      // await this.getOneBalance();
     }, 3000);
 
-    setInterval(async () => {
+    setInterval(() => {
       if (this.isAuthorized) {
-        this.oneBTCBalance = await this.loadOneBTCBalance();
+        this.loadOneBTCBalance();
+        this.getBalances();
       }
-    }, 3000);
-
-    setInterval(() => this.getBalances(), 3 * 1000);
+    }, 3 * 1000);
 
     this.getRates();
 
@@ -121,10 +95,6 @@ export class UserStoreEx extends StoreConstructor {
       }
 
       this.isAuthorized = true;
-
-      this.stores.exchange.transaction.oneAddress = this.address;
-
-      this.getOneBalance();
     }
 
     autorun(() => {
@@ -150,16 +120,6 @@ export class UserStoreEx extends StoreConstructor {
 
   @computed public get isMetamask() {
     return this.sessionType === 'metamask';
-  }
-
-  @action public setInfoReading() {
-    this.isInfoReading = true;
-    this.syncLocalStorage();
-  }
-
-  @action public setInfoNewReading() {
-    this.isInfoNewReading = true;
-    this.syncLocalStorage();
   }
 
   @action.bound
@@ -218,14 +178,9 @@ export class UserStoreEx extends StoreConstructor {
         this.address = null;
       });
 
-      autorun(() => {
-        console.log('### this.metamaskChainId', this.metamaskChainId);
-      });
-
       this.provider
         .request({ method: 'eth_requestAccounts' })
         .then(async params => {
-          console.log('### params', params);
           const web3 = new Web3(window.web3.currentProvider);
           this.metamaskChainId = await web3.eth.net.getId();
 
@@ -262,70 +217,14 @@ export class UserStoreEx extends StoreConstructor {
     }
   }
 
-  @action public signIn() {
-    return this.onewallet
-      .getAccount()
-      .then(account => {
-        this.sessionType = 'onewallet';
-        this.address = account.address;
-        this.isAuthorized = true;
-
-        this.stores.exchange.transaction.oneAddress = this.address;
-
-        debugger;
-
-        this.syncLocalStorage();
-
-        this.getOneBalance();
-
-        return Promise.resolve();
-      })
-      .catch(e => {
-        this.onewallet.forgetIdentity();
-      });
-  }
-
   @action public getBalances = async () => {
     if (this.address && (!this.isMetamask || this.isNetworkActual)) {
       try {
         let res = await getHmyBalance(this.address);
         this.balance = res && res.result;
-
-        if (this.hrc20Address) {
-          const hrc20Balance = await hmyMethodsERC20.hmyMethods.checkHmyBalance(
-            this.hrc20Address,
-            this.address,
-          );
-
-          this.hrc20Balance = divDecimals(
-            hrc20Balance,
-            this.stores.userMetamask.erc20TokenDetails.decimals,
-          );
-        }
-
-        let resBalance = 0;
-
-        if (this.stores.exchange.network === NETWORK_TYPE.ETHEREUM) {
-          resBalance = await hmyMethodsBUSD.hmyMethods.checkHmyBalance(
-            this.address,
-          );
-          this.hmyBUSDBalance = divDecimals(resBalance, 18);
-
-          resBalance = await hmyMethodsLINK.hmyMethods.checkHmyBalance(
-            this.address,
-          );
-          this.hmyLINKBalance = divDecimals(resBalance, 18);
-        }
       } catch (e) {
         console.error(e);
       }
-    }
-  };
-
-  @action public getOneBalance = async () => {
-    if (this.address) {
-      let res = await getHmyBalance(this.address);
-      this.balance = res && res.result;
     }
   };
 
@@ -335,7 +234,7 @@ export class UserStoreEx extends StoreConstructor {
 
     const hmyClient = await getHmyClient();
 
-    return hmyClient.methods.balanceOf(address);
+    this.oneBTCBalance = await hmyClient.methods.balanceOf(address);
   };
 
   @action public signOut() {
@@ -349,18 +248,12 @@ export class UserStoreEx extends StoreConstructor {
           this.address = null;
           this.isAuthorized = false;
 
-          // this.balanceGem = '0';
-          // this.balanceDai = '0';
-          // this.balance = '0';
-          //
-          // this.vat = { ink: '0', art: '0' };
-
           this.syncLocalStorage();
 
           return Promise.resolve();
         })
         .catch(err => {
-          console.error(err.message);
+          console.error('### error signOut', err.message);
         });
     }
   }
@@ -377,12 +270,6 @@ export class UserStoreEx extends StoreConstructor {
     );
   }
 
-  public saveRedirectUrl(url: string) {
-    if (!this.isAuthorized && url) {
-      this.redirectUrl = url;
-    }
-  }
-
   @action public async getRates() {
     let res = await agent.get<{ body: IOperation }>(
       'https://api.binance.com/api/v1/ticker/24hr?symbol=ONEUSDT',
@@ -391,153 +278,9 @@ export class UserStoreEx extends StoreConstructor {
     this.oneRate = res.body.lastPrice;
 
     res = await agent.get<{ body: IOperation }>(
-      'https://api.binance.com/api/v1/ticker/24hr?symbol=ETHUSDT',
-    );
-
-    this.ethRate = res.body.lastPrice;
-
-    res = await agent.get<{ body: IOperation }>(
-      'https://api.binance.com/api/v1/ticker/24hr?symbol=BNBUSDT',
-    );
-
-    this.bnbRate = res.body.lastPrice;
-
-    res = await agent.get<{ body: IOperation }>(
       'https://api.binance.com/api/v1/ticker/24hr?symbol=BTCUSDT',
     );
 
     this.btcRate = res.body.lastPrice;
   }
-
-  @action public setHRC20Token(token: string) {
-    this.hrc20Address = token;
-    this.hrc20Balance = '0';
-  }
-
-  @action.bound public resetTokens = () => {
-    this.hrc20Balance = '0';
-    this.hrc20Address = '';
-    this.stores.userMetamask.erc20Address = '';
-    this.stores.userMetamask.erc20TokenDetails = null;
-  };
-
-  @action.bound public setHRC20Mapping = async (
-    hrc20Address: string,
-    ignoreValidations?: boolean,
-  ) => {
-    this.hrc20Balance = '0';
-    this.hrc20Address = '';
-    this.stores.userMetamask.erc20Address = '';
-
-    if (!hrc20Address) {
-      throw new Error('Address field is empty');
-    }
-
-    if (!ignoreValidations) {
-      if (
-        this.stores.exchange.mode === EXCHANGE_MODE.ETH_TO_ONE &&
-        (!this.stores.userMetamask.isNetworkActual ||
-          !this.stores.userMetamask.isAuthorized)
-      ) {
-        throw new Error(
-          `Your MetaMask in on the wrong network. Please switch on ${
-            NETWORK_NAME[this.stores.exchange.network]
-          } ${process.env.NETWORK} and try again!`,
-        );
-      }
-
-      if (
-        this.stores.exchange.mode === EXCHANGE_MODE.ONE_TO_ETH &&
-        ((this.stores.user.isMetamask && !this.stores.user.isNetworkActual) ||
-          !this.stores.user.isAuthorized)
-      ) {
-        throw new Error(
-          `Your MetaMask in on the wrong network. Please switch on Harmony ${process.env.NETWORK} and try again!`,
-        );
-      }
-
-      if (
-        this.stores.tokens.allData
-          .filter(t => t.token === TOKEN.ERC20)
-          .find(t => isAddressEqual(t.hrc20Address, hrc20Address))
-      ) {
-        throw new Error('This address already using for ERC20 token wrapper');
-      }
-
-      const busd = this.stores.tokens.allData.find(v => v.symbol === 'BUSD');
-
-      if (busd && isAddressEqual(busd.hrc20Address, hrc20Address)) {
-        throw new Error('This address already using for BUSD token wrapper');
-      }
-
-      const link = this.stores.tokens.allData.find(v => v.symbol === 'LINK');
-
-      if (link && isAddressEqual(link.hrc20Address, hrc20Address)) {
-        throw new Error('This address already using for LINK token wrapper');
-      }
-
-      if (
-        '0x00eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'.toLowerCase() ===
-        hrc20Address.toLowerCase()
-      ) {
-        throw new Error('This address already using for Native tokens');
-      }
-
-      if (
-        this.stores.tokens.allData
-          .filter(t => t.token === TOKEN.ERC721)
-          .find(t => isAddressEqual(t.hrc20Address, hrc20Address))
-      ) {
-        throw new Error('This address already using for ERC721 token wrapper');
-      }
-
-      // if (process.env.ETH_HRC20 === hrc20Address) {
-      //   throw new Error('This address already using for Harmony Eth token');
-      // }
-    }
-
-    try {
-      if (this.stores.exchange.token === TOKEN.ONE) {
-        this.stores.userMetamask.erc20TokenDetails = {
-          name: 'Ethereum One',
-          symbol: 'ONE',
-          decimals: '18',
-          erc20Address: '',
-        };
-      } else {
-        this.stores.userMetamask.erc20TokenDetails = await hmyMethodsHRC20.hmyMethods.tokenDetails(
-          hrc20Address,
-        );
-      }
-    } catch (e) {
-      throw new Error(
-        `Wrong token address. Use only a valid HRC20 token address, not BEP20 address`,
-      );
-    }
-
-    this.hrc20Address = hrc20Address;
-    let address;
-
-    const exNetwork = getExNetworkMethods();
-
-    if (exNetwork) {
-      try {
-        address = await exNetwork.ethMethodsHRC20.getMappingFor(
-          hrc20Address,
-          this.stores.exchange.token === TOKEN.ONE,
-        );
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    console.log('address: ', address);
-
-    if (!!Number(address)) {
-      this.stores.userMetamask.erc20Address = address;
-      this.stores.userMetamask.syncLocalStorage();
-    } else {
-      this.stores.userMetamask.erc20Address = '';
-    }
-  };
 }

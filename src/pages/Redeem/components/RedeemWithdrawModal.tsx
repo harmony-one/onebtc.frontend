@@ -6,7 +6,7 @@ import { formatWithSixDecimals } from '../../../utils';
 import { useStores } from '../../../stores';
 import { useObserver } from 'mobx-react';
 import { Input, isRequired, Form } from '../../../components/Form';
-import { satoshiToBitcoin } from '../../../helpers/bitcoin';
+import { satoshiToBitcoin } from '../../../services/bitcoin';
 
 export function DepositForm() {
   const { issuePageStore } = useStores();

@@ -1,13 +1,13 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, computed, observable } from 'mobx';
-import { getHmyClient } from 'services/hmyClient';
+import { getHmyClient } from 'services/oneBtcClient';
 import {
   bitcoinToSatoshi,
   mockBitcoinTx,
   satoshiToBitcoin,
   walletBech32ToHex,
   walletHexToBase58,
-} from '../../helpers/bitcoin';
+} from '../../services/bitcoin';
 import { RedeemWithdrawModal } from './components/RedeemWithdrawModal';
 import { RedeemTransactionModal } from './components/RedeemTransactionModal';
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';

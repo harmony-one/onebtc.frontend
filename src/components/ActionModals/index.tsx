@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'stores';
-import { Footer } from '../Footer';
+import { ModalFooter } from './components/ModalFooter';
 import { ActionModalConfig } from 'stores/ActionModalsStore';
 import { useMemo, useRef } from 'react';
 import { observable } from 'mobx';
@@ -104,7 +104,7 @@ export const ActionModal = observer<{
         />
       )}
       {(options.applyText || options.closeText) && (
-        <Footer>
+        <ModalFooter>
           {options.closeText && (
             <Button
               size="auto"
@@ -139,7 +139,7 @@ export const ActionModal = observer<{
               {options.applyText || 'Ok'}
             </Button>
           ) : null}
-        </Footer>
+        </ModalFooter>
       )}
     </ModalView>
   );
