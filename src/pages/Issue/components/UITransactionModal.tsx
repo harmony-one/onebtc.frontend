@@ -1,18 +1,12 @@
 import React from 'react';
 import { Box } from 'grommet';
-import { Divider, Title, Text } from 'components/Base';
+import { Text } from 'components/Base';
 import { useStores } from '../../../stores';
-import { useObserver } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { Spinner } from '../../../ui';
 import { UITransactionStatus } from '../../../stores/UITransactionsStore';
-import { Link } from 'react-router-dom';
-import { cutText } from '../../../services/cutText';
 import LinkHarmonyTx from '../../../components/LinkHarmonyTx';
 import { ModalHeader } from '../../../components/ActionModals/components/ModalHeader';
-import {
-  ActionModalConfig,
-  ActionModalOptions,
-} from '../../../stores/ActionModalsStore';
 import { TActionModalProps } from '../../../components/ActionModals';
 
 function getUITxTitle(status: UITransactionStatus) {
@@ -30,18 +24,27 @@ function getUITxTitle(status: UITransactionStatus) {
   }
 }
 
-export function UITxModalContent({
+interface UITxModalContentProps {
+  txHash: string;
+  status: UITransactionStatus;
+  errorMessage: string;
+  harmonyErrTxId?: string;
+  onClose: () => Promise<void>;
+}
+
+export const UITxModalContent: React.FC<UITxModalContentProps> = ({
   txHash = '',
   status,
   errorMessage,
   harmonyErrTxId = '',
-}) {
+}) => {
   return (
     <Box align="center" gap="small">
-      <Title align="center">{getUITxTitle(status)}</Title>
-      <Box align="center">
-        <Spinner />
-      </Box>
+      {status !== UITransactionStatus.FAIL && (
+        <Box align="center">
+          <Spinner />
+        </Box>
+      )}
       {txHash && (
         <Box>
           <Text>
@@ -66,34 +69,32 @@ export function UITxModalContent({
       )}
     </Box>
   );
-}
+};
 
-function Container({ uiTxId }: { uiTxId: string }) {
-  const { uiTransactionsStore } = useStores();
-  const uiTx = uiTransactionsStore.map[uiTxId];
+export const UITransactionModal: React.FC<TActionModalProps> = observer(
+  props => {
+    const { uiTxId } = props.actionData.data;
+    const { onClose } = props.config.options;
+    const { uiTransactionsStore } = useStores();
+    const uiTx = uiTransactionsStore.map[uiTxId];
 
-  return useObserver(() => {
     if (!uiTx) {
       return null;
     }
 
     return (
-      <UITxModalContent
-        txHash={uiTx.txHash}
-        status={uiTx.status}
-        errorMessage={uiTx.errorMessage}
-        harmonyErrTxId={uiTx.harmonyErrTxId}
-      />
+      <Box pad={{ horizontal: 'medium', vertical: 'medium' }} gap="small">
+        <ModalHeader title={getUITxTitle(uiTx.status)} onClose={onClose} />
+        <UITxModalContent
+          txHash={uiTx.txHash}
+          status={uiTx.status}
+          onClose={onClose}
+          errorMessage={uiTx.errorMessage}
+          harmonyErrTxId={uiTx.harmonyErrTxId}
+        />
+      </Box>
     );
-  });
-}
+  },
+);
 
-export function UITransactionModal(props: TActionModalProps) {
-  const { uiTxId } = props.actionData.data;
-
-  return (
-    <Box pad={{ horizontal: 'medium', vertical: 'medium' }} gap="small">
-      <Container uiTxId={uiTxId} />
-    </Box>
-  );
-}
+UITransactionModal.displayName = 'UITransactionModal';

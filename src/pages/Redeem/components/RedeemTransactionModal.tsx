@@ -89,9 +89,9 @@ export const RedeemTransactionDetails = ({
           <Text inline bold color="Red">
             Note:
           </Text>{' '}
-          interBTC is a fully decentralized system. Please make sure you send
-          the right amount of BTC, we cannot guarantee that the vault will
-          return the additional BTC that you sent by mistake.
+          OneBTC is a fully decentralized system. Please make sure you send the
+          right amount of BTC, we cannot guarantee that the vault will return
+          the additional BTC that you sent by mistake.
         </Text>
       </Box>
     </Box>

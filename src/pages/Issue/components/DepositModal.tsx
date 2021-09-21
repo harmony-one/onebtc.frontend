@@ -94,8 +94,8 @@ export const DepositModalContent = ({
           <Text inline bold color="Red">
             Warning:
           </Text>{' '}
-          Some Bitcoin wallets display values in mBTC. Please ensure you send
-          the correct amount:1000 mBTC
+          Some Bitcoin wallets display values in oneBTC. Please ensure you send
+          the correct amount:1000 oneBTC
         </Text>
       </Box>
 

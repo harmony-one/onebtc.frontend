@@ -3,9 +3,10 @@ import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
 import { useObserver } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input } from 'components/Form';
-import { moreThanZero } from '../../../../utils';
+import { createValidate, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
+import { bitcoinToSatoshi } from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -19,6 +20,11 @@ export const RedeemForm: React.FC<Props> = () => {
     });
   }, [form, redeemPageStore]);
 
+  const lessThanBalance = () =>
+    createValidate((value: string) => {
+      return bitcoinToSatoshi(value) > user.oneBTCBalance;
+    }, `redeem amount exceeds balance ${user.oneBTCBalance}`);
+
   return useObserver(() => (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
       <NumberInput
@@ -29,7 +35,7 @@ export const RedeemForm: React.FC<Props> = () => {
         delimiter="."
         placeholder="0.0"
         style={{ width: '100%' }}
-        rules={[isRequired, moreThanZero]}
+        rules={[isRequired, moreThanZero, lessThanBalance()]}
       />
 
       <Input

@@ -1,6 +1,6 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, computed, observable } from 'mobx';
-import { getHmyClient } from 'services/oneBtcClient';
+import { getOneBTCClient } from 'services/oneBtcClient';
 import {
   bitcoinToSatoshi,
   mockBitcoinTx,
@@ -76,7 +76,7 @@ export class RedeemPageStore extends StoreConstructor {
         redeem.redeemAmount,
       );
 
-      const hmyClient = await getHmyClient(this.stores.user.sessionType);
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       console.log('### run execute issuePageStore');
 
@@ -155,7 +155,7 @@ export class RedeemPageStore extends StoreConstructor {
     redeemUiTx.setStatusWaitingSignIn();
     redeemUiTx.showModal();
     try {
-      const hmyClient = await getHmyClient(this.stores.user.sessionType);
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       hmyClient.setUseOneWallet(true);
       const redeemAmount = bitcoinToSatoshi(this.form.oneBTCAmount);

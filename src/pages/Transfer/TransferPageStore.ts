@@ -1,6 +1,6 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, observable } from 'mobx';
-import { getHmyClient } from 'services/oneBtcClient';
+import { getOneBTCClient } from 'services/oneBtcClient';
 import { TransferConfirmModal } from './components/TransferConfirmModal';
 import { satoshiToBitcoin } from '../../services/bitcoin';
 
@@ -55,7 +55,7 @@ export class TransferPageStore extends StoreConstructor {
     transferUiTx.showModal();
 
     try {
-      const hmyClient = await getHmyClient(this.stores.user.sessionType);
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       // const vaultId = this.form.vaultId;
       hmyClient.setUseOneWallet(true);

@@ -2,15 +2,17 @@ import React, { useCallback } from 'react';
 import { LargeTab } from './LargeTab/LargeTab';
 import { Box } from 'grommet';
 import { useStores } from '../stores';
-import { useRouteMatch } from 'react-router';
+import { useRouteMatch, generatePath } from 'react-router';
+import { Routes, routes } from '../constants/routes';
 
 type Props = {};
 
-export const NavigateTabs: React.FC<Props> = ({ children }) => {
+export const NavigateTabs: React.FC<Props> = () => {
   const { routing } = useStores();
 
-  const handleNavigate = (route: string) => () => {
-    routing.push(`${route}`, {});
+  const handleNavigate = (route: Routes) => () => {
+    const path = generatePath(route);
+    routing.push(path, {});
   };
 
   const { path } = useRouteMatch();
@@ -29,20 +31,25 @@ export const NavigateTabs: React.FC<Props> = ({ children }) => {
     >
       <LargeTab
         title="Issue"
-        onClick={handleNavigate('/bridge/issue')}
-        active={isActive(path, '/bridge/issue')}
+        onClick={handleNavigate(routes.issue)}
+        active={isActive(path, routes.issue)}
       />
       <LargeTab
         title="Redeem"
-        onClick={handleNavigate('/bridge/redeem')}
-        active={isActive(path, '/bridge/redeem')}
+        onClick={handleNavigate(routes.redeem)}
+        active={isActive(path, routes.redeem)}
       />
       <LargeTab
         title="Transfer"
-        onClick={handleNavigate('/bridge/transfer')}
-        active={isActive(path, '/bridge/transfer')}
+        onClick={handleNavigate(routes.transfer)}
+        active={isActive(path, routes.transfer)}
       />
-      <LargeTab title="Burn" onClick={handleNavigate('/burn')} disabled />
+      <LargeTab
+        title="Burn"
+        onClick={handleNavigate(routes.burn)}
+        active={isActive(path, routes.burn)}
+        disabled
+      />
     </Box>
   );
 };

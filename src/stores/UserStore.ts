@@ -6,7 +6,7 @@ import { getHmyBalance } from '../services/hmyClient';
 import { StoreConstructor } from './core/StoreConstructor';
 import * as agent from 'superagent';
 import { IOperation } from './interfaces';
-import { getHmyClient } from '../services/oneBtcClient';
+import { getOneBTCClient } from '../services/oneBtcClient';
 
 const Web3 = require('web3');
 
@@ -220,7 +220,7 @@ export class UserStoreEx extends StoreConstructor {
 
   @action.bound
   public loadOneBTCBalance = async () => {
-    const hmyClient = await getHmyClient(this.sessionType);
+    const hmyClient = await getOneBTCClient(this.sessionType);
 
     this.oneBTCBalance = await hmyClient.methods.balanceOf(this.address);
   };

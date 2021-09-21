@@ -9,15 +9,16 @@ import { IssuePage } from './pages/Issue/IssuePage';
 import { SandBoxPage } from './pages/Sandbox/SandBoxPage';
 import { RedeemPage } from './pages/Redeem/RedeemPage';
 import { TransferPage } from './pages/Transfer/TransferPage';
+import { routes } from './constants/routes';
 
 const App: React.FC = () => (
   <Providers>
     <Switch>
-      <Route exact path="/bridge/issue" component={IssuePage} />
-      <Route exact path="/bridge/redeem" component={RedeemPage} />
-      <Route exact path="/bridge/transfer" component={TransferPage} />
-      <Route exact path="/sandbox" component={SandBoxPage} />
-      <Redirect to="/bridge/issue" />
+      <Route exact path={routes.issue} component={IssuePage} />
+      <Route exact path={routes.redeem} component={RedeemPage} />
+      <Route exact path={routes.transfer} component={TransferPage} />
+      <Route exact path={routes.sandbox} component={SandBoxPage} />
+      <Redirect to={routes.issue} />
     </Switch>
     <ActionModals />
     <GlobalStyle theme={...baseTheme as any} />

@@ -5,7 +5,7 @@ let clients: Record<'onewallet' | 'metamask', onebtcSdk.IHmyClient> = {
   onewallet: null,
 };
 
-export async function getHmyClient(wallet: 'metamask' | 'onewallet') {
+export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
   if (clients[wallet]) {
     return clients[wallet];
   }
@@ -17,7 +17,7 @@ export async function getHmyClient(wallet: 'metamask' | 'onewallet') {
       sdk: 'web3',
       nodeURL: 'https://api.s0.b.hmny.io',
       chainId: 2,
-      contractAddress: '0x462C9629Bdb965BBe077D3d79E9ae0f375591579',
+      contractAddress: '0xaA690F66E0953C355D4dB30Ff6e646cd357002C3',
       gasLimit: 6721900,
     });
   }
@@ -27,7 +27,7 @@ export async function getHmyClient(wallet: 'metamask' | 'onewallet') {
       sdk: 'harmony',
       nodeURL: 'https://api.s0.b.hmny.io',
       chainId: 2,
-      contractAddress: '0x462C9629Bdb965BBe077D3d79E9ae0f375591579',
+      contractAddress: '0xaA690F66E0953C355D4dB30Ff6e646cd357002C3',
       gasLimit: 6721900,
     });
   }

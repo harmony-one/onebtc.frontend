@@ -2,9 +2,9 @@ import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import * as bitcoin from 'bitcoinjs-lib';
 import utils from 'web3-utils';
 import { action, autorun, computed, observable } from 'mobx';
-import { getHmyClient } from 'services/oneBtcClient';
+import { getOneBTCClient } from 'services/oneBtcClient';
 import { DepositModal } from './components/DepositModal';
-import { IssueTransactionModal } from './components/IssueTransactionModal';
+import { IssueTransactionModal } from './components/IssueTransactionModal/IssueTransactionModal';
 import { IssueConfirmModal } from './components/IssueConfirmModal';
 import * as agent from 'superagent';
 import { IOperation } from '../../stores/interfaces';
@@ -79,7 +79,7 @@ export class IssuePageStore extends StoreConstructor {
 
   @action.bound
   async executeIssue(transactionHash: string, btcTransactionHash: string) {
-    console.log('### mockExecuteIssue');
+    console.log('### executeIssue');
     this.status = 'pending';
 
     const uiTxId = guid();
@@ -114,7 +114,8 @@ export class IssuePageStore extends StoreConstructor {
 
       console.log('### btcBase58', btcBase58Address);
 
-      const hmyClient = await getHmyClient(this.stores.user.sessionType);
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+      hmyClient.setUseMathWallet(true);
 
       console.log('### run execute issuePageStore');
 
@@ -202,6 +203,7 @@ export class IssuePageStore extends StoreConstructor {
       width: '80%',
       showOther: true,
       onApply: () => {
+        this.stores.routing.goToIssue();
         return Promise.resolve();
       },
       onClose: () => {
@@ -238,7 +240,7 @@ export class IssuePageStore extends StoreConstructor {
         issue.issueAmount,
       );
 
-      const hmyClient = await getHmyClient(this.stores.user.sessionType);
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       console.log('### run execute issuePageStore');
 
@@ -287,6 +289,28 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
+  public async showIssueDetails(txHash: string) {
+    const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+
+    const issueDetails = await hmyClient.methods.getIssueDetails(txHash);
+
+    if (!issueDetails) {
+      return;
+    }
+
+    console.log('### issueDetails', issueDetails);
+    this.issuesMap[txHash] = {
+      issueAmount: Number(issueDetails.amount),
+      vaultId: issueDetails.vault_id,
+      issueEvent: issueDetails,
+      btcBase58Address: walletHexToBase58(issueDetails.btc_address),
+      btcAddress: walletHexToBech32(issueDetails.btc_address),
+    };
+
+    this.openTransactionModal(txHash);
+  }
+
+  @action.bound
   public async createIssue() {
     this.status = 'pending';
     const uiTxId = guid();
@@ -294,7 +318,7 @@ export class IssuePageStore extends StoreConstructor {
     issueUiTx.showModal();
 
     try {
-      const hmyClient = await getHmyClient(this.stores.user.sessionType);
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       const vaultId = this.form.vaultId;
       hmyClient.setUseOneWallet(true);
@@ -357,7 +381,7 @@ export class IssuePageStore extends StoreConstructor {
         width: '500px',
         showOther: true,
         onApply: () => {
-          this.openTransactionModal(issueRequest.transactionHash);
+          this.stores.routing.goToIssue(issueRequest.transactionHash);
           return Promise.resolve();
         },
         onClose: () => {

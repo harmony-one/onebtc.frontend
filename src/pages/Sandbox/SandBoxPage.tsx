@@ -5,7 +5,7 @@ import { BaseContainer, PageContainer } from '../../components';
 import * as bitcoin from 'bitcoinjs-lib';
 import { issue_tx_mock } from 'onebtc.sdk/lib/helpers';
 import * as agent from 'superagent';
-import { getHmyClient } from '../../services/oneBtcClient';
+import { getOneBTCClient } from '../../services/oneBtcClient';
 import utils from 'web3-utils';
 import { SandboxUiTX } from './SandboxUiTX';
 import { SandboxRedeem } from './SandboxRedeem';
@@ -66,7 +66,7 @@ vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
 
     return;
 
-    const hmyClient = await getHmyClient(user.sessionType);
+    const hmyClient = await getOneBTCClient(user.sessionType);
     hmyClient.setUseOneWallet(true);
 
     const btcBlockNumberMock = 1000;
@@ -155,7 +155,7 @@ vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
     /* END add opt */
 
     // const btcTx = buildBtcTx2();
-    const hmyClient = await getHmyClient(user.sessionType);
+    const hmyClient = await getOneBTCClient(user.sessionType);
     hmyClient.setUseOneWallet(true);
 
     const txId = btcTx.getId();

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from 'grommet';
 import { UITxModalContent } from '../Issue/components/UITransactionModal';
+import { UITransactionStatus } from '../../stores/UITransactionsStore';
 
 type Props = {};
 
@@ -13,7 +14,9 @@ export const SandboxUiTX: React.FC<Props> = ({ children }) => {
   return (
     <Box>
       <UITxModalContent
-        status="fail"
+        status={UITransactionStatus.FAIL}
+        onClose={() => Promise.resolve()}
+        txHash="231231adas"
         errorMessage="Transaction has been reverted by the EVM"
         harmonyErrTxId="0xbbddad4a454943c86b91f50f72529a948ce6b492448172f9b29db73bf24a4a41"
       />

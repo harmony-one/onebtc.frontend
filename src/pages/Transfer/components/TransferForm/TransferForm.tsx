@@ -3,13 +3,14 @@ import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
 import { useObserver } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input } from 'components/Form';
-import { moreThanZero } from '../../../../utils';
+import { createValidate, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
+import { bitcoinToSatoshi } from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const TransferForm: React.FC<Props> = () => {
-  const { transferPageStore } = useStores();
+  const { transferPageStore, user } = useStores();
   const [form, setForm] = useState();
 
   const handleSubmit = useCallback(() => {
@@ -17,6 +18,11 @@ export const TransferForm: React.FC<Props> = () => {
       transferPageStore.creteTransfer();
     });
   }, [form, transferPageStore]);
+
+  const lessThanBalance = () =>
+    createValidate((value: string) => {
+      return bitcoinToSatoshi(value) > user.oneBTCBalance;
+    }, `redeem amount exceeds balance ${user.oneBTCBalance}`);
 
   return useObserver(() => (
     <Form ref={ref => setForm(ref)} data={transferPageStore.form}>
@@ -28,7 +34,7 @@ export const TransferForm: React.FC<Props> = () => {
         delimiter="."
         placeholder="0.0"
         style={{ width: '100%' }}
-        rules={[isRequired, moreThanZero]}
+        rules={[isRequired, moreThanZero, lessThanBalance()]}
       />
 
       <Input
