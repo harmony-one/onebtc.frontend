@@ -5,14 +5,15 @@ import { Icon } from '../../Base';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react-lite';
 
-type Props = {};
-
-export const SignInButton: React.FC<Props> = observer(({ children }) => {
+export const SignInButton: React.FC = observer(() => {
   const { user } = useStores();
 
   const isTestNetChain = user.metamaskChainId !== 1666700000;
 
-  const chainIdError = isTestNetChain && 'Please connect to harmony testnet';
+  const chainIdError =
+    user.sessionType === 'metamask' &&
+    isTestNetChain &&
+    'Please connect to harmony testnet';
   return (
     <>
       {!user.isAuthorized && (
@@ -26,7 +27,37 @@ export const SignInButton: React.FC<Props> = observer(({ children }) => {
           Sign in by Metamask
         </WalletButton>
       )}
-      {user.isAuthorized && (
+      {!user.isAuthorized && (
+        <WalletButton
+          onClick={() => {
+            user.signInOneWallet();
+          }}
+          error={user.error}
+        >
+          <img src="/one.svg" style={{ marginRight: 15, height: 22 }} />
+          Sign in by OneWallet
+        </WalletButton>
+      )}
+      {user.isAuthorized && user.sessionType === 'onewallet' && (
+        <WalletButton
+          onClick={() => {
+            user.signOut();
+          }}
+          error={user.error || chainIdError}
+        >
+          <img src="/one.svg" style={{ marginRight: 15, height: 22 }} />
+          OneWallet
+          <Box pad={{ left: 'small' }}>
+            <Icon
+              glyph="Logout"
+              size="24px"
+              style={{ opacity: 0.5 }}
+              color="BlackTxt"
+            />
+          </Box>
+        </WalletButton>
+      )}
+      {user.isAuthorized && user.sessionType === 'metamask' && (
         <WalletButton
           onClick={() => {
             user.signOut();

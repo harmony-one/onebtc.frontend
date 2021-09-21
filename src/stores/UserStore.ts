@@ -6,17 +6,9 @@ import { getHmyBalance } from '../services/hmyClient';
 import { StoreConstructor } from './core/StoreConstructor';
 import * as agent from 'superagent';
 import { IOperation } from './interfaces';
-import { HarmonyAddress } from '@harmony-js/crypto';
 import { getHmyClient } from '../services/oneBtcClient';
 
 const Web3 = require('web3');
-
-export function isAddressEqual(a, b) {
-  return (
-    new HarmonyAddress(a).checksum.toLowerCase() ===
-    new HarmonyAddress(b).checksum.toLowerCase()
-  );
-}
 
 export class UserStoreEx extends StoreConstructor {
   public stores: IStores;
@@ -98,8 +90,6 @@ export class UserStoreEx extends StoreConstructor {
     }
 
     autorun(() => {
-      console.log(111);
-
       if (this.isNetworkActual && this.isMetamask) {
         this.signInMetamask();
       }
@@ -230,11 +220,23 @@ export class UserStoreEx extends StoreConstructor {
 
   @action.bound
   public loadOneBTCBalance = async () => {
-    const address = this.stores.user.address;
+    const hmyClient = await getHmyClient(this.sessionType);
 
-    const hmyClient = await getHmyClient();
+    this.oneBTCBalance = await hmyClient.methods.balanceOf(this.address);
+  };
 
-    this.oneBTCBalance = await hmyClient.methods.balanceOf(address);
+  @action signInOneWallet = async () => {
+    // @ts-ignore
+    if (window.onewallet) {
+      // @ts-ignore
+      const account = await window.onewallet.getAccount();
+
+      this.address = account.address;
+      this.isOneWallet = true;
+      this.isAuthorized = true;
+      this.sessionType = 'onewallet';
+      this.syncLocalStorage();
+    }
   };
 
   @action public signOut() {

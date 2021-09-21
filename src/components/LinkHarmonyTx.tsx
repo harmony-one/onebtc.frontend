@@ -5,7 +5,7 @@ interface Props {
   txHash: string;
 }
 
-const LinkHarmonyTx: React.FC<Props> = ({ txHash }) => {
+const LinkHarmonyTx: React.FC<Props> = ({ txHash = '' }) => {
   return (
     <a
       target="_blank"

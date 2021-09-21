@@ -34,7 +34,7 @@ export function UITxModalContent({
   txHash = '',
   status,
   errorMessage,
-  harmonyErrTxId,
+  harmonyErrTxId = '',
 }) {
   return (
     <Box align="center" gap="small">

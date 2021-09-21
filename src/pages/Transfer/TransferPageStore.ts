@@ -55,7 +55,7 @@ export class TransferPageStore extends StoreConstructor {
     transferUiTx.showModal();
 
     try {
-      const hmyClient = await getHmyClient();
+      const hmyClient = await getHmyClient(this.stores.user.sessionType);
 
       // const vaultId = this.form.vaultId;
       hmyClient.setUseOneWallet(true);

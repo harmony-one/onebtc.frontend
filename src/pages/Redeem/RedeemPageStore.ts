@@ -11,15 +11,7 @@ import {
 import { RedeemWithdrawModal } from './components/RedeemWithdrawModal';
 import { RedeemTransactionModal } from './components/RedeemTransactionModal';
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';
-
-interface IRedeemEvent {
-  redeem_id: string;
-  requester: string;
-  vault_id: string;
-  amount: string;
-  fee: string;
-  btc_address: string;
-}
+import { RedeemDetails } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -40,7 +32,7 @@ export class RedeemPageStore extends StoreConstructor {
     [key: string]: {
       redeemAmount: number;
       vaultId: string;
-      redeemEvent: IRedeemEvent;
+      redeemEvent: RedeemDetails;
       btcBase58Address: string;
       btcAddress: string;
     };
@@ -84,7 +76,7 @@ export class RedeemPageStore extends StoreConstructor {
         redeem.redeemAmount,
       );
 
-      const hmyClient = await getHmyClient();
+      const hmyClient = await getHmyClient(this.stores.user.sessionType);
 
       console.log('### run execute issuePageStore');
 
@@ -163,7 +155,7 @@ export class RedeemPageStore extends StoreConstructor {
     redeemUiTx.setStatusWaitingSignIn();
     redeemUiTx.showModal();
     try {
-      const hmyClient = await getHmyClient();
+      const hmyClient = await getHmyClient(this.stores.user.sessionType);
 
       hmyClient.setUseOneWallet(true);
       const redeemAmount = bitcoinToSatoshi(this.form.oneBTCAmount);
@@ -183,9 +175,13 @@ export class RedeemPageStore extends StoreConstructor {
         },
       );
 
-      const redeemEvent: IRedeemEvent = await hmyClient.methods.getRedeemDetails(
+      const redeemEvent = await hmyClient.methods.getRedeemDetails(
         redeemRequest.transactionHash,
       );
+
+      if (!redeemEvent) {
+        throw new Error('Not found redeem details');
+      }
 
       this.redeemMap[redeemRequest.transactionHash] = {
         redeemAmount,

@@ -15,24 +15,6 @@ import { useStores } from '../../stores';
 import { IssueConfirmModal } from '../Issue/components/IssueConfirmModal';
 
 export const SandBoxPage: React.FC = () => {
-  type TVin = {};
-
-  interface ITransaction {
-    txId: string;
-    version: number;
-    vin: [];
-    vout: [];
-    size: number;
-    weight: number;
-    fee: number;
-    status: {
-      confirmed: boolean;
-      block_height: number;
-      block_hash: string;
-      block_time: number;
-    };
-  }
-
   type TResponse = {
     status: string;
     data: {
@@ -84,7 +66,7 @@ vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
 
     return;
 
-    const hmyClient = await getHmyClient();
+    const hmyClient = await getHmyClient(user.sessionType);
     hmyClient.setUseOneWallet(true);
 
     const btcBlockNumberMock = 1000;
@@ -173,7 +155,7 @@ vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
     /* END add opt */
 
     // const btcTx = buildBtcTx2();
-    const hmyClient = await getHmyClient();
+    const hmyClient = await getHmyClient(user.sessionType);
     hmyClient.setUseOneWallet(true);
 
     const txId = btcTx.getId();
@@ -251,7 +233,7 @@ vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
     }
   };
 
-  const { actionModals } = useStores();
+  const { actionModals, user } = useStores();
   const openModal = useCallback(() => {
     actionModals.open(IssueConfirmModal, {
       initData: {

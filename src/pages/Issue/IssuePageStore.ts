@@ -16,33 +16,11 @@ import {
   walletHexToBech32,
 } from '../../services/bitcoin';
 import { issue_tx_mock } from 'onebtc.sdk/lib/helpers';
+import { IssueDetails } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
 export interface ITransaction {
   amount: string;
   vaultId: string;
-}
-
-interface IIssueRequest {
-  blockHash: string;
-  blockNumber: number;
-  contractAddress: null;
-  cumulativeGasUsed: 262520;
-  events: { LockCollateral: {}; IssueRequest: {} };
-  gasUsed: number;
-  logsBloom: string;
-  status: boolean;
-  to: string;
-  from: string;
-  transactionHash: string;
-}
-
-interface IIssueEvent {
-  issue_id: string;
-  requester: string;
-  vault_id: string;
-  amount: string;
-  fee: string;
-  btc_address: string;
 }
 
 export class IssuePageStore extends StoreConstructor {
@@ -55,7 +33,7 @@ export class IssuePageStore extends StoreConstructor {
     [key: string]: {
       issueAmount: number;
       vaultId: string;
-      issueEvent: IIssueEvent;
+      issueEvent: IssueDetails;
       btcBase58Address: string;
       btcAddress: string;
     };
@@ -136,7 +114,7 @@ export class IssuePageStore extends StoreConstructor {
 
       console.log('### btcBase58', btcBase58Address);
 
-      const hmyClient = await getHmyClient();
+      const hmyClient = await getHmyClient(this.stores.user.sessionType);
 
       console.log('### run execute issuePageStore');
 
@@ -260,7 +238,7 @@ export class IssuePageStore extends StoreConstructor {
         issue.issueAmount,
       );
 
-      const hmyClient = await getHmyClient();
+      const hmyClient = await getHmyClient(this.stores.user.sessionType);
 
       console.log('### run execute issuePageStore');
 
@@ -316,7 +294,7 @@ export class IssuePageStore extends StoreConstructor {
     issueUiTx.showModal();
 
     try {
-      const hmyClient = await getHmyClient();
+      const hmyClient = await getHmyClient(this.stores.user.sessionType);
 
       const vaultId = this.form.vaultId;
       hmyClient.setUseOneWallet(true);
@@ -327,7 +305,7 @@ export class IssuePageStore extends StoreConstructor {
       // switch status: waiting for sign in
       issueUiTx.setStatusWaitingSignIn();
 
-      const issueRequest: IIssueRequest = await hmyClient.methods.requestIssue(
+      const issueRequest = await hmyClient.methods.requestIssue(
         issueAmount,
         vaultId,
         txHash => {
@@ -339,9 +317,13 @@ export class IssuePageStore extends StoreConstructor {
       console.log('### GetIssueDetails');
       issueUiTx.setStatusProgress();
 
-      const issueEvent: IIssueEvent = await hmyClient.methods.getIssueDetails(
+      const issueEvent = await hmyClient.methods.getIssueDetails(
         issueRequest.transactionHash,
       );
+
+      if (!issueEvent) {
+        throw new Error("Can't found issue details");
+      }
 
       // add transaction data: issueId
       issueUiTx.setIssueId(issueEvent.issue_id);
