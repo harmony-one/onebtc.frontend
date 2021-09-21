@@ -123,10 +123,7 @@ export class IssuePageStore extends StoreConstructor {
         address,
         // @ts-ignore
         issue.issueEvent.issue_id,
-        proofMock,
-        btcTx.toBuffer(),
-        heightAndIndex,
-        headerMock,
+        btcTransactionHash,
         txHash => {
           issueUiTx.setTxHash(txHash);
           issueUiTx.setStatusProgress();
