@@ -5,22 +5,31 @@ import { Divider, Text } from '../../../../components/Base';
 import { IssueTransactionDetails } from './IssueTransactionDetails';
 import { DepositModalContent } from '../DepositModal';
 import { IssueTransactionConfirmation } from './IssueTransactionConfirmation';
+import { config } from '../../../../config';
 
 interface WatcherProps {
   bitcoinAddress: string;
+  confirmations: number;
 }
 
-const useWatcher = ({ bitcoinAddress }: WatcherProps): null | BcoinBTCTx => {
+const useWatcher = ({
+  bitcoinAddress,
+  confirmations = 1,
+}: WatcherProps): null | BcoinBTCTx => {
   const [counter, setCounter] = useState(0);
   const [result, setResult] = useState<BcoinBTCTx | null>(null);
+  const [finished, setFinished] = useState(false);
 
   const load = useCallback(() => {
     return loadWalletTxList(bitcoinAddress).then(result => {
       if (result.length > 0) {
         setResult(result[0]);
+        if (result[0] && result[0].confirmations >= confirmations) {
+          setFinished(true);
+        }
       }
     });
-  }, [bitcoinAddress]);
+  }, [bitcoinAddress, confirmations]);
 
   const watcherRun = useCallback(() => {
     const timeout = counter > 0 ? 3 * 1000 : 0;
@@ -31,11 +40,14 @@ const useWatcher = ({ bitcoinAddress }: WatcherProps): null | BcoinBTCTx => {
   }, [counter, load]);
 
   useEffect(() => {
-    const t = watcherRun();
+    let t: number;
+    if (!finished) {
+      t = watcherRun();
+    }
     return () => {
       clearTimeout(t);
     };
-  }, [watcherRun, counter]);
+  }, [watcherRun, counter, finished]);
 
   return result;
 };
@@ -65,7 +77,10 @@ export const IssueTransactionModalContent: React.FC<IssueTransactionModalContent
     issueTxHash,
   } = props;
 
-  const btcTx = useWatcher({ bitcoinAddress });
+  const btcTx = useWatcher({
+    bitcoinAddress,
+    confirmations: config.bitcoin.waitConfirmations,
+  });
 
   return (
     <Box pad={{ horizontal: 'medium', vertical: 'medium' }} gap="small">

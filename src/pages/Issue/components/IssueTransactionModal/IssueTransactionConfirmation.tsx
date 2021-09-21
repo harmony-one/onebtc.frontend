@@ -6,6 +6,7 @@ import LinkBitcoinTx from '../../../../components/LinkBitcoinTx';
 import { BcoinBTCTx } from '../../../../services/bitcoin';
 import * as styles from './IssueTransactionConfirmation.styl';
 import { useStores } from '../../../../stores';
+import { config } from '../../../../config';
 
 interface IssueTransactionConfirmationProps {
   btcTx: BcoinBTCTx;
@@ -17,8 +18,7 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
   issueTxHash,
 }) => {
   const { issuePageStore } = useStores();
-  const CONFIRMATIONS = 1;
-  const isConfirmed = btcTx.confirmations >= CONFIRMATIONS;
+  const isConfirmed = btcTx.confirmations >= config.bitcoin.waitConfirmations;
   const title = isConfirmed ? 'Confirmed' : 'Received';
 
   const handleClaim = useCallback(() => {
@@ -33,7 +33,8 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
       {!isConfirmed && (
         <Box className={styles.circle}>
           <Text>
-            Confirmations: {btcTx.confirmations}/{CONFIRMATIONS}
+            Confirmations: {btcTx.confirmations}/
+            {config.bitcoin.waitConfirmations}
           </Text>
         </Box>
       )}
