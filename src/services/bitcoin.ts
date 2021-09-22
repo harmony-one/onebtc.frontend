@@ -21,11 +21,11 @@ export const walletBech32ToHex = (address: string) => {
 };
 
 export const bitcoinToSatoshi = (amount: string | number) => {
-  return Number(amount) * 1e9;
+  return Number(amount) * 1e8;
 };
 
 export const satoshiToBitcoin = (amount: string | number) => {
-  return Number(amount) / 1e9;
+  return Number(amount) / 1e8;
 };
 
 export const mockBitcoinTx = (
