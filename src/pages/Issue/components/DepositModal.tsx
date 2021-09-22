@@ -123,7 +123,8 @@ export const DepositModal = (props: TActionModalProps) => {
   const { issuePageStore, user } = useStores();
 
   const issue = issuePageStore.issuesMap[transactionHash];
-  const sendAmount = Number(issue.issueAmount) / 1e9;
+  const issueEvent = issuePageStore.issuesMap[transactionHash].issueEvent;
+  const sendAmount = (Number(issueEvent.amount) + Number(issueEvent.fee)) / 1e8;
   const bitcoinAddress = issue.btcAddress;
   const sendUsdAmount = sendAmount * user.btcRate;
 

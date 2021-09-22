@@ -17,6 +17,7 @@ interface IssueTransactionModalContentProps {
   totalReceivedUsd: number;
   vaultId: string;
   issueTxHash: string;
+  requester: string;
 }
 
 export const IssueTransactionModalContent: React.FC<IssueTransactionModalContentProps> = props => {
@@ -30,6 +31,7 @@ export const IssueTransactionModalContent: React.FC<IssueTransactionModalContent
     totalReceivedUsd,
     vaultId,
     issueTxHash,
+    requester,
   } = props;
 
   const btcTx = useBtcTxWatcher({
@@ -51,6 +53,7 @@ export const IssueTransactionModalContent: React.FC<IssueTransactionModalContent
             vaultId={vaultId}
             totalReceived={totalReceived}
             totalReceivedUsd={totalReceivedUsd}
+            requester={requester}
           />
         </Box>
         <Box basis="1/2">

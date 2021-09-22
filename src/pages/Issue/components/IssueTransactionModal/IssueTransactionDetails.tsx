@@ -4,8 +4,9 @@ import { Box } from 'grommet';
 import { Divider, Text, Title } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
-import { cutText } from '../../../../services/cutText';
 import React from 'react';
+import LinkBitcoinAddress from '../../../../components/LinkBitcoinAddress';
+import LinkHarmonyAddress from '../../../../components/LinkHarmonyAddress';
 
 interface IssueTransactionDetailsProps {
   bitcoinAddress: string;
@@ -13,6 +14,7 @@ interface IssueTransactionDetailsProps {
   vaultId: string;
   totalReceived: number;
   totalReceivedUsd: number;
+  requester: string;
 }
 
 export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = ({
@@ -21,6 +23,7 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
   vaultId = '',
   totalReceived,
   totalReceivedUsd,
+  requester,
 }) => {
   const { user } = useStores();
   return useObserver(() => (
@@ -60,7 +63,9 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
           <Text>Destination Address</Text>
         </Box>
         <Box>
-          <Text bold>{cutText(bitcoinAddress)}</Text>
+          <Text bold>
+            <LinkHarmonyAddress address={requester} />
+          </Text>
         </Box>
       </Box>
 
@@ -78,7 +83,9 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
           <Text>Vault Account</Text>
         </Box>
         <Box>
-          <Text bold>{cutText(vaultId)}</Text>
+          <Text bold>
+            <LinkHarmonyAddress address={vaultId} />
+          </Text>
         </Box>
       </Box>
 
@@ -87,7 +94,9 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
           <Text>Vault BTC Address</Text>
         </Box>
         <Box>
-          <Text bold>{cutText(vaultId)}</Text>
+          <Text bold>
+            <LinkBitcoinAddress address={bitcoinAddress} />
+          </Text>
         </Box>
       </Box>
 

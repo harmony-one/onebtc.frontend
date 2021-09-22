@@ -9,19 +9,20 @@ export const IssueTransactionModal: React.FC<TActionModalProps> = props => {
   const { issuePageStore, user } = useStores();
   const issue = issuePageStore.issuesMap[transactionHash];
 
-  const sendAmount = Number(issue.issueAmount) / 1e9;
+  const issueEvent = issue.issueEvent;
+  const sendAmount = (Number(issueEvent.amount) + Number(issueEvent.fee)) / 1e8;
   const sendUsdAmount = sendAmount * user.btcRate;
   const issueId = issue.issueEvent.issue_id;
   const vaultId = issue.issueEvent.vault_id;
   const bitcoinAddress = issue.btcAddress;
-  const bridgeFee = Number(issue.issueEvent.fee) / 1e9;
-  const totalReceived = Number(issue.issueEvent.amount) / 1e9;
+  const bridgeFee = Number(issue.issueEvent.fee) / 1e8;
+  const totalReceived = Number(issue.issueEvent.amount) / 1e8;
   const totalReceivedUsd = totalReceived * user.btcRate;
-
-  console.log('### issue', issue);
+  const requester = issueEvent.requester;
 
   return useObserver(() => (
     <IssueTransactionModalContent
+      requester={requester}
       bitcoinAddress={bitcoinAddress}
       sendAmount={sendAmount}
       sendUsdAmount={sendUsdAmount}

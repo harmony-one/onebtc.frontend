@@ -11,6 +11,7 @@ import { IOperation } from '../../stores/interfaces';
 import { guid } from '../../utils';
 import { UITransaction } from '../../stores/UITransactionsStore';
 import {
+  bitcoinToSatoshi,
   satoshiToBitcoin,
   walletHexToBase58,
   walletHexToBech32,
@@ -309,7 +310,7 @@ export class IssuePageStore extends StoreConstructor {
 
       const vaultId = this.form.vaultId;
       hmyClient.setUseOneWallet(true);
-      const issueAmount = Number(this.form.amount) * 1e9;
+      const issueAmount = bitcoinToSatoshi(this.form.amount);
 
       console.log('### Request Issue');
 
