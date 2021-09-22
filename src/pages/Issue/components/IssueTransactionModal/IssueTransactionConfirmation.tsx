@@ -8,6 +8,7 @@ import { BcoinBTCTx } from '../../../../services/bitcoin';
 import * as styles from './IssueTransactionConfirmation.styl';
 import { useStores } from '../../../../stores';
 import { config } from '../../../../config';
+import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 
 interface IssueTransactionConfirmationProps {
   btcTx: BcoinBTCTx;
@@ -33,11 +34,13 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
         <Title>{title}</Title>
       </Box>
       {!isConfirmed && (
-        <Box className={styles.circleBorder}>
-          <Text>
-            Confirmations: {btcTx.confirmations}/
-            {config.bitcoin.waitConfirmations}
-          </Text>
+        <Box className={styles.circleBorder} align="center">
+          <SpinnerContainer boxSize={32}>
+            <Text inline style={{ textAlign: 'center' }}>
+              Waiting confirmations: {btcTx.confirmations}/
+              {config.bitcoin.waitConfirmations}
+            </Text>
+          </SpinnerContainer>
         </Box>
       )}
       {isConfirmed && (
@@ -54,8 +57,8 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
       {isConfirmed && (
         <Box>
           <Text>
-            You will now receive your BTC backed oneBTC tokens. If this does not
-            happen automatically within a few minutes, click the button bellow.
+            Your BTC transaction successfully confirmed. Please Execute issue to
+            receive your oneBTC on Harmony side.
           </Text>
         </Box>
       )}
