@@ -3,20 +3,20 @@ import { cutText } from '../services/cutText';
 import { config } from '../config';
 
 interface Props {
-  txHash: string;
+  address: string;
   text?: string;
 }
 
-const LinkBitcoinTx: React.FC<Props> = ({ txHash = '', text }) => {
+const LinkBitcoinAddress: React.FC<Props> = ({ address = '', text }) => {
   return (
     <a
       target="_blank"
       rel="noreferrer"
-      href={`${config.bitcoin.explorer.testnet.transaction}${txHash}`}
+      href={`${config.bitcoin.explorer.testnet.wallet}${address}`}
     >
-      {text || cutText(txHash)}
+      {text || cutText(address)}
     </a>
   );
 };
 
-export default LinkBitcoinTx;
+export default LinkBitcoinAddress;
