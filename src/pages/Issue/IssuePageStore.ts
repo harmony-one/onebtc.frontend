@@ -31,6 +31,7 @@ export class IssuePageStore extends StoreConstructor {
 
   @observable issuesMap: {
     [key: string]: {
+      status: string;
       issueAmount: number;
       vaultId: string;
       issueEvent: IssueDetails;
@@ -266,22 +267,34 @@ export class IssuePageStore extends StoreConstructor {
 
   @action.bound
   public async loadIssueDetails(txHash: string) {
-    const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+    try {
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
-    const issueDetails = await hmyClient.methods.getIssueDetails(txHash);
+      const issueDetails = await hmyClient.methods.getIssueDetails(txHash);
 
-    if (!issueDetails) {
-      return;
+      if (!issueDetails) {
+        return;
+      }
+
+      const address = this.stores.user.address;
+
+      const status = await hmyClient.methods
+        .getIssueStatus(address, issueDetails.issue_id)
+        .catch(err => {
+          console.log('### err', err);
+        });
+
+      this.issuesMap[txHash] = {
+        status,
+        issueAmount: Number(issueDetails.amount),
+        vaultId: issueDetails.vault_id,
+        issueEvent: issueDetails,
+        btcBase58Address: walletHexToBase58(issueDetails.btc_address),
+        btcAddress: walletHexToBech32(issueDetails.btc_address),
+      };
+    } catch (err) {
+      console.log('### err', err);
     }
-
-    console.log('### issueDetails', issueDetails);
-    this.issuesMap[txHash] = {
-      issueAmount: Number(issueDetails.amount),
-      vaultId: issueDetails.vault_id,
-      issueEvent: issueDetails,
-      btcBase58Address: walletHexToBase58(issueDetails.btc_address),
-      btcAddress: walletHexToBech32(issueDetails.btc_address),
-    };
   }
 
   @action.bound
@@ -334,6 +347,7 @@ export class IssuePageStore extends StoreConstructor {
       console.log('### btcAddress', btcAddress);
 
       this.issuesMap[issueRequest.transactionHash] = {
+        status: '0',
         issueAmount,
         vaultId,
         issueEvent,

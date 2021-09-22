@@ -18,6 +18,8 @@ export const IssueTransactionModal: React.FC<TActionModalProps> = props => {
   const totalReceived = Number(issue.issueEvent.amount) / 1e9;
   const totalReceivedUsd = totalReceived * user.btcRate;
 
+  console.log('### issue', issue);
+
   return useObserver(() => (
     <IssueTransactionModalContent
       bitcoinAddress={bitcoinAddress}

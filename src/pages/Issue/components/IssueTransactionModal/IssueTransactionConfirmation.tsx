@@ -21,6 +21,7 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
   const { issuePageStore } = useStores();
   const isConfirmed = btcTx.confirmations >= config.bitcoin.waitConfirmations;
   const title = isConfirmed ? 'Confirmed' : 'Received';
+  const issue = issuePageStore.issuesMap[issueTxHash];
 
   const handleClaim = useCallback(() => {
     issuePageStore.executeIssue(issueTxHash, btcTx.hash);
@@ -58,11 +59,17 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
           </Text>
         </Box>
       )}
-      <Box>
-        <Button bgColor="#46d7b6" disabled={!isConfirmed} onClick={handleClaim}>
-          Execute issue
-        </Button>
-      </Box>
+      {issue && issue.status !== '2' && (
+        <Box>
+          <Button
+            bgColor="#46d7b6"
+            disabled={!isConfirmed}
+            onClick={handleClaim}
+          >
+            Execute issue
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
