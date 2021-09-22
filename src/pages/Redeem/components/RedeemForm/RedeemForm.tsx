@@ -6,7 +6,10 @@ import { Form, isRequired, NumberInput, Input } from 'components/Form';
 import { createValidate, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
-import { bitcoinToSatoshi } from '../../../../services/bitcoin';
+import {
+  bitcoinToSatoshi,
+  satoshiToBitcoin,
+} from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -23,7 +26,7 @@ export const RedeemForm: React.FC<Props> = () => {
   const lessThanBalance = () =>
     createValidate((value: string) => {
       return bitcoinToSatoshi(value) > user.oneBTCBalance;
-    }, `redeem amount exceeds balance ${user.oneBTCBalance}`);
+    }, `redeem amount exceeds balance`);
 
   return useObserver(() => (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>

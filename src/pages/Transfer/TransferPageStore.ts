@@ -59,7 +59,7 @@ export class TransferPageStore extends StoreConstructor {
 
       // const vaultId = this.form.vaultId;
       hmyClient.setUseOneWallet(true);
-      const issueAmount = Number(this.form.oneBTCAmount) * 1e9;
+      const issueAmount = Number(this.form.oneBTCAmount) * 1e8;
       console.log('### issueAmount', issueAmount);
 
       const result = await hmyClient.methods.transfer(
