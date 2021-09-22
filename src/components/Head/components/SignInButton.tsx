@@ -4,6 +4,7 @@ import { Box } from 'grommet';
 import { Icon } from '../../Base';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react-lite';
+import { config } from '../../../config';
 
 export const SignInButton: React.FC = observer(() => {
   const { user } = useStores();
@@ -27,7 +28,7 @@ export const SignInButton: React.FC = observer(() => {
           Sign in by Metamask
         </WalletButton>
       )}
-      {!user.isAuthorized && (
+      {config.wallets.onewallet && !user.isAuthorized && (
         <WalletButton
           onClick={() => {
             user.signInOneWallet();
@@ -38,25 +39,27 @@ export const SignInButton: React.FC = observer(() => {
           Sign in by OneWallet
         </WalletButton>
       )}
-      {user.isAuthorized && user.sessionType === 'onewallet' && (
-        <WalletButton
-          onClick={() => {
-            user.signOut();
-          }}
-          error={user.error || chainIdError}
-        >
-          <img src="/one.svg" style={{ marginRight: 15, height: 22 }} />
-          OneWallet
-          <Box pad={{ left: 'small' }}>
-            <Icon
-              glyph="Logout"
-              size="24px"
-              style={{ opacity: 0.5 }}
-              color="BlackTxt"
-            />
-          </Box>
-        </WalletButton>
-      )}
+      {config.wallets.onewallet &&
+        user.isAuthorized &&
+        user.sessionType === 'onewallet' && (
+          <WalletButton
+            onClick={() => {
+              user.signOut();
+            }}
+            error={user.error || chainIdError}
+          >
+            <img src="/one.svg" style={{ marginRight: 15, height: 22 }} />
+            OneWallet
+            <Box pad={{ left: 'small' }}>
+              <Icon
+                glyph="Logout"
+                size="24px"
+                style={{ opacity: 0.5 }}
+                color="BlackTxt"
+              />
+            </Box>
+          </WalletButton>
+        )}
       {user.isAuthorized && user.sessionType === 'metamask' && (
         <WalletButton
           onClick={() => {
