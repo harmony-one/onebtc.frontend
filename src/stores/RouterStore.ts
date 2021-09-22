@@ -15,4 +15,9 @@ export default class CustomRouterStore extends RouterStore {
     const path = generatePath(routes.issue, { issueTx: issueTxHash });
     this.push(path);
   }
+
+  goToIssueModal(issueTxHash: string, modal: 'deposit' | 'details') {
+    const path = generatePath(routes.issue, { issueTx: issueTxHash, modal });
+    this.push(path);
+  }
 }

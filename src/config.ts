@@ -10,5 +10,5 @@ export const config = {
       // mainnet: 'https://btc.main.hmny.io/',
     },
   },
-  oneBtcContract: '0x976bF816C5D9644e44d22bf3e308e49ea627f8c0',
+  oneBtcContract: '0xdd14648e3b112e582c76ae04c54d1cf89c7c131d',
 } as const;

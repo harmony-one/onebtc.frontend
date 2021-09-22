@@ -1,60 +1,11 @@
-import { BcoinBTCTx, loadWalletTxList } from '../../../../services/bitcoin';
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { Box } from 'grommet';
 import { Divider, Text } from '../../../../components/Base';
 import { IssueTransactionDetails } from './IssueTransactionDetails';
 import { DepositModalContent } from '../DepositModal';
 import { IssueTransactionConfirmation } from './IssueTransactionConfirmation';
 import { config } from '../../../../config';
-
-interface WatcherProps {
-  bitcoinAddress: string;
-  confirmations: number;
-}
-
-const useWatcher = ({
-  bitcoinAddress,
-  confirmations = 1,
-}: WatcherProps): null | BcoinBTCTx => {
-  const [counter, setCounter] = useState(0);
-  const [result, setResult] = useState<BcoinBTCTx | null>(null);
-  const [finished, setFinished] = useState(false);
-
-  const load = useCallback(() => {
-    return loadWalletTxList(bitcoinAddress)
-      .then(result => {
-        if (result.length > 0) {
-          setResult(result[0]);
-          if (result[0] && result[0].confirmations >= confirmations) {
-            setFinished(true);
-          }
-        }
-      })
-      .catch(err => {
-        console.log('### Error while load btc transaction', err);
-      });
-  }, [bitcoinAddress, confirmations]);
-
-  const watcherRun = useCallback(() => {
-    const timeout = counter > 0 ? 3 * 1000 : 0;
-    return setTimeout(async () => {
-      await load();
-      setCounter(counter + 1);
-    }, timeout);
-  }, [counter, load]);
-
-  useEffect(() => {
-    let t: number;
-    if (!finished) {
-      t = watcherRun();
-    }
-    return () => {
-      clearTimeout(t);
-    };
-  }, [watcherRun, counter, finished]);
-
-  return result;
-};
+import { useBtcTxWatcher } from '../../useBtcTxWatcher';
 
 interface IssueTransactionModalContentProps {
   sendAmount: number;
@@ -81,7 +32,7 @@ export const IssueTransactionModalContent: React.FC<IssueTransactionModalContent
     issueTxHash,
   } = props;
 
-  const btcTx = useWatcher({
+  const btcTx = useBtcTxWatcher({
     bitcoinAddress,
     confirmations: config.bitcoin.waitConfirmations,
   });

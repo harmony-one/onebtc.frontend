@@ -133,7 +133,7 @@ export class RedeemPageStore extends StoreConstructor {
       },
       noValidation: true,
       width: '80%',
-      showOther: false,
+      showOther: true,
       onApply: () => {
         return Promise.resolve();
       },
@@ -199,7 +199,7 @@ export class RedeemPageStore extends StoreConstructor {
         },
         noValidation: true,
         width: '500px',
-        showOther: false,
+        showOther: true,
         onApply: () => {
           this.openTransactionModal(redeemRequest.transactionHash);
           return Promise.resolve();

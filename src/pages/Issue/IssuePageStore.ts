@@ -46,12 +46,6 @@ export class IssuePageStore extends StoreConstructor {
 
   constructor(stores) {
     super(stores);
-
-    // 1DVFsQexdyjq9gGn9rC5Zt9VeHhXkYVxHd
-    // tb1q84p6j4r0v9tngw44u68kacx8xq709yu6056dmp
-    autorun(() => {
-      // this.createBtcTxWatcher();
-    });
   }
 
   @computed
@@ -67,14 +61,6 @@ export class IssuePageStore extends StoreConstructor {
   @action.bound
   createUiTx(progressModalId: string): UITransaction {
     return this.stores.uiTransactionsStore.create(progressModalId);
-  }
-
-  async loadBtcTx(btcAddress: string) {
-    const res = await agent.get<{ body: IOperation }>(
-      `https://api.blockcypher.com/v1/btc/test3/addrs/${btcAddress}`,
-    );
-
-    return res.body;
   }
 
   @action.bound
@@ -158,53 +144,46 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  createBtcTxWatcher(transactionHash: string) {
-    const issue = this.issuesMap[transactionHash];
-
-    const makeRequest = async () => {
-      console.log('### createTimeout');
-
-      try {
-        const res = await this.loadBtcTx(issue.btcAddress);
-
-        console.log('### res', res);
-        if (res.txrefs.length) {
-          console.log('### execute issue');
-
-          const btcTx = res.tx[0].tx_hash;
-          this.executeIssue(transactionHash, btcTx);
-          return;
-        }
-
-        console.log('### next');
-      } catch (err) {
-        this.createBtcTxWatcher(transactionHash);
-      }
-    };
-
-    setTimeout(() => {
-      makeRequest();
-    }, 10000);
-  }
-
-  @action.bound
   public openTransactionModal(transactionHash: string) {
     this.stores.actionModals.open(IssueTransactionModal, {
-      title: 'Some Title',
       initData: {
         transactionHash,
       },
-      applyText: 'Continue',
-      closeText: 'Execute issue with mock Tx',
+      applyText: '',
+      closeText: 'Close',
       noValidation: true,
       width: '80%',
-      showOther: true,
+      showOther: false,
       onApply: () => {
         this.stores.routing.goToIssue();
         return Promise.resolve();
       },
       onClose: () => {
-        return this.mockExecuteIssue(transactionHash);
+        this.stores.routing.goToIssue();
+        return Promise.resolve();
+      },
+    });
+  }
+
+  @action.bound
+  public openDepositModal(transactionHash: string) {
+    this.stores.actionModals.open(DepositModal, {
+      applyText: 'I have made the payment',
+      closeText: 'Close',
+      initData: {
+        transactionHash,
+      },
+      noValidation: true,
+      width: '500px',
+      showOther: false,
+      onApply: () => {
+        this.stores.routing.goToIssueModal(transactionHash, 'details');
+        return Promise.resolve();
+      },
+      onClose: () => {
+        this.status = 'cancel';
+        this.stores.routing.goToIssue();
+        return Promise.resolve();
       },
     });
   }
@@ -286,7 +265,7 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  public async showIssueDetails(txHash: string) {
+  public async loadIssueDetails(txHash: string) {
     const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
     const issueDetails = await hmyClient.methods.getIssueDetails(txHash);
@@ -303,8 +282,6 @@ export class IssuePageStore extends StoreConstructor {
       btcBase58Address: walletHexToBase58(issueDetails.btc_address),
       btcAddress: walletHexToBech32(issueDetails.btc_address),
     };
-
-    this.openTransactionModal(txHash);
   }
 
   @action.bound
@@ -367,25 +344,10 @@ export class IssuePageStore extends StoreConstructor {
       issueUiTx.setStatusSuccess();
       issueUiTx.hideModal();
 
-      this.stores.actionModals.open(DepositModal, {
-        title: 'Some Title',
-        applyText: 'I have made the payment',
-        initData: {
-          transactionHash: issueRequest.transactionHash,
-        },
-        closeText: 'Cancel',
-        noValidation: true,
-        width: '500px',
-        showOther: true,
-        onApply: () => {
-          this.stores.routing.goToIssue(issueRequest.transactionHash);
-          return Promise.resolve();
-        },
-        onClose: () => {
-          this.status = 'cancel';
-          return Promise.resolve();
-        },
-      });
+      this.stores.routing.goToIssueModal(
+        issueRequest.transactionHash,
+        'deposit',
+      );
 
       this.status = 'success';
     } catch (err) {

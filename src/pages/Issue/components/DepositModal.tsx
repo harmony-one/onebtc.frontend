@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Box } from 'grommet';
 import { Title, Text, Divider, Button } from 'components/Base';
 import { useQRCode } from 'react-qrcodes';
@@ -7,6 +7,8 @@ import { useStores } from '../../../stores';
 import { useObserver } from 'mobx-react';
 import { Input, isRequired, Form } from '../../../components/Form';
 import { TActionModalProps } from '../../../components/ActionModals';
+import { useBtcTxWatcher } from '../useBtcTxWatcher';
+import { config } from '../../../config';
 
 export function DepositForm() {
   const { issuePageStore } = useStores();
@@ -124,6 +126,17 @@ export const DepositModal = (props: TActionModalProps) => {
   const sendAmount = Number(issue.issueAmount) / 1e9;
   const bitcoinAddress = issue.btcAddress;
   const sendUsdAmount = sendAmount * user.btcRate;
+
+  const btcTx = useBtcTxWatcher({
+    bitcoinAddress,
+    confirmations: config.bitcoin.waitConfirmations,
+  });
+
+  useEffect(() => {
+    if (btcTx && btcTx.hash) {
+      props.config.options.onApply();
+    }
+  }, [btcTx, props.config.options]);
 
   return useObserver(() => (
     <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">

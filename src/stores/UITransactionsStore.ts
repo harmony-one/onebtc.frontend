@@ -78,7 +78,6 @@ export class UITransaction extends StoreConstructor {
   showModal() {
     this.stores.actionModals.open(UITransactionModal, {
       id: this.id,
-      title: 'Some Title',
       applyText: '',
       initData: {
         uiTxId: this.id,
@@ -86,7 +85,7 @@ export class UITransaction extends StoreConstructor {
       closeText: '',
       noValidation: true,
       width: '320px',
-      showOther: false,
+      showOther: true,
       onApply: () => {
         return Promise.resolve();
       },

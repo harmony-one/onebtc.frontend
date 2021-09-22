@@ -1,4 +1,4 @@
-import { BcoinBTCTx, loadWalletTxList } from '../../../../services/bitcoin';
+import { BcoinBTCTx, loadWalletTxList } from '../../services/bitcoin';
 import { useCallback, useEffect, useState } from 'react';
 
 interface WatcherProps {
@@ -6,7 +6,7 @@ interface WatcherProps {
   confirmations: number;
 }
 
-export const useWatcher = ({
+export const useBtcTxWatcher = ({
   bitcoinAddress,
   confirmations = 1,
 }: WatcherProps): null | BcoinBTCTx => {

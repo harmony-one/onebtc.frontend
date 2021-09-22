@@ -81,6 +81,9 @@ export class ActionModalsStore {
       };
     });
 
+    if (modalConfig.options.showOther === false) {
+      this.pool = [];
+    }
     this.pool.push(modalConfig);
 
     return deferPromise;
@@ -99,6 +102,11 @@ export class ActionModalsStore {
   public closeLastModal = () => {
     this.close(this.pool[this.pool.length - 1].id);
   };
+
+  @action.bound
+  public closeAll() {
+    this.pool = [];
+  }
 
   @action.bound
   rejectError = (id: string, err: any, reject?: any) => {

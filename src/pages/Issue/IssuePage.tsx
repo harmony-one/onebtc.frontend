@@ -9,13 +9,20 @@ import { useEffect } from 'react';
 import { useStores } from '../../stores';
 
 export const IssuePage = props => {
-  const { issueTx } = useParams<{ issueTx?: string }>();
+  const { issueTx, modal } = useParams<{ issueTx?: string; modal: string }>();
   const { issuePageStore } = useStores();
   useEffect(() => {
     if (issueTx) {
-      issuePageStore.showIssueDetails(issueTx);
+      issuePageStore.loadIssueDetails(issueTx).then(() => {
+        if (modal === 'deposit') {
+          issuePageStore.openDepositModal(issueTx);
+          return;
+        } else {
+          issuePageStore.openTransactionModal(issueTx);
+        }
+      });
     }
-  }, [issuePageStore, issueTx]);
+  }, [issuePageStore, issueTx, modal]);
 
   return (
     <BaseContainer>
