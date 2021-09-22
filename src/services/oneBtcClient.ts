@@ -1,4 +1,5 @@
 import * as onebtcSdk from 'onebtc.sdk';
+import { config } from '../config';
 
 let clients: Record<'onewallet' | 'metamask', onebtcSdk.IHmyClient> = {
   metamask: null,
@@ -17,7 +18,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
       sdk: 'web3',
       nodeURL: 'https://api.s0.b.hmny.io',
       chainId: 2,
-      contractAddress: '0xaA690F66E0953C355D4dB30Ff6e646cd357002C3',
+      contractAddress: config.oneBtcContract,
       gasLimit: 6721900,
     });
   }
@@ -27,7 +28,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
       sdk: 'harmony',
       nodeURL: 'https://api.s0.b.hmny.io',
       chainId: 2,
-      contractAddress: '0xaA690F66E0953C355D4dB30Ff6e646cd357002C3',
+      contractAddress: config.oneBtcContract,
       gasLimit: 6721900,
     });
   }

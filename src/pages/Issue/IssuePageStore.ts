@@ -211,78 +211,78 @@ export class IssuePageStore extends StoreConstructor {
 
   @action.bound
   public async mockExecuteIssue(transactionHash: string) {
-    console.log('### mockExecuteIssue');
-    this.status = 'pending';
-    const uiTxId = guid();
-    const issueUiTx = this.createUiTx(uiTxId);
-    issueUiTx.setStatusProgress();
-    issueUiTx.showModal();
-    try {
-      const issue = this.issuesMap[transactionHash];
-
-      const btcBlockNumberMock = 1000;
-      const btcTxIndexMock = 2;
-      const heightAndIndex = (btcBlockNumberMock << 32) | btcTxIndexMock;
-      const headerMock = Buffer.alloc(0);
-      const proofMock = Buffer.alloc(0);
-
-      const address = this.stores.user.address;
-
-      const issueId = utils.toBN(issue.issueEvent.issue_id);
-      console.log('### issueId BN', issueId);
-      const btcTx = issue_tx_mock(
-        // @ts-ignore
-        issueId,
-        issue.btcBase58Address,
-        issue.issueAmount,
-      );
-
-      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
-
-      console.log('### run execute issuePageStore');
-
-      issueUiTx.setStatusWaitingSignIn();
-
-      const result = await hmyClient.methods.executeIssue(
-        address,
-        // @ts-ignore
-        issue.issueEvent.issue_id,
-        proofMock,
-        btcTx.toBuffer(),
-        heightAndIndex,
-        headerMock,
-        txHash => {
-          issueUiTx.setTxHash(txHash);
-          issueUiTx.setStatusProgress();
-        },
-      );
-      console.log('### execute issuePageStore success');
-      issueUiTx.hideModal();
-      issueUiTx.setStatusSuccess();
-
-      this.stores.actionModals.open(IssueConfirmModal, {
-        initData: {
-          total: satoshiToBitcoin(issue.issueEvent.amount),
-          txHash: result.transactionHash,
-        },
-        applyText: '',
-        closeText: '',
-        noValidation: true,
-        width: '320px',
-        showOther: true,
-        onApply: () => {
-          return Promise.resolve();
-        },
-      });
-      this.status = 'success';
-      console.log('### execute issuePageStore finished');
-    } catch (err) {
-      debugger;
-      console.log('### err mock execute issuePageStore error', err);
-      this.status = 'error';
-      issueUiTx.setError(err);
-      issueUiTx.setStatusFail();
-    }
+    // console.log('### mockExecuteIssue');
+    // this.status = 'pending';
+    // const uiTxId = guid();
+    // const issueUiTx = this.createUiTx(uiTxId);
+    // issueUiTx.setStatusProgress();
+    // issueUiTx.showModal();
+    // try {
+    //   const issue = this.issuesMap[transactionHash];
+    //
+    //   const btcBlockNumberMock = 1000;
+    //   const btcTxIndexMock = 2;
+    //   const heightAndIndex = (btcBlockNumberMock << 32) | btcTxIndexMock;
+    //   const headerMock = Buffer.alloc(0);
+    //   const proofMock = Buffer.alloc(0);
+    //
+    //   const address = this.stores.user.address;
+    //
+    //   const issueId = utils.toBN(issue.issueEvent.issue_id);
+    //   console.log('### issueId BN', issueId);
+    //   const btcTx = issue_tx_mock(
+    //     // @ts-ignore
+    //     issueId,
+    //     issue.btcBase58Address,
+    //     issue.issueAmount,
+    //   );
+    //
+    //   const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+    //
+    //   console.log('### run execute issuePageStore');
+    //
+    //   issueUiTx.setStatusWaitingSignIn();
+    //
+    //   const result = await hmyClient.methods.executeIssue(
+    //     address,
+    //     // @ts-ignore
+    //     issue.issueEvent.issue_id,
+    //     proofMock,
+    //     btcTx.toBuffer(),
+    //     heightAndIndex,
+    //     headerMock,
+    //     txHash => {
+    //       issueUiTx.setTxHash(txHash);
+    //       issueUiTx.setStatusProgress();
+    //     },
+    //   );
+    //   console.log('### execute issuePageStore success');
+    //   issueUiTx.hideModal();
+    //   issueUiTx.setStatusSuccess();
+    //
+    //   this.stores.actionModals.open(IssueConfirmModal, {
+    //     initData: {
+    //       total: satoshiToBitcoin(issue.issueEvent.amount),
+    //       txHash: result.transactionHash,
+    //     },
+    //     applyText: '',
+    //     closeText: '',
+    //     noValidation: true,
+    //     width: '320px',
+    //     showOther: true,
+    //     onApply: () => {
+    //       return Promise.resolve();
+    //     },
+    //   });
+    //   this.status = 'success';
+    //   console.log('### execute issuePageStore finished');
+    // } catch (err) {
+    //   debugger;
+    //   console.log('### err mock execute issuePageStore error', err);
+    //   this.status = 'error';
+    //   issueUiTx.setError(err);
+    //   issueUiTx.setStatusFail();
+    // }
   }
 
   @action.bound

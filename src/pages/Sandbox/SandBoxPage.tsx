@@ -52,43 +52,11 @@ vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
 
   const API_URL = `https://chain.so/api/v2/get_tx_unspent/BTCTEST/`;
 
-  const executeIssueTxMock = async (oneAddress, issueId, btcBase58Address) => {
-    const issueIdBn = utils.toBN(issueId);
-
-    const btcTx = issue_tx_mock(
-      // @ts-ignore
-      issueIdBn,
-      btcBase58Address,
-      0.0001 * 1e9,
-    );
-
-    console.log(btcTx.toHex());
-
-    return;
-
-    const hmyClient = await getOneBTCClient(user.sessionType);
-    hmyClient.setUseOneWallet(true);
-
-    const btcBlockNumberMock = 1000;
-    const btcTxIndexMock = 2;
-    const heightAndIndex = (btcBlockNumberMock << 32) | btcTxIndexMock;
-    const headerMock = Buffer.alloc(0);
-    const proofMock = Buffer.alloc(0);
-
-    console.log('### btcTx.toHex()', btcTx.toHex());
-
-    const result = await hmyClient.methods.executeIssue(
-      oneAddress,
-      // @ts-ignore
-      issueIdBn,
-      proofMock,
-      btcTx.toBuffer(),
-      heightAndIndex,
-      headerMock,
-    );
-
-    return result;
-  };
+  const executeIssueTxMock = async (
+    oneAddress,
+    issueId,
+    btcBase58Address,
+  ) => {};
 
   const Number2Buffer = (num: number) => {
     // bigendia
@@ -121,67 +89,7 @@ vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
     return tx;
   };
 
-  const executeIssue = async (oneAddress, issueId, txData) => {
-    const issueIdBn = utils.toBN(issueId);
-    // const btcTx = buildBtcTx(txData, issueId, btcBase58Address, 0.0001 * 1e9);
-
-    const btcTx = bitcoin.Transaction.fromHex(
-      '01000000000101a9c3eeedbcef6a9eb3f4464b8c2b29b69c16fcefe25655925efd17af4dbdd60e0000000000ffffffff02c4a50000000000001600145edb81c0bf1c0f5e28b9259699d09671771afc2210270000000000001600143ab180ca557c18fe317565eadfef5e1eeb2ae58a02483045022100b0797c9b44b72e3d19c8d5e350ee63f991e703071dec820eafff9a03a7e2bb7d022065c440b31d4536dd01eeb7de21c067fed8392f2e41e78dc034c76078f8564dae0121038c2f842f7e0f5d4915ffa5a31a6a312579383ddac00989e2334b5e4df00b17d200000000',
-    );
-
-    const originId = btcTx.getId();
-    const originHash = btcTx.getHash();
-
-    /* START add opt */
-
-    // add recepient id
-    const vaultScript = bitcoin.address.toOutputScript(BTC_ADDRESS_BASE_58);
-    btcTx.addOutput(vaultScript, 0.0001 * 1e9);
-
-    // add issueId
-    // @ts-ignore
-    const OpData = Number2Buffer(utils.toBN(issueId));
-    const embed = bitcoin.payments.embed({ data: [OpData] });
-    btcTx.addOutput(embed.output, 0);
-
-    const injectedTxId = btcTx.getId();
-    const injectedTxHash = btcTx.getHash();
-
-    console.log('### injectedTxId', injectedTxId);
-    console.log('### injectedTxHash', injectedTxHash);
-    console.assert(originId === injectedTxId);
-    console.assert(originHash === injectedTxHash);
-
-    /* END add opt */
-
-    // const btcTx = buildBtcTx2();
-    const hmyClient = await getOneBTCClient(user.sessionType);
-    hmyClient.setUseOneWallet(true);
-
-    const txId = btcTx.getId();
-    const txHex = btcTx.toHex();
-
-    console.log('### txId', txId);
-    console.log('### txHex', txHex);
-
-    const btcBlockNumberMock = 2092664;
-    const btcTxIndexMock = 0;
-    const heightAndIndex = (btcBlockNumberMock << 32) | btcTxIndexMock;
-    const headerMock = Buffer.alloc(0);
-    const proofMock = Buffer.alloc(0);
-
-    const result = await hmyClient.methods.executeIssue(
-      oneAddress,
-      // @ts-ignore
-      issueIdBn,
-      proofMock,
-      btcTx.toBuffer(),
-      heightAndIndex,
-      headerMock,
-    );
-
-    return result;
-  };
+  const executeIssue = async (oneAddress, issueId, txData) => {};
 
   const loadWalletTrx = async btcAddress => {
     const response = await agent.get<{ body: TResponse }>(API_URL + btcAddress);
