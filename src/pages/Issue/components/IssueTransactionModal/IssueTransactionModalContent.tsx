@@ -21,14 +21,18 @@ const useWatcher = ({
   const [finished, setFinished] = useState(false);
 
   const load = useCallback(() => {
-    return loadWalletTxList(bitcoinAddress).then(result => {
-      if (result.length > 0) {
-        setResult(result[0]);
-        if (result[0] && result[0].confirmations >= confirmations) {
-          setFinished(true);
+    return loadWalletTxList(bitcoinAddress)
+      .then(result => {
+        if (result.length > 0) {
+          setResult(result[0]);
+          if (result[0] && result[0].confirmations >= confirmations) {
+            setFinished(true);
+          }
         }
-      }
-    });
+      })
+      .catch(err => {
+        console.log('### Error while load btc transaction', err);
+      });
   }, [bitcoinAddress, confirmations]);
 
   const watcherRun = useCallback(() => {

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Box } from 'grommet';
+import { Checkmark } from 'grommet-icons';
 import { Button, Text, Title } from '../../../../components/Base';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoinTx from '../../../../components/LinkBitcoinTx';
@@ -31,11 +32,16 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
         <Title>{title}</Title>
       </Box>
       {!isConfirmed && (
-        <Box className={styles.circle}>
+        <Box className={styles.circleBorder}>
           <Text>
             Confirmations: {btcTx.confirmations}/
             {config.bitcoin.waitConfirmations}
           </Text>
+        </Box>
+      )}
+      {isConfirmed && (
+        <Box className={styles.circle}>
+          <Checkmark size="xlarge" color="white" />
         </Box>
       )}
       <Box>
@@ -52,13 +58,11 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
           </Text>
         </Box>
       )}
-      {isConfirmed && (
-        <Box>
-          <Button bgColor="#00ADE8" onClick={handleClaim}>
-            Claim oneBTC
-          </Button>
-        </Box>
-      )}
+      <Box>
+        <Button bgColor="#46d7b6" disabled={!isConfirmed} onClick={handleClaim}>
+          Execute issue
+        </Button>
+      </Box>
     </Box>
   );
 };

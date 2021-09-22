@@ -2,6 +2,7 @@ import * as bitcoin from 'bitcoinjs-lib';
 import utils from 'web3-utils';
 import agent from 'superagent';
 import { issue_tx_mock } from 'onebtc.sdk/lib/helpers';
+import { config } from '../config';
 
 export const walletHexToBech32 = (address: string) => {
   return bitcoin.address.toBech32(
@@ -61,7 +62,7 @@ export interface BcoinBTCTx {
 export const loadWalletTxList = async (
   btcAddress: string,
 ): Promise<BcoinBTCTx[]> => {
-  const HOST = 'http://161.35.125.60';
+  const HOST = config.bitcoin.bcoinHost.testnet;
   const API_URL = `${HOST}/tx/address/${btcAddress}`;
   const response = await agent.get(API_URL);
 
