@@ -36,7 +36,7 @@ export const IssueForm: React.FC<Props> = () => {
         label={`Vault identity`}
         name="vaultId"
         type="string"
-        precision="6"
+        precision="4"
         placeholder="enter vault identity"
         style={{ width: '100%' }}
         rules={[isRequired]}

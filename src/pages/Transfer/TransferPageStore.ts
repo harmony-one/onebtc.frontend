@@ -2,7 +2,7 @@ import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import { TransferConfirmModal } from './components/TransferConfirmModal';
-import { satoshiToBitcoin } from '../../services/bitcoin';
+import { bitcoinToSatoshi, satoshiToBitcoin } from '../../services/bitcoin';
 
 interface IIssueEvent {
   issue_id: string;
@@ -20,7 +20,7 @@ export interface IDefaultForm {
 
 export class TransferPageStore extends StoreConstructor {
   defaultForm: IDefaultForm = {
-    oneBTCAmount: '0.00001',
+    oneBTCAmount: '0.0001',
     oneAddress: '0xB4C3e3cB2823Cf116A678c6A5Da90F88FB6eFddd',
   };
 
@@ -59,7 +59,7 @@ export class TransferPageStore extends StoreConstructor {
 
       // const vaultId = this.form.vaultId;
       hmyClient.setUseOneWallet(true);
-      const issueAmount = Number(this.form.oneBTCAmount) * 1e8;
+      const issueAmount = bitcoinToSatoshi(this.form.oneBTCAmount);
       console.log('### issueAmount', issueAmount);
 
       const result = await hmyClient.methods.transfer(
