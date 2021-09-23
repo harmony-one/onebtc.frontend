@@ -116,7 +116,7 @@ export class RedeemPageStore extends StoreConstructor {
 
   public openRedeemWithdrawModal(transactionHash: string) {
     this.stores.actionModals.open(RedeemWithdrawModal, {
-      applyText: 'View progress',
+      applyText: 'View Progress',
       closeText: 'Close',
       initData: {
         transactionHash: transactionHash,

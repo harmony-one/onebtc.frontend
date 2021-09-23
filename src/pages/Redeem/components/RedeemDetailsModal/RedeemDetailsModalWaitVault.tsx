@@ -20,7 +20,7 @@ export const RedeemDetailsModalWaitVault: React.FC<{
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box>
-        <Title>Waiting vault</Title>
+        <Title>Pending</Title>
       </Box>
       {!isConfirmed && (
         <Box className={styles.circleBorder} justify="center" align="center">
@@ -31,8 +31,8 @@ export const RedeemDetailsModalWaitVault: React.FC<{
               </Text>
             )}
             {!btcTx && (
-              <Text inline style={{ textAlign: 'center' }}>
-                Wait transaction
+              <Text inline bold style={{ textAlign: 'center' }}>
+                Waiting for Vault
               </Text>
             )}
           </SpinnerContainer>
