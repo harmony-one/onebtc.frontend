@@ -57,6 +57,7 @@ export const mockBitcoinTx = (
 export interface BcoinBTCTx {
   hash: string;
   confirmations: number;
+  outputs: { value: number; script: string; address: string }[];
 }
 
 export const loadWalletTxList = async (

@@ -1,15 +1,15 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
-import { action, computed, observable } from 'mobx';
+import { action, get, computed, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import {
   bitcoinToSatoshi,
-  mockBitcoinTx,
   satoshiToBitcoin,
   walletBech32ToHex,
   walletHexToBase58,
+  walletHexToBech32,
 } from '../../services/bitcoin';
-import { RedeemWithdrawModal } from './components/RedeemWithdrawModal';
-import { RedeemTransactionModal } from './components/RedeemTransactionModal';
+import { RedeemWithdrawModal } from './components/RedeemWithdrawModal/RedeemWithdrawModal';
+import { RedeemDetailsModal } from './components/RedeemDetailsModal/RedeemDetailsModal';
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';
 import { RedeemDetails } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
@@ -58,8 +58,7 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   @action.bound
-  public async mockExecuteRedeem(transactionHash: string) {
-    console.log('### mockExecuteRedeem');
+  public async executeRedeem(transactionHash: string, btcTxHash: string) {
     this.status = 'pending';
 
     const redeemUiTx = this.stores.uiTransactionsStore.create();
@@ -70,13 +69,8 @@ export class RedeemPageStore extends StoreConstructor {
 
       const address = this.stores.user.address;
 
-      const mockedBtcTX = mockBitcoinTx(
-        redeem.redeemEvent.redeem_id,
-        redeem.btcBase58Address,
-        redeem.redeemAmount,
-      );
-
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+      hmyClient.setUseMathWallet(true);
 
       console.log('### run execute issuePageStore');
 
@@ -86,10 +80,7 @@ export class RedeemPageStore extends StoreConstructor {
         address,
         // @ts-ignore
         redeem.redeemEvent.redeem_id,
-        mockedBtcTX.proofMock,
-        mockedBtcTX.btcTx.toBuffer(),
-        mockedBtcTX.heightAndIndex,
-        mockedBtcTX.headerMock,
+        btcTxHash,
         txHash => {
           redeemUiTx.setTxHash(txHash);
           redeemUiTx.setStatusProgress();
@@ -123,11 +114,52 @@ export class RedeemPageStore extends StoreConstructor {
     }
   }
 
+  public openRedeemWithdrawModal(transactionHash: string) {
+    this.stores.actionModals.open(RedeemWithdrawModal, {
+      applyText: 'View progress',
+      closeText: 'Close',
+      initData: {
+        transactionHash: transactionHash,
+      },
+      noValidation: true,
+      width: '500px',
+      showOther: true,
+      onApply: () => {
+        this.openRedeemDetailsModal(transactionHash);
+        this.stores.routing.gotToRedeemModal(transactionHash, 'details');
+        return Promise.resolve();
+      },
+      onClose: () => {
+        return Promise.resolve();
+      },
+    });
+  }
+
+  @get
+  public getRedeemInfo(requestRedeemTxHash: string) {
+    const redeem = this.redeemMap[requestRedeemTxHash];
+
+    const sendAmount = satoshiToBitcoin(redeem.redeemAmount);
+    const totalReceived = satoshiToBitcoin(redeem.redeemEvent.amount);
+
+    return {
+      sendAmount,
+      sendUsdAmount: sendAmount * this.stores.user.btcRate,
+      redeemId: redeem.redeemEvent.redeem_id,
+      vaultId: redeem.redeemEvent.vault_id,
+      bitcoinAddress: redeem.btcAddress,
+      bridgeFee: satoshiToBitcoin(redeem.redeemEvent.fee),
+      totalReceived: satoshiToBitcoin(redeem.redeemEvent.amount),
+      totalReceivedUsd: totalReceived * this.stores.user.btcRate,
+      rawRedeem: redeem.redeemEvent,
+    };
+  }
+
   @action.bound
-  public openTransactionModal(transactionHash: string) {
-    this.stores.actionModals.open(RedeemTransactionModal, {
-      applyText: 'Continue',
-      closeText: 'Execute issue with mock Tx',
+  public openRedeemDetailsModal(transactionHash: string) {
+    this.stores.actionModals.open(RedeemDetailsModal, {
+      applyText: '',
+      closeText: 'Close',
       initData: {
         transactionHash,
       },
@@ -138,12 +170,29 @@ export class RedeemPageStore extends StoreConstructor {
         return Promise.resolve();
       },
       onClose: () => {
-        this.mockExecuteRedeem(transactionHash);
         return Promise.resolve();
       },
     });
 
     return true;
+  }
+
+  public async loadRedeemDetails(redeemId: string) {
+    const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+
+    const redeemEvent = await hmyClient.methods.getRedeemDetails(redeemId);
+
+    if (!redeemEvent) {
+      throw new Error('Not found redeem details');
+    }
+
+    this.redeemMap[redeemId] = {
+      redeemAmount: Number(redeemEvent.amount),
+      vaultId: redeemEvent.vault_id,
+      redeemEvent: redeemEvent,
+      btcAddress: walletHexToBech32(redeemEvent.btc_address),
+      btcBase58Address: walletHexToBase58(redeemEvent.btc_address),
+    };
   }
 
   @action.bound
@@ -175,6 +224,7 @@ export class RedeemPageStore extends StoreConstructor {
         },
       );
 
+      console.log('### redeemRequest', redeemRequest);
       const redeemEvent = await hmyClient.methods.getRedeemDetails(
         redeemRequest.transactionHash,
       );
@@ -191,23 +241,10 @@ export class RedeemPageStore extends StoreConstructor {
         btcBase58Address: walletHexToBase58(redeemEvent.btc_address),
       };
 
-      this.stores.actionModals.open(RedeemWithdrawModal, {
-        applyText: 'View progress',
-        closeText: 'Close',
-        initData: {
-          transactionHash: redeemRequest.transactionHash,
-        },
-        noValidation: true,
-        width: '500px',
-        showOther: true,
-        onApply: () => {
-          this.openTransactionModal(redeemRequest.transactionHash);
-          return Promise.resolve();
-        },
-        onClose: () => {
-          return Promise.resolve();
-        },
-      });
+      this.stores.routing.gotToRedeemModal(
+        redeemRequest.transactionHash,
+        'withdraw',
+      );
 
       redeemUiTx.setStatusSuccess();
       redeemUiTx.hideModal();

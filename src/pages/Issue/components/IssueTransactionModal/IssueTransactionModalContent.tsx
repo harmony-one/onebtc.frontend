@@ -5,7 +5,7 @@ import { IssueTransactionDetails } from './IssueTransactionDetails';
 import { DepositModalContent } from '../DepositModal';
 import { IssueTransactionConfirmation } from './IssueTransactionConfirmation';
 import { config } from '../../../../config';
-import { useBtcTxWatcher } from '../../../../hooks/useBtcTxWatcher';
+import { useBtcWalletVaultIncomeWatcher } from '../../../../hooks/useBtcWalletVaultIncomeWatcher';
 
 interface IssueTransactionModalContentProps {
   sendAmount: number;
@@ -34,7 +34,7 @@ export const IssueTransactionModalContent: React.FC<IssueTransactionModalContent
     requester,
   } = props;
 
-  const btcTx = useBtcTxWatcher({
+  const btcTx = useBtcWalletVaultIncomeWatcher({
     bitcoinAddress,
     confirmations: config.bitcoin.waitConfirmations,
   });

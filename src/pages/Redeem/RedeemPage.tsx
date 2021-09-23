@@ -5,8 +5,26 @@ import * as styles from './styles.styl';
 
 import { NavigateTabs } from '../../components/NavigateTabs';
 import RedeemForm from './components/RedeemForm/RedeemForm';
+import { useParams } from 'react-router';
+import { useStores } from '../../stores';
+import { useEffect } from 'react';
 
 export const RedeemPage = () => {
+  const { redeemTx, modal } = useParams<{ redeemTx?: string; modal: string }>();
+  const { redeemPageStore } = useStores();
+  useEffect(() => {
+    if (redeemTx) {
+      redeemPageStore.loadRedeemDetails(redeemTx).then(() => {
+        if (modal === 'withdraw') {
+          redeemPageStore.openRedeemWithdrawModal(redeemTx);
+          return;
+        } else {
+          redeemPageStore.openRedeemDetailsModal(redeemTx);
+        }
+      });
+    }
+  }, [redeemPageStore, redeemTx, modal]);
+
   return (
     <BaseContainer>
       <PageContainer>

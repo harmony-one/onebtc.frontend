@@ -7,7 +7,7 @@ import { useStores } from '../../../stores';
 import { useObserver } from 'mobx-react';
 import { Input, isRequired, Form } from '../../../components/Form';
 import { TActionModalProps } from '../../../components/ActionModals';
-import { useBtcTxWatcher } from '../../../hooks/useBtcTxWatcher';
+import { useBtcWalletVaultIncomeWatcher } from '../../../hooks/useBtcWalletVaultIncomeWatcher';
 import { config } from '../../../config';
 
 export function DepositForm() {
@@ -128,7 +128,7 @@ export const DepositModal = (props: TActionModalProps) => {
   const bitcoinAddress = issue.btcAddress;
   const sendUsdAmount = sendAmount * user.btcRate;
 
-  const btcTx = useBtcTxWatcher({
+  const btcTx = useBtcWalletVaultIncomeWatcher({
     bitcoinAddress,
     confirmations: config.bitcoin.waitConfirmations,
   });
