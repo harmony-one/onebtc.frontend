@@ -1,5 +1,5 @@
 import { BigNumber } from 'bignumber.js';
-const BN = require('bn.js');
+import BN from 'bn.js';
 
 const zeroDecimalsFormatter = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 0,

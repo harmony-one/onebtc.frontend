@@ -1,19 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
-import { useObserver } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input } from 'components/Form';
-import { createValidate, moreThanZero } from '../../../../utils';
+import { moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
-import {
-  bitcoinToSatoshi,
-  satoshiToBitcoin,
-} from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
-export const RedeemForm: React.FC<Props> = () => {
+export const RedeemForm: React.FC<Props> = observer(() => {
   const { redeemPageStore, user } = useStores();
   const [form, setForm] = useState();
 
@@ -23,12 +19,7 @@ export const RedeemForm: React.FC<Props> = () => {
     });
   }, [form, redeemPageStore]);
 
-  const lessThanBalance = () =>
-    createValidate((value: string) => {
-      return bitcoinToSatoshi(value) > user.oneBTCBalance;
-    }, `redeem amount exceeds balance`);
-
-  return useObserver(() => (
+  return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
       <NumberInput
         label="OneBTC Amount"
@@ -38,7 +29,7 @@ export const RedeemForm: React.FC<Props> = () => {
         delimiter="."
         placeholder="0.0"
         style={{ width: '100%' }}
-        rules={[isRequired, moreThanZero, lessThanBalance()]}
+        rules={[isRequired, moreThanZero]}
       />
 
       <Input
@@ -107,7 +98,7 @@ export const RedeemForm: React.FC<Props> = () => {
           You will receive
         </Text>
         <PriceView
-          value={redeemPageStore.form.totalReceive}
+          value={redeemPageStore.totalReceived}
           rate={user.btcRate}
           boxProps={{ pad: {} }}
           tokenName="BTC"
@@ -126,7 +117,7 @@ export const RedeemForm: React.FC<Props> = () => {
         </Button>
       </Box>
     </Form>
-  ));
-};
+  );
+});
 
 export default RedeemForm;

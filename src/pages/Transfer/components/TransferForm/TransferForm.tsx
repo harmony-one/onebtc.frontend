@@ -19,11 +19,6 @@ export const TransferForm: React.FC<Props> = () => {
     });
   }, [form, transferPageStore]);
 
-  const lessThanBalance = () =>
-    createValidate((value: string) => {
-      return bitcoinToSatoshi(value) > user.oneBTCBalance;
-    }, `redeem amount exceeds balance`);
-
   return useObserver(() => (
     <Form ref={ref => setForm(ref)} data={transferPageStore.form}>
       <NumberInput
@@ -34,7 +29,7 @@ export const TransferForm: React.FC<Props> = () => {
         delimiter="."
         placeholder="0.0"
         style={{ width: '100%' }}
-        rules={[isRequired, moreThanZero, lessThanBalance()]}
+        rules={[isRequired, moreThanZero]}
       />
 
       <Input

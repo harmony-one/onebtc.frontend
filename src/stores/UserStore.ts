@@ -54,6 +54,12 @@ export class UserStoreEx extends StoreConstructor {
       }
     }, 3 * 1000);
 
+    // setInterval(() => {
+    //   const newBalance = this.oneBTCBalance ? this.oneBTCBalance - 1 : 10;
+    //   console.log('### newBalance', newBalance);
+    //   this.setBalance(newBalance / 1e8);
+    // }, 3000);
+
     this.getRates();
 
     // @ts-ignore
@@ -94,6 +100,11 @@ export class UserStoreEx extends StoreConstructor {
         this.signInMetamask();
       }
     });
+  }
+
+  @action.bound
+  public setBalance(amount) {
+    this.oneBTCBalance = amount;
   }
 
   @computed public get isNetworkActual() {

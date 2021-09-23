@@ -21,7 +21,7 @@ export interface IDefaultForm {
 export class TransferPageStore extends StoreConstructor {
   defaultForm: IDefaultForm = {
     oneBTCAmount: '0.0001',
-    oneAddress: '0xB4C3e3cB2823Cf116A678c6A5Da90F88FB6eFddd',
+    oneAddress: '',
   };
 
   @observable issuesMap: {

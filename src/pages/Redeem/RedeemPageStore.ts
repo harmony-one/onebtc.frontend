@@ -23,7 +23,7 @@ export interface IDefaultForm {
 export class RedeemPageStore extends StoreConstructor {
   defaultForm: IDefaultForm = {
     oneBTCAmount: '0.0001',
-    bitcoinAddress: 'tb1quqayjeavh584t7nzrtnryv6gtrrwk92ef47nfa',
+    bitcoinAddress: '',
     totalReceive: 0,
     vaultId: '0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581',
   };

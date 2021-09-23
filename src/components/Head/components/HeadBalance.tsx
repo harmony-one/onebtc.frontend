@@ -3,9 +3,10 @@ import { Box, Text } from 'grommet';
 import { formatWithSixDecimals, ones } from '../../../utils';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react-lite';
+import { satoshiToBitcoin } from '../../../services/bitcoin';
 
 export const HeadBalance: React.FC = observer(() => {
-  const {user} = useStores();
+  const { user } = useStores();
 
   if (!user.isAuthorized) {
     return null;
@@ -21,7 +22,7 @@ export const HeadBalance: React.FC = observer(() => {
       </Box>
       <Box direction="row">
         <Text size="small" weight="bold">
-          {formatWithSixDecimals(user.oneBTCBalance / 1e8)}
+          {satoshiToBitcoin(user.oneBTCBalance)}
         </Text>
         <Text size="small">&nbsp;OneBTC</Text>
       </Box>
