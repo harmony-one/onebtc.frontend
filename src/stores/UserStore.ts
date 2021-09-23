@@ -37,6 +37,8 @@ export class UserStoreEx extends StoreConstructor {
 
   @observable public oneBTCBalance = 0;
 
+  @observable public oneBtcClient = null;
+
   constructor(stores) {
     super(stores);
 
@@ -100,11 +102,6 @@ export class UserStoreEx extends StoreConstructor {
         this.signInMetamask();
       }
     });
-  }
-
-  @action.bound
-  public setBalance(amount) {
-    this.oneBTCBalance = amount;
   }
 
   @computed public get isNetworkActual() {
@@ -202,6 +199,8 @@ export class UserStoreEx extends StoreConstructor {
 
           this.isAuthorized = true;
           // this.metamaskNetwork = await web3.eth.net.getNetworkType()
+
+          this.oneBtcClient = await getOneBTCClient(this.sessionType);
         })
         .catch(err => {
           if (err.code === 4001) {

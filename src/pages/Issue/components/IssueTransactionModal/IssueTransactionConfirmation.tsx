@@ -9,6 +9,7 @@ import * as styles from './IssueTransactionConfirmation.styl';
 import { useStores } from '../../../../stores';
 import { config } from '../../../../config';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
+import { useIssueStatusWatcher } from '../../../../hooks/useIssueStatusWatcher';
 
 interface IssueTransactionConfirmationProps {
   btcTx: BcoinBTCTx;
@@ -19,7 +20,7 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
   btcTx,
   issueTxHash,
 }) => {
-  const { issuePageStore } = useStores();
+  const { issuePageStore, user } = useStores();
   const isConfirmed = btcTx.confirmations >= config.bitcoin.waitConfirmations;
   const title = isConfirmed ? 'Confirmed' : 'Received';
   const issue = issuePageStore.issuesMap[issueTxHash];
@@ -27,6 +28,12 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
   const handleClaim = useCallback(() => {
     issuePageStore.executeIssue(issueTxHash, btcTx.hash);
   }, [btcTx.hash, issuePageStore, issueTxHash]);
+
+  const status = useIssueStatusWatcher({
+    oneBtcClient: user.oneBtcClient,
+    issueId: issue.issueEvent.issue_id,
+    requester: issue.issueEvent.requester,
+  });
 
   return (
     <Box align="center" gap="small">
@@ -62,7 +69,7 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
           </Text>
         </Box>
       )}
-      {issue && issue.status !== '2' && (
+      {status !== '2' && (
         <Box>
           <Button
             bgColor="#46d7b6"
