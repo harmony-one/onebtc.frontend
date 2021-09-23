@@ -5,7 +5,7 @@ import { IssueTransactionDetails } from './IssueTransactionDetails';
 import { DepositModalContent } from '../DepositModal';
 import { IssueTransactionConfirmation } from './IssueTransactionConfirmation';
 import { config } from '../../../../config';
-import { useBtcTxWatcher } from '../../useBtcTxWatcher';
+import { useBtcTxWatcher } from '../../../../hooks/useBtcTxWatcher';
 
 interface IssueTransactionModalContentProps {
   sendAmount: number;

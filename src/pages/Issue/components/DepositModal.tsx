@@ -7,7 +7,7 @@ import { useStores } from '../../../stores';
 import { useObserver } from 'mobx-react';
 import { Input, isRequired, Form } from '../../../components/Form';
 import { TActionModalProps } from '../../../components/ActionModals';
-import { useBtcTxWatcher } from '../useBtcTxWatcher';
+import { useBtcTxWatcher } from '../../../hooks/useBtcTxWatcher';
 import { config } from '../../../config';
 
 export function DepositForm() {
