@@ -3,9 +3,8 @@ import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
 import { useObserver } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input } from 'components/Form';
-import { createValidate, moreThanZero } from '../../../../utils';
+import { lessThan, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
-import { bitcoinToSatoshi } from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -29,7 +28,11 @@ export const TransferForm: React.FC<Props> = () => {
         delimiter="."
         placeholder="0.0"
         style={{ width: '100%' }}
-        rules={[isRequired, moreThanZero]}
+        rules={[
+          isRequired,
+          moreThanZero,
+          lessThan(user.oneBTCBalance, 'transfer amount exceeds balance'),
+        ]}
       />
 
       <Input

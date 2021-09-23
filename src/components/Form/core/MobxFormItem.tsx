@@ -62,6 +62,17 @@ export class MobxFormItem extends React.Component<IMobxFormItemProps> {
   constructor(props: IMobxFormItemProps) {
     super(props);
 
+    this.registerRules(props);
+  }
+
+  componentWillReceiveProps(
+    nextProps: Readonly<IMobxFormItemProps>,
+    nextContext: any,
+  ) {
+    this.registerRules(nextProps);
+  }
+
+  public registerRules(props: IMobxFormItemProps) {
     const cmpRules = _.get(props, 'fieldParams.componentParams.rules', []);
     this.rules = (props.rules || []).concat(cmpRules);
 
@@ -203,7 +214,11 @@ export class MobxFormItem extends React.Component<IMobxFormItemProps> {
 
     return (
       <Wrapper {...wrapperProps} {...this.context.defaultItemProps}>
-        <Component {...componentProps} onChange={onValueChange} data-value={getFieldValue(name)} />
+        <Component
+          {...componentProps}
+          onChange={onValueChange}
+          data-value={getFieldValue(name)}
+        />
       </Wrapper>
     );
   }

@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { bitcoinToSatoshi } from '../services/bitcoin';
 
 export function createValidate(
   func: (value: any, data?: any) => boolean,
@@ -153,4 +154,10 @@ export const moreThanZero = {
     callback(errors);
   },
   validateType: 'requiredValidator',
+};
+
+export const lessThan = (amount, message) => {
+  return createValidate((value: string) => {
+    return bitcoinToSatoshi(value) > amount;
+  }, message);
 };

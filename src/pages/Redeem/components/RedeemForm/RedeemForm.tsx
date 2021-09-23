@@ -3,7 +3,7 @@ import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
 import { observer } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input } from 'components/Form';
-import { moreThanZero } from '../../../../utils';
+import { lessThan, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 
@@ -29,7 +29,11 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         delimiter="."
         placeholder="0.0"
         style={{ width: '100%' }}
-        rules={[isRequired, moreThanZero]}
+        rules={[
+          isRequired,
+          moreThanZero,
+          lessThan(user.oneBTCBalance, `redeem amount exceeds balance`),
+        ]}
       />
 
       <Input
