@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useInterval } from './useInterval';
 import { useStores } from '../stores';
+import { RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
 interface WatcherProps {
   redeemId: string;
@@ -11,7 +12,7 @@ export const useRedeemStatusWatcher = ({
   redeemId,
   requester,
 }: WatcherProps): string => {
-  const [status, setStatus] = useState<string>('0');
+  const [status, setStatus] = useState<RedeemStatus>(RedeemStatus.PENDING);
   const { user } = useStores();
 
   const loadIssueStatus = useCallback(() => {
@@ -28,7 +29,7 @@ export const useRedeemStatusWatcher = ({
   const [stop] = useInterval({ callback: loadIssueStatus, timeout: 3000 });
 
   useEffect(() => {
-    if (status === '2') {
+    if (status === RedeemStatus.COMPLETED) {
       stop();
     }
   }, [status, stop]);

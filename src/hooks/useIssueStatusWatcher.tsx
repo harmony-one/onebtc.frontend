@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useInterval } from './useInterval';
 import { useStores } from '../stores';
+import { IssueStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
 interface WatcherProps {
   issueId: string;
@@ -12,7 +13,7 @@ export const useIssueStatusWatcher = ({
   requester,
 }: WatcherProps): string => {
   const { user } = useStores();
-  const [status, setStatus] = useState<string>('0');
+  const [status, setStatus] = useState<IssueStatus>(IssueStatus.PENDING);
 
   const loadIssueStatus = useCallback(() => {
     user.oneBtcClient &&
@@ -24,7 +25,13 @@ export const useIssueStatusWatcher = ({
         });
   }, [issueId, user.oneBtcClient, requester]);
 
-  useInterval({ callback: loadIssueStatus, timeout: 5000 });
+  const [stop] = useInterval({ callback: loadIssueStatus, timeout: 3000 });
+
+  useEffect(() => {
+    if (status === IssueStatus.COMPLETED) {
+      stop();
+    }
+  }, [status, stop]);
 
   return status;
 };
