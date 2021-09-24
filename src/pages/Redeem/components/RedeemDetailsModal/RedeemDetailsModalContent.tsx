@@ -7,6 +7,7 @@ import { RedeemDetailsModalConfirmation } from './RedeemDetailsModalConfirmation
 import { RedeemDetailsModalWaitVault } from './RedeemDetailsModalWaitVault';
 import { useBtcWalletIncomeWatcher } from '../../../../hooks/useBtcWalletIncomeWatcher';
 import { config } from '../../../../config';
+import { useRedeemStatusWatcher } from '../../../../hooks/useRedeemStatusWatcher';
 
 export const RedeemDetailsModalContent: React.FC<{
   redeemTxHash: string;
@@ -20,8 +21,12 @@ export const RedeemDetailsModalContent: React.FC<{
     confirmations: 2,
   });
 
-  const confirmations = (btcTx && btcTx.confirmations) || 0;
-  const isConfirmed = confirmations > config.bitcoin.waitConfirmations;
+  const status = useRedeemStatusWatcher({
+    redeemId: redeemInfo.redeemId,
+    requester: redeemInfo.rawRedeem.requester,
+  });
+
+  const isCompleted = status === '2';
 
   return (
     <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">
@@ -34,20 +39,15 @@ export const RedeemDetailsModalContent: React.FC<{
           <RedeemDetailsModalTransaction redeemTxHash={redeemTxHash} />
         </Box>
         <Box basis="1/2" gap="medium" align="center">
-          {!isConfirmed && (
-            <RedeemDetailsModalWaitVault
-              btcTx={btcTx}
-              isConfirmed={isConfirmed}
-              redeemTxHash={redeemTxHash}
-            />
+          {!isCompleted && (
+            <RedeemDetailsModalWaitVault redeemTxHash={redeemTxHash} />
           )}
-          {isConfirmed && btcTx && (
+          {isCompleted && btcTx && (
             <RedeemDetailsModalConfirmation
               btcTx={btcTx}
               redeemTxHash={redeemTxHash}
             />
           )}
-          {/*<RedeemWithdrawModalContent redeemTxHash={props.redeemTxHash} />*/}
         </Box>
       </Box>
     </Box>

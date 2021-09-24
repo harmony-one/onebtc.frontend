@@ -10,6 +10,7 @@ import { SandBoxPage } from './pages/Sandbox/SandBoxPage';
 import { RedeemPage } from './pages/Redeem/RedeemPage';
 import { TransferPage } from './pages/Transfer/TransferPage';
 import { routes } from './constants/routes';
+import { WatcherBalance } from './components/WatcherBalance';
 
 const App: React.FC = () => (
   <Providers>
@@ -21,6 +22,7 @@ const App: React.FC = () => (
       <Redirect to={routes.issue} />
     </Switch>
     <ActionModals />
+    <WatcherBalance />
     <GlobalStyle theme={...baseTheme as any} />
   </Providers>
 );

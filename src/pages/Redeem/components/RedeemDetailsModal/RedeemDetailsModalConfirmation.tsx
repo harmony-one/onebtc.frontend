@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useStores } from '../../../../stores';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
-import { Button, Text, Title } from '../../../../components/Base';
+import { Text, Title } from '../../../../components/Base';
 import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModalConfirmation.styl';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoinTx from '../../../../components/LinkBitcoinTx';
@@ -16,10 +16,6 @@ export const RedeemDetailsModalConfirmation: React.FC<{
   const { redeemPageStore } = useStores();
 
   const redeemInfo = redeemPageStore.getRedeemInfo(redeemTxHash);
-
-  const handleExecuteRedeem = useCallback(() => {
-    redeemPageStore.executeRedeem(redeemTxHash, btcTx.hash);
-  }, [btcTx.hash, redeemPageStore, redeemTxHash]);
 
   return useObserver(() => (
     <Box gap="small" align="center">
@@ -37,22 +33,6 @@ export const RedeemDetailsModalConfirmation: React.FC<{
       </Box>
       <Box>
         <LinkBitcoinTx txHash={btcTx.hash} text="View on explorer" />
-      </Box>
-      <Box>
-        <Text>
-          BTC transaction successfully confirmed. Please Execute redeem to
-          unlock your OneBTC.
-        </Text>
-      </Box>
-
-      <Box>
-        <Button
-          bgColor="#46d7b6"
-          disabled={false}
-          onClick={handleExecuteRedeem}
-        >
-          Execute redeem
-        </Button>
       </Box>
     </Box>
   ));

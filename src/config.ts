@@ -16,7 +16,7 @@ export const config = {
       },
     },
   },
-  oneBtcContract: '0xdd14648e3b112e582c76ae04c54d1cf89c7c131d',
+  oneBtcContract: '0x4A96FdAeA8Fd6064B1efC56753d01B866Ff14883',
   wallets: {
     metamask: true,
     onewallet: false,

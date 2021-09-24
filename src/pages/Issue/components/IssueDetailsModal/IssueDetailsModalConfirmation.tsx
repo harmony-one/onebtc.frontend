@@ -31,7 +31,6 @@ export const IssueDetailsModalConfirmation: React.FC<Props> = ({
   }, [btcTx.hash, issuePageStore, issueTxHash]);
 
   const status = useIssueStatusWatcher({
-    oneBtcClient: user.oneBtcClient,
     issueId: issueInfo.issueEvent.issue_id,
     requester: issueInfo.issueEvent.requester,
   });

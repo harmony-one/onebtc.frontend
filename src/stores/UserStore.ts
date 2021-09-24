@@ -49,13 +49,6 @@ export class UserStoreEx extends StoreConstructor {
       this.onewallet = window.onewallet;
     }, 3000);
 
-    setInterval(() => {
-      if (this.isAuthorized) {
-        this.loadOneBTCBalance();
-        this.getBalances();
-      }
-    }, 3 * 1000);
-
     // setInterval(() => {
     //   const newBalance = this.oneBTCBalance ? this.oneBTCBalance - 1 : 10;
     //   console.log('### newBalance', newBalance);
@@ -102,6 +95,14 @@ export class UserStoreEx extends StoreConstructor {
         this.signInMetamask();
       }
     });
+  }
+
+  @action
+  public updateBalance() {
+    if (this.isAuthorized) {
+      this.loadOneBTCBalance();
+      this.getBalances();
+    }
   }
 
   @computed public get isNetworkActual() {

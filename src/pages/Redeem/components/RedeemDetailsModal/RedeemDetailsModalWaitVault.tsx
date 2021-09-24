@@ -11,49 +11,18 @@ import { BcoinBTCTx } from '../../../../services/bitcoin';
 
 export const RedeemDetailsModalWaitVault: React.FC<{
   redeemTxHash: string;
-  btcTx: BcoinBTCTx | null;
-  isConfirmed: boolean;
-}> = ({ btcTx, isConfirmed }) => {
-  const confirmations = (btcTx && btcTx.confirmations) || 0;
-  const requiredConfirmation = config.bitcoin.waitConfirmations;
-
+}> = ({ redeemTxHash }) => {
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box>
         <Title>Pending</Title>
       </Box>
-      {!isConfirmed && (
-        <Box className={styles.circleBorder} justify="center" align="center">
-          <SpinnerContainer boxSize={32}>
-            {btcTx && (
-              <Text inline style={{ textAlign: 'center' }}>
-                Waiting confirmations: {confirmations}/{requiredConfirmation}
-              </Text>
-            )}
-            {!btcTx && (
-              <Text inline bold style={{ textAlign: 'center' }}>
-                Waiting for Vault
-              </Text>
-            )}
-          </SpinnerContainer>
-        </Box>
-      )}
-      {btcTx && (
-        <Box>
-          <Text>BTC Transaction: {cutText(btcTx.hash)}</Text>
-        </Box>
-      )}
-
-      {btcTx && (
-        <Box>
-          <LinkBitcoinTx txHash={btcTx && btcTx.hash} text="View on explorer" />
-        </Box>
-      )}
-
-      <Box>
-        <Button bgColor="#46d7b6" disabled={true}>
-          Execute redeem
-        </Button>
+      <Box className={styles.circleBorder} justify="center" align="center">
+        <SpinnerContainer boxSize={32}>
+          <Text inline bold style={{ textAlign: 'center' }}>
+            Waiting for Vault
+          </Text>
+        </SpinnerContainer>
       </Box>
     </Box>
   ));

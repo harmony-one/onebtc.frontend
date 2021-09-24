@@ -305,7 +305,7 @@ export class IssuePageStore extends StoreConstructor {
         });
 
       this.issuesMap[txHash] = {
-        status,
+        status: status || '',
         issueAmount: Number(issueDetails.amount),
         vaultId: issueDetails.vault_id,
         issueEvent: issueDetails,
