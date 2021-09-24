@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box } from 'grommet';
 import { BaseContainer, PageContainer } from 'components';
-import * as styles from './styles.styl';
+import * as styles from './TransferPageStyles.styl';
 
 import { NavigateTabs } from '../../components/NavigateTabs';
 import TransferForm from './components/TransferForm/TransferForm';

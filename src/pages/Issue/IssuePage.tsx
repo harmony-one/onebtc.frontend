@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box } from 'grommet';
 import { BaseContainer, PageContainer } from 'components';
-import * as styles from './styles.styl';
+import * as styles from './IssuePageStyles.styl';
 import { IssueForm } from './components/IssueForm/IssueForm';
 import { NavigateTabs } from '../../components/NavigateTabs';
 import { useParams } from 'react-router';

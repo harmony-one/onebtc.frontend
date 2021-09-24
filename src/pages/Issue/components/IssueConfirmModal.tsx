@@ -1,11 +1,14 @@
 import React from 'react';
 import { Box } from 'grommet';
-import { Title, Text, Divider } from 'components/Base';
+import { Text, Divider } from 'components/Base';
 import LinkHarmonyTx from '../../../components/LinkHarmonyTx';
 import { ModalHeader } from '../../../components/ActionModals/components/ModalHeader';
 import { TActionModalProps } from '../../../components/ActionModals';
 
-export function IssueConfirmModalContent({ total, txHash = '' }) {
+export const IssueConfirmModalContent: React.FC<{
+  total: number;
+  txHash: string;
+}> = ({ total, txHash = '' }) => {
   return (
     <Box direction="column" justify="center" gap="small">
       <Box align="center">
@@ -20,9 +23,11 @@ export function IssueConfirmModalContent({ total, txHash = '' }) {
       </Box>
     </Box>
   );
-}
+};
 
-export function IssueConfirmModal(props: TActionModalProps) {
+IssueConfirmModalContent.displayName = 'IssueConfirmModalContent';
+
+export const IssueConfirmModal: React.FC<TActionModalProps> = props => {
   const { total, txHash } = props.actionData.data;
   const { onClose } = props.config.options;
   return (
@@ -32,4 +37,6 @@ export function IssueConfirmModal(props: TActionModalProps) {
       <IssueConfirmModalContent total={total} txHash={txHash} />
     </Box>
   );
-}
+};
+
+IssueConfirmModal.displayName = 'IssueConfirmModal';

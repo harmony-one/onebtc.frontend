@@ -1,8 +1,8 @@
-import { StoreConstructor } from './core/StoreConstructor';
+import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, computed, observable } from 'mobx';
-import { IStores } from './index';
-import { UITransactionModal } from '../pages/Issue/components/UITransactionModal';
-import { guid } from '../utils';
+import { IStores } from '../../stores';
+import { UITransactionModal } from './UITransactionModal';
+import { guid } from '../../utils';
 
 export enum UITransactionStatus {
   INIT = 'init',

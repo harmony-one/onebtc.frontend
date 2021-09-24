@@ -8,30 +8,22 @@ import React from 'react';
 import LinkBitcoinAddress from '../../../../components/LinkBitcoinAddress';
 import LinkHarmonyAddress from '../../../../components/LinkHarmonyAddress';
 
-interface IssueTransactionDetailsProps {
-  bitcoinAddress: string;
-  bridgeFee: number;
-  vaultId: string;
-  totalReceived: number;
-  totalReceivedUsd: number;
-  requester: string;
+interface Props {
+  issueTxHash: string;
 }
 
-export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = ({
-  bitcoinAddress,
-  bridgeFee,
-  vaultId = '',
-  totalReceived,
-  totalReceivedUsd,
-  requester,
+export const IssueDetailsModalTransaction: React.FC<Props> = ({
+  issueTxHash,
 }) => {
-  const { user } = useStores();
+  const { user, issuePageStore } = useStores();
+  const issueInfo = issuePageStore.getIssueInfo(issueTxHash);
+
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box align="center">
-        <Title>{totalReceived} OneBTC</Title>
+        <Title>{issueInfo.totalReceived} OneBTC</Title>
         <Text color="#748695" size="small" inline>
-          ≈ ${formatWithSixDecimals(totalReceivedUsd)}
+          ≈ ${formatWithSixDecimals(issueInfo.totalReceivedUsd)}
         </Text>
       </Box>
       <Box direction="row" width="100%" align="start" justify="between">
@@ -39,7 +31,11 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
           <Text>Bridge Fee</Text>
         </Box>
         <Box>
-          <PriceView tokenName="BTC" value={bridgeFee} rate={user.btcRate} />
+          <PriceView
+            tokenName="BTC"
+            value={issueInfo.bridgeFee}
+            rate={user.btcRate}
+          />
         </Box>
       </Box>
 
@@ -52,7 +48,7 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
         <Box>
           <PriceView
             tokenName="OneBTC"
-            value={totalReceived}
+            value={issueInfo.totalReceived}
             rate={user.btcRate}
           />
         </Box>
@@ -64,7 +60,7 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmonyAddress address={requester} />
+            <LinkHarmonyAddress address={issueInfo.requester} />
           </Text>
         </Box>
       </Box>
@@ -84,7 +80,7 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmonyAddress address={vaultId} />
+            <LinkHarmonyAddress address={issueInfo.vaultId} />
           </Text>
         </Box>
       </Box>
@@ -95,7 +91,7 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
         </Box>
         <Box>
           <Text bold>
-            <LinkBitcoinAddress address={bitcoinAddress} />
+            <LinkBitcoinAddress address={issueInfo.bitcoinAddress} />
           </Text>
         </Box>
       </Box>
@@ -114,4 +110,4 @@ export const IssueTransactionDetails: React.FC<IssueTransactionDetailsProps> = (
   ));
 };
 
-IssueTransactionDetails.displayName = 'IssueTransactionDetails';
+IssueDetailsModalTransaction.displayName = 'IssueDetailsModalTransaction';

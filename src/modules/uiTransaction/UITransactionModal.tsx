@@ -1,13 +1,13 @@
 import React from 'react';
 import { Box } from 'grommet';
 import { Text } from 'components/Base';
-import { useStores } from '../../../stores';
+import { useStores } from '../../stores';
 import { observer } from 'mobx-react';
-import { Spinner } from '../../../ui';
-import { UITransactionStatus } from '../../../stores/UITransactionsStore';
-import LinkHarmonyTx from '../../../components/LinkHarmonyTx';
-import { ModalHeader } from '../../../components/ActionModals/components/ModalHeader';
-import { TActionModalProps } from '../../../components/ActionModals';
+import { Spinner } from '../../ui';
+import { UITransactionStatus } from './UITransactionsStore';
+import LinkHarmonyTx from '../../components/LinkHarmonyTx';
+import { ModalHeader } from '../../components/ActionModals/components/ModalHeader';
+import { TActionModalProps } from '../../components/ActionModals';
 
 function getUITxTitle(status: UITransactionStatus) {
   switch (status) {

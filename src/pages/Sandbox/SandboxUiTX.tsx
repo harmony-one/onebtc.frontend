@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from 'grommet';
-import { UITxModalContent } from '../Issue/components/UITransactionModal';
-import { UITransactionStatus } from '../../stores/UITransactionsStore';
+import { UITxModalContent } from '../../modules/uiTransaction/UITransactionModal';
+import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 
 type Props = {};
 

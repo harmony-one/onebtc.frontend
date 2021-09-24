@@ -4,7 +4,7 @@ import { UserStoreEx } from './UserStore';
 import { createStoresContext } from './create-context';
 import { IssuePageStore } from '../pages/Issue/IssuePageStore';
 import { RedeemPageStore } from '../pages/Redeem/RedeemPageStore';
-import { UITransactionsStore } from './UITransactionsStore';
+import { UITransactionsStore } from '../modules/uiTransaction/UITransactionsStore';
 import { TransferPageStore } from '../pages/Transfer/TransferPageStore';
 
 export interface IStores {

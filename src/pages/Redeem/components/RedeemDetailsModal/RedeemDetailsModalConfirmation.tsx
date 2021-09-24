@@ -3,7 +3,7 @@ import { useStores } from '../../../../stores';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
 import { Button, Text, Title } from '../../../../components/Base';
-import * as styles from '../../../Issue/components/IssueTransactionModal/IssueTransactionConfirmation.styl';
+import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModalConfirmation.styl';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoinTx from '../../../../components/LinkBitcoinTx';
 import { Checkmark } from 'grommet-icons';

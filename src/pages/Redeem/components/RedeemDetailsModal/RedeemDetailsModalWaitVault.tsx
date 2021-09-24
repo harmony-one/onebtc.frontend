@@ -2,7 +2,7 @@ import React from 'react';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
 import { Button, Text, Title } from '../../../../components/Base';
-import * as styles from '../../../Issue/components/IssueTransactionModal/IssueTransactionConfirmation.styl';
+import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModalConfirmation.styl';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { config } from '../../../../config';
 import { cutText } from '../../../../services/cutText';

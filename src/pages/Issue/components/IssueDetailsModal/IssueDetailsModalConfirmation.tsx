@@ -5,25 +5,26 @@ import { Button, Text, Title } from '../../../../components/Base';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoinTx from '../../../../components/LinkBitcoinTx';
 import { BcoinBTCTx } from '../../../../services/bitcoin';
-import * as styles from './IssueTransactionConfirmation.styl';
+import * as styles from './IssueDetailsModalConfirmation.styl';
 import { useStores } from '../../../../stores';
 import { config } from '../../../../config';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { useIssueStatusWatcher } from '../../../../hooks/useIssueStatusWatcher';
 
-interface IssueTransactionConfirmationProps {
+interface Props {
   btcTx: BcoinBTCTx;
   issueTxHash: string;
 }
 
-export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmationProps> = ({
+export const IssueDetailsModalConfirmation: React.FC<Props> = ({
   btcTx,
   issueTxHash,
 }) => {
   const { issuePageStore, user } = useStores();
   const isConfirmed = btcTx.confirmations >= config.bitcoin.waitConfirmations;
   const title = isConfirmed ? 'Confirmed' : 'Received';
-  const issue = issuePageStore.issuesMap[issueTxHash];
+
+  const issueInfo = issuePageStore.getIssueInfo(issueTxHash);
 
   const handleClaim = useCallback(() => {
     issuePageStore.executeIssue(issueTxHash, btcTx.hash);
@@ -31,8 +32,8 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
 
   const status = useIssueStatusWatcher({
     oneBtcClient: user.oneBtcClient,
-    issueId: issue.issueEvent.issue_id,
-    requester: issue.issueEvent.requester,
+    issueId: issueInfo.issueEvent.issue_id,
+    requester: issueInfo.issueEvent.requester,
   });
 
   return (
@@ -84,4 +85,4 @@ export const IssueTransactionConfirmation: React.FC<IssueTransactionConfirmation
   );
 };
 
-IssueTransactionConfirmation.displayName = 'IssueTransactionConfirmation';
+IssueDetailsModalConfirmation.displayName = 'IssueDetailsModalConfirmation';

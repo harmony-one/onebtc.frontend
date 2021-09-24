@@ -1,15 +1,13 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import * as bitcoin from 'bitcoinjs-lib';
 import utils from 'web3-utils';
-import { action, autorun, computed, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
-import { DepositModal } from './components/DepositModal';
-import { IssueTransactionModal } from './components/IssueTransactionModal/IssueTransactionModal';
+import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
+import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsModal';
 import { IssueConfirmModal } from './components/IssueConfirmModal';
-import * as agent from 'superagent';
-import { IOperation } from '../../stores/interfaces';
 import { guid } from '../../utils';
-import { UITransaction } from '../../stores/UITransactionsStore';
+import { UITransaction } from '../../modules/uiTransaction/UITransactionsStore';
 import {
   bitcoinToSatoshi,
   satoshiToBitcoin,
@@ -145,9 +143,30 @@ export class IssuePageStore extends StoreConstructor {
     }
   }
 
+  public getIssueInfo(issueTxHash: string) {
+    const issue = this.issuesMap[issueTxHash];
+    const issueEvent = issue.issueEvent;
+    const sendAmount =
+      (Number(issueEvent.amount) + Number(issueEvent.fee)) / 1e8;
+
+    const totalReceived = Number(issue.issueEvent.amount) / 1e8;
+    return {
+      sendAmount,
+      issueEvent: issue.issueEvent,
+      sendUsdAmount: sendAmount * this.stores.user.btcRate,
+      issueId: issue.issueEvent.issue_id,
+      vaultId: issue.issueEvent.vault_id,
+      bitcoinAddress: issue.btcAddress,
+      bridgeFee: Number(issue.issueEvent.fee) / 1e8,
+      totalReceived: totalReceived,
+      totalReceivedUsd: totalReceived * this.stores.user.btcRate,
+      requester: issueEvent.requester,
+    };
+  }
+
   @action.bound
   public openTransactionModal(transactionHash: string) {
-    this.stores.actionModals.open(IssueTransactionModal, {
+    this.stores.actionModals.open(IssueDetailsModal, {
       initData: {
         transactionHash,
       },
@@ -169,7 +188,7 @@ export class IssuePageStore extends StoreConstructor {
 
   @action.bound
   public openDepositModal(transactionHash: string) {
-    this.stores.actionModals.open(DepositModal, {
+    this.stores.actionModals.open(IssueDepositModal, {
       applyText: 'I have made the payment',
       closeText: 'Close',
       initData: {
