@@ -2,10 +2,14 @@ import * as React from 'react';
 import styled, { withTheme } from 'styled-components';
 import { Box, BoxProps } from 'grommet';
 import { observer } from 'mobx-react-lite';
+import cn from 'classnames';
 import { IStyledChildrenProps } from 'interfaces';
-import { Title } from '../Base';
+import { NavLink } from 'react-router-dom';
+import { Title, Text } from '../Base';
 import { SignInButton } from './components/SignInButton';
 import { HeadBalance } from './components/HeadBalance';
+import { routes } from '../../constants/routes';
+import * as s from './styles.styl';
 
 const MainLogo = styled.img`
   width: auto;
@@ -46,10 +50,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
           }}
         >
           <Box direction="row" align="center">
-            <Box
-              align="center"
-              margin={{ right: 'small' }}
-            >
+            <Box align="center" margin={{ right: 'small' }}>
               <MainLogo src="/one.svg" />
             </Box>
             <Box>
@@ -57,6 +58,18 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
                 OneBTC by Harmony
               </Title>
             </Box>
+          </Box>
+          <Box direction="row" gap="small">
+            <NavLink className={s.link} to={routes.bridge}>
+              <Box className={cn(s.item)}>
+                <Text>Bridge</Text>
+              </Box>
+            </NavLink>
+            <NavLink to={routes.dashboard} className={s.link}>
+              <Box className={cn(s.item)}>
+                <Text>Dashboard</Text>
+              </Box>
+            </NavLink>
           </Box>
 
           <Box direction="row" align="center" gap="small">

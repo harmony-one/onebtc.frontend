@@ -13,6 +13,7 @@ export const config = {
       testnet: {
         wallet: 'https://www.blockchain.com/btc-testnet/address/',
         transaction: 'https://www.blockchain.com/btc-testnet/tx/',
+        block: 'https://www.blockchain.com/btc-testnet/block/',
       },
     },
   },

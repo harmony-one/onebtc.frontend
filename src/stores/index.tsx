@@ -6,6 +6,9 @@ import { IssuePageStore } from '../pages/Issue/IssuePageStore';
 import { RedeemPageStore } from '../pages/Redeem/RedeemPageStore';
 import { UITransactionsStore } from '../modules/uiTransaction/UITransactionsStore';
 import { TransferPageStore } from '../pages/Transfer/TransferPageStore';
+import { RelayBlocksStore } from '../pages/DashboardRelay/RelayBlocksStore';
+import { BtcRelayStore } from '../modules/btcRelay/BtcRelayStore';
+import { BcoinStore } from '../modules/bcoin/BcoinStore';
 
 export interface IStores {
   routing?: RouterStore;
@@ -15,6 +18,9 @@ export interface IStores {
   redeemPageStore?: RedeemPageStore;
   transferPageStore?: TransferPageStore;
   uiTransactionsStore?: UITransactionsStore;
+  relayBlocksStore?: RelayBlocksStore;
+  btcRelayStore?: BtcRelayStore;
+  bcoinStore?: BcoinStore;
 }
 
 const stores: IStores = {};
@@ -26,6 +32,9 @@ stores.redeemPageStore = new RedeemPageStore(stores);
 stores.transferPageStore = new TransferPageStore(stores);
 stores.actionModals = new ActionModalsStore();
 stores.user = new UserStoreEx(stores);
+stores.relayBlocksStore = new RelayBlocksStore(stores);
+stores.btcRelayStore = new BtcRelayStore(stores);
+stores.bcoinStore = new BcoinStore(stores);
 
 if (!process.env.production) {
   window.stores = stores;

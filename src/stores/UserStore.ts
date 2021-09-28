@@ -129,8 +129,6 @@ export class UserStoreEx extends StoreConstructor {
 
   @action.bound
   handleAccountsChanged(...args) {
-    console.log('### handleAccountsChanged', args);
-
     if (args[0].length === 0) {
       return this.setError('Please connect to MetaMask');
     } else {
@@ -284,13 +282,13 @@ export class UserStoreEx extends StoreConstructor {
   }
 
   @action public async getRates() {
-    let res = await agent.get<{ body: IOperation }>(
+    let res = await agent.get(
       'https://api.binance.com/api/v1/ticker/24hr?symbol=ONEUSDT',
     );
 
     this.oneRate = res.body.lastPrice;
 
-    res = await agent.get<{ body: IOperation }>(
+    res = await agent.get(
       'https://api.binance.com/api/v1/ticker/24hr?symbol=BTCUSDT',
     );
 

@@ -92,7 +92,7 @@ vault_id: "0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581"
   const executeIssue = async (oneAddress, issueId, txData) => {};
 
   const loadWalletTrx = async btcAddress => {
-    const response = await agent.get<{ body: TResponse }>(API_URL + btcAddress);
+    const response = await agent.get(API_URL + btcAddress);
 
     console.log('### response', response.body);
 
