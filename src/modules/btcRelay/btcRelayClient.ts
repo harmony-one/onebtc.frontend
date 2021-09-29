@@ -25,13 +25,66 @@ export interface IBtcRelayEvent {
   };
 }
 
-interface IBtcRelayEvents {
-  content: IBtcRelayEvent[];
+export interface IVault {
+  id: string;
+  btcPublicKeyX: string;
+  btcPublicKeyY: string;
+  collateral: string;
+  issued: string;
+  lastUpdate: number;
+  replaceCollateral: string;
+  toBeIssued: string;
+  toBeRedeemed: string;
+  toBeReplaced: string;
+}
+
+export interface IIssue {
+  id: string;
+  amount: string;
+  btcAddress: string;
+  btcHeight: string;
+  btcPublicKey: null;
+  fee: string;
+  griefingCollateral: string;
+  lastUpdate: number;
+  opentime: string;
+  period: string;
+  requester: string;
+  status: string;
+  vault: string;
+}
+
+export interface IRedeem {
+  id: string;
+  amount: string;
+  btcAddress: string;
+  btcHeight: string;
+  btcPublicKey: null;
+  fee: string;
+  griefingCollateral: string;
+  lastUpdate: number;
+  opentime: string;
+  period: string;
+  requester: string;
+  status: string;
+  vault: string;
+}
+
+interface IListContainer<T> {
+  content: T[];
   totalElements: number;
   totalPages: number;
   size: string;
   page: string;
 }
+
+interface IVaultList extends IListContainer<IVault> {}
+
+interface IIssueList extends IListContainer<IIssue> {}
+
+interface IRedeemList extends IListContainer<IRedeem> {}
+
+interface IBtcRelayEvents extends IListContainer<IBtcRelayEvent> {}
 
 export interface IBtcRelayInfo {
   totalLogs: number;
@@ -45,14 +98,16 @@ export interface IBtcRelayInfo {
   waitInterval: number;
 }
 
+interface IPagination {
+  size: number;
+  page: number;
+}
+
 export default class BtcRelayClient {
   static loadEvents = async ({
     size = 10,
     page = 0,
-  }: {
-    size: number;
-    page: number;
-  }): Promise<IBtcRelayEvents> => {
+  }: IPagination): Promise<IBtcRelayEvents> => {
     const res = await agent
       .get('https://relayer.btc.test.hmny.io/relay/events/data')
       .query({ size, page });
@@ -69,7 +124,43 @@ export default class BtcRelayClient {
   };
 
   static loadLastEvent = async (): Promise<IBtcRelayEvent> => {
-    const events = await BtcRelayClient.loadEvents({ size: 1, page: 0 });
+    const events = await BtcRelayClient.loadEvents({
+      size: 1,
+      page: 0,
+    });
     return events.content[0];
+  };
+
+  static loadIssueList = async ({
+    size,
+    page,
+  }: IPagination): Promise<IIssueList> => {
+    const res = await agent
+      .get('https://relayer.btc.test.hmny.io/issues/data')
+      .query({ size, page });
+
+    return res.body;
+  };
+
+  static loadRedeemList = async ({
+    size,
+    page,
+  }: IPagination): Promise<IRedeemList> => {
+    const res = await agent
+      .get('https://relayer.btc.test.hmny.io/redeems/data')
+      .query({ size, page });
+
+    return res.body;
+  };
+
+  static loadVaultList = async ({
+    size,
+    page,
+  }: IPagination): Promise<IVaultList> => {
+    const res = await agent
+      .get('https://relayer.btc.test.hmny.io/vaults/data')
+      .query({ size, page });
+
+    return res.body;
   };
 }

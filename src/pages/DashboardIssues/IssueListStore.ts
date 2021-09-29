@@ -1,20 +1,19 @@
 import { ListStoreConstructor } from '../../stores/core/ListStoreConstructor';
 import { IStores } from '../../stores';
-import BtcRelayClient, {
-  IBtcRelayEvent,
-} from '../../modules/btcRelay/btcRelayClient';
+import BtcRelayClient, { IIssue } from '../../modules/btcRelay/btcRelayClient';
 
-export class RelayBlocksStore extends ListStoreConstructor<IBtcRelayEvent> {
+export class IssueListStore extends ListStoreConstructor<IIssue> {
   constructor(stores: IStores) {
-    const loadEvents = params => {
-      return BtcRelayClient.loadEvents({
+    const loadIssueList = params => {
+      return BtcRelayClient.loadIssueList({
         size: params.size,
         page: params.page,
       });
     };
+
     const options = {
       pollingInterval: 10000,
     };
-    super(stores, loadEvents, options);
+    super(stores, loadIssueList, options);
   }
 }

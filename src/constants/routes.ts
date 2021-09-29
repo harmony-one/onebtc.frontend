@@ -12,6 +12,7 @@ export const routes = {
   dashboardRelay: '/dashboard/relay',
   dashboardIssue: '/dashboard/issues',
   dashboardRedeem: '/dashboard/redeem',
+  dashboardVault: '/dashboard/vault',
 } as const;
 
 export type Routes = InferValueTypes<typeof routes>;

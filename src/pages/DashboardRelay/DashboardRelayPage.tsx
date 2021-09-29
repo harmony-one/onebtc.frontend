@@ -11,7 +11,7 @@ export const DashboardRelayPage: React.FC<Props> = () => {
   return (
     <BaseContainer>
       <PageContainer>
-        <Box gap="small" pad={{ horizontal: 'medium' }}>
+        <Box gap="medium" pad={{ horizontal: 'xlarge' }}>
           <Title align="center">BTC Relay</Title>
           <Divider colorful fullwidth />
           <DashboardRelayInfo />

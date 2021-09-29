@@ -2,22 +2,22 @@ import React from 'react';
 import { BaseContainer, PageContainer } from '../../components';
 import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
-import { DashboardIssuesTable } from './components/DashboardIssuesTable';
+import { DashboardVaultTable } from './components/DashboardVaultTable';
 
 type Props = {};
 
-export const DashboardIssuesPage: React.FC<Props> = () => {
+export const DashboardVaultsPage: React.FC<Props> = () => {
   return (
     <BaseContainer>
       <PageContainer>
         <Box gap="medium" pad={{ horizontal: 'xlarge' }}>
-          <Title align="center">Issue Requests</Title>
+          <Title align="center">Vaults</Title>
           <Divider colorful fullwidth />
-          <DashboardIssuesTable />
+          <DashboardVaultTable />
         </Box>
       </PageContainer>
     </BaseContainer>
   );
 };
 
-DashboardIssuesPage.displayName = 'DashboardIssuesPage';
+DashboardVaultsPage.displayName = 'DashboardVaultsPage';

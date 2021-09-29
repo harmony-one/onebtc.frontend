@@ -17,6 +17,7 @@ import { WatcherBtcRelay } from './modules/btcRelay/WatcherBtcRelay';
 import { WatcherBcoin } from './modules/bcoin/WatcherBcoin';
 import { DashboardIssuesPage } from './pages/DashboardIssues/DashboardIssuesPage';
 import { DashboardRedeemsPage } from './pages/DashboardRedeems/DashboardRedeemsPage';
+import { DashboardVaultsPage } from './pages/DashboardVaults/DashboardVaultsPage';
 
 const App: React.FC = () => (
   <Providers>
@@ -40,6 +41,11 @@ const App: React.FC = () => (
         exact
         path={routes.dashboardRedeem}
         component={DashboardRedeemsPage}
+      />
+      <Route
+        exact
+        path={routes.dashboardVault}
+        component={DashboardVaultsPage}
       />
       <Redirect to={routes.issue} />
     </Switch>
