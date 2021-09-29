@@ -3,7 +3,7 @@ import { Box } from 'grommet';
 import { Checkmark } from 'grommet-icons';
 import { Button, Text, Title } from '../../../../components/Base';
 import { cutText } from '../../../../services/cutText';
-import LinkBitcoinTx from '../../../../components/LinkBitcoinTx';
+import LinkBitcoin from '../../../../components/LinkBitcoin';
 import { BcoinBTCTx } from '../../../../services/bitcoin';
 import * as styles from './IssueDetailsModalConfirmation.styl';
 import { useStores } from '../../../../stores';
@@ -59,7 +59,7 @@ export const IssueDetailsModalConfirmation: React.FC<Props> = ({
         <Text>BTC Transaction: {cutText(btcTx.hash)}</Text>
       </Box>
       <Box>
-        <LinkBitcoinTx txHash={btcTx.hash} text="View on explorer" />
+        <LinkBitcoin hash={btcTx.hash} type="tx" text="View on explorer" />
       </Box>
       {isConfirmed && (
         <Box>

@@ -5,8 +5,8 @@ import { Box } from 'grommet';
 import { Divider, Text, Title } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
-import LinkBitcoinAddress from '../../../../components/LinkBitcoinAddress';
 import LinkHarmonyAddress from '../../../../components/LinkHarmonyAddress';
+import LinkBitcoin from '../../../../components/LinkBitcoin';
 
 export const RedeemDetailsModalTransaction: React.FC<{
   redeemTxHash: string;
@@ -70,7 +70,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
         </Box>
         <Box>
           <Text bold>
-            <LinkBitcoinAddress address={redeemInfo.bitcoinAddress} />
+            <LinkBitcoin type="wallet" hash={redeemInfo.bitcoinAddress} />
           </Text>
         </Box>
       </Box>

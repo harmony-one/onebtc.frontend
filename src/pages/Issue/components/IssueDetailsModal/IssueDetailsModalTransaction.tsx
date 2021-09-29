@@ -5,8 +5,8 @@ import { Divider, Text, Title } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
 import React from 'react';
-import LinkBitcoinAddress from '../../../../components/LinkBitcoinAddress';
 import LinkHarmonyAddress from '../../../../components/LinkHarmonyAddress';
+import LinkBitcoin from '../../../../components/LinkBitcoin';
 
 interface Props {
   issueTxHash: string;
@@ -91,7 +91,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({
         </Box>
         <Box>
           <Text bold>
-            <LinkBitcoinAddress address={issueInfo.bitcoinAddress} />
+            <LinkBitcoin type="wallet" hash={issueInfo.bitcoinAddress} />
           </Text>
         </Box>
       </Box>

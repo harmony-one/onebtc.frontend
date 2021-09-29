@@ -6,7 +6,7 @@ import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetail
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { config } from '../../../../config';
 import { cutText } from '../../../../services/cutText';
-import LinkBitcoinTx from '../../../../components/LinkBitcoinTx';
+import LinkBitcoin from '../../../../components/LinkBitcoin';
 import { BcoinBTCTx } from '../../../../services/bitcoin';
 
 export const RedeemDetailsModalWaitVault: React.FC<{

@@ -3,7 +3,9 @@ import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
 import { IBtcRelayEvent } from '../../../modules/btcRelay/btcRelayClient';
-import LinkBitcoinTx from '../../../components/LinkBitcoinTx';
+import LinkBitcoin from '../../../components/LinkBitcoin';
+import LinkHarmonyTx from '../../../components/LinkHarmonyTx';
+import * as s from './DashboardRelayBlocks.styl';
 
 type Props = {};
 
@@ -20,7 +22,8 @@ export const DashboardRelayBlocks: React.FC<Props> = observer(() => {
   const columns: IColumn<IBtcRelayEvent>[] = [
     {
       title: 'Block height',
-      width: 200,
+      width: 150,
+      className: s.column,
       key: '_id',
       render: (value: IBtcRelayEvent) => {
         return <div>{value.returnValues.height}</div>;
@@ -28,22 +31,28 @@ export const DashboardRelayBlocks: React.FC<Props> = observer(() => {
     },
     {
       title: 'Block hash',
+      className: s.column,
       key: '_id',
-      width: 200,
+      width: '33',
       render: (value: IBtcRelayEvent) => {
+        const blockHash = Buffer.from(value.returnValues.digest.slice(2), 'hex')
+          .reverse()
+          .toString('hex');
+
         return (
-          <LinkBitcoinTx txHash={value.blockHash}>
-            {value.blockHash}
-          </LinkBitcoinTx>
+          <LinkBitcoin type="block" cut={false} hash={blockHash}>
+            {blockHash}
+          </LinkBitcoin>
         );
       },
     },
     {
-      title: 'Added to parachain',
+      title: 'Harmony Transaction',
+      className: s.column,
       key: '_id',
-      width: '200',
+      width: '33',
       render: (value: IBtcRelayEvent) => {
-        return <div>{value.blockHash}</div>;
+        return <LinkHarmonyTx txHash={value.transactionHash} />;
       },
     },
   ];
