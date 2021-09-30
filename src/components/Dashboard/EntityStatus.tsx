@@ -1,6 +1,6 @@
 import React from 'react';
 import { IssueStatus, RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
-import { StatusGood, Clock, StatusCritical } from 'grommet-icons';
+import { Clock, StatusCritical, StatusGood } from 'grommet-icons';
 import { Box } from 'grommet';
 import { Text } from 'components/Base';
 
@@ -48,11 +48,11 @@ export const StatusCompleted: React.FC = () => {
 StatusCompleted.displayName = 'StatusCompleted';
 
 export const EntityStatus: React.FC<Props> = ({ status }) => {
-  if (status === '2') {
+  if (status === RedeemStatus.COMPLETED) {
     return <StatusCompleted />;
   }
 
-  if (status === '1') {
+  if (status === RedeemStatus.PENDING) {
     return <StatusPending />;
   }
 

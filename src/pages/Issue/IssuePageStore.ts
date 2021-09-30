@@ -85,7 +85,7 @@ export class IssuePageStore extends StoreConstructor {
 
       this.stores.actionModals.open(IssueConfirmModal, {
         initData: {
-          total: issueInfo.rawIssue.amount,
+          total: issueInfo.amount,
           txHash: result.transactionHash,
         },
         applyText: '',

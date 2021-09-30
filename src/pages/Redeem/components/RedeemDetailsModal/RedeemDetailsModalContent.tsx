@@ -7,6 +7,7 @@ import { RedeemDetailsModalConfirmation } from './RedeemDetailsModalConfirmation
 import { RedeemDetailsModalWaitVault } from './RedeemDetailsModalWaitVault';
 import { useBtcWalletIncomeWatcher } from '../../../../hooks/useBtcWalletIncomeWatcher';
 import { useRedeemStatusWatcher } from '../../../../hooks/useRedeemStatusWatcher';
+import { RedeemStatus } from '../../../../../../onebtc.sdk.fork/lib/blockchain/hmy/types';
 
 interface Props {
   redeemId: string;
@@ -27,7 +28,7 @@ export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
     requester: redeemInfo.rawRedeem.requester,
   });
 
-  const isCompleted = status === '2';
+  const isCompleted = status === RedeemStatus.COMPLETED;
 
   return (
     <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">
