@@ -8,9 +8,14 @@ import { useParams } from 'react-router';
 import { useEffect } from 'react';
 import { useStores } from '../../stores';
 
-export const IssuePage = props => {
+export const IssuePage = () => {
   const { issueTx, modal } = useParams<{ issueTx?: string; modal: string }>();
   const { issuePageStore } = useStores();
+
+  useEffect(() => {
+    issuePageStore.loadVaults();
+  }, [issuePageStore]);
+
   useEffect(() => {
     if (issueTx) {
       issuePageStore.loadIssueDetails(issueTx).then(() => {

@@ -12,6 +12,8 @@ import { RedeemWithdrawModal } from './components/RedeemWithdrawModal/RedeemWith
 import { RedeemDetailsModal } from './components/RedeemDetailsModal/RedeemDetailsModal';
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';
 import { RedeemDetails } from 'onebtc.sdk/lib/blockchain/hmy/types';
+import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
+import { IVault } from '../../modules/btcRelay/btcRelayTypes';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -42,10 +44,7 @@ export class RedeemPageStore extends StoreConstructor {
     'init';
 
   @observable form = this.defaultForm;
-
-  constructor(stores) {
-    super(stores);
-  }
+  @observable vaultList: IVault[] = [];
 
   @computed
   get bridgeFee() {
@@ -55,6 +54,12 @@ export class RedeemPageStore extends StoreConstructor {
   @computed
   get totalReceived() {
     return Number(this.form.oneBTCAmount) - this.bridgeFee;
+  }
+
+  @action.bound
+  public async loadVaults() {
+    const response = await BtcRelayClient.loadVaultList({ size: 10, page: 0 });
+    this.vaultList = response.content;
   }
 
   @action.bound

@@ -1,6 +1,4 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
-import * as bitcoin from 'bitcoinjs-lib';
-import utils from 'web3-utils';
 import { action, computed, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
@@ -14,8 +12,9 @@ import {
   walletHexToBase58,
   walletHexToBech32,
 } from '../../services/bitcoin';
-import { issue_tx_mock } from 'onebtc.sdk/lib/helpers';
 import { IssueDetails } from 'onebtc.sdk/lib/blockchain/hmy/types';
+import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
+import { IVault } from '../../modules/btcRelay/btcRelayTypes';
 
 export interface ITransaction {
   amount: string;
@@ -43,10 +42,7 @@ export class IssuePageStore extends StoreConstructor {
     'init';
 
   @observable form = this.defaultForm;
-
-  constructor(stores) {
-    super(stores);
-  }
+  @observable vaultList: IVault[] = [];
 
   @computed
   get bridgeFee() {
@@ -76,29 +72,7 @@ export class IssuePageStore extends StoreConstructor {
     try {
       const issue = this.issuesMap[transactionHash];
 
-      const btcBlockNumberMock = 1000;
-      const btcTxIndexMock = 2;
-      const heightAndIndex = (btcBlockNumberMock << 32) | btcTxIndexMock;
-      const headerMock = Buffer.alloc(0);
-      const proofMock = Buffer.alloc(0);
-
       const address = this.stores.user.address;
-
-      const bitcoinHexAddress = issue.issueEvent.btc_address;
-      const btcBase58Address = bitcoin.address.toBase58Check(
-        Buffer.from(bitcoinHexAddress.slice(2), 'hex'),
-        0,
-      );
-
-      const issueId = utils.toBN(issue.issueEvent.issue_id);
-      const btcTx = issue_tx_mock(
-        // @ts-ignore
-        issueId,
-        btcBase58Address,
-        issue.issueAmount,
-      );
-
-      console.log('### btcBase58', btcBase58Address);
 
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
       hmyClient.setUseMathWallet(true);
@@ -209,80 +183,9 @@ export class IssuePageStore extends StoreConstructor {
     });
   }
 
-  @action.bound
-  public async mockExecuteIssue(transactionHash: string) {
-    // console.log('### mockExecuteIssue');
-    // this.status = 'pending';
-    // const uiTxId = guid();
-    // const issueUiTx = this.createUiTx(uiTxId);
-    // issueUiTx.setStatusProgress();
-    // issueUiTx.showModal();
-    // try {
-    //   const issue = this.issuesMap[transactionHash];
-    //
-    //   const btcBlockNumberMock = 1000;
-    //   const btcTxIndexMock = 2;
-    //   const heightAndIndex = (btcBlockNumberMock << 32) | btcTxIndexMock;
-    //   const headerMock = Buffer.alloc(0);
-    //   const proofMock = Buffer.alloc(0);
-    //
-    //   const address = this.stores.user.address;
-    //
-    //   const issueId = utils.toBN(issue.issueEvent.issue_id);
-    //   console.log('### issueId BN', issueId);
-    //   const btcTx = issue_tx_mock(
-    //     // @ts-ignore
-    //     issueId,
-    //     issue.btcBase58Address,
-    //     issue.issueAmount,
-    //   );
-    //
-    //   const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
-    //
-    //   console.log('### run execute issuePageStore');
-    //
-    //   issueUiTx.setStatusWaitingSignIn();
-    //
-    //   const result = await hmyClient.methods.executeIssue(
-    //     address,
-    //     // @ts-ignore
-    //     issue.issueEvent.issue_id,
-    //     proofMock,
-    //     btcTx.toBuffer(),
-    //     heightAndIndex,
-    //     headerMock,
-    //     txHash => {
-    //       issueUiTx.setTxHash(txHash);
-    //       issueUiTx.setStatusProgress();
-    //     },
-    //   );
-    //   console.log('### execute issuePageStore success');
-    //   issueUiTx.hideModal();
-    //   issueUiTx.setStatusSuccess();
-    //
-    //   this.stores.actionModals.open(IssueConfirmModal, {
-    //     initData: {
-    //       total: satoshiToBitcoin(issue.issueEvent.amount),
-    //       txHash: result.transactionHash,
-    //     },
-    //     applyText: '',
-    //     closeText: '',
-    //     noValidation: true,
-    //     width: '320px',
-    //     showOther: true,
-    //     onApply: () => {
-    //       return Promise.resolve();
-    //     },
-    //   });
-    //   this.status = 'success';
-    //   console.log('### execute issuePageStore finished');
-    // } catch (err) {
-    //   debugger;
-    //   console.log('### err mock execute issuePageStore error', err);
-    //   this.status = 'error';
-    //   issueUiTx.setError(err);
-    //   issueUiTx.setStatusFail();
-    // }
+  public async loadVaults() {
+    const response = await BtcRelayClient.loadVaultList({ size: 10, page: 0 });
+    this.vaultList = response.content;
   }
 
   @action.bound

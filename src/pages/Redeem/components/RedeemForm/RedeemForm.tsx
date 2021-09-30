@@ -1,17 +1,34 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
 import { observer } from 'mobx-react';
-import { Form, isRequired, NumberInput, Input } from 'components/Form';
+import { Form, isRequired, NumberInput, Input, Select } from 'components/Form';
 import { lessThan, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
+import { cutText } from '../../../../services/cutText';
+import { satoshiToBitcoin } from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const RedeemForm: React.FC<Props> = observer(() => {
   const { redeemPageStore, user } = useStores();
   const [form, setForm] = useState();
+
+  const vaultOptions = useMemo(() => {
+    return redeemPageStore.vaultList.map(vault => {
+      const name = cutText(vault.id);
+      const amount = satoshiToBitcoin(vault.collateral);
+      return {
+        text: (
+          <Text>
+            {name} balance: <Text bold>{amount}</Text>
+          </Text>
+        ),
+        value: vault.id,
+      };
+    });
+  }, [redeemPageStore.vaultList]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -46,14 +63,12 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         rules={[isRequired]}
       />
 
-      <Input
-        label={`Vault identity`}
+      <Select
+        label="Vault identity"
         name="vaultId"
-        type="string"
-        precision="6"
-        placeholder="enter vault identity"
         style={{ width: '100%' }}
         rules={[isRequired]}
+        options={vaultOptions}
       />
 
       <Box

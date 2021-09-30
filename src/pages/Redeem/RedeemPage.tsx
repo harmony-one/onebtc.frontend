@@ -12,6 +12,11 @@ import { useEffect } from 'react';
 export const RedeemPage = () => {
   const { redeemTx, modal } = useParams<{ redeemTx?: string; modal: string }>();
   const { redeemPageStore } = useStores();
+
+  useEffect(() => {
+    redeemPageStore.loadVaults();
+  }, [redeemPageStore]);
+
   useEffect(() => {
     if (redeemTx) {
       redeemPageStore.loadRedeemDetails(redeemTx).then(() => {
