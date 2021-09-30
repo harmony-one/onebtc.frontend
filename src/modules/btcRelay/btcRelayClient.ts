@@ -58,9 +58,9 @@ export default class BtcRelayClient {
     return res.body;
   };
 
-  static loadRedeem = async (issueId: string): Promise<IRedeem> => {
+  static loadRedeem = async (redeemId: string): Promise<IRedeem> => {
     const res = await agent.get(
-      `https://relayer.btc.test.hmny.io/redeems/data/${issueId}`,
+      `https://relayer.btc.test.hmny.io/redeems/data/${redeemId}`,
     );
 
     return res.body;

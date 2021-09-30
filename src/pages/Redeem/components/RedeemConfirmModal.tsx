@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from 'grommet';
-import { Title, Text, Divider } from 'components/Base';
+import { Text, Divider } from 'components/Base';
 import LinkHarmonyTx from '../../../components/LinkHarmonyTx';
 import { ModalHeader } from '../../../components/ActionModals/components/ModalHeader';
 import { TActionModalProps } from '../../../components/ActionModals';

@@ -5,15 +5,13 @@ import {
   bitcoinToSatoshi,
   satoshiToBitcoin,
   walletBech32ToHex,
-  walletHexToBase58,
   walletHexToBech32,
 } from '../../services/bitcoin';
 import { RedeemWithdrawModal } from './components/RedeemWithdrawModal/RedeemWithdrawModal';
 import { RedeemDetailsModal } from './components/RedeemDetailsModal/RedeemDetailsModal';
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';
-import { RedeemDetails } from 'onebtc.sdk/lib/blockchain/hmy/types';
 import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
-import { IVault } from '../../modules/btcRelay/btcRelayTypes';
+import { IRedeem, IVault } from '../../modules/btcRelay/btcRelayTypes';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -27,18 +25,10 @@ export class RedeemPageStore extends StoreConstructor {
     oneBTCAmount: '0.0001',
     bitcoinAddress: '',
     totalReceive: 0,
-    vaultId: '0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581',
+    vaultId: '',
   };
 
-  @observable redeemMap: {
-    [key: string]: {
-      redeemAmount: number;
-      vaultId: string;
-      redeemEvent: RedeemDetails;
-      btcBase58Address: string;
-      btcAddress: string;
-    };
-  } = {};
+  @observable redeemMap: Record<string, IRedeem> = {};
 
   @observable status: 'init' | 'pending' | 'success' | 'cancel' | 'error' =
     'init';
@@ -63,14 +53,14 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   @action.bound
-  public async executeRedeem(transactionHash: string, btcTxHash: string) {
+  public async executeRedeem(redeemId: string, btcTxHash: string) {
     this.status = 'pending';
 
     const redeemUiTx = this.stores.uiTransactionsStore.create();
     redeemUiTx.setStatusProgress();
     redeemUiTx.showModal();
     try {
-      const redeem = this.redeemMap[transactionHash];
+      const redeem = this.getRedeemInfo(redeemId);
 
       const address = this.stores.user.address;
 
@@ -97,7 +87,7 @@ export class RedeemPageStore extends StoreConstructor {
 
       this.stores.actionModals.open(RedeemConfirmModal, {
         initData: {
-          total: satoshiToBitcoin(redeem.redeemEvent.amount),
+          total: satoshiToBitcoin(redeem.totalReceived),
           txHash: result.transactionHash,
         },
         applyText: '',
@@ -119,19 +109,19 @@ export class RedeemPageStore extends StoreConstructor {
     }
   }
 
-  public openRedeemWithdrawModal(transactionHash: string) {
+  public openRedeemWithdrawModal(redeemId: string) {
     this.stores.actionModals.open(RedeemWithdrawModal, {
       applyText: 'View Progress',
       closeText: 'Close',
       initData: {
-        transactionHash: transactionHash,
+        redeemId,
       },
       noValidation: true,
       width: '500px',
       showOther: true,
       onApply: () => {
-        this.openRedeemDetailsModal(transactionHash);
-        this.stores.routing.gotToRedeemModal(transactionHash, 'details');
+        this.openRedeemDetailsModal(redeemId);
+        this.stores.routing.gotToRedeemModal(redeemId, 'details');
         return Promise.resolve();
       },
       onClose: () => {
@@ -144,29 +134,29 @@ export class RedeemPageStore extends StoreConstructor {
   public getRedeemInfo(requestRedeemTxHash: string) {
     const redeem = this.redeemMap[requestRedeemTxHash];
 
-    const sendAmount = satoshiToBitcoin(redeem.redeemAmount);
-    const totalReceived = satoshiToBitcoin(redeem.redeemEvent.amount);
+    const sendAmount = satoshiToBitcoin(redeem.amount);
+    const totalReceived = satoshiToBitcoin(redeem.amount);
 
     return {
       sendAmount,
       sendUsdAmount: sendAmount * this.stores.user.btcRate,
-      redeemId: redeem.redeemEvent.redeem_id,
-      vaultId: redeem.redeemEvent.vault_id,
-      bitcoinAddress: redeem.btcAddress,
-      bridgeFee: satoshiToBitcoin(redeem.redeemEvent.fee),
-      totalReceived: satoshiToBitcoin(redeem.redeemEvent.amount),
+      redeemId: redeem.id,
+      vaultId: redeem.vault,
+      bitcoinAddress: walletHexToBech32(redeem.btcAddress),
+      bridgeFee: satoshiToBitcoin(redeem.fee),
+      totalReceived: totalReceived,
       totalReceivedUsd: totalReceived * this.stores.user.btcRate,
-      rawRedeem: redeem.redeemEvent,
+      rawRedeem: redeem,
     };
   }
 
   @action.bound
-  public openRedeemDetailsModal(transactionHash: string) {
+  public openRedeemDetailsModal(redeemId: string) {
     this.stores.actionModals.open(RedeemDetailsModal, {
       applyText: '',
       closeText: 'Close',
       initData: {
-        transactionHash,
+        redeemId,
       },
       noValidation: true,
       width: '80%',
@@ -183,21 +173,13 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   public async loadRedeemDetails(redeemId: string) {
-    const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+    const redeem = await BtcRelayClient.loadRedeem(redeemId);
 
-    const redeemEvent = await hmyClient.methods.getRedeemDetails(redeemId);
-
-    if (!redeemEvent) {
+    if (!redeem) {
       throw new Error('Not found redeem details');
     }
 
-    this.redeemMap[redeemId] = {
-      redeemAmount: Number(redeemEvent.amount),
-      vaultId: redeemEvent.vault_id,
-      redeemEvent: redeemEvent,
-      btcAddress: walletHexToBech32(redeemEvent.btc_address),
-      btcBase58Address: walletHexToBase58(redeemEvent.btc_address),
-    };
+    this.redeemMap[redeemId] = redeem;
   }
 
   @action.bound
@@ -238,18 +220,11 @@ export class RedeemPageStore extends StoreConstructor {
         throw new Error('Not found redeem details');
       }
 
-      this.redeemMap[redeemRequest.transactionHash] = {
-        redeemAmount,
-        vaultId,
-        redeemEvent,
-        btcAddress,
-        btcBase58Address: walletHexToBase58(redeemEvent.btc_address),
-      };
+      const redeem = await BtcRelayClient.loadRedeem(redeemEvent.redeem_id);
 
-      this.stores.routing.gotToRedeemModal(
-        redeemRequest.transactionHash,
-        'withdraw',
-      );
+      this.redeemMap[redeemRequest.transactionHash] = redeem;
+
+      this.stores.routing.gotToRedeemModal(redeem.id, 'withdraw');
 
       redeemUiTx.setStatusSuccess();
       redeemUiTx.hideModal();

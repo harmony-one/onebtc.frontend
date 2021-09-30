@@ -5,12 +5,12 @@ import { Text } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
 import React from 'react';
 
-export const RedeemWithdrawModalContent: React.FC<{ redeemTxHash: string }> = ({
-  redeemTxHash,
+export const RedeemWithdrawModalContent: React.FC<{ redeemId: string }> = ({
+  redeemId,
 }) => {
   const { redeemPageStore } = useStores();
 
-  const redeemInfo = redeemPageStore.getRedeemInfo(redeemTxHash);
+  const redeemInfo = redeemPageStore.getRedeemInfo(redeemId);
 
   return useObserver(() => (
     <Box gap="small" align="center">

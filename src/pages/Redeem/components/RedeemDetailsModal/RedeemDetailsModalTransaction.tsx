@@ -9,11 +9,11 @@ import LinkHarmonyAddress from '../../../../components/LinkHarmonyAddress';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
 
 export const RedeemDetailsModalTransaction: React.FC<{
-  redeemTxHash: string;
+  redeemId: string;
 }> = props => {
   const { user, redeemPageStore } = useStores();
 
-  const redeemInfo = redeemPageStore.getRedeemInfo(props.redeemTxHash);
+  const redeemInfo = redeemPageStore.getRedeemInfo(props.redeemId);
 
   return useObserver(() => (
     <Box gap="small" align="center">

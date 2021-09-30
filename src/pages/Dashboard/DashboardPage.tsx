@@ -1,7 +1,7 @@
 import React from 'react';
 import { BaseContainer } from 'components/BaseContainer';
 import { PageContainer } from 'components/PageContainer';
-import { Divider, Text, Title } from '../../components/Base';
+import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { observer } from 'mobx-react';
 import { DashboardCardBtcRelay } from '../../components/Dashboard/DashboardCardBtcRelay';
@@ -23,13 +23,13 @@ export const DashboardPage: React.FC<Props> = observer(() => {
           </Box>
           <Box wrap direction="row">
             <Box pad="xxsmall">
+              <DashboardIssueRedeemCard />
+            </Box>
+            <Box pad="xxsmall">
               <DashboardCardBtcRelay showLink />
             </Box>
             <Box pad="xxsmall">
               <DashboardVaultCard />
-            </Box>
-            <Box pad="xxsmall">
-              <DashboardIssueRedeemCard />
             </Box>
           </Box>
         </Box>

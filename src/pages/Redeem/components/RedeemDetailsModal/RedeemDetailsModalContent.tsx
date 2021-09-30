@@ -6,15 +6,16 @@ import { RedeemDetailsModalTransaction } from './RedeemDetailsModalTransaction';
 import { RedeemDetailsModalConfirmation } from './RedeemDetailsModalConfirmation';
 import { RedeemDetailsModalWaitVault } from './RedeemDetailsModalWaitVault';
 import { useBtcWalletIncomeWatcher } from '../../../../hooks/useBtcWalletIncomeWatcher';
-import { config } from '../../../../config';
 import { useRedeemStatusWatcher } from '../../../../hooks/useRedeemStatusWatcher';
 
-export const RedeemDetailsModalContent: React.FC<{
-  redeemTxHash: string;
-}> = ({ redeemTxHash }) => {
+interface Props {
+  redeemId: string;
+}
+
+export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
   const { redeemPageStore } = useStores();
 
-  const redeemInfo = redeemPageStore.getRedeemInfo(redeemTxHash);
+  const redeemInfo = redeemPageStore.getRedeemInfo(redeemId);
   const btcTx = useBtcWalletIncomeWatcher({
     bitcoinAddress: redeemInfo.bitcoinAddress,
     amount: Number(redeemInfo.rawRedeem.amount),
@@ -36,16 +37,14 @@ export const RedeemDetailsModalContent: React.FC<{
       <Divider fullwidth colorful />
       <Box direction="row-responsive" gap="medium" basis="full" align="start">
         <Box basis="1/2">
-          <RedeemDetailsModalTransaction redeemTxHash={redeemTxHash} />
+          <RedeemDetailsModalTransaction redeemId={redeemId} />
         </Box>
         <Box basis="1/2" gap="medium" align="center">
-          {!isCompleted && (
-            <RedeemDetailsModalWaitVault redeemTxHash={redeemTxHash} />
-          )}
+          {!isCompleted && <RedeemDetailsModalWaitVault />}
           {isCompleted && btcTx && (
             <RedeemDetailsModalConfirmation
               btcTx={btcTx}
-              redeemTxHash={redeemTxHash}
+              redeemTxHash={redeemId}
             />
           )}
         </Box>

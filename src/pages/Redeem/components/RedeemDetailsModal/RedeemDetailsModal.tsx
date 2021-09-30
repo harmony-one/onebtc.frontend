@@ -2,9 +2,9 @@ import React from 'react';
 import { RedeemDetailsModalContent } from './RedeemDetailsModalContent';
 
 export const RedeemDetailsModal = props => {
-  const { transactionHash } = props.actionData.data;
+  const { redeemId } = props.actionData.data;
 
-  return <RedeemDetailsModalContent redeemTxHash={transactionHash} />;
+  return <RedeemDetailsModalContent redeemId={redeemId} />;
 };
 
 RedeemDetailsModal.displayName = 'RedeemDetailsModal';

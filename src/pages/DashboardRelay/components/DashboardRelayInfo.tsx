@@ -14,24 +14,22 @@ export const DashboardRelayInfo: React.FC<Props> = observer(() => {
   const { bcoinStore } = useStores();
 
   return (
-    <Box>
-      <Box direction="row" gap="small">
-        <DashboardCardBtcRelay />
-        <DashboardCard>
-          <DashboardCardHead>
-            <Text>
-              <a target="_blank" rel="noreferrer" href="https://blockchain.com">
-                Verify on blockchain.com
-              </a>
-            </Text>
-          </DashboardCardHead>
-          <DashboardCardCircle
-            title="Blockchain"
-            subtext={bcoinStore.lastBlockHeight}
-            status="success"
-          />
-        </DashboardCard>
-      </Box>
+    <Box direction="row" gap="small" justify="center">
+      <DashboardCardBtcRelay />
+      <DashboardCard>
+        <DashboardCardHead>
+          <Text>
+            <a target="_blank" rel="noreferrer" href="https://blockchain.com">
+              Verify on blockchain.com
+            </a>
+          </Text>
+        </DashboardCardHead>
+        <DashboardCardCircle
+          title="Blockchain"
+          subtext={bcoinStore.lastBlockHeight}
+          status="success"
+        />
+      </DashboardCard>
     </Box>
   );
 });

@@ -10,7 +10,7 @@ import { useStores } from '../../stores';
 import { useEffect } from 'react';
 
 export const RedeemPage = () => {
-  const { redeemTx, modal } = useParams<{ redeemTx?: string; modal: string }>();
+  const { redeemId, modal } = useParams<{ redeemId?: string; modal: string }>();
   const { redeemPageStore } = useStores();
 
   useEffect(() => {
@@ -18,17 +18,17 @@ export const RedeemPage = () => {
   }, [redeemPageStore]);
 
   useEffect(() => {
-    if (redeemTx) {
-      redeemPageStore.loadRedeemDetails(redeemTx).then(() => {
+    if (redeemId) {
+      redeemPageStore.loadRedeemDetails(redeemId).then(() => {
         if (modal === 'withdraw') {
-          redeemPageStore.openRedeemWithdrawModal(redeemTx);
+          redeemPageStore.openRedeemWithdrawModal(redeemId);
           return;
         } else {
-          redeemPageStore.openRedeemDetailsModal(redeemTx);
+          redeemPageStore.openRedeemDetailsModal(redeemId);
         }
       });
     }
-  }, [redeemPageStore, redeemTx, modal]);
+  }, [redeemPageStore, redeemId, modal]);
 
   return (
     <BaseContainer>
