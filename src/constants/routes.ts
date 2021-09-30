@@ -2,8 +2,8 @@ import { InferValueTypes } from '../utils/types';
 
 export const routes = {
   bridge: '/bridge/issue',
-  issue: '/bridge/issue/:issueTx?/:modal(deposit|details)?',
-  redeem: '/bridge/redeem/:redeemTx?/:modal(withdraw|details)?',
+  issue: '/bridge/issue/:issueId?/:modal(deposit|details)?',
+  redeem: '/bridge/redeem/:redeemId?/:modal(withdraw|details)?',
   transfer: '/bridge/transfer',
   sandbox: '/sandbox',
   burn: '/bridge/burn',

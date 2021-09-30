@@ -9,13 +9,13 @@ import { IssueDepositModalContent } from '../IssueDepositModal/IssueDepositModal
 import { useStores } from '../../../../stores';
 
 interface Props {
-  issueTxHash: string;
+  issueId: string;
 }
 
-export const IssueDetailsModalContent: React.FC<Props> = ({ issueTxHash }) => {
+export const IssueDetailsModalContent: React.FC<Props> = ({ issueId }) => {
   const { issuePageStore } = useStores();
 
-  const issueInfo = issuePageStore.getIssueInfo(issueTxHash);
+  const issueInfo = issuePageStore.getIssueInfo(issueId);
 
   const btcTx = useBtcWalletVaultIncomeWatcher({
     bitcoinAddress: issueInfo.bitcoinAddress,
@@ -30,15 +30,12 @@ export const IssueDetailsModalContent: React.FC<Props> = ({ issueTxHash }) => {
       <Divider fullwidth colorful />
       <Box direction="row-responsive" gap="medium" basis="full" align="start">
         <Box basis="1/2">
-          <IssueDetailsModalTransaction issueTxHash={issueTxHash} />
+          <IssueDetailsModalTransaction issueId={issueId} />
         </Box>
         <Box basis="1/2">
-          {!btcTx && <IssueDepositModalContent issueTxHash={issueTxHash} />}
+          {!btcTx && <IssueDepositModalContent issueId={issueId} />}
           {btcTx && (
-            <IssueDetailsModalConfirmation
-              issueTxHash={issueTxHash}
-              btcTx={btcTx}
-            />
+            <IssueDetailsModalConfirmation issueId={issueId} btcTx={btcTx} />
           )}
         </Box>
       </Box>

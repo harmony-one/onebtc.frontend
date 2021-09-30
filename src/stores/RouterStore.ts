@@ -11,13 +11,13 @@ export default class CustomRouterStore extends RouterStore {
     this.history = syncHistoryWithStore(browserHistory, this);
   }
 
-  goToIssue(issueTxHash?: string) {
-    const path = generatePath(routes.issue, { issueTx: issueTxHash });
+  goToIssue(issueId?: string) {
+    const path = generatePath(routes.issue, { issueId });
     this.push(path);
   }
 
-  goToIssueModal(issueTxHash: string, modal: 'deposit' | 'details') {
-    const path = generatePath(routes.issue, { issueTx: issueTxHash, modal });
+  goToIssueModal(issueId: string, modal: 'deposit' | 'details') {
+    const path = generatePath(routes.issue, { issueId, modal });
     this.push(path);
   }
 

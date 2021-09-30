@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import { useStores } from '../../stores';
 
 export const IssuePage = () => {
-  const { issueTx, modal } = useParams<{ issueTx?: string; modal: string }>();
+  const { issueId, modal } = useParams<{ issueId?: string; modal: string }>();
   const { issuePageStore } = useStores();
 
   useEffect(() => {
@@ -17,17 +17,17 @@ export const IssuePage = () => {
   }, [issuePageStore]);
 
   useEffect(() => {
-    if (issueTx) {
-      issuePageStore.loadIssueDetails(issueTx).then(() => {
+    if (issueId) {
+      issuePageStore.loadIssueDetails(issueId).then(() => {
         if (modal === 'deposit') {
-          issuePageStore.openDepositModal(issueTx);
+          issuePageStore.openDepositModal(issueId);
           return;
         } else {
-          issuePageStore.openTransactionModal(issueTx);
+          issuePageStore.openIssueDetailsModal(issueId);
         }
       });
     }
-  }, [issuePageStore, issueTx, modal]);
+  }, [issuePageStore, issueId, modal]);
 
   return (
     <BaseContainer>

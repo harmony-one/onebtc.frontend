@@ -1,5 +1,5 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
-import { action, computed, observable } from 'mobx';
+import { action, get, computed, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
 import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsModal';
@@ -9,12 +9,11 @@ import { UITransaction } from '../../modules/uiTransaction/UITransactionsStore';
 import {
   bitcoinToSatoshi,
   satoshiToBitcoin,
-  walletHexToBase58,
   walletHexToBech32,
 } from '../../services/bitcoin';
-import { IssueDetails } from 'onebtc.sdk/lib/blockchain/hmy/types';
 import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
-import { IVault } from '../../modules/btcRelay/btcRelayTypes';
+import { IIssue, IVault } from '../../modules/btcRelay/btcRelayTypes';
+import { toBN } from 'web3-utils';
 
 export interface ITransaction {
   amount: string;
@@ -27,16 +26,7 @@ export class IssuePageStore extends StoreConstructor {
     vaultId: '0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581',
   };
 
-  @observable issuesMap: {
-    [key: string]: {
-      status: string;
-      issueAmount: number;
-      vaultId: string;
-      issueEvent: IssueDetails;
-      btcBase58Address: string;
-      btcAddress: string;
-    };
-  } = {};
+  @observable issuesMap: Record<string, IIssue> = {};
 
   @observable status: 'init' | 'pending' | 'success' | 'cancel' | 'error' =
     'init';
@@ -60,7 +50,7 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  async executeIssue(transactionHash: string, btcTransactionHash: string) {
+  async executeIssue(issueId: string, btcTransactionHash: string) {
     console.log('### executeIssue');
     this.status = 'pending';
 
@@ -70,7 +60,7 @@ export class IssuePageStore extends StoreConstructor {
     issueUiTx.setStatusWaitingSignIn();
     issueUiTx.showModal();
     try {
-      const issue = this.issuesMap[transactionHash];
+      const issueInfo = this.getIssueInfo(issueId);
 
       const address = this.stores.user.address;
 
@@ -81,8 +71,7 @@ export class IssuePageStore extends StoreConstructor {
 
       const result = await hmyClient.methods.executeIssue(
         address,
-        // @ts-ignore
-        issue.issueEvent.issue_id,
+        issueInfo.issueId,
         btcTransactionHash,
         txHash => {
           issueUiTx.setTxHash(txHash);
@@ -96,7 +85,7 @@ export class IssuePageStore extends StoreConstructor {
 
       this.stores.actionModals.open(IssueConfirmModal, {
         initData: {
-          total: satoshiToBitcoin(issue.issueEvent.amount),
+          total: issueInfo.rawIssue.amount,
           txHash: result.transactionHash,
         },
         applyText: '',
@@ -117,32 +106,46 @@ export class IssuePageStore extends StoreConstructor {
     }
   }
 
-  public getIssueInfo(issueTxHash: string) {
-    const issue = this.issuesMap[issueTxHash];
-    const issueEvent = issue.issueEvent;
-    const sendAmount =
-      (Number(issueEvent.amount) + Number(issueEvent.fee)) / 1e8;
+  @get
+  public getIssueInfo(issueId: string) {
+    const issue = this.issuesMap[issueId];
 
-    const totalReceived = Number(issue.issueEvent.amount) / 1e8;
+    if (!issue) {
+      return null;
+    }
+
+    const btcRate = this.stores.user.btcRate;
+    const amount = satoshiToBitcoin(issue.amount);
+    const sendAmount = satoshiToBitcoin(
+      toBN(issue.amount)
+        .add(toBN(issue.fee))
+        .toNumber(),
+    );
+    const sendUsdAmount = sendAmount * btcRate;
+    const bridgeFee = satoshiToBitcoin(issue.fee);
+    const totalReceived = amount;
+    const totalReceivedUsd = totalReceived * btcRate;
+
     return {
+      rawIssue: issue,
+      amount: amount,
+      issueId: issue.id,
+      vaultId: issue.vault,
+      requester: issue.requester,
+      bitcoinAddress: walletHexToBech32(issue.btcAddress),
       sendAmount,
-      issueEvent: issue.issueEvent,
-      sendUsdAmount: sendAmount * this.stores.user.btcRate,
-      issueId: issue.issueEvent.issue_id,
-      vaultId: issue.issueEvent.vault_id,
-      bitcoinAddress: issue.btcAddress,
-      bridgeFee: Number(issue.issueEvent.fee) / 1e8,
-      totalReceived: totalReceived,
-      totalReceivedUsd: totalReceived * this.stores.user.btcRate,
-      requester: issueEvent.requester,
+      sendUsdAmount,
+      bridgeFee,
+      totalReceived,
+      totalReceivedUsd,
     };
   }
 
   @action.bound
-  public openTransactionModal(transactionHash: string) {
+  public openIssueDetailsModal(issueId: string) {
     this.stores.actionModals.open(IssueDetailsModal, {
       initData: {
-        transactionHash,
+        issueId,
       },
       applyText: '',
       closeText: 'Close',
@@ -161,18 +164,18 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  public openDepositModal(transactionHash: string) {
+  public openDepositModal(issueId: string) {
     this.stores.actionModals.open(IssueDepositModal, {
       applyText: 'I have made the payment',
       closeText: 'Close',
       initData: {
-        transactionHash,
+        issueId,
       },
       noValidation: true,
       width: '500px',
       showOther: false,
       onApply: () => {
-        this.stores.routing.goToIssueModal(transactionHash, 'details');
+        this.stores.routing.goToIssueModal(issueId, 'details');
         return Promise.resolve();
       },
       onClose: () => {
@@ -189,34 +192,19 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  public async loadIssueDetails(txHash: string) {
+  public async loadIssueDetails(issueId: string) {
     try {
-      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+      const issue = await BtcRelayClient.loadIssue(issueId);
 
-      const issueDetails = await hmyClient.methods.getIssueDetails(txHash);
-
-      if (!issueDetails) {
-        return;
+      if (!issue) {
+        return null;
       }
 
-      const address = this.stores.user.address;
-
-      const status = await hmyClient.methods
-        .getIssueStatus(address, issueDetails.issue_id)
-        .catch(err => {
-          console.log('### err', err);
-        });
-
-      this.issuesMap[txHash] = {
-        status: status || '',
-        issueAmount: Number(issueDetails.amount),
-        vaultId: issueDetails.vault_id,
-        issueEvent: issueDetails,
-        btcBase58Address: walletHexToBase58(issueDetails.btc_address),
-        btcAddress: walletHexToBech32(issueDetails.btc_address),
-      };
+      this.issuesMap[issueId] = issue;
+      return issue;
     } catch (err) {
       console.log('### err', err);
+      return null;
     }
   }
 
@@ -236,7 +224,6 @@ export class IssuePageStore extends StoreConstructor {
 
       console.log('### Request Issue');
 
-      // switch status: waiting for sign in
       issueUiTx.setStatusWaitingSignIn();
 
       const issueRequest = await hmyClient.methods.requestIssue(
@@ -259,32 +246,14 @@ export class IssuePageStore extends StoreConstructor {
         throw new Error("Can't found issue details");
       }
 
-      // add transaction data: issueId
-      issueUiTx.setIssueId(issueEvent.issue_id);
+      const issue = await BtcRelayClient.loadIssue(issueEvent.issue_id);
 
-      const btcAddress = walletHexToBech32(issueEvent.btc_address);
-      const btcBase58Address = walletHexToBase58(issueEvent.btc_address);
-      console.log('### issueRequest', issueRequest);
-      console.log('### issueEvent', issueEvent);
-      console.log('### btcBase58Address', btcBase58Address);
-      console.log('### btcAddress', btcAddress);
-
-      this.issuesMap[issueRequest.transactionHash] = {
-        status: '0',
-        issueAmount,
-        vaultId,
-        issueEvent,
-        btcBase58Address,
-        btcAddress,
-      };
+      issueUiTx.setIssueId(issue.id);
 
       issueUiTx.setStatusSuccess();
       issueUiTx.hideModal();
 
-      this.stores.routing.goToIssueModal(
-        issueRequest.transactionHash,
-        'deposit',
-      );
+      this.stores.routing.goToIssueModal(issue.id, 'deposit');
 
       this.status = 'success';
     } catch (err) {

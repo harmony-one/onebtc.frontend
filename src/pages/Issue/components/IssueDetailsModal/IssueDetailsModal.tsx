@@ -3,9 +3,9 @@ import { IssueDetailsModalContent } from './IssueDetailsModalContent';
 import { TActionModalProps } from '../../../../components/ActionModals';
 
 export const IssueDetailsModal: React.FC<TActionModalProps> = props => {
-  const { transactionHash } = props.actionData.data;
+  const { issueId } = props.actionData.data;
 
-  return <IssueDetailsModalContent issueTxHash={transactionHash} />;
+  return <IssueDetailsModalContent issueId={issueId} />;
 };
 
 IssueDetailsModal.displayName = 'IssueDetailsModal';

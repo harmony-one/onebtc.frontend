@@ -9,11 +9,12 @@ import { satoshiToBitcoin } from '../../../services/bitcoin';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import utils from 'web3-utils';
 import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
+import { dateFormat } from '../../../utils';
 
 type Props = {};
 
 export const DashboardIssuesTable: React.FC<Props> = observer(() => {
-  const { issueListStore } = useStores();
+  const { issueListStore, routing } = useStores();
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
@@ -29,7 +30,7 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       render: value => {
-        return <div>{value.opentime}</div>;
+        return <div>{dateFormat(new Date(Number(value.opentime) * 1000))}</div>;
       },
     },
     {
@@ -79,7 +80,9 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       isPending={issueListStore.isPending}
       dataLayerConfig={issueListStore.dataFlow}
       onChangeDataFlow={handleChangeDataFlow}
-      onRowClicked={() => {}}
+      onRowClicked={(rowData: IIssue) => {
+        routing.goToIssueModal(rowData.id, 'details');
+      }}
       tableParams={{
         rowKey: (data: IIssue) => data.id,
       }}

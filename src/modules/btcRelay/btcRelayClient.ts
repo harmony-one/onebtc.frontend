@@ -3,8 +3,10 @@ import {
   IBtcRelayEvent,
   IBtcRelayEvents,
   IBtcRelayInfo,
+  IIssue,
   IIssueList,
   IPagination,
+  IRedeem,
   IRedeemList,
   IVaultList,
 } from './btcRelayTypes';
@@ -44,6 +46,22 @@ export default class BtcRelayClient {
     const res = await agent
       .get('https://relayer.btc.test.hmny.io/issues/data')
       .query({ size, page });
+
+    return res.body;
+  };
+
+  static loadIssue = async (issueId: string): Promise<IIssue> => {
+    const res = await agent.get(
+      `https://relayer.btc.test.hmny.io/issues/data/${issueId}`,
+    );
+
+    return res.body;
+  };
+
+  static loadRedeem = async (issueId: string): Promise<IRedeem> => {
+    const res = await agent.get(
+      `https://relayer.btc.test.hmny.io/redeems/data/${issueId}`,
+    );
 
     return res.body;
   };

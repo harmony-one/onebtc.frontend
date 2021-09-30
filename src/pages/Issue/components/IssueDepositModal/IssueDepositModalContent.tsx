@@ -7,12 +7,12 @@ import React from 'react';
 import { useStores } from '../../../../stores';
 
 interface Props {
-  issueTxHash: string;
+  issueId: string;
 }
 
-export const IssueDepositModalContent: React.FC<Props> = ({ issueTxHash }) => {
+export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
   const { issuePageStore } = useStores();
-  const issueInfo = issuePageStore.getIssueInfo(issueTxHash);
+  const issueInfo = issuePageStore.getIssueInfo(issueId);
 
   const qrData = `bitcoin:${issueInfo.bitcoinAddress}?amount=${issueInfo.sendAmount}`;
   const [qrRef] = useQRCode({

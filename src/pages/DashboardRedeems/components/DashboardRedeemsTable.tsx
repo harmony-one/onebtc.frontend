@@ -7,6 +7,7 @@ import * as s from './DashboardRedeemsTable.styl';
 import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import { IRedeem } from '../../../modules/btcRelay/btcRelayTypes';
+import { dateFormat } from '../../../utils';
 
 type Props = {};
 
@@ -27,7 +28,7 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       render: (value: IRedeem) => {
-        return <div>{value.opentime}</div>;
+        return <div>{dateFormat(new Date(Number(value.opentime) * 1000))}</div>;
       },
     },
     {

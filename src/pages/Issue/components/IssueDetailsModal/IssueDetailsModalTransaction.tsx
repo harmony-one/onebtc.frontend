@@ -9,14 +9,12 @@ import LinkHarmonyAddress from '../../../../components/LinkHarmonyAddress';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
 
 interface Props {
-  issueTxHash: string;
+  issueId: string;
 }
 
-export const IssueDetailsModalTransaction: React.FC<Props> = ({
-  issueTxHash,
-}) => {
+export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
   const { user, issuePageStore } = useStores();
-  const issueInfo = issuePageStore.getIssueInfo(issueTxHash);
+  const issueInfo = issuePageStore.getIssueInfo(issueId);
 
   return useObserver(() => (
     <Box gap="small" align="center">

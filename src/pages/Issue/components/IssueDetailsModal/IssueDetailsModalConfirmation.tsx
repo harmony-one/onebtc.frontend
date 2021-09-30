@@ -13,26 +13,26 @@ import { useIssueStatusWatcher } from '../../../../hooks/useIssueStatusWatcher';
 
 interface Props {
   btcTx: BcoinBTCTx;
-  issueTxHash: string;
+  issueId: string;
 }
 
 export const IssueDetailsModalConfirmation: React.FC<Props> = ({
   btcTx,
-  issueTxHash,
+  issueId,
 }) => {
-  const { issuePageStore, user } = useStores();
+  const { issuePageStore } = useStores();
   const isConfirmed = btcTx.confirmations >= config.bitcoin.waitConfirmations;
   const title = isConfirmed ? 'Confirmed' : 'Received';
 
-  const issueInfo = issuePageStore.getIssueInfo(issueTxHash);
+  const issueInfo = issuePageStore.getIssueInfo(issueId);
 
   const handleClaim = useCallback(() => {
-    issuePageStore.executeIssue(issueTxHash, btcTx.hash);
-  }, [btcTx.hash, issuePageStore, issueTxHash]);
+    issuePageStore.executeIssue(issueId, btcTx.hash);
+  }, [btcTx.hash, issuePageStore, issueId]);
 
   const status = useIssueStatusWatcher({
-    issueId: issueInfo.issueEvent.issue_id,
-    requester: issueInfo.issueEvent.requester,
+    issueId: issueInfo.issueId,
+    requester: issueInfo.requester,
   });
 
   return (
