@@ -2,10 +2,11 @@ import React, { useCallback } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
-import { IRedeem } from '../../../modules/btcRelay/btcRelayClient';
 import LinkBitcoin from '../../../components/LinkBitcoin';
 import * as s from './DashboardRedeemsTable.styl';
 import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
+import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
+import { IRedeem } from '../../../modules/btcRelay/btcRelayTypes';
 
 type Props = {};
 
@@ -62,7 +63,7 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: (value: IRedeem) => {
-        return <div>{value.status}</div>;
+        return <EntityStatus status={value.status} />;
       },
     },
   ];

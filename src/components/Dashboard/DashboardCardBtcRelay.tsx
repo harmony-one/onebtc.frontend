@@ -38,7 +38,7 @@ export const DashboardCardBtcRelay: React.FC<Props> = observer(
         <DashboardCardHead>
           <Text>{text}</Text>
           {showLink && (
-            <Text>
+            <Text align="right">
               <NavLink to={routes.dashboardRelay}>VIEW BTC RELAY</NavLink>
             </Text>
           )}

@@ -1,8 +1,7 @@
 import { ListStoreConstructor } from '../../stores/core/ListStoreConstructor';
 import { IStores } from '../../stores';
-import BtcRelayClient, {
-  IBtcRelayEvent,
-} from '../../modules/btcRelay/btcRelayClient';
+import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
+import { IBtcRelayEvent } from '../../modules/btcRelay/btcRelayTypes';
 
 export class BtcRelayBlocksStore extends ListStoreConstructor<IBtcRelayEvent> {
   constructor(stores: IStores) {

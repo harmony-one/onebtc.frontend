@@ -21,10 +21,16 @@ export const DashboardPage: React.FC<Props> = observer(() => {
           <Box>
             <Divider colorful fullwidth />
           </Box>
-          <Box gap="small" direction="row-responsive">
-            <DashboardCardBtcRelay showLink />
-            <DashboardVaultCard />
-            <DashboardIssueRedeemCard />
+          <Box wrap direction="row">
+            <Box pad="xxsmall">
+              <DashboardCardBtcRelay showLink />
+            </Box>
+            <Box pad="xxsmall">
+              <DashboardVaultCard />
+            </Box>
+            <Box pad="xxsmall">
+              <DashboardIssueRedeemCard />
+            </Box>
           </Box>
         </Box>
       </PageContainer>

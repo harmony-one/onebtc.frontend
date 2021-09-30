@@ -2,10 +2,11 @@ import React, { useCallback } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
-import { IIssue, IVault } from '../../../modules/btcRelay/btcRelayClient';
 import LinkBitcoin from '../../../components/LinkBitcoin';
 import * as s from './DashboardVaultTable.styl';
 import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
+import { satoshiToBitcoin } from '../../../services/bitcoin';
+import { IIssue, IVault } from '../../../modules/btcRelay/btcRelayTypes';
 
 type Props = {};
 
@@ -22,55 +23,55 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
   const columns: IColumn<IVault>[] = [
     {
       title: 'Account ID',
-      width: 150,
+      width: 300,
       className: s.column,
       key: 'id',
-      render: (value: IVault) => {
+      render: value => {
         return <div>{value.id}</div>;
       },
     },
     {
-      title: 'Amount',
+      title: 'Collateral',
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IVault) => {
-        return <div>{value.collateral}</div>;
+      render: value => {
+        return <div>{satoshiToBitcoin(value.collateral)}</div>;
       },
     },
     {
-      title: 'Vault replaceCollateral',
+      title: 'Replace Collateral',
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IVault) => {
-        return <LinkHarmonyAddress address={value.replaceCollateral} />;
+      render: value => {
+        return <div>{value.replaceCollateral}</div>;
       },
     },
     {
-      title: 'toBeIssued',
+      title: 'Be Issued',
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IVault) => {
-        return <LinkBitcoin hash={value.toBeIssued} type="wallet" />;
+      render: value => {
+        return <div>{value.toBeIssued}</div>;
       },
     },
     {
-      title: 'toBeRedeemed',
+      title: 'Be Redeemed',
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IVault) => {
+      render: value => {
         return <div>{value.toBeRedeemed}</div>;
       },
     },
     {
-      title: 'toBeReplaced',
+      title: 'Be Replaced',
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IVault) => {
+      render: value => {
         return <div>{value.toBeReplaced}</div>;
       },
     },

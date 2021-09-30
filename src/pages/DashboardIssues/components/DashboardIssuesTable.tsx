@@ -2,10 +2,13 @@ import React, { useCallback } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
-import { IIssue } from '../../../modules/btcRelay/btcRelayClient';
 import LinkBitcoin from '../../../components/LinkBitcoin';
 import * as s from './DashboardIssuesTable.styl';
 import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
+import { satoshiToBitcoin } from '../../../services/bitcoin';
+import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
+import utils from 'web3-utils';
+import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
 
 type Props = {};
 
@@ -25,7 +28,7 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       width: 150,
       className: s.column,
       key: 'id',
-      render: (value: IIssue) => {
+      render: value => {
         return <div>{value.opentime}</div>;
       },
     },
@@ -34,8 +37,10 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IIssue) => {
-        return <div>{value.amount}</div>;
+      render: value => {
+        const amount = utils.toBN(value.amount);
+        const fee = utils.toBN(value.fee);
+        return <div>{satoshiToBitcoin(amount.add(fee).toString())}</div>;
       },
     },
     {
@@ -43,7 +48,7 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IIssue) => {
+      render: value => {
         return <LinkHarmonyAddress address={value.vault} />;
       },
     },
@@ -52,7 +57,7 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IIssue) => {
+      render: value => {
         return <LinkBitcoin hash={value.btcAddress} type="wallet" />;
       },
     },
@@ -61,8 +66,8 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       width: '33',
-      render: (value: IIssue) => {
-        return <div>{value.status}</div>;
+      render: value => {
+        return <EntityStatus status={value.status} />;
       },
     },
   ];

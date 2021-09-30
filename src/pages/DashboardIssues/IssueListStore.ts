@@ -1,6 +1,7 @@
 import { ListStoreConstructor } from '../../stores/core/ListStoreConstructor';
 import { IStores } from '../../stores';
-import BtcRelayClient, { IIssue } from '../../modules/btcRelay/btcRelayClient';
+import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
+import { IIssue } from '../../modules/btcRelay/btcRelayTypes';
 
 export class IssueListStore extends ListStoreConstructor<IIssue> {
   constructor(stores: IStores) {

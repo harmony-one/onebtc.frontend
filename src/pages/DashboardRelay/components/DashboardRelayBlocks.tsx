@@ -2,10 +2,10 @@ import React, { useCallback } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
-import { IBtcRelayEvent } from '../../../modules/btcRelay/btcRelayClient';
 import LinkBitcoin from '../../../components/LinkBitcoin';
 import LinkHarmonyTx from '../../../components/LinkHarmonyTx';
 import * as s from './DashboardRelayBlocks.styl';
+import { IBtcRelayEvent } from '../../../modules/btcRelay/btcRelayTypes';
 
 type Props = {};
 

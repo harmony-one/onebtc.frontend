@@ -1,6 +1,7 @@
 import { ListStoreConstructor } from '../../stores/core/ListStoreConstructor';
 import { IStores } from '../../stores';
-import BtcRelayClient, { IVault } from '../../modules/btcRelay/btcRelayClient';
+import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
+import { IVault } from '../../modules/btcRelay/btcRelayTypes';
 
 export class VaultsListStore extends ListStoreConstructor<IVault> {
   constructor(stores: IStores) {

@@ -17,11 +17,11 @@ export const DashboardIssueRedeemCard: React.FC<Props> = () => {
           <Text bold>2.21695 OneBTC</Text>
           <Text bold>$93763.49</Text>
         </Box>
-        <Box>
-          <Text>
+        <Box fill alignContent="end">
+          <Text align="right">
             <NavLink to={routes.dashboardIssue}>VIEW ALL ISSUED</NavLink>
           </Text>
-          <Text>
+          <Text align="right">
             <NavLink to={routes.dashboardRedeem}>VIEW ALL REDEEMED</NavLink>
           </Text>
         </Box>

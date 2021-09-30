@@ -1,9 +1,7 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, computed, observable } from 'mobx';
-import BtcRelayClient, {
-  IBtcRelayInfo,
-  IBtcRelayEvent,
-} from './btcRelayClient';
+import BtcRelayClient from './btcRelayClient';
+import { IBtcRelayEvent, IBtcRelayInfo } from './btcRelayTypes';
 
 export class BtcRelayStore extends StoreConstructor {
   @observable

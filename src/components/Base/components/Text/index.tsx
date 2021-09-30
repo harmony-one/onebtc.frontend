@@ -40,6 +40,7 @@ interface ITitleProps {
   margin?: TEdgeSize;
   className?: string;
   inline?: boolean;
+  align?: 'left' | 'right' | 'center';
 }
 
 const TextWrap = styled.div<ITitleProps>`
@@ -47,13 +48,17 @@ const TextWrap = styled.div<ITitleProps>`
   font-size: ${props => getFontSize(props.size, props.theme)};
   font-weight: ${props => (props.bold ? '700' : '500')};
   color: ${props =>
-    props.theme.palette[props.color] || props.color || props.theme.textColor || 'black'};
+    props.theme.palette[props.color] ||
+    props.color ||
+    props.theme.textColor ||
+    'black'};
 
   ${props => props.pad && getPaddingCSS(props.pad, props.theme)}
   ${props => props.margin && getMarginCSS(props.margin, props.theme)}
-  display: ${props => props.inline ? 'inline-block' : 'inline'}
+  display: ${props => (props.inline ? 'inline-block' : 'inline')}
   
   letter-spacing: 0.5px;
+  text-align: ${props => (props.align ? props.align : 'left')}
 `;
 
 export class Text extends React.Component<ITitleProps> {

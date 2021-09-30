@@ -29,7 +29,7 @@ export interface IColumn<P = any> {
   sortable?: boolean;
   dataIndex?: keyof P;
   key: keyof P;
-  render?: (value: any, data: P) => React.ReactNode;
+  render?: (value: P, data: P) => React.ReactNode;
   defaultSort?: string;
   filter?: any;
   align?: string;
