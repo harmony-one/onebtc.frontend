@@ -202,9 +202,9 @@ export class ListStoreConstructor<T> extends StoreConstructor {
 
     this.paginationData = {
       ...this.paginationData,
-      totalPages,
-      totalElements,
-      pageSize: size,
+      totalPages: Number(totalPages),
+      totalElements: Number(totalElements),
+      pageSize: Number(size),
     };
   }
 
