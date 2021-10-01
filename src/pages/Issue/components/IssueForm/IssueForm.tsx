@@ -3,10 +3,11 @@ import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
 import { useObserver } from 'mobx-react';
 import { Form, isRequired, NumberInput, Select } from 'components/Form';
-import { moreThanZero } from '../../../../utils';
+import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
+import { getVaultInfo } from '../../../../modules/btcRelay/vaultHelpers';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
@@ -24,11 +25,17 @@ export const IssueForm: React.FC<Props> = () => {
   const vaultOptions = useMemo(() => {
     return issuePageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
-      const amount = satoshiToBitcoin(vault.collateral);
+      const vaultInfo = getVaultInfo(vault);
       return {
         text: (
           <Text>
-            {name} balance: <Text bold>{amount}</Text>
+            {name}:{' '}
+            <Text bold>
+              {formatWithSixDecimals(
+                satoshiToBitcoin(vaultInfo.availableAmountSat),
+              )}
+            </Text>{' '}
+            BTC
           </Text>
         ),
         value: vault.id,

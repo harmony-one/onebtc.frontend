@@ -131,11 +131,11 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   @get
-  public getRedeemInfo(requestRedeemTxHash: string) {
-    const redeem = this.redeemMap[requestRedeemTxHash];
+  public getRedeemInfo(redeemId: string) {
+    const redeem = this.redeemMap[redeemId];
 
-    const sendAmount = satoshiToBitcoin(redeem.amount);
-    const totalReceived = satoshiToBitcoin(redeem.amount);
+    const sendAmount = satoshiToBitcoin(redeem.amountBtc);
+    const totalReceived = satoshiToBitcoin(redeem.amountBtc);
 
     return {
       sendAmount,

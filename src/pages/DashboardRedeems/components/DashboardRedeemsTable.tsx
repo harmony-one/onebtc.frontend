@@ -8,6 +8,7 @@ import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import { IRedeem } from '../../../modules/btcRelay/btcRelayTypes';
 import { dateFormat } from '../../../utils';
+import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
 
 type Props = {};
 
@@ -37,7 +38,7 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: (value: IRedeem) => {
-        return <div>{value.amount}</div>;
+        return <div>{satoshiToBitcoin(value.amountBtc)} BTC</div>;
       },
     },
     {
@@ -46,7 +47,11 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: (value: IRedeem) => {
-        return <LinkHarmonyAddress address={value.vault} />;
+        return (
+          <div onClick={e => e.stopPropagation()}>
+            <LinkHarmonyAddress address={value.vault} />
+          </div>
+        );
       },
     },
     {
@@ -55,7 +60,15 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: (value: IRedeem) => {
-        return <LinkBitcoin hash={value.btcAddress} type="wallet" />;
+        return (
+          <div onClick={e => e.stopPropagation()}>
+            <LinkBitcoin
+              hash={walletHexToBech32(value.btcAddress)}
+              cut={false}
+              type="wallet"
+            />
+          </div>
+        );
       },
     },
     {

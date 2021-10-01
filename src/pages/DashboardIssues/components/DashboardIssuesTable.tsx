@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import LinkBitcoin from '../../../components/LinkBitcoin';
 import * as s from './DashboardIssuesTable.styl';
 import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
-import { satoshiToBitcoin } from '../../../services/bitcoin';
+import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import utils from 'web3-utils';
 import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
@@ -41,7 +41,7 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       render: value => {
         const amount = utils.toBN(value.amount);
         const fee = utils.toBN(value.fee);
-        return <div>{satoshiToBitcoin(amount.add(fee).toString())}</div>;
+        return <div>{satoshiToBitcoin(amount.add(fee).toString())} BTC</div>;
       },
     },
     {
@@ -50,7 +50,11 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: value => {
-        return <LinkHarmonyAddress address={value.vault} />;
+        return (
+          <div onClick={e => e.stopPropagation()}>
+            <LinkHarmonyAddress address={value.vault} />
+          </div>
+        );
       },
     },
     {
@@ -59,7 +63,14 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: value => {
-        return <LinkBitcoin hash={value.btcAddress} type="wallet" />;
+        return (
+          <div onClick={e => e.stopPropagation()}>
+            <LinkBitcoin
+              hash={walletHexToBech32(value.btcAddress)}
+              type="wallet"
+            />
+          </div>
+        );
       },
     },
     {

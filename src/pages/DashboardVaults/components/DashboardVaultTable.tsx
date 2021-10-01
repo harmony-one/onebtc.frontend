@@ -1,17 +1,20 @@
 import React, { useCallback } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
+import { Text } from '../../../components/Base';
 import { observer } from 'mobx-react';
-import LinkBitcoin from '../../../components/LinkBitcoin';
 import * as s from './DashboardVaultTable.styl';
-import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
-import { IIssue, IVault } from '../../../modules/btcRelay/btcRelayTypes';
+import { IVault } from '../../../modules/btcRelay/btcRelayTypes';
+import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
+import { formatWithTwoDecimals } from '../../../utils';
+import { Box } from 'grommet';
+import { getVaultInfo } from '../../../modules/btcRelay/vaultHelpers';
 
 type Props = {};
 
 export const DashboardVaultTable: React.FC<Props> = observer(() => {
-  const { vaultListStore } = useStores();
+  const { vaultListStore, user } = useStores();
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
@@ -23,29 +26,26 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
   const columns: IColumn<IVault>[] = [
     {
       title: 'Account ID',
-      width: 300,
+      width: '33',
       className: s.column,
       key: 'id',
       render: value => {
-        return <div>{value.id}</div>;
+        return (
+          <LinkHarmonyAddress address={value.id}>{value.id}</LinkHarmonyAddress>
+        );
       },
     },
     {
-      title: 'Collateral',
+      title: 'Locked ONE',
       className: s.column,
       key: 'id',
       width: '33',
       render: value => {
-        return <div>{satoshiToBitcoin(value.collateral)}</div>;
-      },
-    },
-    {
-      title: 'Replace Collateral',
-      className: s.column,
-      key: 'id',
-      width: '33',
-      render: value => {
-        return <div>{value.replaceCollateral}</div>;
+        return (
+          <Text>
+            {formatWithTwoDecimals(Number(value.collateral) / 1e18)} ONE
+          </Text>
+        );
       },
     },
     {
@@ -54,7 +54,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: value => {
-        return <div>{value.toBeIssued}</div>;
+        return <Text>{satoshiToBitcoin(value.toBeIssued)} BTC</Text>;
       },
     },
     {
@@ -63,16 +63,43 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: value => {
-        return <div>{value.toBeRedeemed}</div>;
+        return <Text>{satoshiToBitcoin(value.toBeRedeemed)} BTC</Text>;
       },
     },
     {
-      title: 'Be Replaced',
+      title: 'Collateralization',
       className: s.column,
       key: 'id',
       width: '33',
-      render: value => {
-        return <div>{value.toBeReplaced}</div>;
+      render: vault => {
+        const vaultInfo = getVaultInfo(vault);
+        const colorRedeem =
+          vaultInfo.collateralRedeemed >= 150 ? 'Green' : 'Red';
+        const colorIssued = vaultInfo.collateralIssued >= 150 ? 'Green' : 'Red';
+        const colorTotal = vaultInfo.collateralTotal >= 150 ? 'Green' : 'Red';
+
+        return (
+          <Box>
+            <Text>
+              Redeemed:{' '}
+              <Text bold color={colorRedeem}>
+                {formatWithTwoDecimals(vaultInfo.collateralRedeemed)}%
+              </Text>
+            </Text>
+            <Text>
+              Issued:{' '}
+              <Text bold color={colorIssued}>
+                {formatWithTwoDecimals(vaultInfo.collateralIssued)}%
+              </Text>
+            </Text>
+            <Text>
+              Total:{' '}
+              <Text bold color={colorTotal}>
+                {formatWithTwoDecimals(vaultInfo.collateralTotal)}%
+              </Text>
+            </Text>
+          </Box>
+        );
       },
     },
   ];

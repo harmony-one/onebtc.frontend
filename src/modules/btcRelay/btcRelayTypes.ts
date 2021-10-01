@@ -52,7 +52,8 @@ export interface IIssue {
 
 export interface IRedeem {
   id: string;
-  amount: string;
+  amountBtc: string;
+  amountOne: string;
   btcAddress: string;
   btcHeight: string;
   btcPublicKey: null;
