@@ -49,10 +49,16 @@ const App: React.FC = () => (
       />
       <Redirect to={routes.issue} />
     </Switch>
+    <Switch>
+      <Route path="/">
+        <WatcherBalance />
+      </Route>
+      <Route path={routes.dashboard}>
+        <WatcherBtcRelay />
+        <WatcherBcoin />
+      </Route>
+    </Switch>
     <ActionModals />
-    <WatcherBalance />
-    <WatcherBtcRelay />
-    <WatcherBcoin />
     <GlobalStyle theme={...baseTheme as any} />
   </Providers>
 );
