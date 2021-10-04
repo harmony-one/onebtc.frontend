@@ -18,7 +18,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
       sdk: 'web3',
       nodeURL: 'https://api.s0.b.hmny.io',
       chainId: 2,
-      contractAddress: config.oneBtcContract,
+      contractAddress: config.oneBtcContract.testnet,
       gasLimit: 6721900,
     });
   }
@@ -28,7 +28,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
       sdk: 'harmony',
       nodeURL: 'https://api.s0.b.hmny.io',
       chainId: 2,
-      contractAddress: config.oneBtcContract,
+      contractAddress: config.oneBtcContract.testnet,
       gasLimit: 6721900,
     });
   }
