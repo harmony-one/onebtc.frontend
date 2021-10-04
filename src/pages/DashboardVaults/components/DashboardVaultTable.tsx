@@ -49,7 +49,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       },
     },
     {
-      title: 'Be Issued',
+      title: 'Pending BTC',
       className: s.column,
       key: 'id',
       width: '33',
@@ -58,7 +58,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       },
     },
     {
-      title: 'Be Redeemed',
+      title: 'Locked BTC',
       className: s.column,
       key: 'id',
       width: '33',
@@ -81,21 +81,14 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
         return (
           <Box>
             <Text>
-              Redeemed:{' '}
               <Text bold color={colorRedeem}>
-                {formatWithTwoDecimals(vaultInfo.collateralRedeemed)}%
+                {formatWithTwoDecimals(vaultInfo.collateralTotal)}%
               </Text>
             </Text>
             <Text>
-              Issued:{' '}
+              Pending:{' '}
               <Text bold color={colorIssued}>
                 {formatWithTwoDecimals(vaultInfo.collateralIssued)}%
-              </Text>
-            </Text>
-            <Text>
-              Total:{' '}
-              <Text bold color={colorTotal}>
-                {formatWithTwoDecimals(vaultInfo.collateralTotal)}%
               </Text>
             </Text>
           </Box>

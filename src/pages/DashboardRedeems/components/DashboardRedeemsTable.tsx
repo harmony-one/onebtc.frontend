@@ -55,7 +55,7 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
       },
     },
     {
-      title: 'Vault BTC Address',
+      title: 'Output BTC Address',
       className: s.column,
       key: 'id',
       width: '33',
