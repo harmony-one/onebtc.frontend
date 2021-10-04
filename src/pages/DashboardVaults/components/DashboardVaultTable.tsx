@@ -73,15 +73,13 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       width: '33',
       render: vault => {
         const vaultInfo = getVaultInfo(vault);
-        const colorRedeem =
-          vaultInfo.collateralRedeemed >= 150 ? 'Green' : 'Red';
         const colorIssued = vaultInfo.collateralIssued >= 150 ? 'Green' : 'Red';
         const colorTotal = vaultInfo.collateralTotal >= 150 ? 'Green' : 'Red';
 
         return (
           <Box>
             <Text>
-              <Text bold color={colorRedeem}>
+              <Text bold color={colorTotal}>
                 {formatWithTwoDecimals(vaultInfo.collateralTotal)}%
               </Text>
             </Text>

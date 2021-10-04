@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
@@ -10,17 +10,39 @@ import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import utils from 'web3-utils';
 import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
 import { dateFormat } from '../../../utils';
+import { useParams } from 'react-router';
 
 type Props = {};
 
 export const DashboardIssuesTable: React.FC<Props> = observer(() => {
-  const { issueListStore, routing } = useStores();
+  const { issueListStore, issuePageStore, routing } = useStores();
+
+  const { issueId } = useParams<{ issueId: string }>();
+
+  const onCloseModal = useCallback(() => {
+    routing.goToDashboardIssue({ replace: true });
+  }, [routing]);
+
+  useEffect(() => {
+    if (typeof issueId === 'string') {
+      issuePageStore.loadIssueDetails(issueId).then(() => {
+        issuePageStore.openIssueDetailsModal(issueId, onCloseModal);
+      });
+    }
+  }, [issuePageStore, issueId, onCloseModal]);
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
       issueListStore.onChangeDataFlow(props);
     },
     [issueListStore],
+  );
+
+  const handleRowClick = useCallback(
+    (issue: IIssue) => {
+      routing.goToDashboardIssue({ issueId: issue.id });
+    },
+    [routing],
   );
 
   const columns: IColumn<IIssue>[] = [
@@ -91,9 +113,7 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       isPending={issueListStore.isPending}
       dataLayerConfig={issueListStore.dataFlow}
       onChangeDataFlow={handleChangeDataFlow}
-      onRowClicked={(rowData: IIssue) => {
-        routing.goToIssueModal(rowData.id, 'details');
-      }}
+      onRowClicked={handleRowClick}
       tableParams={{
         rowKey: (data: IIssue) => data.id,
       }}

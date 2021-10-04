@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
@@ -9,11 +9,33 @@ import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import { IRedeem } from '../../../modules/btcRelay/btcRelayTypes';
 import { dateFormat } from '../../../utils';
 import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
+import { useParams } from 'react-router';
 
 type Props = {};
 
 export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
-  const { redeemListStore } = useStores();
+  const { redeemListStore, routing, redeemPageStore } = useStores();
+
+  const { redeemId } = useParams<{ redeemId: string }>();
+
+  const onCloseModal = useCallback(() => {
+    routing.goToDashboardRedeem({ replace: true });
+  }, [routing]);
+
+  useEffect(() => {
+    if (typeof redeemId === 'string') {
+      redeemPageStore.loadRedeemDetails(redeemId).then(() => {
+        redeemPageStore.openRedeemDetailsModal(redeemId, onCloseModal);
+      });
+    }
+  }, [redeemPageStore, redeemId, onCloseModal]);
+
+  const handleRowClick = useCallback(
+    (redeem: IRedeem) => {
+      routing.goToDashboardRedeem({ redeemId: redeem.id });
+    },
+    [routing],
+  );
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
@@ -89,7 +111,7 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
       isPending={redeemListStore.isPending}
       dataLayerConfig={redeemListStore.dataFlow}
       onChangeDataFlow={handleChangeDataFlow}
-      onRowClicked={() => {}}
+      onRowClicked={handleRowClick}
       tableParams={{
         rowKey: (data: IRedeem) => data.id,
       }}

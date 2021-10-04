@@ -11,6 +11,30 @@ export default class CustomRouterStore extends RouterStore {
     this.history = syncHistoryWithStore(browserHistory, this);
   }
 
+  generatePath(route: string) {
+    return generatePath(route);
+  }
+
+  goToDashboardIssue(params: { issueId?: string; replace?: boolean }) {
+    const { issueId, replace = false } = params;
+    const path = generatePath(routes.dashboardIssue, { issueId });
+    if (replace) {
+      this.replace(path);
+    }
+    this.push(path);
+  }
+
+  goToDashboardRedeem(params: { redeemId?: string; replace?: boolean }) {
+    const { redeemId, replace = false } = params;
+    const path = generatePath(routes.dashboardRedeem, {
+      redeemId,
+    });
+    if (replace) {
+      this.replace(path);
+    }
+    this.push(path);
+  }
+
   goToIssue(issueId?: string) {
     const path = generatePath(routes.issue, { issueId });
     this.push(path);

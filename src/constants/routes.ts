@@ -10,8 +10,8 @@ export const routes = {
   myTransactions: '/bridge/myTransactions',
   dashboard: '/dashboard',
   dashboardRelay: '/dashboard/relay',
-  dashboardIssue: '/dashboard/issues',
-  dashboardRedeem: '/dashboard/redeem',
+  dashboardIssue: '/dashboard/issues/:issueId?',
+  dashboardRedeem: '/dashboard/redeem/:redeemId?',
   dashboardVault: '/dashboard/vault',
 } as const;
 

@@ -151,7 +151,7 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   @action.bound
-  public openRedeemDetailsModal(redeemId: string) {
+  public openRedeemDetailsModal(redeemId: string, onClose?: () => void) {
     this.stores.actionModals.open(RedeemDetailsModal, {
       applyText: '',
       closeText: 'Close',
@@ -165,6 +165,9 @@ export class RedeemPageStore extends StoreConstructor {
         return Promise.resolve();
       },
       onClose: () => {
+        if (onClose) {
+          onClose();
+        }
         return Promise.resolve();
       },
     });

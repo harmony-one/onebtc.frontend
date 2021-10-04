@@ -5,10 +5,12 @@ import { NavLink } from 'react-router-dom';
 import { routes } from '../../../constants/routes';
 import { DashboardCard } from '../../../components/Dashboard/DashboardCard';
 import React from 'react';
+import { useStores } from '../../../stores';
 
 interface Props {}
 
 export const DashboardIssueRedeemCard: React.FC<Props> = () => {
+  const { routing } = useStores();
   return (
     <DashboardCard>
       <DashboardCardHead>
@@ -19,10 +21,14 @@ export const DashboardIssueRedeemCard: React.FC<Props> = () => {
         </Box>
         <Box fill alignContent="end">
           <Text align="right">
-            <NavLink to={routes.dashboardIssue}>VIEW ALL ISSUED</NavLink>
+            <NavLink to={routing.generatePath(routes.dashboardIssue)}>
+              VIEW ALL ISSUED
+            </NavLink>
           </Text>
           <Text align="right">
-            <NavLink to={routes.dashboardRedeem}>VIEW ALL REDEEMED</NavLink>
+            <NavLink to={routing.generatePath(routes.dashboardRedeem)}>
+              VIEW ALL REDEEMED
+            </NavLink>
           </Text>
         </Box>
       </DashboardCardHead>

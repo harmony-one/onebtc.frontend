@@ -142,7 +142,7 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  public openIssueDetailsModal(issueId: string) {
+  public openIssueDetailsModal(issueId: string, onClose?: () => void) {
     this.stores.actionModals.open(IssueDetailsModal, {
       initData: {
         issueId,
@@ -157,6 +157,10 @@ export class IssuePageStore extends StoreConstructor {
         return Promise.resolve();
       },
       onClose: () => {
+        if (onClose) {
+          onClose();
+          return Promise.resolve();
+        }
         this.stores.routing.goToIssue();
         return Promise.resolve();
       },
