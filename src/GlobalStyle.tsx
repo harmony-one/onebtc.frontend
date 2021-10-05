@@ -5,6 +5,11 @@ export const GlobalStyle = createGlobalStyle<any>`
     font-family: ${props => props.theme.fontBase || 'Nunito'};
   }
   
+  a {
+    color: #47b8eb;
+    text-decoration: none;
+  }
+  
   @-webkit-keyframes autofill {
       to {
           color: #666;

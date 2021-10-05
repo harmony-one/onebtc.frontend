@@ -5,8 +5,8 @@ import { Divider, Text, Title } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
 import React from 'react';
-import LinkHarmonyAddress from '../../../../components/LinkHarmonyAddress';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
+import { LinkHarmony } from '../../../../components/LinkHarmony';
 
 interface Props {
   issueId: string;
@@ -58,17 +58,8 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmonyAddress address={issueInfo.requester} />
+            <LinkHarmony hash={issueInfo.requester} type="address" />
           </Text>
-        </Box>
-      </Box>
-
-      <Box direction="row" width="100%" align="start" justify="between">
-        <Box>
-          <Text>Parachain Block</Text>
-        </Box>
-        <Box>
-          <Text bold>439396</Text>
         </Box>
       </Box>
 
@@ -78,7 +69,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmonyAddress address={issueInfo.vaultId} />
+            <LinkHarmony hash={issueInfo.vaultId} type="address" />
           </Text>
         </Box>
       </Box>

@@ -5,8 +5,8 @@ import { Box } from 'grommet';
 import { Divider, Text, Title } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
-import LinkHarmonyAddress from '../../../../components/LinkHarmonyAddress';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
+import { LinkHarmony } from '../../../../components/LinkHarmony';
 
 export const RedeemDetailsModalTransaction: React.FC<{
   redeemId: string;
@@ -77,20 +77,11 @@ export const RedeemDetailsModalTransaction: React.FC<{
 
       <Box direction="row" width="100%" align="start" justify="between">
         <Box>
-          <Text>Parachain Block</Text>
-        </Box>
-        <Box>
-          <Text bold>439396</Text>
-        </Box>
-      </Box>
-
-      <Box direction="row" width="100%" align="start" justify="between">
-        <Box>
           <Text>Vault Account</Text>
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmonyAddress address={redeemInfo.vaultId} />
+            <LinkHarmony hash={redeemInfo.vaultId} type="address" />
           </Text>
         </Box>
       </Box>

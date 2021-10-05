@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
+import cn from 'classnames';
+import { observer } from 'mobx-react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
-import { observer } from 'mobx-react';
 import LinkBitcoin from '../../../components/LinkBitcoin';
-import LinkHarmonyTx from '../../../components/LinkHarmonyTx';
-import * as s from './DashboardRelayBlocks.styl';
+import { LinkHarmony } from '../../../components/LinkHarmony';
+import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { IBtcRelayEvent } from '../../../modules/btcRelay/btcRelayTypes';
 
 type Props = {};
@@ -31,7 +32,7 @@ export const DashboardRelayBlocks: React.FC<Props> = observer(() => {
     },
     {
       title: 'Block hash',
-      className: s.column,
+      className: cn(s.column, s.columnAddress),
       key: '_id',
       width: '33',
       render: (value: IBtcRelayEvent) => {
@@ -48,11 +49,11 @@ export const DashboardRelayBlocks: React.FC<Props> = observer(() => {
     },
     {
       title: 'Harmony Transaction',
-      className: s.column,
+      className: cn(s.column, s.columnAddress),
       key: '_id',
       width: '33',
       render: (value: IBtcRelayEvent) => {
-        return <LinkHarmonyTx txHash={value.transactionHash} />;
+        return <LinkHarmony hash={value.transactionHash} type="tx" />;
       },
     },
   ];

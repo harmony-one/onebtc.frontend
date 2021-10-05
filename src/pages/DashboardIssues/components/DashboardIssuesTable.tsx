@@ -2,15 +2,16 @@ import React, { useCallback, useEffect } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
+import cn from 'classnames';
 import LinkBitcoin from '../../../components/LinkBitcoin';
-import * as s from './DashboardIssuesTable.styl';
-import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
+import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import utils from 'web3-utils';
 import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
 import { dateFormat } from '../../../utils';
 import { useParams } from 'react-router';
+import { LinkHarmony } from '../../../components/LinkHarmony';
 
 type Props = {};
 
@@ -68,20 +69,20 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
     },
     {
       title: 'Vault Account',
-      className: s.column,
+      className: cn(s.column, s.columnAddress),
       key: 'id',
       width: '33',
       render: value => {
         return (
           <div onClick={e => e.stopPropagation()}>
-            <LinkHarmonyAddress address={value.vault} />
+            <LinkHarmony hash={value.vault} type="address" />
           </div>
         );
       },
     },
     {
       title: 'Vault BTC Address',
-      className: s.column,
+      className: cn(s.column, s.columnAddress),
       key: 'id',
       width: '33',
       render: value => {

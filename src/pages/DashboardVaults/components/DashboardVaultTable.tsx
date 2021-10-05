@@ -3,18 +3,19 @@ import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { Text } from '../../../components/Base';
 import { observer } from 'mobx-react';
-import * as s from './DashboardVaultTable.styl';
+import cn from 'classnames';
+import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
 import { IVault } from '../../../modules/btcRelay/btcRelayTypes';
-import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
 import { formatWithTwoDecimals } from '../../../utils';
 import { Box } from 'grommet';
 import { getVaultInfo } from '../../../modules/btcRelay/vaultHelpers';
+import { LinkHarmony } from '../../../components/LinkHarmony';
 
 type Props = {};
 
 export const DashboardVaultTable: React.FC<Props> = observer(() => {
-  const { vaultListStore, user } = useStores();
+  const { vaultListStore } = useStores();
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
@@ -27,12 +28,10 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
     {
       title: 'Account ID',
       width: '33',
-      className: s.column,
+      className: cn(s.column, s.columnAddress),
       key: 'id',
       render: value => {
-        return (
-          <LinkHarmonyAddress address={value.id}>{value.id}</LinkHarmonyAddress>
-        );
+        return <LinkHarmony hash={value.id} type="address" />;
       },
     },
     {

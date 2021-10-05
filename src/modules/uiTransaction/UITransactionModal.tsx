@@ -5,7 +5,7 @@ import { useStores } from '../../stores';
 import { observer } from 'mobx-react';
 import { Spinner } from '../../ui';
 import { UITransactionStatus } from './UITransactionsStore';
-import LinkHarmonyTx from '../../components/LinkHarmonyTx';
+import { LinkHarmony } from '../../components/LinkHarmony';
 import { ModalHeader } from '../../components/ActionModals/components/ModalHeader';
 import { TActionModalProps } from '../../components/ActionModals';
 
@@ -49,7 +49,7 @@ export const UITxModalContent: React.FC<UITxModalContentProps> = ({
         <Box>
           <Text>
             Transaction:&nbsp;
-            <LinkHarmonyTx txHash={txHash} />
+            <LinkHarmony hash={txHash} type="tx" />
           </Text>
         </Box>
       )}
@@ -63,7 +63,7 @@ export const UITxModalContent: React.FC<UITxModalContentProps> = ({
         <Box>
           <Text>
             Tx:
-            <LinkHarmonyTx txHash={harmonyErrTxId} />
+            <LinkHarmony hash={txHash} type="tx" />
           </Text>
         </Box>
       )}

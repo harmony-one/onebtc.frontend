@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from 'grommet';
 import { Text, Divider } from 'components/Base';
-import LinkHarmonyTx from '../../../components/LinkHarmonyTx';
+import { LinkHarmony } from '../../../components/LinkHarmony';
 import { ModalHeader } from '../../../components/ActionModals/components/ModalHeader';
 import { TActionModalProps } from '../../../components/ActionModals';
 
@@ -18,7 +18,7 @@ export const IssueConfirmModalContent: React.FC<{
       <Box align="center">
         <Text>
           Transaction:&nbsp;
-          <LinkHarmonyTx txHash={txHash} />
+          <LinkHarmony hash={txHash} type="tx" />
         </Text>
       </Box>
     </Box>

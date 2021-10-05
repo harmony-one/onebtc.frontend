@@ -6,17 +6,16 @@ import { Box } from 'grommet';
 interface Props {
   hash: string;
   text?: string;
-  type: 'wallet' | 'tx' | 'block';
+  type: 'address' | 'tx' | 'block';
   cut?: boolean;
 }
 
 const typeMap = {
-  wallet: config.bitcoin.explorer.testnet.wallet,
+  address: config.harmony.explorer.testnet.address,
   tx: config.bitcoin.explorer.testnet.transaction,
-  block: config.bitcoin.explorer.testnet.block,
 };
 
-const LinkBitcoin: React.FC<Props> = ({
+export const LinkHarmony: React.FC<Props> = ({
   hash = '',
   type,
   text,
@@ -38,12 +37,15 @@ const LinkBitcoin: React.FC<Props> = ({
 
   return (
     <Box direction="row" align="center" gap="xxsmall">
-      <img src="/bitcoin.svg" style={{ height: 22 }} />
-      <a target="_blank" rel="noreferrer" href={link}>
+      <img src="/one.svg" style={{ height: 22 }} />
+      <a
+        style={{ fontFamily: 'Courier' }}
+        target="_blank"
+        rel="noreferrer"
+        href={link}
+      >
         {content}
       </a>
     </Box>
   );
 };
-
-export default LinkBitcoin;

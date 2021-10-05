@@ -3,13 +3,14 @@ import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
 import LinkBitcoin from '../../../components/LinkBitcoin';
-import * as s from './DashboardRedeemsTable.styl';
-import LinkHarmonyAddress from '../../../components/LinkHarmonyAddress';
+import cn from 'classnames';
+import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import { IRedeem } from '../../../modules/btcRelay/btcRelayTypes';
 import { dateFormat } from '../../../utils';
 import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
 import { useParams } from 'react-router';
+import { LinkHarmony } from '../../../components/LinkHarmony';
 
 type Props = {};
 
@@ -65,20 +66,20 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
     },
     {
       title: 'Vault Account',
-      className: s.column,
+      className: cn(s.column, s.columnAddress),
       key: 'id',
       width: '33',
       render: (value: IRedeem) => {
         return (
           <div onClick={e => e.stopPropagation()}>
-            <LinkHarmonyAddress address={value.vault} />
+            <LinkHarmony hash={value.vault} type="address" />
           </div>
         );
       },
     },
     {
       title: 'Output BTC Address',
-      className: s.column,
+      className: cn(s.column, s.columnAddress),
       key: 'id',
       width: '33',
       render: (value: IRedeem) => {
@@ -86,7 +87,6 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
           <div onClick={e => e.stopPropagation()}>
             <LinkBitcoin
               hash={walletHexToBech32(value.btcAddress)}
-              cut={false}
               type="wallet"
             />
           </div>

@@ -17,6 +17,14 @@ export const config = {
       },
     },
   },
+  harmony: {
+    explorer: {
+      testnet: {
+        transaction: 'https://explorer.pops.one/tx/',
+        address: 'https://explorer.pops.one/address/',
+      },
+    },
+  },
   oneBtcContract: {
     testnet: '0x2a9B7F9013E701AA71fE050eA9686BbB49E0D105',
   },
