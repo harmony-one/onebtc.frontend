@@ -50,6 +50,18 @@ export default class BtcRelayClient {
     return res.body;
   };
 
+  static loadVaultIssueList = async ({
+    size,
+    page,
+    vaultId,
+  }: IPagination & { vaultId: string }): Promise<IIssueList> => {
+    const res = await agent
+      .get(`https://relayer.btc.test.hmny.io/issues/data?vault=${vaultId}`)
+      .query({ size, page });
+
+    return res.body;
+  };
+
   static loadIssue = async (issueId: string): Promise<IIssue> => {
     const res = await agent.get(
       `https://relayer.btc.test.hmny.io/issues/data/${issueId}`,

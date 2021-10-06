@@ -18,6 +18,7 @@ import { WatcherBcoin } from './modules/bcoin/WatcherBcoin';
 import { DashboardIssuesPage } from './pages/DashboardIssues/DashboardIssuesPage';
 import { DashboardRedeemsPage } from './pages/DashboardRedeems/DashboardRedeemsPage';
 import { DashboardVaultsPage } from './pages/DashboardVaults/DashboardVaultsPage';
+import { DashboardVaultDetailsPage } from './pages/DashboardVaultDetails/DashboardVaultDetailsPage';
 
 const App: React.FC = () => (
   <Providers>
@@ -46,6 +47,11 @@ const App: React.FC = () => (
         exact
         path={routes.dashboardVault}
         component={DashboardVaultsPage}
+      />
+      <Route
+        exact
+        path={routes.dashboardVaultDetails}
+        component={DashboardVaultDetailsPage}
       />
       <Redirect to={routes.issue} />
     </Switch>
