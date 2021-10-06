@@ -35,7 +35,7 @@ export const IssueForm: React.FC<Props> = () => {
                 satoshiToBitcoin(vaultInfo.availableAmountSat),
               )}
             </Text>{' '}
-            BTC
+            OneBTC
           </Text>
         ),
         value: vault.id,

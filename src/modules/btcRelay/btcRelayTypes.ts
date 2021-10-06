@@ -1,7 +1,4 @@
-import {
-  IssueStatus,
-  RedeemStatus,
-} from '../../../../onebtc.sdk.fork/lib/blockchain/hmy/types';
+import { IssueStatus, RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 import { BcoinBTCTx } from '../../services/bitcoin';
 
 export interface IBtcRelayEvent {

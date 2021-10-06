@@ -7,7 +7,7 @@ import { RedeemDetailsModalConfirmation } from './RedeemDetailsModalConfirmation
 import { RedeemDetailsModalWaitVault } from './RedeemDetailsModalWaitVault';
 import { useBtcWalletIncomeWatcher } from '../../../../hooks/useBtcWalletIncomeWatcher';
 import { useRedeemStatusWatcher } from '../../../../hooks/useRedeemStatusWatcher';
-import { RedeemStatus } from '../../../../../../onebtc.sdk.fork/lib/blockchain/hmy/types';
+import { RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
 interface Props {
   redeemId: string;

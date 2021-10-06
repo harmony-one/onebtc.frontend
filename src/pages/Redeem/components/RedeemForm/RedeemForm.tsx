@@ -30,7 +30,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
             {name}:{' '}
             <Text bold>
               {formatWithSixDecimals(
-                satoshiToBitcoin(vaultInfo.availableAmountSat),
+                satoshiToBitcoin(vaultInfo.availableToRedeem),
               )}
             </Text>{' '}
             BTC
