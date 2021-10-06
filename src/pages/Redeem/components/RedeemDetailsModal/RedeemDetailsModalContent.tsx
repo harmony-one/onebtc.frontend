@@ -8,6 +8,8 @@ import { RedeemDetailsModalWaitVault } from './RedeemDetailsModalWaitVault';
 import { useBtcWalletIncomeWatcher } from '../../../../hooks/useBtcWalletIncomeWatcher';
 import { useRedeemStatusWatcher } from '../../../../hooks/useRedeemStatusWatcher';
 import { RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
+import { config } from '../../../../config';
+import { RedeemDetailsModalWaitTransaction } from './RedeemDetailsModalWaitTransaction';
 
 interface Props {
   redeemId: string;
@@ -28,6 +30,8 @@ export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
   });
 
   const isCompleted = status === RedeemStatus.COMPLETED;
+  const isConfirmed =
+    btcTx && btcTx.confirmations >= config.bitcoin.waitConfirmations;
 
   return (
     <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">
@@ -40,8 +44,11 @@ export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
           <RedeemDetailsModalTransaction redeemId={redeemId} />
         </Box>
         <Box basis="1/2" gap="medium" align="center">
-          {!isCompleted && <RedeemDetailsModalWaitVault />}
-          {isCompleted && btcTx && (
+          {!btcTx && <RedeemDetailsModalWaitVault />}
+          {!isCompleted && btcTx && !isConfirmed && (
+            <RedeemDetailsModalWaitTransaction btcTx={btcTx} />
+          )}
+          {(isCompleted || isConfirmed) && (
             <RedeemDetailsModalConfirmation
               btcTx={btcTx}
               redeemTxHash={redeemId}
