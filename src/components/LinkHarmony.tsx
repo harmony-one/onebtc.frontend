@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { cutText } from '../services/cutText';
 import { config } from '../config';
 import { Box } from 'grommet';
+import * as s from './LinkBlockchain.styl';
 
 interface Props {
   hash: string;
@@ -12,7 +13,7 @@ interface Props {
 
 const typeMap = {
   address: config.harmony.explorer.testnet.address,
-  tx: config.bitcoin.explorer.testnet.transaction,
+  tx: config.harmony.explorer.testnet.transaction,
 };
 
 export const LinkHarmony: React.FC<Props> = ({
@@ -37,13 +38,8 @@ export const LinkHarmony: React.FC<Props> = ({
 
   return (
     <Box direction="row" align="center" gap="xxsmall">
-      <img src="/one.svg" style={{ height: 22 }} />
-      <a
-        style={{ fontFamily: 'Courier' }}
-        target="_blank"
-        rel="noreferrer"
-        href={link}
-      >
+      <img src="/one.svg" className={s.icon} />
+      <a className={s.link} target="_blank" rel="noreferrer" href={link}>
         {content}
       </a>
     </Box>
