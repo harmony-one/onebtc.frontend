@@ -18,8 +18,7 @@ export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
 
   const redeemInfo = redeemPageStore.getRedeemInfo(redeemId);
   const btcTx = useBtcWalletIncomeWatcher({
-    bitcoinAddress: redeemInfo.bitcoinAddress,
-    amount: Number(redeemInfo.rawRedeem.amountBtc),
+    redeemId,
     confirmations: 2,
   });
 

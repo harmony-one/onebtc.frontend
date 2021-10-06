@@ -11,12 +11,9 @@ import { IssueDepositModalContent } from './IssueDepositModalContent';
 export const IssueDepositModal: React.FC<TActionModalProps> = observer(
   props => {
     const { issueId } = props.actionData.data;
-    const { issuePageStore } = useStores();
-
-    const issueInfo = issuePageStore.getIssueInfo(issueId);
 
     const btcTx = useBtcWalletVaultIncomeWatcher({
-      bitcoinAddress: issueInfo.bitcoinAddress,
+      issueId,
       confirmations: config.bitcoin.waitConfirmations,
     });
 

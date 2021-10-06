@@ -46,11 +46,9 @@ export const UITxModalContent: React.FC<UITxModalContentProps> = ({
         </Box>
       )}
       {txHash && (
-        <Box>
-          <Text>
-            Transaction:&nbsp;
-            <LinkHarmony hash={txHash} type="tx" />
-          </Text>
+        <Box direction="row">
+          <Text align="center">Transaction:&nbsp;</Text>
+          <LinkHarmony hash={txHash} type="tx" />
         </Box>
       )}
 
@@ -60,11 +58,9 @@ export const UITxModalContent: React.FC<UITxModalContentProps> = ({
         </Box>
       )}
       {harmonyErrTxId && (
-        <Box>
-          <Text>
-            Tx:
-            <LinkHarmony hash={txHash} type="tx" />
-          </Text>
+        <Box direction="row">
+          <Text align="center">Transaction:</Text>
+          <LinkHarmony hash={txHash} type="tx" />
         </Box>
       )}
     </Box>

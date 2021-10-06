@@ -10,23 +10,23 @@ import {
   IRedeemList,
   IVaultList,
 } from './btcRelayTypes';
+import { config } from '../../config';
 
 export default class BtcRelayClient {
+  static HOST = config.bitcoin.relayerHost.testnet;
   static loadEvents = async ({
     size = 10,
     page = 0,
   }: IPagination): Promise<IBtcRelayEvents> => {
     const res = await agent
-      .get('https://relayer.btc.test.hmny.io/relay/events/data')
+      .get(BtcRelayClient.HOST + '/relay/events/data')
       .query({ size, page });
 
     return res.body;
   };
 
   static loadInfo = async (): Promise<IBtcRelayInfo> => {
-    const res = await agent.get(
-      'https://relayer.btc.test.hmny.io/relay/events/info',
-    );
+    const res = await agent.get(BtcRelayClient.HOST + '/relay/events/info');
 
     return res.body;
   };
@@ -44,7 +44,7 @@ export default class BtcRelayClient {
     page,
   }: IPagination): Promise<IIssueList> => {
     const res = await agent
-      .get('https://relayer.btc.test.hmny.io/issues/data')
+      .get(BtcRelayClient.HOST + '/issues/data')
       .query({ size, page });
 
     return res.body;
@@ -56,7 +56,7 @@ export default class BtcRelayClient {
     vaultId,
   }: IPagination & { vaultId: string }): Promise<IIssueList> => {
     const res = await agent
-      .get(`https://relayer.btc.test.hmny.io/issues/data?vault=${vaultId}`)
+      .get(BtcRelayClient.HOST + `/issues/data?vault=${vaultId}`)
       .query({ size, page });
 
     return res.body;
@@ -64,7 +64,7 @@ export default class BtcRelayClient {
 
   static loadIssue = async (issueId: string): Promise<IIssue> => {
     const res = await agent.get(
-      `https://relayer.btc.test.hmny.io/issues/data/${issueId}`,
+      BtcRelayClient.HOST + `/issues/data/${issueId}`,
     );
 
     return res.body;
@@ -72,7 +72,7 @@ export default class BtcRelayClient {
 
   static loadRedeem = async (redeemId: string): Promise<IRedeem> => {
     const res = await agent.get(
-      `https://relayer.btc.test.hmny.io/redeems/data/${redeemId}`,
+      BtcRelayClient.HOST + `/redeems/data/${redeemId}`,
     );
 
     return res.body;
@@ -83,7 +83,7 @@ export default class BtcRelayClient {
     page,
   }: IPagination): Promise<IRedeemList> => {
     const res = await agent
-      .get('https://relayer.btc.test.hmny.io/redeems/data')
+      .get(BtcRelayClient.HOST + '/redeems/data')
       .query({ size, page });
 
     return res.body;
@@ -94,7 +94,7 @@ export default class BtcRelayClient {
     page,
   }: IPagination): Promise<IVaultList> => {
     const res = await agent
-      .get('https://relayer.btc.test.hmny.io/vaults/data')
+      .get(BtcRelayClient.HOST + '/vaults/data')
       .query({ size, page });
 
     return res.body;

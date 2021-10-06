@@ -18,7 +18,7 @@ export const IssueDetailsModalContent: React.FC<Props> = ({ issueId }) => {
   const issueInfo = issuePageStore.getIssueInfo(issueId);
 
   const btcTx = useBtcWalletVaultIncomeWatcher({
-    bitcoinAddress: issueInfo.bitcoinAddress,
+    issueId,
     confirmations: config.bitcoin.waitConfirmations,
   });
 

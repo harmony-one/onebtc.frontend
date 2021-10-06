@@ -9,6 +9,9 @@ export const config = {
       testnet: 'https://btc.test.hmny.io',
       // mainnet: 'https://btc.main.hmny.io/',
     },
+    relayerHost: {
+      testnet: 'https://relayer.btc.test.hmny.io',
+    },
     explorer: {
       testnet: {
         wallet: 'https://www.blockchain.com/btc-testnet/address/',

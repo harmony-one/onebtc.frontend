@@ -1,29 +1,30 @@
 import { BcoinBTCTx, loadWalletTxList } from '../services/bitcoin';
 import { useCallback, useEffect, useState } from 'react';
 import { useInterval } from './useInterval';
+import BtcRelayClient from '../modules/btcRelay/btcRelayClient';
 
 interface WatcherProps {
-  bitcoinAddress: string;
+  issueId: string;
   confirmations: number;
 }
 
 export const useBtcWalletVaultIncomeWatcher = ({
-  bitcoinAddress,
+  issueId,
   confirmations = 1,
 }: WatcherProps): null | BcoinBTCTx => {
   const [btcTx, setBtcTx] = useState<BcoinBTCTx>(null);
 
   const loadBtcTx = useCallback(() => {
-    loadWalletTxList(bitcoinAddress)
-      .then(btcTxList => {
-        if (btcTxList.length > 0) {
-          setBtcTx(btcTxList[0]);
+    BtcRelayClient.loadIssue(issueId)
+      .then(issue => {
+        if (issue.btcTx) {
+          setBtcTx(issue.btcTx);
         }
       })
       .catch(err => {
         console.log('### Error while load btc transaction', err);
       });
-  }, [bitcoinAddress]);
+  }, [issueId]);
 
   const [stopInterval] = useInterval({ callback: loadBtcTx, timeout: 5000 });
 

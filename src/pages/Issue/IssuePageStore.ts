@@ -224,11 +224,15 @@ export class IssuePageStore extends StoreConstructor {
 
       const vaultId = this.form.vaultId;
       hmyClient.setUseOneWallet(true);
+
+      console.log('### this.form.amount', this.form.amount);
       const issueAmount = bitcoinToSatoshi(this.form.amount);
 
       console.log('### Request Issue');
 
       issueUiTx.setStatusWaitingSignIn();
+
+      console.log('### issueAmount', issueAmount);
 
       const issueRequest = await hmyClient.methods.requestIssue(
         issueAmount,
