@@ -4,13 +4,13 @@ import { Box } from 'grommet';
 import { Text, Title } from '../../../../components/Base';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { config } from '../../../../config';
-import { BcoinBTCTx } from '../../../../services/bitcoin';
 import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModalConfirmation.styl';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
+import { BTCTransaction } from '../../../../modules/btcRelay/btcRelayTypes';
 
 export const RedeemDetailsModalWaitTransaction: React.FC<{
-  btcTx: BcoinBTCTx;
+  btcTx: BTCTransaction;
 }> = ({ btcTx }) => {
   return useObserver(() => (
     <Box gap="small" align="center">

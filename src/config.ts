@@ -4,9 +4,9 @@ export const config = {
       process.env.BITCOINT_WAIT_CONFIRMATIONS_COUNT || '2',
       10,
     ),
-    bcoinHost: {
+    btcNodeUrl: {
       // testnet: 'http://161.35.125.60',
-      testnet: 'https://btc.test.hmny.io',
+      testnet: 'https://btc2.test.hmny.io',
       // mainnet: 'https://btc.main.hmny.io/',
     },
     relayerHost: {

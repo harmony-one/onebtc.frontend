@@ -1,7 +1,7 @@
-import { BcoinBTCTx } from '../services/bitcoin';
 import { useCallback, useEffect, useState } from 'react';
 import { useInterval } from './useInterval';
 import BtcRelayClient from '../modules/btcRelay/btcRelayClient';
+import { BTCTransaction } from '../modules/btcRelay/btcRelayTypes';
 
 interface WatcherProps {
   redeemId: string;
@@ -11,8 +11,8 @@ interface WatcherProps {
 export const useBtcWalletIncomeWatcher = ({
   redeemId,
   confirmations = 1,
-}: WatcherProps): null | BcoinBTCTx => {
-  const [btcTx, setBtcTx] = useState<BcoinBTCTx>(null);
+}: WatcherProps): null | BTCTransaction => {
+  const [btcTx, setBtcTx] = useState<BTCTransaction>(null);
 
   const loadBtcTx = useCallback(() => {
     BtcRelayClient.loadRedeem(redeemId)

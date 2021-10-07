@@ -1,5 +1,4 @@
 import { IssueStatus, RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
-import { BcoinBTCTx } from '../../services/bitcoin';
 
 export interface IBtcRelayEvent {
   _id: string;
@@ -32,6 +31,12 @@ export interface IVault {
   toBeReplaced: string;
 }
 
+export interface BTCTransaction {
+  hash: string;
+  confirmations: number;
+  outputs: { value: number; script: string; address: string }[];
+}
+
 export interface IIssue {
   id: string;
   amount: string;
@@ -46,7 +51,7 @@ export interface IIssue {
   requester: string;
   status: IssueStatus;
   vault: string;
-  btcTx: BcoinBTCTx;
+  btcTx: BTCTransaction;
 }
 
 export interface IRedeem {
@@ -64,7 +69,7 @@ export interface IRedeem {
   requester: string;
   status: RedeemStatus;
   vault: string;
-  btcTx: BcoinBTCTx;
+  btcTx: BTCTransaction;
 }
 
 interface IListContainer<T> {

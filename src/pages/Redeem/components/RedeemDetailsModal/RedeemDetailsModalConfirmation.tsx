@@ -7,11 +7,11 @@ import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetail
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
 import { Checkmark } from 'grommet-icons';
-import { BcoinBTCTx } from '../../../../services/bitcoin';
+import { BTCTransaction } from '../../../../modules/btcRelay/btcRelayTypes';
 
 export const RedeemDetailsModalConfirmation: React.FC<{
   redeemTxHash: string;
-  btcTx: BcoinBTCTx;
+  btcTx: BTCTransaction;
 }> = ({ redeemTxHash, btcTx }) => {
   const { redeemPageStore } = useStores();
 

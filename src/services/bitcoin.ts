@@ -1,8 +1,6 @@
 import * as bitcoin from 'bitcoinjs-lib';
 import utils from 'web3-utils';
-import agent from 'superagent';
 import { issue_tx_mock } from 'onebtc.sdk/lib/helpers';
-import { config } from '../config';
 
 export const walletHexToBech32 = (address: string) => {
   return bitcoin.address.toBech32(
@@ -52,20 +50,4 @@ export const mockBitcoinTx = (
     proofMock,
     btcTx,
   };
-};
-
-export interface BcoinBTCTx {
-  hash: string;
-  confirmations: number;
-  outputs: { value: number; script: string; address: string }[];
-}
-
-export const loadWalletTxList = async (
-  btcAddress: string,
-): Promise<BcoinBTCTx[]> => {
-  const HOST = config.bitcoin.bcoinHost.testnet;
-  const API_URL = `${HOST}/tx/address/${btcAddress}`;
-  const response = await agent.get(API_URL);
-
-  return response.body;
 };

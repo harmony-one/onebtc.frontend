@@ -4,15 +4,15 @@ import { Checkmark } from 'grommet-icons';
 import { Button, Text, Title } from '../../../../components/Base';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
-import { BcoinBTCTx } from '../../../../services/bitcoin';
 import * as styles from './IssueDetailsModalConfirmation.styl';
 import { useStores } from '../../../../stores';
 import { config } from '../../../../config';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { useIssueStatusWatcher } from '../../../../hooks/useIssueStatusWatcher';
+import { BTCTransaction } from '../../../../modules/btcRelay/btcRelayTypes';
 
 interface Props {
-  btcTx: BcoinBTCTx;
+  btcTx: BTCTransaction;
   issueId: string;
 }
 

@@ -13,17 +13,7 @@ export interface BcoinBTCTx {
   outputs: { value: number; script: string; address: string }[];
 }
 
-export const loadWalletTxList = async (
-  btcAddress: string,
-): Promise<BcoinBTCTx[]> => {
-  const HOST = config.bitcoin.bcoinHost.testnet;
-  const API_URL = `${HOST}/tx/address/${btcAddress}`;
-  const response = await agent.get(API_URL);
-
-  return response.body;
-};
-
-const HOST = config.bitcoin.bcoinHost.testnet;
+const HOST = config.bitcoin.btcNodeUrl.testnet;
 
 export class BcoinClient {
   static loadWalletTxList = async (
