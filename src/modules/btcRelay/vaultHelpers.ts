@@ -14,6 +14,7 @@ export function getVaultInfo(vault: IVault) {
 
   const availableAmountSat = amountSat - toBeRedeemedSat - toBeIssuedSat;
   const availableToRedeem = issuedSat - toBeRedeemedSat - tobeReplacedSat;
+
   return {
     oneAmount,
     availableAmountSat,
@@ -23,5 +24,6 @@ export function getVaultInfo(vault: IVault) {
     collateralRedeemed,
     collateralIssued,
     collateralTotal,
+    issuedSat,
   };
 }

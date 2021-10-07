@@ -8,6 +8,7 @@ import {
   IPagination,
   IRedeem,
   IRedeemList,
+  IVault,
   IVaultList,
 } from './btcRelayTypes';
 import { config } from '../../config';
@@ -96,6 +97,14 @@ export default class BtcRelayClient {
     const res = await agent
       .get(BtcRelayClient.HOST + '/vaults/data')
       .query({ size, page });
+
+    return res.body;
+  };
+
+  static loadVault = async (vaultId: string): Promise<IVault> => {
+    const res = await agent.get(
+      BtcRelayClient.HOST + `/vaults/data/${vaultId}`,
+    );
 
     return res.body;
   };

@@ -12,6 +12,8 @@ import { BcoinStore } from '../modules/bcoin/BcoinStore';
 import { IssueListStore } from '../pages/DashboardIssues/IssueListStore';
 import { RedeemListStore } from '../pages/DashboardRedeems/RedeemListStore';
 import { VaultsListStore } from '../pages/DashboardVaults/VaultsListStore';
+import { VaultStore } from './VaultStore';
+import { DashboardVaultDetailsStore } from '../pages/DashboardVaultDetails/DashboardVaultDetailsStore';
 
 export interface IStores {
   routing?: RouterStore;
@@ -27,6 +29,8 @@ export interface IStores {
   issueListStore?: IssueListStore;
   redeemListStore?: RedeemListStore;
   vaultListStore?: VaultsListStore;
+  vaultStore?: VaultStore;
+  dashboardVaultDetailsStore?: DashboardVaultDetailsStore;
 }
 
 const stores: IStores = {};
@@ -44,6 +48,8 @@ stores.bcoinStore = new BcoinStore(stores);
 stores.issueListStore = new IssueListStore(stores);
 stores.redeemListStore = new RedeemListStore(stores);
 stores.vaultListStore = new VaultsListStore(stores);
+stores.vaultStore = new VaultStore(stores);
+stores.dashboardVaultDetailsStore = new DashboardVaultDetailsStore(stores);
 
 if (!process.env.production) {
   window.stores = stores;

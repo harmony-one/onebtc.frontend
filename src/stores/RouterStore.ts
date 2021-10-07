@@ -49,4 +49,9 @@ export default class CustomRouterStore extends RouterStore {
     const path = generatePath(routes.redeem, { redeemId, modal });
     this.push(path);
   }
+
+  goToVault(vaultId: string) {
+    const path = generatePath(routes.dashboardVaultDetails, { vaultId });
+    this.push(path);
+  }
 }

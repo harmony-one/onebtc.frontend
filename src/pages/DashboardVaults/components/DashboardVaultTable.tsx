@@ -15,13 +15,20 @@ import { LinkHarmony } from '../../../components/LinkHarmony';
 type Props = {};
 
 export const DashboardVaultTable: React.FC<Props> = observer(() => {
-  const { vaultListStore } = useStores();
+  const { vaultListStore, routing } = useStores();
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
       vaultListStore.onChangeDataFlow(props);
     },
     [vaultListStore],
+  );
+
+  const handleRowClick = useCallback(
+    (vault: IVault) => {
+      routing.goToVault(vault.id);
+    },
+    [routing],
   );
 
   const columns: IColumn<IVault>[] = [
@@ -31,7 +38,11 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       className: cn(s.column, s.columnAddress),
       key: 'id',
       render: value => {
-        return <LinkHarmony hash={value.id} type="address" />;
+        return (
+          <div onClick={e => e.stopPropagation()}>
+            <LinkHarmony hash={value.id} type="address" />
+          </div>
+        );
       },
     },
     {
@@ -101,7 +112,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       isPending={vaultListStore.isPending}
       dataLayerConfig={vaultListStore.dataFlow}
       onChangeDataFlow={handleChangeDataFlow}
-      onRowClicked={() => {}}
+      onRowClicked={handleRowClick}
       tableParams={{
         rowKey: (data: IVault) => data.id,
       }}

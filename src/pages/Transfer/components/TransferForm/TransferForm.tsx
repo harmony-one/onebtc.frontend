@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
-import { Text, Divider, Button } from 'components/Base';
+import { Divider, Button } from 'components/Base';
 import { useObserver } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input } from 'components/Form';
 import { lessThan, moreThanZero } from '../../../../utils';
