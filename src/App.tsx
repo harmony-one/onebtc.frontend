@@ -55,15 +55,9 @@ const App: React.FC = () => (
       />
       <Redirect to={routes.issue} />
     </Switch>
-    <Switch>
-      <Route path="/">
-        <WatcherBalance />
-      </Route>
-      <Route path={routes.dashboard}>
-        <WatcherBtcRelay />
-        <WatcherBcoin />
-      </Route>
-    </Switch>
+    <WatcherBalance />
+    <WatcherBtcRelay />
+    <WatcherBcoin />
     <ActionModals />
     <GlobalStyle theme={...baseTheme as any} />
   </Providers>
