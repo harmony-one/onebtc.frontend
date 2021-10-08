@@ -1,4 +1,5 @@
 import { IVault } from './btcRelayTypes';
+import { ONE_MINUTE } from '../../constants/date';
 
 const COLLATERAL_RATIO = 1.5;
 export function getVaultInfo(vault: IVault) {
@@ -14,6 +15,8 @@ export function getVaultInfo(vault: IVault) {
 
   const availableAmountSat = amountSat - toBeRedeemedSat - toBeIssuedSat;
   const availableToRedeem = issuedSat - toBeRedeemedSat - tobeReplacedSat;
+  const isActive =
+    vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
 
   return {
     oneAmount,
@@ -25,5 +28,6 @@ export function getVaultInfo(vault: IVault) {
     collateralIssued,
     collateralTotal,
     issuedSat,
+    isActive,
   };
 }

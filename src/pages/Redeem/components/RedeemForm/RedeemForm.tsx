@@ -3,11 +3,7 @@ import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
 import { observer } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input, Select } from 'components/Form';
-import {
-  formatWithSixDecimals,
-  lessThan,
-  moreThanZero,
-} from '../../../../utils';
+import { lessThan, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
