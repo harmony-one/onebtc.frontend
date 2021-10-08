@@ -8,7 +8,7 @@ import { UITransactionsStore } from '../modules/uiTransaction/UITransactionsStor
 import { TransferPageStore } from '../pages/Transfer/TransferPageStore';
 import { BtcRelayBlocksStore } from '../pages/DashboardRelay/BtcRelayBlocksStore';
 import { BtcRelayStore } from '../modules/btcRelay/BtcRelayStore';
-import { BcoinStore } from '../modules/bcoin/BcoinStore';
+import { BTCNodeStore } from '../modules/bcoin/BTCNodeStore';
 import { IssueListStore } from '../pages/DashboardIssues/IssueListStore';
 import { RedeemListStore } from '../pages/DashboardRedeems/RedeemListStore';
 import { VaultsListStore } from '../pages/DashboardVaults/VaultsListStore';
@@ -25,7 +25,7 @@ export interface IStores {
   uiTransactionsStore?: UITransactionsStore;
   relayBlocksStore?: BtcRelayBlocksStore;
   btcRelayStore?: BtcRelayStore;
-  bcoinStore?: BcoinStore;
+  btcNodeStore?: BTCNodeStore;
   issueListStore?: IssueListStore;
   redeemListStore?: RedeemListStore;
   vaultListStore?: VaultsListStore;
@@ -44,7 +44,7 @@ stores.actionModals = new ActionModalsStore();
 stores.user = new UserStoreEx(stores);
 stores.relayBlocksStore = new BtcRelayBlocksStore(stores);
 stores.btcRelayStore = new BtcRelayStore(stores);
-stores.bcoinStore = new BcoinStore(stores);
+stores.btcNodeStore = new BTCNodeStore(stores);
 stores.issueListStore = new IssueListStore(stores);
 stores.redeemListStore = new RedeemListStore(stores);
 stores.vaultListStore = new VaultsListStore(stores);

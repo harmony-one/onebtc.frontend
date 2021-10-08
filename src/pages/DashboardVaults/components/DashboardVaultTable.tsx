@@ -11,6 +11,7 @@ import { formatWithTwoDecimals } from '../../../utils';
 import { Box } from 'grommet';
 import { getVaultInfo } from '../../../modules/btcRelay/vaultHelpers';
 import { LinkHarmony } from '../../../components/LinkHarmony';
+import { ONE_MINUTE } from '../../../constants/date';
 
 type Props = {};
 
@@ -100,6 +101,30 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
               </Text>
             </Text>
           </Box>
+        );
+      },
+    },
+    {
+      title: 'Status',
+      className: s.column,
+      key: 'id',
+      width: '33',
+      render: vault => {
+        const isActive =
+          vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
+
+        if (isActive) {
+          return (
+            <Text bold color="Green">
+              active
+            </Text>
+          );
+        }
+
+        return (
+          <Text bold color="Red">
+            offline
+          </Text>
         );
       },
     },

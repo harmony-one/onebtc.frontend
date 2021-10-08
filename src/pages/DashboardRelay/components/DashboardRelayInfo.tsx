@@ -11,7 +11,7 @@ import { DashboardCardBtcRelay } from '../../../components/Dashboard/DashboardCa
 type Props = {};
 
 export const DashboardRelayInfo: React.FC<Props> = observer(() => {
-  const { bcoinStore } = useStores();
+  const { btcNodeStore } = useStores();
 
   return (
     <Box direction="row" gap="small" justify="center">
@@ -26,7 +26,7 @@ export const DashboardRelayInfo: React.FC<Props> = observer(() => {
         </DashboardCardHead>
         <DashboardCardCircle
           title="Blockchain"
-          subtext={bcoinStore.lastBlockHeight}
+          subtext={btcNodeStore.lastBlockHeight}
           status="success"
         />
       </DashboardCard>

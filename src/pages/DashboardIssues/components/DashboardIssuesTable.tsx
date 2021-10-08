@@ -10,7 +10,7 @@ import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.sty
 import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
-import { dateFormat } from '../../../utils';
+import { dateTimeAgoFormat } from '../../../utils';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 
 type Props = {};
@@ -48,26 +48,6 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
 
   const columns: IColumn<IIssue>[] = [
     {
-      title: 'Date',
-      width: 150,
-      className: s.column,
-      key: 'id',
-      render: value => {
-        return <div>{dateFormat(new Date(Number(value.opentime) * 1000))}</div>;
-      },
-    },
-    {
-      title: 'Amount',
-      className: s.column,
-      key: 'id',
-      width: '33',
-      render: value => {
-        const amount = utils.toBN(value.amount);
-        const fee = utils.toBN(value.fee);
-        return <div>{satoshiToBitcoin(amount.add(fee).toString())} BTC</div>;
-      },
-    },
-    {
       title: 'Vault Account',
       className: cn(s.column, s.columnAddress),
       key: 'id',
@@ -103,6 +83,26 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
       width: '33',
       render: value => {
         return <EntityStatus status={value.status} />;
+      },
+    },
+    {
+      title: 'Amount',
+      className: s.column,
+      key: 'id',
+      width: '33',
+      render: value => {
+        const amount = utils.toBN(value.amount);
+        const fee = utils.toBN(value.fee);
+        return <div>{satoshiToBitcoin(amount.add(fee).toString())} BTC</div>;
+      },
+    },
+    {
+      title: 'Date',
+      width: '33',
+      className: s.column,
+      key: 'id',
+      render: value => {
+        return <div>{dateTimeAgoFormat(Number(value.opentime) * 1000)}</div>;
       },
     },
   ];

@@ -7,7 +7,7 @@ import cn from 'classnames';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import { IRedeem } from '../../../modules/btcRelay/btcRelayTypes';
-import { dateFormat } from '../../../utils';
+import { dateTimeAgoFormat } from '../../../utils';
 import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
 import { useParams } from 'react-router';
 import { LinkHarmony } from '../../../components/LinkHarmony';
@@ -47,24 +47,6 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
 
   const columns: IColumn<IRedeem>[] = [
     {
-      title: 'Date',
-      width: 150,
-      className: s.column,
-      key: 'id',
-      render: (value: IRedeem) => {
-        return <div>{dateFormat(new Date(Number(value.opentime) * 1000))}</div>;
-      },
-    },
-    {
-      title: 'Amount',
-      className: s.column,
-      key: 'id',
-      width: '33',
-      render: (value: IRedeem) => {
-        return <div>{satoshiToBitcoin(value.amountBtc)} BTC</div>;
-      },
-    },
-    {
       title: 'Vault Account',
       className: cn(s.column, s.columnAddress),
       key: 'id',
@@ -100,6 +82,24 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
       width: '33',
       render: (value: IRedeem) => {
         return <EntityStatus status={value.status} />;
+      },
+    },
+    {
+      title: 'Amount',
+      className: s.column,
+      key: 'id',
+      width: '33',
+      render: (value: IRedeem) => {
+        return <div>{satoshiToBitcoin(value.amountBtc)} BTC</div>;
+      },
+    },
+    {
+      title: 'Date',
+      width: '33',
+      className: s.column,
+      key: 'id',
+      render: (value: IRedeem) => {
+        return <div>{dateTimeAgoFormat(Number(value.opentime) * 1000)}</div>;
       },
     },
   ];

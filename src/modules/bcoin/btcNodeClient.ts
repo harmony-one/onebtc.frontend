@@ -15,7 +15,7 @@ export interface BcoinBTCTx {
 
 const HOST = config.bitcoin.btcNodeUrl.testnet;
 
-export class BcoinClient {
+export class BtcNodeClient {
   static loadWalletTxList = async (
     btcAddress: string,
   ): Promise<BcoinBTCTx[]> => {
@@ -27,5 +27,10 @@ export class BcoinClient {
   static loadBasicInfo = async (): Promise<IBcoinBasicInfo> => {
     const response = await agent.get(`${HOST}`);
     return response.body;
+  };
+
+  static loadFee = async (): Promise<number> => {
+    const response = await agent.get(`${HOST}/fee`);
+    return response.body.rate;
   };
 }

@@ -17,29 +17,24 @@ import { getVaultInfo } from '../../../../modules/btcRelay/vaultHelpers';
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const RedeemForm: React.FC<Props> = observer(() => {
-  const { redeemPageStore, user } = useStores();
+  const { redeemPageStore, user, btcNodeStore } = useStores();
   const [form, setForm] = useState();
 
   const vaultOptions = useMemo(() => {
     return redeemPageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
       const vaultInfo = getVaultInfo(vault);
+      const maxRedeemAmount = vaultInfo.availableToRedeem - btcNodeStore.fee;
       return {
         text: (
           <Text>
-            {name}:{' '}
-            <Text bold>
-              {formatWithSixDecimals(
-                satoshiToBitcoin(vaultInfo.availableToRedeem),
-              )}
-            </Text>{' '}
-            BTC
+            {name}: <Text bold>{satoshiToBitcoin(maxRedeemAmount)}</Text> BTC
           </Text>
         ),
         value: vault.id,
       };
     });
-  }, [redeemPageStore.vaultList]);
+  }, [btcNodeStore.fee, redeemPageStore.vaultList]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -109,7 +104,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
           Bitcoin Network Fee
         </Text>
         <PriceView
-          value={0.00005}
+          value={satoshiToBitcoin(btcNodeStore.fee)}
           rate={user.btcRate}
           boxProps={{ pad: {} }}
           tokenName="BTC"

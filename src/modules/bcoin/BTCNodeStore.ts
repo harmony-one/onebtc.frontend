@@ -1,10 +1,13 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, computed, observable } from 'mobx';
-import { BcoinClient, IBcoinBasicInfo } from './bcoinClient';
+import { BtcNodeClient, IBcoinBasicInfo } from './btcNodeClient';
 
-export class BcoinStore extends StoreConstructor {
+export class BTCNodeStore extends StoreConstructor {
   @observable
   basicInfo: IBcoinBasicInfo = null;
+
+  @observable
+  fee: number = 0;
 
   @computed
   get lastBlockHeight() {
@@ -17,6 +20,7 @@ export class BcoinStore extends StoreConstructor {
 
   @action.bound
   public async loadBasicInfo() {
-    this.basicInfo = await BcoinClient.loadBasicInfo();
+    this.basicInfo = await BtcNodeClient.loadBasicInfo();
+    this.fee = await BtcNodeClient.loadFee();
   }
 }

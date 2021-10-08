@@ -27,6 +27,6 @@ export class BtcRelayStore extends StoreConstructor {
 
   @computed
   get isSynchronized() {
-    return this.stores.bcoinStore.lastBlockHeight === this.lastBlockHeight;
+    return this.stores.btcNodeStore.lastBlockHeight === this.lastBlockHeight;
   }
 }

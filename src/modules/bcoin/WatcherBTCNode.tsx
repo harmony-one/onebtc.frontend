@@ -2,16 +2,16 @@ import React, { useCallback } from 'react';
 import { useStores } from '../../stores';
 import { useInterval } from '../../hooks/useInterval';
 
-export const WatcherBcoin: React.FC = React.memo(() => {
-  const { bcoinStore } = useStores();
+export const WatcherBTCNode: React.FC = React.memo(() => {
+  const { btcNodeStore } = useStores();
 
   const updateInfo = useCallback(() => {
-    bcoinStore.loadBasicInfo();
-  }, [bcoinStore]);
+    btcNodeStore.loadBasicInfo();
+  }, [btcNodeStore]);
 
   useInterval({ callback: updateInfo, timeout: 5000 });
 
   return null;
 });
 
-WatcherBcoin.displayName = 'WatcherBcoin';
+WatcherBTCNode.displayName = 'WatcherBTCNode';

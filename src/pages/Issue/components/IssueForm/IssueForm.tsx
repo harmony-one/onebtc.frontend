@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from 'grommet';
 import { Text, Divider, Button } from 'components/Base';
-import { useObserver } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { Form, isRequired, NumberInput, Select } from 'components/Form';
 import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
@@ -12,7 +12,7 @@ import { satoshiToBitcoin } from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
-export const IssueForm: React.FC<Props> = () => {
+export const IssueForm: React.FC<Props> = observer(() => {
   const { issuePageStore, user } = useStores();
   const [form, setForm] = useState();
 
@@ -43,7 +43,7 @@ export const IssueForm: React.FC<Props> = () => {
     });
   }, [issuePageStore.vaultList]);
 
-  return useObserver(() => (
+  return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
       <NumberInput
         label={`BTC Amount`}
@@ -129,7 +129,7 @@ export const IssueForm: React.FC<Props> = () => {
         </Button>
       </Box>
     </Form>
-  ));
-};
+  );
+});
 
 export default IssueForm;

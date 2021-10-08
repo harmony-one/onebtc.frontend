@@ -14,7 +14,7 @@ import { WatcherBalance } from './components/WatcherBalance';
 import { DashboardPage } from './pages/Dashboard/DashboardPage';
 import { DashboardRelayPage } from './pages/DashboardRelay/DashboardRelayPage';
 import { WatcherBtcRelay } from './modules/btcRelay/WatcherBtcRelay';
-import { WatcherBcoin } from './modules/bcoin/WatcherBcoin';
+import { WatcherBTCNode } from './modules/bcoin/WatcherBTCNode';
 import { DashboardIssuesPage } from './pages/DashboardIssues/DashboardIssuesPage';
 import { DashboardRedeemsPage } from './pages/DashboardRedeems/DashboardRedeemsPage';
 import { DashboardVaultsPage } from './pages/DashboardVaults/DashboardVaultsPage';
@@ -57,7 +57,7 @@ const App: React.FC = () => (
     </Switch>
     <WatcherBalance />
     <WatcherBtcRelay />
-    <WatcherBcoin />
+    <WatcherBTCNode />
     <ActionModals />
     <GlobalStyle theme={...baseTheme as any} />
   </Providers>

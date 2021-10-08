@@ -29,6 +29,7 @@ export interface IVault {
   toBeIssued: string;
   toBeRedeemed: string;
   toBeReplaced: string;
+  lastPing: number;
 }
 
 export interface BTCTransaction {
