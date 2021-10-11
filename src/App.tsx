@@ -14,7 +14,7 @@ import { WatcherBalance } from './components/WatcherBalance';
 import { DashboardPage } from './pages/Dashboard/DashboardPage';
 import { DashboardRelayPage } from './pages/DashboardRelay/DashboardRelayPage';
 import { WatcherBtcRelay } from './modules/btcRelay/WatcherBtcRelay';
-import { WatcherBTCNode } from './modules/bcoin/WatcherBTCNode';
+import { WatcherBTCNode } from './modules/btcNode/WatcherBTCNode';
 import { DashboardIssuesPage } from './pages/DashboardIssues/DashboardIssuesPage';
 import { DashboardRedeemsPage } from './pages/DashboardRedeems/DashboardRedeemsPage';
 import { DashboardVaultsPage } from './pages/DashboardVaults/DashboardVaultsPage';

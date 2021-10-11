@@ -8,7 +8,7 @@ import { UITransactionsStore } from '../modules/uiTransaction/UITransactionsStor
 import { TransferPageStore } from '../pages/Transfer/TransferPageStore';
 import { BtcRelayBlocksStore } from '../pages/DashboardRelay/BtcRelayBlocksStore';
 import { BtcRelayStore } from '../modules/btcRelay/BtcRelayStore';
-import { BTCNodeStore } from '../modules/bcoin/BTCNodeStore';
+import { BTCNodeStore } from '../modules/btcNode/BTCNodeStore';
 import { IssueListStore } from '../pages/DashboardIssues/IssueListStore';
 import { RedeemListStore } from '../pages/DashboardRedeems/RedeemListStore';
 import { VaultsListStore } from '../pages/DashboardVaults/VaultsListStore';

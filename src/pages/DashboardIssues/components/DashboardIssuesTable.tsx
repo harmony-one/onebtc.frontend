@@ -1,17 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
-import utils from 'web3-utils';
-import cn from 'classnames';
 import { useParams } from 'react-router';
 import { observer } from 'mobx-react';
-import { IColumn, Table } from '../../../components/Table';
+import { Table } from '../../../components/Table';
 import { useStores } from '../../../stores';
-import LinkBitcoin from '../../../components/LinkBitcoin';
-import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
-import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
-import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
-import { dateTimeAgoFormat } from '../../../utils';
-import { LinkHarmony } from '../../../components/LinkHarmony';
+import { DashboardIssueTableColumns } from './DashboardIssueTableColumns';
 
 type Props = {};
 
@@ -46,70 +39,9 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
     [routing],
   );
 
-  const columns: IColumn<IIssue>[] = [
-    {
-      title: 'Vault Account',
-      className: cn(s.column, s.columnAddress),
-      key: 'id',
-      width: '33',
-      render: value => {
-        return (
-          <div onClick={e => e.stopPropagation()}>
-            <LinkHarmony hash={value.vault} type="address" />
-          </div>
-        );
-      },
-    },
-    {
-      title: 'Vault BTC Address',
-      className: cn(s.column, s.columnAddress),
-      key: 'id',
-      width: '33',
-      render: value => {
-        return (
-          <div onClick={e => e.stopPropagation()}>
-            <LinkBitcoin
-              hash={walletHexToBech32(value.btcAddress)}
-              type="wallet"
-            />
-          </div>
-        );
-      },
-    },
-    {
-      title: 'Status',
-      className: s.column,
-      key: 'id',
-      width: '33',
-      render: value => {
-        return <EntityStatus status={value.status} />;
-      },
-    },
-    {
-      title: 'Amount',
-      className: s.column,
-      key: 'id',
-      width: '33',
-      render: value => {
-        const amount = utils.toBN(value.amount);
-        const fee = utils.toBN(value.fee);
-        return <div>{satoshiToBitcoin(amount.add(fee).toString())} BTC</div>;
-      },
-    },
-    {
-      title: 'Date',
-      width: '33',
-      className: s.column,
-      key: 'id',
-      render: value => {
-        return <div>{dateTimeAgoFormat(Number(value.opentime) * 1000)}</div>;
-      },
-    },
-  ];
-
   return (
     <Table
-      columns={columns}
+      columns={DashboardIssueTableColumns}
       data={issueListStore.data}
       isPending={issueListStore.isPending}
       dataLayerConfig={issueListStore.dataFlow}

@@ -1,25 +1,20 @@
 import React, { useEffect, useMemo } from 'react';
-import { Divider, Title, Text } from '../../components/Base';
+import { Divider, Title } from '../../components/Base';
 import { BaseContainer } from 'components/BaseContainer';
 import { PageContainer } from 'components/PageContainer';
-import { Box, DataChart } from 'grommet';
+import { Box } from 'grommet';
 import { useStores } from '../../stores';
 import { useParams } from 'react-router';
 import { observer } from 'mobx-react';
 import { VaultInfo } from './components/VaultInfo';
 import { VaultActions } from './components/VaultActions/VaultActions';
 import { Paper } from '../../components/Paper';
+import { VaultIssuedChart } from './components/VaultIssuedChart/VaultIssuedChart';
+import { VaultBalances } from './components/VaultBalances/VaultBalances';
+import { VaultIssueTable } from './components/VaultIssues/VaultIssueTable';
+import { VaultRedeemTable } from './components/VaultRedeems/VaultRedeemTable';
 
 interface Props {}
-
-const data = [];
-for (let i = 1; i < 8; i += 1) {
-  const v = Math.sin(i / 2.0);
-  data.push({
-    date: `2021-10-${((i % 30) + 1).toString().padStart(2, '0')}`,
-    amount: Math.round(Math.abs(v * 10)),
-  });
-}
 
 export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
   const { vaultStore, user } = useStores();
@@ -61,39 +56,7 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
               </Box>
               <Box basis="1/2">
                 <Paper>
-                  <Box gap="small">
-                    <Text size="medium" bold align="center">
-                      Total locked:
-                    </Text>
-                    <DataChart
-                      data={data}
-                      pad="none"
-                      series={['date', 'amount']}
-                      axis={{
-                        x: { granularity: 'fine' },
-                        y: false,
-                      }}
-                      chart={[
-                        {
-                          property: 'amount',
-                          thickness: 'hair',
-                          type: 'line',
-                          color: '#47b8eb',
-                        },
-                        {
-                          property: 'amount',
-                          thickness: 'xsmall',
-                          type: 'point',
-                          point: 'circle',
-                        },
-                      ]}
-                      guide={{
-                        x: { granularity: 'fine' },
-                        y: { granularity: 'fine' },
-                      }}
-                      size={{ width: 'fill' }}
-                    />
-                  </Box>
+                  <VaultIssuedChart />
                 </Paper>
               </Box>
             </Box>
@@ -107,6 +70,15 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
               </Box>
             </Box>
           )}
+          <Box>
+            <VaultBalances vaultId={vaultId} />
+          </Box>
+          <Box>
+            <VaultIssueTable vaultId={vaultId} />
+          </Box>
+          <Box>
+            <VaultRedeemTable vaultId={vaultId} />
+          </Box>
         </Box>
       </PageContainer>
     </BaseContainer>
