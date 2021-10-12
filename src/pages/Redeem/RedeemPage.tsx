@@ -19,14 +19,12 @@ export const RedeemPage = () => {
 
   useEffect(() => {
     if (redeemId) {
-      redeemPageStore.loadRedeemDetails(redeemId).then(() => {
-        if (modal === 'withdraw') {
-          redeemPageStore.openRedeemWithdrawModal(redeemId);
-          return;
-        } else {
-          redeemPageStore.openRedeemDetailsModal(redeemId);
-        }
-      });
+      if (modal === 'withdraw') {
+        redeemPageStore.openRedeemWithdrawModal(redeemId);
+        return;
+      } else {
+        redeemPageStore.openRedeemDetailsModal(redeemId);
+      }
     }
   }, [redeemPageStore, redeemId, modal]);
 

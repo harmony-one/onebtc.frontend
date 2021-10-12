@@ -42,8 +42,6 @@ export const VaultBalances: React.FC<Props> = observer(({ vaultId }) => {
   if (!vault) {
     return null;
   }
-  console.log('### vault', vault);
-  console.log('### store', store.data);
 
   return (
     <Table
@@ -51,6 +49,7 @@ export const VaultBalances: React.FC<Props> = observer(({ vaultId }) => {
       data={store.data}
       isPending={store.isPending}
       dataLayerConfig={store.dataFlow}
+      hidePagination
       onChangeDataFlow={store.onChangeDataFlow}
       tableParams={{
         rowKey: (data: IIssue) => data.id,

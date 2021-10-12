@@ -1,5 +1,5 @@
-import React from 'react';
-import { IIssue } from '../../../../modules/btcRelay/btcRelayTypes';
+import React, { useCallback } from 'react';
+import { IRedeem } from '../../../../modules/btcRelay/btcRelayTypes';
 import { Table } from '../../../../components/Table';
 import { useStores } from '../../../../stores';
 import { getVaultRedeemStore } from './VaultRedeemTableStore';
@@ -11,10 +11,17 @@ interface Props {
 }
 
 export const VaultRedeemTable: React.FC<Props> = observer(({ vaultId }) => {
-  const { vaultStore } = useStores();
+  const { vaultStore, redeemPageStore } = useStores();
   const vault = vaultStore.vaultMap[vaultId];
 
   const store = getVaultRedeemStore(vaultId);
+
+  const handleRowClick = useCallback(
+    (redeem: IRedeem) => {
+      redeemPageStore.openRedeemDetailsModal(redeem.id);
+    },
+    [redeemPageStore],
+  );
 
   if (!vault) {
     return null;
@@ -26,9 +33,10 @@ export const VaultRedeemTable: React.FC<Props> = observer(({ vaultId }) => {
       data={store.data}
       isPending={store.isPending}
       dataLayerConfig={store.dataFlow}
+      onRowClicked={handleRowClick}
       onChangeDataFlow={store.onChangeDataFlow}
       tableParams={{
-        rowKey: (data: IIssue) => data.id,
+        rowKey: (data: IRedeem) => data.id,
       }}
     />
   );

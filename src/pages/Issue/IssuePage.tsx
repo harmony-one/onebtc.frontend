@@ -18,14 +18,12 @@ export const IssuePage = () => {
 
   useEffect(() => {
     if (issueId) {
-      issuePageStore.loadIssueDetails(issueId).then(() => {
-        if (modal === 'deposit') {
-          issuePageStore.openDepositModal(issueId);
-          return;
-        } else {
-          issuePageStore.openIssueDetailsModal(issueId);
-        }
-      });
+      if (modal === 'deposit') {
+        issuePageStore.openDepositModal(issueId);
+        return;
+      } else {
+        issuePageStore.openIssueDetailsModal(issueId);
+      }
     }
   }, [issuePageStore, issueId, modal]);
 

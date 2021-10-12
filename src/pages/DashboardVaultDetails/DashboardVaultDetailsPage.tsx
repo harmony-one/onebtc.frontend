@@ -10,9 +10,7 @@ import { VaultInfo } from './components/VaultInfo';
 import { VaultActions } from './components/VaultActions/VaultActions';
 import { Paper } from '../../components/Paper';
 import { VaultIssuedChart } from './components/VaultIssuedChart/VaultIssuedChart';
-import { VaultBalances } from './components/VaultBalances/VaultBalances';
-import { VaultIssueTable } from './components/VaultIssues/VaultIssueTable';
-import { VaultRedeemTable } from './components/VaultRedeems/VaultRedeemTable';
+import { VaultLogs } from './components/VaultLogs';
 
 interface Props {}
 
@@ -71,13 +69,7 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
             </Box>
           )}
           <Box>
-            <VaultBalances vaultId={vaultId} />
-          </Box>
-          <Box>
-            <VaultIssueTable vaultId={vaultId} />
-          </Box>
-          <Box>
-            <VaultRedeemTable vaultId={vaultId} />
+            <VaultLogs vaultId={vaultId} />
           </Box>
         </Box>
       </PageContainer>

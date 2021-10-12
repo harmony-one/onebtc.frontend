@@ -19,9 +19,7 @@ export const DashboardRedeemsTable: React.FC<Props> = observer(() => {
 
   useEffect(() => {
     if (typeof redeemId === 'string') {
-      redeemPageStore.loadRedeemDetails(redeemId).then(() => {
-        redeemPageStore.openRedeemDetailsModal(redeemId, onCloseModal);
-      });
+      redeemPageStore.openRedeemDetailsModal(redeemId, onCloseModal);
     }
   }, [redeemPageStore, redeemId, onCloseModal]);
 

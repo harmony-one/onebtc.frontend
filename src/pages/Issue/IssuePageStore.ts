@@ -142,7 +142,9 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  public openIssueDetailsModal(issueId: string, onClose?: () => void) {
+  public async openIssueDetailsModal(issueId: string, onClose?: () => void) {
+    await this.loadIssueDetails(issueId);
+
     this.stores.actionModals.open(IssueDetailsModal, {
       initData: {
         issueId,
@@ -168,7 +170,8 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  public openDepositModal(issueId: string) {
+  public async openDepositModal(issueId: string) {
+    await this.loadIssueDetails(issueId);
     this.stores.actionModals.open(IssueDepositModal, {
       applyText: 'I have made the payment',
       closeText: 'Close',

@@ -7,21 +7,22 @@ import { Text } from '../Base';
 
 type Props = {
   title: string;
-  onClick: () => void;
+  id?: string;
+  onClick: (id?: string) => void;
   active?: boolean;
   disabled?: boolean;
 };
 
 export const LargeTab: React.FC<Props> = props => {
-  const { active = false, onClick, title, disabled = false } = props;
+  const { id, active = false, onClick, title, disabled = false } = props;
 
   const handleClick = useCallback(() => {
     if (disabled) {
       return;
     }
 
-    onClick();
-  }, [disabled, onClick]);
+    onClick(id);
+  }, [disabled, id, onClick]);
 
   return (
     <Box

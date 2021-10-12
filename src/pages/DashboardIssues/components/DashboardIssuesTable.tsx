@@ -19,9 +19,7 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
 
   useEffect(() => {
     if (typeof issueId === 'string') {
-      issuePageStore.loadIssueDetails(issueId).then(() => {
-        issuePageStore.openIssueDetailsModal(issueId, onCloseModal);
-      });
+      issuePageStore.openIssueDetailsModal(issueId, onCloseModal);
     }
   }, [issuePageStore, issueId, onCloseModal]);
 

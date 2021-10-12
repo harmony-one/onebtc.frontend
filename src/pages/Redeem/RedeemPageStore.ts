@@ -151,7 +151,9 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   @action.bound
-  public openRedeemDetailsModal(redeemId: string, onClose?: () => void) {
+  public async openRedeemDetailsModal(redeemId: string, onClose?: () => void) {
+    await this.loadRedeemDetails(redeemId);
+
     this.stores.actionModals.open(RedeemDetailsModal, {
       applyText: '',
       closeText: 'Close',
