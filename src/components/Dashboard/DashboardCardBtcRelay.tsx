@@ -44,7 +44,7 @@ export const DashboardCardBtcRelay: React.FC<Props> = observer(
           )}
         </DashboardCardHead>
         <DashboardCardCircle
-          title="Synced Block"
+          title="Synced Blocks"
           subtext={btcRelayStore.lastBlockHeight}
           status={status}
         />

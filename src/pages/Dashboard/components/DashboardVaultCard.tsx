@@ -25,7 +25,7 @@ export const DashboardVaultCard: React.FC<Props> = () => {
       </DashboardCardHead>
       <DashboardCardCircle
         title="513776.97001"
-        subtext="Copacity"
+        subtext="Capacity"
         status="success"
       />
     </DashboardCard>
