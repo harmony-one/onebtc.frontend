@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { Box } from 'grommet';
 import { Divider, Title } from 'components/Base';
-import { useStores } from '../../../../stores';
-import { observer, useObserver } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { TActionModalProps } from '../../../../components/ActionModals';
 import { useBtcWalletVaultIncomeWatcher } from '../../../../hooks/useBtcWalletVaultIncomeWatcher';
 import { config } from '../../../../config';
@@ -23,13 +22,13 @@ export const IssueDepositModal: React.FC<TActionModalProps> = observer(
       }
     }, [btcTx, props.config.options]);
 
-    return useObserver(() => (
+    return (
       <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">
         <Title align="center">Deposit</Title>
         <Divider colorful fullwidth />
         <IssueDepositModalContent issueId={issueId} />
       </Box>
-    ));
+    );
   },
 );
 

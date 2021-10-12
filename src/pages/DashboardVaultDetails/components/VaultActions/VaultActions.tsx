@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Box } from 'grommet';
 import { LargeTab } from '../../../../components/LargeTab/LargeTab';
-import { Paper } from '../../../../components/Paper';
 import IncreaseCollateralForm from '../IncreaseCollateralForm/IncreaseCollateralForm';
 import WithdrawCollateralForm from '../WithdrawCollateralForm/WithdrawCollateralForm';
 
@@ -35,10 +34,8 @@ export const VaultActions: React.FC<Props> = () => {
         />
       </Box>
       <Box>
-        <Paper>
-          {tab === 'increase' && <IncreaseCollateralForm />}
-          {tab === 'withdraw' && <WithdrawCollateralForm />}
-        </Paper>
+        {tab === 'increase' && <IncreaseCollateralForm />}
+        {tab === 'withdraw' && <WithdrawCollateralForm />}
       </Box>
     </Box>
   );

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
-import { Divider, Title } from '../../components/Base';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { Button, Divider, Title } from '../../components/Base';
 import { BaseContainer } from 'components/BaseContainer';
 import { PageContainer } from 'components/PageContainer';
 import { Box } from 'grommet';
@@ -15,7 +15,7 @@ import { VaultLogs } from './components/VaultLogs';
 interface Props {}
 
 export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
-  const { vaultStore, user } = useStores();
+  const { vaultStore, user, dashboardVaultDetailsStore } = useStores();
 
   const { vaultId } = useParams<{ vaultId: string }>();
 
@@ -24,6 +24,10 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
   useEffect(() => {
     vaultStore.loadVault(vaultId);
   }, [vaultId, vaultStore]);
+
+  const handleClickManage = useCallback(() => {
+    dashboardVaultDetailsStore.openManageModal(vaultId);
+  }, [dashboardVaultDetailsStore, vaultId]);
 
   const isOwner = useMemo(() => {
     if (!vault || !user.address) {
@@ -38,7 +42,17 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
       <PageContainer>
         <Box gap="medium" pad={{ horizontal: 'xlarge' }}>
           <Box gap="small">
-            <Title align="center">Vault Details</Title>
+            <Box direction="row" align="center">
+              <Box basis="1/3">&nbsp;</Box>
+              <Box basis="1/3">
+                <Title align="center">Vault Details</Title>
+              </Box>
+              <Box basis="1/3" align="end">
+                <Button transparent size="small" onClick={handleClickManage}>
+                  Manage
+                </Button>
+              </Box>
+            </Box>
             <Divider colorful fullwidth />
           </Box>
           <Box gap="medium">

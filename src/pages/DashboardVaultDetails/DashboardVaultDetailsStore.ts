@@ -2,6 +2,7 @@ import { action, observable } from 'mobx';
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { getOneBTCClient } from '../../services/oneBtcClient';
 import { IncreaseCollateralConfirmModal } from './components/IncreaseCollateralConfirmModal';
+import { VaultManageModal } from './components/VaultManageModal';
 
 export class DashboardVaultDetailsStore extends StoreConstructor {
   @observable
@@ -10,6 +11,23 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
   };
 
   public status = 'init';
+
+  @action.bound
+  public async openManageModal(vaultId: string) {
+    this.stores.actionModals.open(VaultManageModal, {
+      initData: {
+        vaultId: vaultId,
+      },
+      applyText: '',
+      closeText: '',
+      noValidation: true,
+      width: '320px',
+      showOther: true,
+      onApply: () => {
+        return Promise.resolve();
+      },
+    });
+  }
 
   @action.bound
   public async increaseCollateral() {
