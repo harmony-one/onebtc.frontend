@@ -1,12 +1,12 @@
 import { ListStoreConstructor } from '../../stores/core/ListStoreConstructor';
 import { IStores } from '../../stores';
-import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
+import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
 import { IRedeem } from '../../modules/btcRelay/btcRelayTypes';
 
 export class RedeemListStore extends ListStoreConstructor<IRedeem> {
   constructor(stores: IStores) {
     const loadRedeemList = params => {
-      return BtcRelayClient.loadRedeemList({
+      return btcRelayClient.loadRedeemList({
         size: params.size,
         page: params.page,
       });

@@ -11,7 +11,7 @@ import {
   satoshiToBitcoin,
   walletHexToBech32,
 } from '../../services/bitcoin';
-import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
+import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
 import { IIssue, IVault } from '../../modules/btcRelay/btcRelayTypes';
 import { toBN } from 'web3-utils';
 
@@ -192,14 +192,14 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   public async loadVaults() {
-    const response = await BtcRelayClient.loadVaultList({ size: 10, page: 0 });
+    const response = await btcRelayClient.loadVaultList({ size: 10, page: 0 });
     this.vaultList = response.content;
   }
 
   @action.bound
   public async loadIssueDetails(issueId: string) {
     try {
-      const issue = await BtcRelayClient.loadIssue(issueId);
+      const issue = await btcRelayClient.loadIssue(issueId);
 
       if (!issue) {
         return null;
@@ -255,7 +255,7 @@ export class IssuePageStore extends StoreConstructor {
         throw new Error("Can't found issue details");
       }
 
-      const issue = await BtcRelayClient.loadIssue(issueEvent.issue_id);
+      const issue = await btcRelayClient.loadIssue(issueEvent.issue_id);
 
       issueUiTx.setIssueId(issue.id);
 

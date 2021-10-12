@@ -1,19 +1,19 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, computed, observable } from 'mobx';
-import BtcRelayClient from './btcRelayClient';
-import { IBtcRelayEvent, IBtcRelayInfo } from './btcRelayTypes';
+import { btcRelayClient } from './btcRelayClient';
+import { IEvent, IBtcRelayInfo } from './btcRelayTypes';
 
 export class BtcRelayStore extends StoreConstructor {
   @observable
   public info: IBtcRelayInfo = null;
 
   @observable
-  public lastEvent: IBtcRelayEvent = null;
+  public lastEvent: IEvent = null;
 
   @action.bound
   public async loadInfo() {
-    this.info = await BtcRelayClient.loadInfo();
-    this.lastEvent = await BtcRelayClient.loadLastEvent();
+    this.info = await btcRelayClient.loadInfo();
+    this.lastEvent = await btcRelayClient.loadLastEvent();
   }
 
   @computed

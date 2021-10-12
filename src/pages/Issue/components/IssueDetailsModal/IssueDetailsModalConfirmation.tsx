@@ -9,10 +9,10 @@ import { useStores } from '../../../../stores';
 import { config } from '../../../../config';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { useIssueStatusWatcher } from '../../../../hooks/useIssueStatusWatcher';
-import { BTCTransaction } from '../../../../modules/btcRelay/btcRelayTypes';
+import { BTCTx } from 'onebtc.sdk/lib/btcNode/types';
 
 interface Props {
-  btcTx: BTCTransaction;
+  btcTx: BTCTx;
   issueId: string;
 }
 

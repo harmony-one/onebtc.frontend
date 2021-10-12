@@ -6,7 +6,7 @@ import { IColumn, Table } from '../../../components/Table';
 import LinkBitcoin from '../../../components/LinkBitcoin';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
-import { IBtcRelayEvent } from '../../../modules/btcRelay/btcRelayTypes';
+import { IEvent } from '../../../modules/btcRelay/btcRelayTypes';
 
 type Props = {};
 
@@ -20,13 +20,13 @@ export const DashboardRelayBlocks: React.FC<Props> = observer(() => {
     [relayBlocksStore],
   );
 
-  const columns: IColumn<IBtcRelayEvent>[] = [
+  const columns: IColumn<IEvent>[] = [
     {
       title: 'Block height',
       width: 150,
       className: s.column,
       key: '_id',
-      render: (value: IBtcRelayEvent) => {
+      render: value => {
         return <div>{value.returnValues.height}</div>;
       },
     },
@@ -35,7 +35,7 @@ export const DashboardRelayBlocks: React.FC<Props> = observer(() => {
       className: cn(s.column, s.columnAddress),
       key: '_id',
       width: '33',
-      render: (value: IBtcRelayEvent) => {
+      render: value => {
         const blockHash = Buffer.from(value.returnValues.digest.slice(2), 'hex')
           .reverse()
           .toString('hex');
@@ -52,7 +52,7 @@ export const DashboardRelayBlocks: React.FC<Props> = observer(() => {
       className: cn(s.column, s.columnAddress),
       key: '_id',
       width: '33',
-      render: (value: IBtcRelayEvent) => {
+      render: value => {
         return <LinkHarmony hash={value.transactionHash} type="tx" />;
       },
     },
@@ -67,7 +67,7 @@ export const DashboardRelayBlocks: React.FC<Props> = observer(() => {
       onChangeDataFlow={handleChangeDataFlow}
       onRowClicked={() => {}}
       tableParams={{
-        rowKey: (data: IBtcRelayEvent) => data._id,
+        rowKey: (data: IEvent) => data._id,
       }}
     />
   );

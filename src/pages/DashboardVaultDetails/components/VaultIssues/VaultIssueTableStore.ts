@@ -1,7 +1,7 @@
 import stores from '../../../../stores';
 import { ListStoreConstructor } from '../../../../stores/core/ListStoreConstructor';
-import { dashboardClient } from '../../../../modules/dashboard/dasboardClient';
 import { IIssue } from '../../../../modules/btcRelay/btcRelayTypes';
+import { btcRelayClient } from '../../../../modules/btcRelay/btcRelayClient';
 
 const cache: Record<string, ListStoreConstructor<IIssue>> = {};
 
@@ -11,7 +11,7 @@ export const getVaultIssuesStore = vaultId => {
   }
 
   const loadFn = params => {
-    return dashboardClient.getIssues({
+    return btcRelayClient.loadIssueList({
       vault: vaultId,
       ...params,
     });

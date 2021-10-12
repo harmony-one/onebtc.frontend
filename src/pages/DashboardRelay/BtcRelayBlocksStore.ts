@@ -1,12 +1,12 @@
 import { ListStoreConstructor } from '../../stores/core/ListStoreConstructor';
 import { IStores } from '../../stores';
-import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
-import { IBtcRelayEvent } from '../../modules/btcRelay/btcRelayTypes';
+import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
+import { IEvent } from '../../modules/btcRelay/btcRelayTypes';
 
-export class BtcRelayBlocksStore extends ListStoreConstructor<IBtcRelayEvent> {
+export class BtcRelayBlocksStore extends ListStoreConstructor<IEvent> {
   constructor(stores: IStores) {
     const loadEvents = params => {
-      return BtcRelayClient.loadEvents({
+      return btcRelayClient.loadEventList({
         size: params.size,
         page: params.page,
       });

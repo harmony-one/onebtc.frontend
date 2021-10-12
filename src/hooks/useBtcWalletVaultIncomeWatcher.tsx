@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useInterval } from './useInterval';
-import BtcRelayClient from '../modules/btcRelay/btcRelayClient';
-import { BTCTransaction } from '../modules/btcRelay/btcRelayTypes';
+import { btcRelayClient } from '../modules/btcRelay/btcRelayClient';
+import { BTCTx } from 'onebtc.sdk/lib/btcNode/types';
 
 interface WatcherProps {
   issueId: string;
@@ -11,11 +11,12 @@ interface WatcherProps {
 export const useBtcWalletVaultIncomeWatcher = ({
   issueId,
   confirmations = 1,
-}: WatcherProps): null | BTCTransaction => {
-  const [btcTx, setBtcTx] = useState<BTCTransaction>(null);
+}: WatcherProps): null | BTCTx => {
+  const [btcTx, setBtcTx] = useState<BTCTx>(null);
 
   const loadBtcTx = useCallback(() => {
-    BtcRelayClient.loadIssue(issueId)
+    btcRelayClient
+      .loadIssue(issueId)
       .then(issue => {
         if (issue.btcTx) {
           setBtcTx(issue.btcTx);

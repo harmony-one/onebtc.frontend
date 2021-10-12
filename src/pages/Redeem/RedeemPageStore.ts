@@ -10,7 +10,7 @@ import {
 import { RedeemWithdrawModal } from './components/RedeemWithdrawModal/RedeemWithdrawModal';
 import { RedeemDetailsModal } from './components/RedeemDetailsModal/RedeemDetailsModal';
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';
-import BtcRelayClient from '../../modules/btcRelay/btcRelayClient';
+import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
 import { IRedeem, IVault } from '../../modules/btcRelay/btcRelayTypes';
 
 export interface IDefaultForm {
@@ -48,7 +48,7 @@ export class RedeemPageStore extends StoreConstructor {
 
   @action.bound
   public async loadVaults() {
-    const response = await BtcRelayClient.loadVaultList({ size: 10, page: 0 });
+    const response = await btcRelayClient.loadVaultList({ size: 10, page: 0 });
     this.vaultList = response.content;
   }
 
@@ -178,7 +178,7 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   public async loadRedeemDetails(redeemId: string) {
-    const redeem = await BtcRelayClient.loadRedeem(redeemId);
+    const redeem = await btcRelayClient.loadRedeem(redeemId);
 
     if (!redeem) {
       throw new Error('Not found redeem details');
@@ -225,7 +225,7 @@ export class RedeemPageStore extends StoreConstructor {
         throw new Error('Not found redeem details');
       }
 
-      const redeem = await BtcRelayClient.loadRedeem(redeemEvent.redeem_id);
+      const redeem = await btcRelayClient.loadRedeem(redeemEvent.redeem_id);
 
       this.redeemMap[redeemRequest.transactionHash] = redeem;
 

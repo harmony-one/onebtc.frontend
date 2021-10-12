@@ -1,7 +1,7 @@
 import { StoreConstructor } from './core/StoreConstructor';
 import { action, observable } from 'mobx';
-import { IVault } from '../modules/btcRelay/btcRelayTypes';
-import BtcRelayClient from '../modules/btcRelay/btcRelayClient';
+import { btcRelayClient } from '../modules/btcRelay/btcRelayClient';
+import { IVault } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 
 export class VaultStore extends StoreConstructor {
   @observable
@@ -10,7 +10,7 @@ export class VaultStore extends StoreConstructor {
   @action.bound
   public async loadVault(vaultId: string) {
     try {
-      const vault = await BtcRelayClient.loadVault(vaultId);
+      const vault = await btcRelayClient.loadVault(vaultId);
 
       if (!vault) {
         return null;

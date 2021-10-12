@@ -7,11 +7,11 @@ import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetail
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
 import { Checkmark } from 'grommet-icons';
-import { BTCTransaction } from '../../../../modules/btcRelay/btcRelayTypes';
+import { BTCTx } from 'onebtc.sdk/lib/btcNode/types';
 
 export const RedeemDetailsModalConfirmation: React.FC<{
   redeemTxHash: string;
-  btcTx: BTCTransaction;
+  btcTx: BTCTx;
 }> = ({ redeemTxHash, btcTx }) => {
   const { redeemPageStore } = useStores();
 

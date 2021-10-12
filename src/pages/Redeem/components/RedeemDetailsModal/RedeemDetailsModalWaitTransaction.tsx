@@ -7,10 +7,10 @@ import { config } from '../../../../config';
 import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModalConfirmation.styl';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
-import { BTCTransaction } from '../../../../modules/btcRelay/btcRelayTypes';
+import { BTCTx } from 'onebtc.sdk/lib/btcNode/types';
 
 export const RedeemDetailsModalWaitTransaction: React.FC<{
-  btcTx: BTCTransaction;
+  btcTx: BTCTx;
 }> = ({ btcTx }) => {
   return useObserver(() => (
     <Box gap="small" align="center">

@@ -1,8 +1,12 @@
 import stores from '../../../../stores';
 import { ListStoreConstructor } from '../../../../stores/core/ListStoreConstructor';
-import { dashboardClient } from '../../../../modules/dashboard/dasboardClient';
+import { btcRelayClient } from '../../../../modules/btcRelay/btcRelayClient';
 
-const cache: Record<string, ListStoreConstructor<{ address: string }>> = {};
+interface IVaultInfo {
+  address: string;
+  amount: string;
+}
+const cache: Record<string, ListStoreConstructor<IVaultInfo>> = {};
 
 export const getVaultBalancesStore = vaultId => {
   if (cache[vaultId]) {
@@ -10,12 +14,16 @@ export const getVaultBalancesStore = vaultId => {
   }
 
   const loadFn = () => {
-    return dashboardClient.loadVaultBalances(vaultId);
+    return btcRelayClient.loadVaultBalances(vaultId);
   };
 
-  const vaultBalancesStore = new ListStoreConstructor(stores, loadFn, {
-    pollingInterval: 10000,
-  });
+  const vaultBalancesStore = new ListStoreConstructor<IVaultInfo>(
+    stores,
+    loadFn,
+    {
+      pollingInterval: 10000,
+    },
+  );
 
   cache[vaultId] = vaultBalancesStore;
 
