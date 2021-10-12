@@ -161,9 +161,7 @@ export class IssuePageStore extends StoreConstructor {
       onClose: () => {
         if (onClose) {
           onClose();
-          return Promise.resolve();
         }
-        this.stores.routing.goToIssue();
         return Promise.resolve();
       },
     });
