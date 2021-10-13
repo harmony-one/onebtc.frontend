@@ -7,7 +7,7 @@ import { VaultManageModal } from './components/VaultManageModal';
 export class DashboardVaultDetailsStore extends StoreConstructor {
   @observable
   public form = {
-    oneAmount: 0,
+    oneAmount: '0',
   };
 
   public status = 'init';

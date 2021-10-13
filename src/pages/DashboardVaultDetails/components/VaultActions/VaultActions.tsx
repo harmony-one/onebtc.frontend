@@ -4,9 +4,11 @@ import { LargeTab } from '../../../../components/LargeTab/LargeTab';
 import IncreaseCollateralForm from '../IncreaseCollateralForm/IncreaseCollateralForm';
 import WithdrawCollateralForm from '../WithdrawCollateralForm/WithdrawCollateralForm';
 
-interface Props {}
+interface Props {
+  vaultId: string;
+}
 
-export const VaultActions: React.FC<Props> = () => {
+export const VaultActions: React.FC<Props> = ({ vaultId }) => {
   const [tab, setTab] = useState<'increase' | 'withdraw'>('increase');
 
   return (
@@ -34,8 +36,8 @@ export const VaultActions: React.FC<Props> = () => {
         />
       </Box>
       <Box>
-        {tab === 'increase' && <IncreaseCollateralForm />}
-        {tab === 'withdraw' && <WithdrawCollateralForm />}
+        {tab === 'increase' && <IncreaseCollateralForm vaultId={vaultId} />}
+        {tab === 'withdraw' && <WithdrawCollateralForm vaultId={vaultId} />}
       </Box>
     </Box>
   );

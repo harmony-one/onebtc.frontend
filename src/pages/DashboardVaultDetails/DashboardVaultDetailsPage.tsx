@@ -48,9 +48,11 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
                 <Title align="center">Vault Details</Title>
               </Box>
               <Box basis="1/3" align="end">
-                <Button transparent size="small" onClick={handleClickManage}>
-                  Manage
-                </Button>
+                {isOwner && (
+                  <Button transparent size="small" onClick={handleClickManage}>
+                    Manage
+                  </Button>
+                )}
               </Box>
             </Box>
             <Divider colorful fullwidth />
@@ -73,15 +75,6 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
               </Box>
             </Box>
           </Box>
-          {isOwner && (
-            <Box gap="medium" pad={{ horizontal: 'xlarge' }}>
-              <Title align="center">Vault owner actions</Title>
-              <Divider colorful fullwidth />
-              <Box align="center">
-                <VaultActions />
-              </Box>
-            </Box>
-          )}
           <Box>
             <VaultLogs vaultId={vaultId} />
           </Box>

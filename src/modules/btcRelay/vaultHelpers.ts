@@ -1,7 +1,21 @@
 import { IVault } from './btcRelayTypes';
 import { ONE_MINUTE } from '../../constants/date';
+import utils from 'web3-utils';
 
 const COLLATERAL_RATIO = 1.5;
+
+export function calcNewVaultCollateral(
+  vault: IVault,
+  amountOne: string,
+  m: 1 | -1 = 1,
+) {
+  const newCollateral = utils
+    .toBN(vault.collateral)
+    .add(utils.toBN(amountOne).mul(utils.toBN(m)));
+
+  return getVaultInfo({ ...vault, collateral: newCollateral.toString() });
+}
+
 export function getVaultInfo(vault: IVault) {
   const oneAmount = Number(vault.collateral) / 1e18;
   const amountSat = (oneAmount * 1e8) / COLLATERAL_RATIO; // TODO: 1 ONE !== 1 BTC
