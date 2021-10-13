@@ -2,7 +2,7 @@ import React from 'react';
 import { useStores } from '../../../stores';
 import { Box } from 'grommet';
 import { getVaultInfo } from '../../../modules/btcRelay/vaultHelpers';
-import { Text } from '../../../components/Base';
+import { Divider, Text } from '../../../components/Base';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
@@ -19,6 +19,17 @@ export const VaultInfo: React.FC<Props> = ({ vaultId }) => {
 
   return (
     <Box direction="column" gap="xsmall">
+      <Box align="center" direction="row" width="100%" justify="between">
+        <Box>
+          <Text>Status:</Text>
+        </Box>
+        <Box>
+          <Text bold>
+            <VaultStatus isActive={vaultInfo.isActive} />
+          </Text>
+        </Box>
+      </Box>
+      <Divider fullwidth />
       <Box direction="row" width="100%" align="start" justify="between">
         <Box>
           <Text>Address:</Text>
@@ -29,16 +40,7 @@ export const VaultInfo: React.FC<Props> = ({ vaultId }) => {
           </Text>
         </Box>
       </Box>
-      <Box direction="row" width="100%" align="start" justify="between">
-        <Box>
-          <Text>Status:</Text>
-        </Box>
-        <Box>
-          <Text bold>
-            <VaultStatus isActive={vaultInfo.isActive} />
-          </Text>
-        </Box>
-      </Box>
+      <Divider fullwidth />
       <Box direction="row" width="100%" align="start" justify="between">
         <Box>
           <Text>Collateral:</Text>
@@ -47,6 +49,7 @@ export const VaultInfo: React.FC<Props> = ({ vaultId }) => {
           <Text bold>{vaultInfo.oneAmount} ONE</Text>
         </Box>
       </Box>
+      <Divider fullwidth />
       <Box direction="row" width="100%" align="start" justify="between">
         <Box>
           <Text>Total issued:</Text>
@@ -55,6 +58,7 @@ export const VaultInfo: React.FC<Props> = ({ vaultId }) => {
           <Text bold>{satoshiToBitcoin(vaultInfo.issuedSat)} BTC</Text>
         </Box>
       </Box>
+      <Divider fullwidth />
       <Box direction="row" width="100%" align="start" justify="between">
         <Box>
           <Text>Collateralization:</Text>
@@ -63,6 +67,7 @@ export const VaultInfo: React.FC<Props> = ({ vaultId }) => {
           <Text bold>{Math.round(vaultInfo.collateralTotal)}%</Text>
         </Box>
       </Box>
+      <Divider fullwidth />
       <Box direction="row" width="100%" align="start" justify="between">
         <Box>
           <Text>Pending:</Text>
@@ -71,6 +76,7 @@ export const VaultInfo: React.FC<Props> = ({ vaultId }) => {
           <Text bold>{satoshiToBitcoin(vaultInfo.toBeIssuedSat)} BTC</Text>
         </Box>
       </Box>
+      <Divider fullwidth />
       <Box direction="row" width="100%" align="start" justify="between">
         <Box>
           <Text>Locked:</Text>

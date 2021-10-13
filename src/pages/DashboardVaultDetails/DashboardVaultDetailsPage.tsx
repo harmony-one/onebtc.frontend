@@ -7,7 +7,6 @@ import { useStores } from '../../stores';
 import { useParams } from 'react-router';
 import { observer } from 'mobx-react';
 import { VaultInfo } from './components/VaultInfo';
-import { VaultActions } from './components/VaultActions/VaultActions';
 import { Paper } from '../../components/Paper';
 import { VaultIssuedChart } from './components/VaultIssuedChart/VaultIssuedChart';
 import { VaultLogs } from './components/VaultLogs';
@@ -63,13 +62,14 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
               responsive
               gap="medium"
               alignContent="stretch"
-              pad={{ horizontal: 'xlarge' }}
             >
               <Box basis="1/2">
-                <Paper>{vault && <VaultInfo vaultId={vaultId} />}</Paper>
+                <Paper pad="medium">
+                  {vault && <VaultInfo vaultId={vaultId} />}
+                </Paper>
               </Box>
               <Box basis="1/2">
-                <Paper>
+                <Paper pad="medium">
                   <VaultIssuedChart />
                 </Paper>
               </Box>

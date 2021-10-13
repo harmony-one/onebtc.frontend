@@ -28,7 +28,9 @@ export const Theme: any = {
       Yellow600: '#FFCB02',
       Yellow400: '#FFE06E',
       Yellow200: '#FFF5CC',
+      Green500: 'rgba(0,201,167,0.1)',
       Green600: '#00A825',
+      Red500: 'rgba(201,0,0,0.1)',
       Red600: '#FF0000',
       Grey700: '#b5b5b5',
       Grey600: '#afb1c0',
@@ -78,7 +80,7 @@ export const Theme: any = {
   },
   textInput: {
     extend: css`
-      ${(props: any) => 'font-size: 16px; padding: 8px;'}
+      ${() => 'font-size: 16px; padding: 8px;'}
     `,
   },
   heading: {
@@ -174,7 +176,7 @@ export const Theme: any = {
       verticalAlign: 'top',
     },
     extend: css`
-      ${(props: any) =>
+      ${() =>
         'border-collapse: separate; width: 100%; table-layout: fixed; word-break: break-all;}'}
     `,
   },

@@ -31,25 +31,27 @@ export const VaultLogs: React.FC<Props> = ({ vaultId }) => {
 
   return (
     <Box gap="small">
-      <Box direction="row" gap="small">
-        <LargeTab
-          id={Tabs.BALANCES}
-          title="Balances"
-          active={isActive(Tabs.BALANCES)}
-          onClick={handleTabClick}
-        />
-        <LargeTab
-          id={Tabs.ISSUES}
-          title="Issues"
-          active={isActive(Tabs.ISSUES)}
-          onClick={handleTabClick}
-        />
-        <LargeTab
-          id={Tabs.REDEEMS}
-          title="Redeems"
-          active={isActive(Tabs.REDEEMS)}
-          onClick={handleTabClick}
-        />
+      <Box direction="row">
+        <Box direction="row" basis="medium" gap="small">
+          <LargeTab
+            id={Tabs.BALANCES}
+            title="Balances"
+            active={isActive(Tabs.BALANCES)}
+            onClick={handleTabClick}
+          />
+          <LargeTab
+            id={Tabs.ISSUES}
+            title="Issues"
+            active={isActive(Tabs.ISSUES)}
+            onClick={handleTabClick}
+          />
+          <LargeTab
+            id={Tabs.REDEEMS}
+            title="Redeems"
+            active={isActive(Tabs.REDEEMS)}
+            onClick={handleTabClick}
+          />
+        </Box>
       </Box>
       <Box>
         {tab === Tabs.BALANCES && <VaultBalances vaultId={vaultId} />}
