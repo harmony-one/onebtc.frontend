@@ -3,10 +3,9 @@ import { Box } from 'grommet';
 import { Divider, Text } from '../../../../components/Base';
 import { IssueDetailsModalTransaction } from './IssueDetailsModalTransaction';
 import { IssueDetailsModalConfirmation } from './IssueDetailsModalConfirmation';
-import { config } from '../../../../config';
-import { useBtcWalletVaultIncomeWatcher } from '../../../../hooks/useBtcWalletVaultIncomeWatcher';
 import { IssueDepositModalContent } from '../IssueDepositModal/IssueDepositModalContent';
 import { useStores } from '../../../../stores';
+import { useIssueWatcher } from '../../../../hooks/useIssueWatcher';
 
 interface Props {
   issueId: string;
@@ -14,13 +13,9 @@ interface Props {
 
 export const IssueDetailsModalContent: React.FC<Props> = ({ issueId }) => {
   const { issuePageStore } = useStores();
-
   const issueInfo = issuePageStore.getIssueInfo(issueId);
 
-  const btcTx = useBtcWalletVaultIncomeWatcher({
-    issueId,
-    confirmations: config.bitcoin.waitConfirmations,
-  });
+  useIssueWatcher({ issueId });
 
   return (
     <Box pad={{ horizontal: 'medium', vertical: 'medium' }} gap="small">
@@ -33,9 +28,11 @@ export const IssueDetailsModalContent: React.FC<Props> = ({ issueId }) => {
           <IssueDetailsModalTransaction issueId={issueId} />
         </Box>
         <Box basis="1/2">
-          {!btcTx && <IssueDepositModalContent issueId={issueId} />}
-          {btcTx && (
-            <IssueDetailsModalConfirmation issueId={issueId} btcTx={btcTx} />
+          {!issueInfo.isCompleted && !issueInfo.btcTx && (
+            <IssueDepositModalContent issueId={issueId} />
+          )}
+          {issueInfo.btcTx && (
+            <IssueDetailsModalConfirmation issueId={issueId} />
           )}
         </Box>
       </Box>

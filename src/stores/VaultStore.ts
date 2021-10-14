@@ -1,12 +1,9 @@
-import { StoreConstructor } from './core/StoreConstructor';
-import { action, observable } from 'mobx';
+import { action } from 'mobx';
 import { btcRelayClient } from '../modules/btcRelay/btcRelayClient';
 import { IVault } from 'onebtc.sdk/lib/dashboard-api/interfaces';
+import { EntityStore } from './core/EntityStore';
 
-export class VaultStore extends StoreConstructor {
-  @observable
-  public vaultMap: Record<string, IVault> = {};
-
+export class VaultStore extends EntityStore<IVault> {
   @action.bound
   public async loadVault(vaultId: string) {
     try {
@@ -16,7 +13,7 @@ export class VaultStore extends StoreConstructor {
         return null;
       }
 
-      this.vaultMap[vaultId] = vault;
+      this.entityMap[vaultId] = vault;
       return vault;
     } catch (err) {
       console.log('### err', err);

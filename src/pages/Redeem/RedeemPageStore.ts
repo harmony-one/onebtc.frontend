@@ -109,7 +109,8 @@ export class RedeemPageStore extends StoreConstructor {
     }
   }
 
-  public openRedeemWithdrawModal(redeemId: string) {
+  public async openRedeemWithdrawModal(redeemId: string) {
+    await this.loadRedeemDetails(redeemId);
     this.stores.actionModals.open(RedeemWithdrawModal, {
       applyText: 'View Progress',
       closeText: 'Close',

@@ -21,7 +21,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
       applyText: '',
       closeText: '',
       noValidation: true,
-      width: '320px',
+      width: '420px',
       showOther: true,
       onApply: () => {
         return Promise.resolve();

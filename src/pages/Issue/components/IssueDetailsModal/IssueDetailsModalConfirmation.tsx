@@ -8,60 +8,52 @@ import * as styles from './IssueDetailsModalConfirmation.styl';
 import { useStores } from '../../../../stores';
 import { config } from '../../../../config';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
-import { useIssueStatusWatcher } from '../../../../hooks/useIssueStatusWatcher';
-import { BTCTx } from 'onebtc.sdk/lib/btcNode/types';
 
 interface Props {
-  btcTx: BTCTx;
   issueId: string;
 }
 
-export const IssueDetailsModalConfirmation: React.FC<Props> = ({
-  btcTx,
-  issueId,
-}) => {
+export const IssueDetailsModalConfirmation: React.FC<Props> = ({ issueId }) => {
   const { issuePageStore } = useStores();
-  const isConfirmed = btcTx.confirmations >= config.bitcoin.waitConfirmations;
-  const title = isConfirmed ? 'Confirmed' : 'Received';
-
   const issueInfo = issuePageStore.getIssueInfo(issueId);
 
-  const handleClaim = useCallback(() => {
-    issuePageStore.executeIssue(issueId, btcTx.hash);
-  }, [btcTx.hash, issuePageStore, issueId]);
+  const title = issueInfo.isConfirmedBtcTX ? 'Confirmed' : 'Received';
 
-  const status = useIssueStatusWatcher({
-    issueId: issueInfo.issueId,
-    requester: issueInfo.requester,
-  });
+  const handleClaim = useCallback(() => {
+    issuePageStore.executeIssue(issueId, issueInfo.btcTx.hash);
+  }, [issueId, issueInfo.btcTx.hash, issuePageStore]);
 
   return (
     <Box align="center" gap="small">
       <Box>
         <Title>{title}</Title>
       </Box>
-      {!isConfirmed && (
+      {!issueInfo.isConfirmedBtcTX && (
         <Box className={styles.circleBorder} align="center">
           <SpinnerContainer boxSize={32}>
             <Text inline style={{ textAlign: 'center' }}>
-              Waiting confirmations: {btcTx.confirmations}/
+              Waiting confirmations: {issueInfo.btcTx.confirmations}/
               {config.bitcoin.waitConfirmations}
             </Text>
           </SpinnerContainer>
         </Box>
       )}
-      {isConfirmed && (
+      {issueInfo.isConfirmedBtcTX && (
         <Box className={styles.circle}>
           <Checkmark size="xlarge" color="white" />
         </Box>
       )}
       <Box>
-        <Text>BTC Transaction: {cutText(btcTx.hash)}</Text>
+        <Text>BTC Transaction: {cutText(issueInfo.btcTx.hash)}</Text>
       </Box>
       <Box>
-        <LinkBitcoin hash={btcTx.hash} type="tx" text="View on explorer" />
+        <LinkBitcoin
+          hash={issueInfo.btcTx.hash}
+          type="tx"
+          text="View on explorer"
+        />
       </Box>
-      {isConfirmed && (
+      {issueInfo.isConfirmedBtcTX && (
         <Box>
           <Text>
             Your BTC transaction successfully confirmed. Please Execute issue to
@@ -69,11 +61,11 @@ export const IssueDetailsModalConfirmation: React.FC<Props> = ({
           </Text>
         </Box>
       )}
-      {status !== '2' && (
+      {!issueInfo.isCompleted && (
         <Box>
           <Button
             bgColor="#46d7b6"
-            disabled={!isConfirmed}
+            disabled={!issueInfo.isConfirmedBtcTX}
             onClick={handleClaim}
           >
             Execute issue

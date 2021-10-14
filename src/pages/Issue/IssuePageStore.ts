@@ -6,14 +6,9 @@ import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsMo
 import { IssueConfirmModal } from './components/IssueConfirmModal';
 import { guid } from '../../utils';
 import { UITransaction } from '../../modules/uiTransaction/UITransactionsStore';
-import {
-  bitcoinToSatoshi,
-  satoshiToBitcoin,
-  walletHexToBech32,
-} from '../../services/bitcoin';
+import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
 import { IIssue, IVault } from '../../modules/btcRelay/btcRelayTypes';
-import { toBN } from 'web3-utils';
 
 export interface ITransaction {
   amount: string;
@@ -108,37 +103,8 @@ export class IssuePageStore extends StoreConstructor {
 
   @get
   public getIssueInfo(issueId: string) {
-    const issue = this.issuesMap[issueId];
-
-    if (!issue) {
-      return null;
-    }
-
-    const btcRate = this.stores.user.btcRate;
-    const amount = satoshiToBitcoin(issue.amount);
-    const sendAmount = satoshiToBitcoin(
-      toBN(issue.amount)
-        .add(toBN(issue.fee))
-        .toNumber(),
-    );
-    const sendUsdAmount = sendAmount * btcRate;
-    const bridgeFee = satoshiToBitcoin(issue.fee);
-    const totalReceived = amount;
-    const totalReceivedUsd = totalReceived * btcRate;
-
-    return {
-      rawIssue: issue,
-      amount: amount,
-      issueId: issue.id,
-      vaultId: issue.vault,
-      requester: issue.requester,
-      bitcoinAddress: walletHexToBech32(issue.btcAddress),
-      sendAmount,
-      sendUsdAmount,
-      bridgeFee,
-      totalReceived,
-      totalReceivedUsd,
-    };
+    const issue = this.stores.issueStore.getEntity(issueId);
+    return this.stores.issueStore.getIssueInfo(issue);
   }
 
   @action.bound
@@ -199,13 +165,12 @@ export class IssuePageStore extends StoreConstructor {
   @action.bound
   public async loadIssueDetails(issueId: string) {
     try {
-      const issue = await btcRelayClient.loadIssue(issueId);
+      const issue = await this.stores.issueStore.loadIssue(issueId);
 
       if (!issue) {
         return null;
       }
 
-      this.issuesMap[issueId] = issue;
       return issue;
     } catch (err) {
       console.log('### err', err);
