@@ -15,7 +15,7 @@ export const RedeemDetailsModalWaitTransaction: React.FC<{
 
   const redeemInfo = redeemStore.getRedeemInfo(redeemId);
 
-  if (!redeemInfo || redeemInfo.btcTx) {
+  if (!redeemInfo || !redeemInfo.btcTx) {
     return null;
   }
 
