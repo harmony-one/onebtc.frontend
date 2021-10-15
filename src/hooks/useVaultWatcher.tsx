@@ -3,15 +3,15 @@ import { useInterval } from './useInterval';
 import { useStores } from '../stores';
 
 interface WatcherProps {
-  issueId: string;
+  vaultId: string;
 }
 
-export const useIssueWatcher = ({ issueId }: WatcherProps): string => {
-  const { issueStore } = useStores();
+export const useVaultWatcher = ({ vaultId }: WatcherProps) => {
+  const { vaultStore } = useStores();
 
   const loadIssue = useCallback(() => {
-    issueStore.loadIssue(issueId);
-  }, [issueStore, issueId]);
+    vaultStore.loadVault(vaultId);
+  }, [vaultStore, vaultId]);
 
   useInterval({ callback: loadIssue, timeout: 5000 });
 

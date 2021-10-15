@@ -1,9 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from 'grommet';
-import { Text, Divider, Button } from 'components/Base';
+import { Text, Divider, Button, DividerVertical } from 'components/Base';
 import { observer } from 'mobx-react';
 import { Form, isRequired, NumberInput, Input, Select } from 'components/Form';
-import { lessThan, moreThanZero } from '../../../../utils';
+import { lessThanSat, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
@@ -41,17 +41,23 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
       <NumberInput
-        label="OneBTC Amount"
+        label="Amount"
         name="oneBTCAmount"
         type="decimal"
         precision="4"
         delimiter="."
         placeholder="0.0"
+        renderRight={
+          <Box direction="row" gap="xxsmall">
+            <DividerVertical />
+            <Text bold>BTC</Text>
+          </Box>
+        }
         style={{ width: '100%' }}
         rules={[
           isRequired,
           moreThanZero,
-          lessThan(user.oneBTCBalance, `redeem amount exceeds balance`),
+          lessThanSat(user.oneBTCBalance, `redeem amount exceeds balance`),
         ]}
       />
 

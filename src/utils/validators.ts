@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { bitcoinToSatoshi } from '../services/bitcoin';
+import utils from 'web3-utils';
 
 export function createValidate(
   func: (value: any, data?: any) => boolean,
@@ -156,8 +157,14 @@ export const moreThanZero = {
   validateType: 'requiredValidator',
 };
 
-export const lessThan = (amount, message) => {
+export const lessThanSat = (amount, message) => {
   return createValidate((value: string) => {
     return bitcoinToSatoshi(value) > amount;
+  }, message);
+};
+
+export const lessThanWei = (amount, message) => {
+  return createValidate((value: string) => {
+    return utils.toWei(value) > amount;
   }, message);
 };

@@ -1,6 +1,7 @@
 import { IVault } from './btcRelayTypes';
 import { ONE_MINUTE } from '../../constants/date';
 import utils from 'web3-utils';
+import { satoshiToBitcoin } from '../../services/bitcoin';
 
 const COLLATERAL_RATIO = 1.5;
 
@@ -16,19 +17,36 @@ export function calcNewVaultCollateral(
   return getVaultInfo({ ...vault, collateral: newCollateral.toString() });
 }
 
+function collateralOneToSat(oneWei: string) {
+  const oneAmount = utils.fromWei(oneWei);
+  return (Number(oneAmount) * 1e8) / COLLATERAL_RATIO; // TODO: 1 ONE !== 1 BTC
+}
+
+function collateralSatToOne(sat: number) {
+  const oneAmount = satoshiToBitcoin(sat);
+  return oneAmount * COLLATERAL_RATIO; // TODO: 1 ONE !== 1 BTC
+}
+
 export function getVaultInfo(vault: IVault) {
-  const oneAmount = Number(vault.collateral) / 1e18;
-  const amountSat = (oneAmount * 1e8) / COLLATERAL_RATIO; // TODO: 1 ONE !== 1 BTC
+  const collateralSat = collateralOneToSat(vault.collateral);
   const toBeIssuedSat = Number(vault.toBeIssued);
   const toBeRedeemedSat = Number(vault.toBeRedeemed);
-  const tobeReplacedSat = Number(vault.toBeReplaced);
   const issuedSat = Number(vault.issued);
-  const collateralRedeemed = amountSat / (toBeRedeemedSat / 100);
-  const collateralIssued = amountSat / (toBeIssuedSat / 100);
-  const collateralTotal = amountSat / ((toBeIssuedSat + toBeRedeemedSat) / 100);
+  const collateralRedeemed = collateralSat / (toBeRedeemedSat / 100);
+  const collateralIssued = collateralSat / (toBeIssuedSat / 100);
+  const collateralTotal =
+    collateralSat / ((issuedSat + toBeIssuedSat + toBeRedeemedSat) / 100);
 
-  const availableAmountSat = amountSat - toBeRedeemedSat - toBeIssuedSat;
-  const availableToRedeem = issuedSat - toBeRedeemedSat - tobeReplacedSat;
+  const oneAmount = Number(vault.collateral) / 1e18;
+  const maxWithdraw =
+    Math.max(
+      oneAmount -
+        collateralSatToOne(issuedSat + toBeIssuedSat + toBeRedeemedSat),
+      0,
+    ) * 1e18;
+
+  const availableAmountSat = collateralSat - toBeRedeemedSat - toBeIssuedSat;
+  const availableToRedeem = issuedSat;
   const isActive =
     vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
 
@@ -43,5 +61,6 @@ export function getVaultInfo(vault: IVault) {
     collateralTotal,
     issuedSat,
     isActive,
+    maxWithdraw,
   };
 }

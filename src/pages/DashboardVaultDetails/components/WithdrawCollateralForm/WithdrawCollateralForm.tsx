@@ -1,15 +1,20 @@
 import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
-import { Divider, Button, Text } from 'components/Base';
+import { Divider, Button, Text, DividerVertical } from 'components/Base';
 import { observer } from 'mobx-react';
 import { Form, isRequired, NumberInput } from 'components/Form';
-import { lessThan, moreThanZero } from '../../../../utils';
+import {
+  formatZeroDecimals,
+  lessThanWei,
+  moreThanZero,
+} from '../../../../utils';
 import { useStores } from '../../../../stores';
 import utils from 'web3-utils';
 import {
   calcNewVaultCollateral,
   getVaultInfo,
 } from '../../../../modules/btcRelay/vaultHelpers';
+import { InputButton } from '../../../../components/Base/components/Inputs/InputButton';
 
 interface Props {
   vaultId: string;
@@ -17,7 +22,7 @@ interface Props {
 
 export const WithdrawCollateralForm: React.FC<Props> = observer(
   ({ vaultId }) => {
-    const { dashboardVaultDetailsStore, user, vaultStore } = useStores();
+    const { dashboardVaultDetailsStore, vaultStore } = useStores();
     const [form, setForm] = useState();
 
     const handleSubmit = useCallback(() => {
@@ -35,6 +40,12 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
     const am = utils.toWei(dashboardVaultDetailsStore.form.oneAmount || '0');
     const vaultInfo = calcNewVaultCollateral(vault, am.toString(), -1);
 
+    const handleMaxClick = useCallback(() => {
+      dashboardVaultDetailsStore.form.oneAmount = utils.fromWei(
+        Math.ceil(vaultInfo.maxWithdraw).toString(),
+      );
+    }, [dashboardVaultDetailsStore.form.oneAmount, vaultInfo.maxWithdraw]);
+
     return (
       <Form ref={ref => setForm(ref)} data={dashboardVaultDetailsStore.form}>
         <Box gap="xxsmall">
@@ -45,19 +56,46 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
             precision="4"
             delimiter="."
             placeholder="0.0"
+            renderRight={
+              <Box direction="row" gap="xxsmall">
+                <InputButton onClick={handleMaxClick}>
+                  <Text color="inherit">MAX</Text>
+                </InputButton>
+                <DividerVertical />
+                <Text bold>ONE</Text>
+              </Box>
+            }
             style={{ width: '100%' }}
             rules={[
               isRequired,
               moreThanZero,
-              lessThan(user.balance, 'transfer amount exceeds balance'),
+              lessThanWei(
+                Number(vault.collateral),
+                'Please enter an amount no higher than your available balance.',
+              ),
             ]}
           />
 
-          <Box>
-            <Text>Collateralization:</Text>
-            <Text>{getVaultInfo(vault).collateralTotal}</Text>
-            <Text>New collateralization:</Text>
-            <Text>{vaultInfo.collateralTotal}</Text>
+          <Box gap="small">
+            <Box direction="row" justify="between">
+              <Box>
+                <Text>Collateralization:</Text>
+              </Box>
+              <Box>
+                <Text>
+                  {formatZeroDecimals(getVaultInfo(vault).collateralTotal)}%
+                </Text>
+              </Box>
+            </Box>
+
+            <Box direction="row" justify="between">
+              <Box>
+                <Text>New collateralization:</Text>
+              </Box>
+              <Box>
+                <Text>{formatZeroDecimals(vaultInfo.collateralTotal)}%</Text>
+              </Box>
+            </Box>
           </Box>
 
           <Box gap="small">

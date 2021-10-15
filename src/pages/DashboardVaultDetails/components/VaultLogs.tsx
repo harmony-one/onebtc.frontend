@@ -15,7 +15,7 @@ enum Tabs {
   REDEEMS = 'redeems',
 }
 
-export const VaultLogs: React.FC<Props> = ({ vaultId }) => {
+export const VaultLogs: React.FC<Props> = React.memo(({ vaultId }) => {
   const [tab, setTab] = useState<Tabs>(Tabs.BALANCES);
 
   const handleTabClick = useCallback(tabId => {
@@ -60,6 +60,6 @@ export const VaultLogs: React.FC<Props> = ({ vaultId }) => {
       </Box>
     </Box>
   );
-};
+});
 
 VaultLogs.displayName = 'VaultLogs';

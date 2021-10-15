@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from 'grommet';
-import { Text, Divider, Button } from 'components/Base';
+import { Text, Divider, Button, DividerVertical } from 'components/Base';
 import { observer } from 'mobx-react';
 import { Form, isRequired, NumberInput, Select } from 'components/Form';
 import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
@@ -46,11 +46,17 @@ export const IssueForm: React.FC<Props> = observer(() => {
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
       <NumberInput
-        label={`BTC Amount`}
+        label={`Amount`}
         name="amount"
         type="decimal"
         precision="6"
         delimiter="."
+        renderRight={
+          <Box direction="row" gap="xxsmall">
+            <DividerVertical />
+            <Text bold>BTC</Text>
+          </Box>
+        }
         placeholder="0.0"
         style={{ width: '100%' }}
         rules={[isRequired, moreThanZero]}

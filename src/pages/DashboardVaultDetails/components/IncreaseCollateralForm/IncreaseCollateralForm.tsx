@@ -1,16 +1,21 @@
 import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
-import { Divider, Button } from 'components/Base';
+import { Divider, Button, DividerVertical } from 'components/Base';
 import { Text } from 'components/Base';
 import { observer } from 'mobx-react';
 import { Form, isRequired, NumberInput } from 'components/Form';
-import { lessThan, moreThanZero } from '../../../../utils';
+import {
+  formatZeroDecimals,
+  lessThanWei,
+  moreThanZero,
+} from '../../../../utils';
 import { useStores } from '../../../../stores';
 import {
   calcNewVaultCollateral,
   getVaultInfo,
 } from '../../../../modules/btcRelay/vaultHelpers';
 import utils from 'web3-utils';
+import { InputButton } from '../../../../components/Base/components/Inputs/InputButton';
 
 interface Props {
   vaultId: string;
@@ -36,29 +41,60 @@ export const IncreaseCollateralForm: React.FC<Props> = observer(
     const am = utils.toWei(dashboardVaultDetailsStore.form.oneAmount || '0');
     const vaultInfo = calcNewVaultCollateral(vault, am.toString(), 1);
 
+    const handleMaxClick = useCallback(() => {
+      dashboardVaultDetailsStore.form.oneAmount = utils.fromWei(user.balance);
+    }, [dashboardVaultDetailsStore.form.oneAmount, user.balance]);
+
     return (
       <Form ref={ref => setForm(ref)} data={dashboardVaultDetailsStore.form}>
         <Box gap="xsmall">
           <NumberInput
-            label="Increase collateral by"
+            label="Amount"
             name="oneAmount"
             type="decimal"
             precision="4"
             delimiter="."
             placeholder="0.0"
             style={{ width: '100%' }}
+            renderRight={
+              <Box direction="row" gap="xxsmall">
+                <InputButton onClick={handleMaxClick}>
+                  <Text color="inherit">MAX</Text>
+                </InputButton>
+                <DividerVertical />
+                <Text bold>ONE</Text>
+              </Box>
+            }
             rules={[
               isRequired,
               moreThanZero,
-              lessThan(user.balance, 'transfer amount exceeds balance'),
+              lessThanWei(
+                Number(user.balance),
+                'Please enter an amount no higher than your available balance.',
+              ),
             ]}
           />
 
-          <Box>
-            <Text>Collateralization:</Text>
-            <Text>{getVaultInfo(vault).collateralTotal}</Text>
-            <Text>New collateralization:</Text>
-            <Text>{vaultInfo.collateralTotal}</Text>
+          <Box gap="small">
+            <Box direction="row" justify="between">
+              <Box>
+                <Text>Collateralization:</Text>
+              </Box>
+              <Box>
+                <Text>
+                  {formatZeroDecimals(getVaultInfo(vault).collateralTotal)}%
+                </Text>
+              </Box>
+            </Box>
+
+            <Box direction="row" justify="between">
+              <Box>
+                <Text>New collateralization:</Text>
+              </Box>
+              <Box>
+                <Text>{formatZeroDecimals(vaultInfo.collateralTotal)}%</Text>
+              </Box>
+            </Box>
           </Box>
 
           <Box gap="small">

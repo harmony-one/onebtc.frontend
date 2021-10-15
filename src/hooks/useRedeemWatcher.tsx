@@ -13,7 +13,7 @@ export const useRedeemWatcher = ({ redeemId }: WatcherProps): string => {
     redeemStore.loadRedeem(redeemId);
   }, [redeemId, redeemStore]);
 
-  useInterval({ callback: loadIssue, timeout: 3000 });
+  useInterval({ callback: loadIssue, timeout: 5000 });
 
   return null;
 };

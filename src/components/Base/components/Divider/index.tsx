@@ -7,12 +7,20 @@ type Props = {
   fullwidth?: boolean;
 };
 
-export const Divider: React.FC<Props> = ({colorful = false, fullwidth = false}) => {
+export const Divider: React.FC<Props> = ({
+  colorful = false,
+  fullwidth = false,
+}) => {
   const classes = cn(styles.common, {
     [styles.colorful]: colorful,
     [styles.fullwidth]: fullwidth,
   });
-  return (
-    <div className={classes} />
-  );
+  return <div className={classes} />;
+};
+
+interface DividerVerticalProps {}
+
+export const DividerVertical: React.FC<DividerVerticalProps> = () => {
+  const classes = cn(styles.verticalCommon);
+  return <div className={classes} />;
 };

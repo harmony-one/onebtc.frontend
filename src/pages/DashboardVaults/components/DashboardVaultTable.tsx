@@ -11,7 +11,6 @@ import { formatWithTwoDecimals } from '../../../utils';
 import { Box } from 'grommet';
 import { getVaultInfo } from '../../../modules/btcRelay/vaultHelpers';
 import { LinkHarmony } from '../../../components/LinkHarmony';
-import { ONE_MINUTE } from '../../../constants/date';
 import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
 
 type Props = {};
@@ -75,7 +74,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: value => {
-        return <Text>{satoshiToBitcoin(value.toBeRedeemed)} BTC</Text>;
+        return <Text>{satoshiToBitcoin(value.issued)} BTC</Text>;
       },
     },
     {
@@ -98,7 +97,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
             <Text>
               Pending:{' '}
               <Text bold color={colorIssued}>
-                {formatWithTwoDecimals(vaultInfo.collateralIssued)}%
+                {formatWithTwoDecimals(vaultInfo.collateralTotal)}%
               </Text>
             </Text>
           </Box>
