@@ -18,7 +18,7 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
 
   const { vaultId } = useParams<{ vaultId: string }>();
 
-  const vault = vaultStore.vaultMap[vaultId];
+  const vault = vaultStore.getEntity(vaultId);
 
   useEffect(() => {
     vaultStore.loadVault(vaultId);

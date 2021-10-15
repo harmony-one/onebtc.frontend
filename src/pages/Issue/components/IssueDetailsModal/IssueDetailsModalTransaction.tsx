@@ -13,8 +13,8 @@ interface Props {
 }
 
 export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
-  const { user, issuePageStore } = useStores();
-  const issueInfo = issuePageStore.getIssueInfo(issueId);
+  const { user, issueStore } = useStores();
+  const issueInfo = issueStore.getIssueInfo(issueId);
 
   return useObserver(() => (
     <Box gap="small" align="center">

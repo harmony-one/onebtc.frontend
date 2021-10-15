@@ -26,7 +26,9 @@ export class IssueStore extends EntityStore<IIssue> {
   }
 
   @get
-  public getIssueInfo(issue: IIssue) {
+  public getIssueInfo(issueId: string) {
+    const issue = this.getEntity(issueId);
+
     if (!issue) {
       return null;
     }

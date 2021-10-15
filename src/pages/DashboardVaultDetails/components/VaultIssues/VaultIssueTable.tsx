@@ -12,7 +12,7 @@ interface Props {
 
 export const VaultIssueTable: React.FC<Props> = observer(({ vaultId }) => {
   const { vaultStore, issuePageStore } = useStores();
-  const vault = vaultStore.vaultMap[vaultId];
+  const vault = vaultStore.getEntity(vaultId);
 
   const store = getVaultIssuesStore(vaultId);
 

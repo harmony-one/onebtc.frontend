@@ -14,7 +14,7 @@ interface Props {
 export const VaultInfo: React.FC<Props> = ({ vaultId }) => {
   const { vaultStore } = useStores();
 
-  const vault = vaultStore.vaultMap[vaultId];
+  const vault = vaultStore.getEntity(vaultId);
   const vaultInfo = getVaultInfo(vault);
 
   return (

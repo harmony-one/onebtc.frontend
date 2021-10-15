@@ -15,6 +15,7 @@ import { VaultsListStore } from '../pages/DashboardVaults/VaultsListStore';
 import { VaultStore } from './VaultStore';
 import { DashboardVaultDetailsStore } from '../pages/DashboardVaultDetails/DashboardVaultDetailsStore';
 import { IssueStore } from './IssueStore';
+import { RedeemStore } from './RedeemStore';
 
 export interface IStores {
   routing?: RouterStore;
@@ -32,6 +33,7 @@ export interface IStores {
   vaultListStore?: VaultsListStore;
   vaultStore?: VaultStore;
   issueStore?: IssueStore;
+  redeemStore?: RedeemStore;
   dashboardVaultDetailsStore?: DashboardVaultDetailsStore;
 }
 
@@ -53,6 +55,7 @@ stores.vaultListStore = new VaultsListStore(stores);
 stores.vaultStore = new VaultStore(stores);
 stores.dashboardVaultDetailsStore = new DashboardVaultDetailsStore(stores);
 stores.issueStore = new IssueStore(stores);
+stores.redeemStore = new RedeemStore(stores);
 
 if (!process.env.production) {
   window.stores = stores;

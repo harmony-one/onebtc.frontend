@@ -1,5 +1,5 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
-import { action, get, computed, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
 import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsModal';
@@ -55,7 +55,7 @@ export class IssuePageStore extends StoreConstructor {
     issueUiTx.setStatusWaitingSignIn();
     issueUiTx.showModal();
     try {
-      const issueInfo = this.getIssueInfo(issueId);
+      const issueInfo = this.stores.issueStore.getIssueInfo(issueId);
 
       const address = this.stores.user.address;
 
@@ -99,12 +99,6 @@ export class IssuePageStore extends StoreConstructor {
       this.status = 'error';
       issueUiTx.setStatusFail();
     }
-  }
-
-  @get
-  public getIssueInfo(issueId: string) {
-    const issue = this.stores.issueStore.getEntity(issueId);
-    return this.stores.issueStore.getIssueInfo(issue);
   }
 
   @action.bound

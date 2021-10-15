@@ -14,8 +14,8 @@ interface Props {
 }
 
 export const IssueDetailsModalConfirmation: React.FC<Props> = ({ issueId }) => {
-  const { issuePageStore } = useStores();
-  const issueInfo = issuePageStore.getIssueInfo(issueId);
+  const { issueStore, issuePageStore } = useStores();
+  const issueInfo = issueStore.getIssueInfo(issueId);
 
   const title = issueInfo.isConfirmedBtcTX ? 'Confirmed' : 'Received';
 

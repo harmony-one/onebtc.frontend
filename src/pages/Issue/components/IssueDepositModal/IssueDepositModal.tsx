@@ -3,24 +3,24 @@ import { Box } from 'grommet';
 import { Divider, Title } from 'components/Base';
 import { observer } from 'mobx-react';
 import { TActionModalProps } from '../../../../components/ActionModals';
-import { useBtcWalletVaultIncomeWatcher } from '../../../../hooks/useBtcWalletVaultIncomeWatcher';
-import { config } from '../../../../config';
 import { IssueDepositModalContent } from './IssueDepositModalContent';
+import { useIssueWatcher } from '../../../../hooks/useIssueWatcher';
+import { useStores } from '../../../../stores';
 
 export const IssueDepositModal: React.FC<TActionModalProps> = observer(
   props => {
+    const { issueStore } = useStores();
     const { issueId } = props.actionData.data;
 
-    const btcTx = useBtcWalletVaultIncomeWatcher({
-      issueId,
-      confirmations: config.bitcoin.waitConfirmations,
-    });
+    const issueInfo = issueStore.getIssueInfo(issueId);
+
+    useIssueWatcher({ issueId });
 
     useEffect(() => {
-      if (btcTx && btcTx.hash) {
+      if (issueInfo.btcTx && issueInfo.btcTx.hash) {
         props.config.options.onApply();
       }
-    }, [btcTx, props.config.options]);
+    }, [issueInfo.btcTx, props.config.options]);
 
     return (
       <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">

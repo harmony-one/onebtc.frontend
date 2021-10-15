@@ -11,9 +11,9 @@ import { LinkHarmony } from '../../../../components/LinkHarmony';
 export const RedeemDetailsModalTransaction: React.FC<{
   redeemId: string;
 }> = props => {
-  const { user, redeemPageStore } = useStores();
+  const { user, redeemStore } = useStores();
 
-  const redeemInfo = redeemPageStore.getRedeemInfo(props.redeemId);
+  const redeemInfo = redeemStore.getRedeemInfo(props.redeemId);
 
   return useObserver(() => (
     <Box gap="small" align="center">

@@ -11,8 +11,8 @@ interface Props {
 }
 
 export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
-  const { issuePageStore } = useStores();
-  const issueInfo = issuePageStore.getIssueInfo(issueId);
+  const { issueStore } = useStores();
+  const issueInfo = issueStore.getIssueInfo(issueId);
 
   const qrData = `bitcoin:${issueInfo.bitcoinAddress}?amount=${issueInfo.sendAmount}`;
   const [qrRef] = useQRCode({

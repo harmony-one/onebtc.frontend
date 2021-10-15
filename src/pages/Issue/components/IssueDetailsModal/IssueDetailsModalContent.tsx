@@ -12,8 +12,8 @@ interface Props {
 }
 
 export const IssueDetailsModalContent: React.FC<Props> = ({ issueId }) => {
-  const { issuePageStore } = useStores();
-  const issueInfo = issuePageStore.getIssueInfo(issueId);
+  const { issueStore } = useStores();
+  const issueInfo = issueStore.getIssueInfo(issueId);
 
   useIssueWatcher({ issueId });
 

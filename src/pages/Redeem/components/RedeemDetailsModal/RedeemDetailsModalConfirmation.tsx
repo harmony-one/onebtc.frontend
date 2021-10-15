@@ -1,41 +1,51 @@
 import React from 'react';
 import { useStores } from '../../../../stores';
-import { useObserver } from 'mobx-react';
+import { observer } from 'mobx-react';
 import { Box } from 'grommet';
 import { Text, Title } from '../../../../components/Base';
 import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModalConfirmation.styl';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
 import { Checkmark } from 'grommet-icons';
-import { BTCTx } from 'onebtc.sdk/lib/btcNode/types';
 
-export const RedeemDetailsModalConfirmation: React.FC<{
-  redeemTxHash: string;
-  btcTx: BTCTx;
-}> = ({ redeemTxHash, btcTx }) => {
-  const { redeemPageStore } = useStores();
+interface Props {
+  redeemId: string;
+}
 
-  const redeemInfo = redeemPageStore.getRedeemInfo(redeemTxHash);
+export const RedeemDetailsModalConfirmation: React.FC<Props> = observer(
+  ({ redeemId }) => {
+    const { redeemStore } = useStores();
 
-  return useObserver(() => (
-    <Box gap="small" align="center">
-      <Box>
-        <Title>Confirmed</Title>
+    const redeemInfo = redeemStore.getRedeemInfo(redeemId);
+
+    if (!redeemInfo || !redeemInfo.btcTx) {
+      return null;
+    }
+
+    return (
+      <Box gap="small" align="center">
+        <Box>
+          <Title>Confirmed</Title>
+        </Box>
+        <Box>
+          <Text bold>You have received {redeemInfo.totalReceived} BTC</Text>
+        </Box>
+        <Box className={styles.circle}>
+          <Checkmark size="xlarge" color="white" />
+        </Box>
+        <Box>
+          <Text>BTC Transaction: {cutText(redeemInfo.btcTx.hash)}</Text>
+        </Box>
+        <Box>
+          <LinkBitcoin
+            type="tx"
+            hash={redeemInfo.btcTx.hash}
+            text="View on explorer"
+          />
+        </Box>
       </Box>
-      <Box>
-        <Text bold>You have received {redeemInfo.totalReceived} BTC</Text>
-      </Box>
-      <Box className={styles.circle}>
-        <Checkmark size="xlarge" color="white" />
-      </Box>
-      <Box>
-        <Text>BTC Transaction: {cutText(btcTx.hash)}</Text>
-      </Box>
-      <Box>
-        <LinkBitcoin type="tx" hash={btcTx.hash} text="View on explorer" />
-      </Box>
-    </Box>
-  ));
-};
+    );
+  },
+);
 
 RedeemDetailsModalConfirmation.displayName = 'RedeemDetailsModalConfirmation';

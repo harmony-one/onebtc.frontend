@@ -1,5 +1,4 @@
 import React from 'react';
-import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
 import { Text, Title } from '../../../../components/Base';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
@@ -7,12 +6,20 @@ import { config } from '../../../../config';
 import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModalConfirmation.styl';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
-import { BTCTx } from 'onebtc.sdk/lib/btcNode/types';
+import { useStores } from '../../../../stores';
 
 export const RedeemDetailsModalWaitTransaction: React.FC<{
-  btcTx: BTCTx;
-}> = ({ btcTx }) => {
-  return useObserver(() => (
+  redeemId: string;
+}> = ({ redeemId }) => {
+  const { redeemStore } = useStores();
+
+  const redeemInfo = redeemStore.getRedeemInfo(redeemId);
+
+  if (!redeemInfo || redeemInfo.btcTx) {
+    return null;
+  }
+
+  return (
     <Box gap="small" align="center">
       <Box>
         <Title>Pending</Title>
@@ -20,19 +27,23 @@ export const RedeemDetailsModalWaitTransaction: React.FC<{
       <Box className={styles.circleBorder} align="center">
         <SpinnerContainer boxSize={32}>
           <Text inline style={{ textAlign: 'center' }}>
-            Waiting confirmations: {btcTx.confirmations}/
+            Waiting confirmations: {redeemInfo.btcTx.confirmations}/
             {config.bitcoin.waitConfirmations}
           </Text>
         </SpinnerContainer>
       </Box>
       <Box>
-        <Text>BTC Transaction: {cutText(btcTx.hash)}</Text>
+        <Text>BTC Transaction: {cutText(redeemInfo.btcTx.hash)}</Text>
       </Box>
       <Box>
-        <LinkBitcoin hash={btcTx.hash} type="tx" text="View on explorer" />
+        <LinkBitcoin
+          hash={redeemInfo.btcTx.hash}
+          type="tx"
+          text="View on explorer"
+        />
       </Box>
     </Box>
-  ));
+  );
 };
 
 RedeemDetailsModalWaitTransaction.displayName =

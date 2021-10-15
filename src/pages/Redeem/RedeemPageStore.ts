@@ -1,11 +1,10 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
-import { action, get, computed, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import {
   bitcoinToSatoshi,
   satoshiToBitcoin,
   walletBech32ToHex,
-  walletHexToBech32,
 } from '../../services/bitcoin';
 import { RedeemWithdrawModal } from './components/RedeemWithdrawModal/RedeemWithdrawModal';
 import { RedeemDetailsModal } from './components/RedeemDetailsModal/RedeemDetailsModal';
@@ -60,7 +59,7 @@ export class RedeemPageStore extends StoreConstructor {
     redeemUiTx.setStatusProgress();
     redeemUiTx.showModal();
     try {
-      const redeem = this.getRedeemInfo(redeemId);
+      const redeem = this.stores.redeemStore.getRedeemInfo(redeemId);
 
       const address = this.stores.user.address;
 
@@ -110,7 +109,7 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   public async openRedeemWithdrawModal(redeemId: string) {
-    await this.loadRedeemDetails(redeemId);
+    await this.stores.redeemStore.loadRedeem(redeemId);
     this.stores.actionModals.open(RedeemWithdrawModal, {
       applyText: 'View Progress',
       closeText: 'Close',
@@ -131,29 +130,9 @@ export class RedeemPageStore extends StoreConstructor {
     });
   }
 
-  @get
-  public getRedeemInfo(redeemId: string) {
-    const redeem = this.redeemMap[redeemId];
-
-    const sendAmount = satoshiToBitcoin(redeem.amountBtc);
-    const totalReceived = satoshiToBitcoin(redeem.amountBtc);
-
-    return {
-      sendAmount,
-      sendUsdAmount: sendAmount * this.stores.user.btcRate,
-      redeemId: redeem.id,
-      vaultId: redeem.vault,
-      bitcoinAddress: walletHexToBech32(redeem.btcAddress),
-      bridgeFee: satoshiToBitcoin(redeem.fee),
-      totalReceived: totalReceived,
-      totalReceivedUsd: totalReceived * this.stores.user.btcRate,
-      rawRedeem: redeem,
-    };
-  }
-
   @action.bound
   public async openRedeemDetailsModal(redeemId: string, onClose?: () => void) {
-    await this.loadRedeemDetails(redeemId);
+    await this.stores.redeemStore.loadRedeem(redeemId);
 
     this.stores.actionModals.open(RedeemDetailsModal, {
       applyText: '',
@@ -176,16 +155,6 @@ export class RedeemPageStore extends StoreConstructor {
     });
 
     return true;
-  }
-
-  public async loadRedeemDetails(redeemId: string) {
-    const redeem = await btcRelayClient.loadRedeem(redeemId);
-
-    if (!redeem) {
-      throw new Error('Not found redeem details');
-    }
-
-    this.redeemMap[redeemId] = redeem;
   }
 
   @action.bound
@@ -226,9 +195,9 @@ export class RedeemPageStore extends StoreConstructor {
         throw new Error('Not found redeem details');
       }
 
-      const redeem = await btcRelayClient.loadRedeem(redeemEvent.redeem_id);
-
-      this.redeemMap[redeemRequest.transactionHash] = redeem;
+      const redeem = await this.stores.redeemStore.loadRedeem(
+        redeemEvent.redeem_id,
+      );
 
       this.stores.routing.gotToRedeemModal(redeem.id, 'withdraw');
 

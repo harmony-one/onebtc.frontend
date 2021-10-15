@@ -8,9 +8,9 @@ import React from 'react';
 export const RedeemWithdrawModalContent: React.FC<{ redeemId: string }> = ({
   redeemId,
 }) => {
-  const { redeemPageStore } = useStores();
+  const { redeemStore } = useStores();
 
-  const redeemInfo = redeemPageStore.getRedeemInfo(redeemId);
+  const redeemInfo = redeemStore.getRedeemInfo(redeemId);
 
   return useObserver(() => (
     <Box gap="small" align="center">

@@ -26,7 +26,7 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
       });
     }, [form, dashboardVaultDetailsStore]);
 
-    const vault = vaultStore.vaultMap[vaultId];
+    const vault = vaultStore.getEntity(vaultId);
 
     if (!vault) {
       return null;

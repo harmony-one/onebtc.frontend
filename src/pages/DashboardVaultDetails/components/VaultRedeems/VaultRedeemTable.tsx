@@ -12,7 +12,7 @@ interface Props {
 
 export const VaultRedeemTable: React.FC<Props> = observer(({ vaultId }) => {
   const { vaultStore, redeemPageStore } = useStores();
-  const vault = vaultStore.vaultMap[vaultId];
+  const vault = vaultStore.getEntity(vaultId);
 
   const store = getVaultRedeemStore(vaultId);
 

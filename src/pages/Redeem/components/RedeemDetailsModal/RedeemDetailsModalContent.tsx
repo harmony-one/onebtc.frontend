@@ -5,33 +5,18 @@ import { Divider, Text } from '../../../../components/Base';
 import { RedeemDetailsModalTransaction } from './RedeemDetailsModalTransaction';
 import { RedeemDetailsModalConfirmation } from './RedeemDetailsModalConfirmation';
 import { RedeemDetailsModalWaitVault } from './RedeemDetailsModalWaitVault';
-import { useBtcWalletIncomeWatcher } from '../../../../hooks/useBtcWalletIncomeWatcher';
-import { useRedeemStatusWatcher } from '../../../../hooks/useRedeemStatusWatcher';
-import { RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
-import { config } from '../../../../config';
 import { RedeemDetailsModalWaitTransaction } from './RedeemDetailsModalWaitTransaction';
+import { useRedeemWatcher } from '../../../../hooks/useRedeemWatcher';
 
 interface Props {
   redeemId: string;
 }
 
 export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
-  const { redeemPageStore } = useStores();
+  const { redeemStore } = useStores();
+  const redeemInfo = redeemStore.getRedeemInfo(redeemId);
 
-  const redeemInfo = redeemPageStore.getRedeemInfo(redeemId);
-  const btcTx = useBtcWalletIncomeWatcher({
-    redeemId,
-    confirmations: 2,
-  });
-
-  const status = useRedeemStatusWatcher({
-    redeemId: redeemInfo.redeemId,
-    requester: redeemInfo.rawRedeem.requester,
-  });
-
-  const isCompleted = status === RedeemStatus.COMPLETED;
-  const isConfirmed =
-    btcTx && btcTx.confirmations >= config.bitcoin.waitConfirmations;
+  useRedeemWatcher({ redeemId });
 
   return (
     <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">
@@ -44,15 +29,14 @@ export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
           <RedeemDetailsModalTransaction redeemId={redeemId} />
         </Box>
         <Box basis="1/2" gap="medium" align="center">
-          {!btcTx && <RedeemDetailsModalWaitVault />}
-          {!isCompleted && btcTx && (
-            <RedeemDetailsModalWaitTransaction btcTx={btcTx} />
-          )}
-          {isCompleted && btcTx && (
-            <RedeemDetailsModalConfirmation
-              btcTx={btcTx}
-              redeemTxHash={redeemId}
-            />
+          {!redeemInfo.btcTx && <RedeemDetailsModalWaitVault />}
+          {redeemInfo.btcTx &&
+            !redeemInfo.isConfirmedBtcTX &&
+            !redeemInfo.isCompleted && (
+              <RedeemDetailsModalWaitTransaction redeemId={redeemId} />
+            )}
+          {redeemInfo.btcTx && redeemInfo.isCompleted && (
+            <RedeemDetailsModalConfirmation redeemId={redeemId} />
           )}
         </Box>
       </Box>

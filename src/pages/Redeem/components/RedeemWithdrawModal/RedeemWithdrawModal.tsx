@@ -3,22 +3,22 @@ import { Box } from 'grommet';
 import { Divider, Title } from 'components/Base';
 import { useObserver } from 'mobx-react';
 import { RedeemWithdrawModalContent } from './RedeemWithdrawModalContent';
-import { useBtcWalletIncomeWatcher } from '../../../../hooks/useBtcWalletIncomeWatcher';
-import { config } from '../../../../config';
+import { useRedeemWatcher } from '../../../../hooks/useRedeemWatcher';
+import { useStores } from '../../../../stores';
 
 export const RedeemWithdrawModal = props => {
   const { redeemId } = props.actionData.data;
+  const { redeemStore } = useStores();
 
-  const btcTx = useBtcWalletIncomeWatcher({
-    redeemId,
-    confirmations: config.bitcoin.waitConfirmations,
-  });
+  const redeemInfo = redeemStore.getRedeemInfo(redeemId);
+
+  useRedeemWatcher({ redeemId });
 
   useEffect(() => {
-    if (btcTx && btcTx.hash) {
+    if (redeemInfo.btcTx && redeemInfo.btcTx.hash) {
       props.config.options.onApply();
     }
-  }, [btcTx, props.config.options]);
+  }, [redeemInfo.btcTx, props.config.options]);
 
   return useObserver(() => (
     <Box pad={{ horizontal: 'medium', vertical: 'medium' }} gap="small">
