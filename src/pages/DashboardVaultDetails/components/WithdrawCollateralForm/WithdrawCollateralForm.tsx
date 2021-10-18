@@ -37,23 +37,32 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
       return null;
     }
 
-    const am = utils.toWei(dashboardVaultDetailsStore.form.oneAmount || '0');
-    const vaultInfo = calcNewVaultCollateral(vault, am.toString(), -1);
+    const oneAmount = utils.toWei(
+      dashboardVaultDetailsStore.formWithdraw.oneAmount || '0',
+    );
+    const vaultInfo = getVaultInfo(vault);
+    const _vaultInfo = calcNewVaultCollateral(vault, oneAmount.toString(), -1);
 
     const handleMaxClick = useCallback(() => {
-      dashboardVaultDetailsStore.form.oneAmount = utils.fromWei(
+      dashboardVaultDetailsStore.formWithdraw.oneAmount = utils.fromWei(
         Math.ceil(vaultInfo.maxWithdraw).toString(),
       );
-    }, [dashboardVaultDetailsStore.form.oneAmount, vaultInfo.maxWithdraw]);
+    }, [
+      dashboardVaultDetailsStore.formWithdraw.oneAmount,
+      vaultInfo.maxWithdraw,
+    ]);
 
     return (
-      <Form ref={ref => setForm(ref)} data={dashboardVaultDetailsStore.form}>
-        <Box gap="xxsmall">
+      <Form
+        ref={ref => setForm(ref)}
+        data={dashboardVaultDetailsStore.formWithdraw}
+      >
+        <Box gap="xsmall">
           <NumberInput
             label="Withdraw collateral"
             name="oneAmount"
             type="decimal"
-            precision="4"
+            precision="8"
             delimiter="."
             placeholder="0.0"
             renderRight={
@@ -93,7 +102,7 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
                 <Text>New collateralization:</Text>
               </Box>
               <Box>
-                <Text>{formatZeroDecimals(vaultInfo.collateralTotal)}%</Text>
+                <Text>{formatZeroDecimals(_vaultInfo.collateralTotal)}%</Text>
               </Box>
             </Box>
           </Box>

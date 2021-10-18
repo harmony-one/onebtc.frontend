@@ -6,7 +6,12 @@ import { VaultManageModal } from './components/VaultManageModal';
 
 export class DashboardVaultDetailsStore extends StoreConstructor {
   @observable
-  public form = {
+  public formWithdraw = {
+    oneAmount: '0',
+  };
+
+  @observable
+  public formIncrease = {
     oneAmount: '0',
   };
 
@@ -41,7 +46,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       uiTx.setStatusWaitingSignIn();
 
-      const amount = Number(this.form.oneAmount) * 1e18;
+      const amount = Number(this.formIncrease.oneAmount) * 1e18;
 
       const result = await hmyClient.methods.lockAdditionalCollateral(
         amount,
@@ -53,7 +58,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       this.stores.actionModals.open(IncreaseCollateralConfirmModal, {
         initData: {
-          total: this.form.oneAmount,
+          total: this.formWithdraw.oneAmount,
           txHash: result.transactionHash,
         },
         applyText: '',
@@ -89,7 +94,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       uiTx.setStatusWaitingSignIn();
 
-      const amount = Number(this.form.oneAmount) * 1e18;
+      const amount = Number(this.formWithdraw.oneAmount) * 1e18;
 
       const result = await hmyClient.methods.withdrawCollateral(
         amount,
@@ -101,7 +106,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       this.stores.actionModals.open(IncreaseCollateralConfirmModal, {
         initData: {
-          total: this.form.oneAmount,
+          total: this.formIncrease.oneAmount,
           txHash: result.transactionHash,
         },
         applyText: '',

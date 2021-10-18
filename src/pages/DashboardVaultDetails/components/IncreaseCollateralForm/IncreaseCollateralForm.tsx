@@ -38,21 +38,28 @@ export const IncreaseCollateralForm: React.FC<Props> = observer(
       return null;
     }
 
-    const am = utils.toWei(dashboardVaultDetailsStore.form.oneAmount || '0');
+    const am = utils.toWei(
+      dashboardVaultDetailsStore.formIncrease.oneAmount || '0',
+    );
     const vaultInfo = calcNewVaultCollateral(vault, am.toString(), 1);
 
     const handleMaxClick = useCallback(() => {
-      dashboardVaultDetailsStore.form.oneAmount = utils.fromWei(user.balance);
-    }, [dashboardVaultDetailsStore.form.oneAmount, user.balance]);
+      dashboardVaultDetailsStore.formIncrease.oneAmount = utils.fromWei(
+        user.balance,
+      );
+    }, [dashboardVaultDetailsStore.formIncrease.oneAmount, user.balance]);
 
     return (
-      <Form ref={ref => setForm(ref)} data={dashboardVaultDetailsStore.form}>
+      <Form
+        ref={ref => setForm(ref)}
+        data={dashboardVaultDetailsStore.formIncrease}
+      >
         <Box gap="xsmall">
           <NumberInput
             label="Amount"
             name="oneAmount"
             type="decimal"
-            precision="4"
+            precision="8"
             delimiter="."
             placeholder="0.0"
             style={{ width: '100%' }}

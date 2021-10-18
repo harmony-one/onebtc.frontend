@@ -1,5 +1,4 @@
 import React from 'react';
-import { IIssue } from '../../../../modules/btcRelay/btcRelayTypes';
 import { IColumn, Table } from '../../../../components/Table';
 import * as s from '../../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { useStores } from '../../../../stores';
@@ -52,7 +51,7 @@ export const VaultBalances: React.FC<Props> = observer(({ vaultId }) => {
       hidePagination
       onChangeDataFlow={store.onChangeDataFlow}
       tableParams={{
-        rowKey: (data: IIssue) => data.id,
+        rowKey: (data: { address: string }) => data.address,
       }}
     />
   );

@@ -41,7 +41,7 @@ export function getVaultInfo(vault: IVault) {
   const maxWithdraw =
     Math.max(
       oneAmount -
-        collateralSatToOne(issuedSat + toBeIssuedSat + toBeRedeemedSat),
+        collateralSatToOne(issuedSat + toBeIssuedSat + toBeRedeemedSat) * 1.5,
       0,
     ) * 1e18;
 

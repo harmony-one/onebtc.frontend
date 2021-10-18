@@ -29,11 +29,8 @@ export class VaultStore extends EntityStore<IVault> {
   public async loadBalances(vaultId: string) {
     const result = await btcRelayClient.loadVaultBalances(vaultId);
 
-    const r = result.content.reduce((acc, item) => {
+    vaultBalancesStore[vaultId] = result.content.reduce((acc, item) => {
       return Number(item.amount) + acc;
     }, 0);
-
-    console.log('### r', r);
-    vaultBalancesStore[vaultId] = r;
   }
 }
