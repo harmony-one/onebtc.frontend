@@ -18,7 +18,7 @@ const MainLogo = styled.img`
 `;
 
 export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
-  observer(({ theme, ...props }: IStyledChildrenProps<BoxProps>) => {
+  observer(({ theme }: IStyledChildrenProps<BoxProps>) => {
     const { palette, container } = theme;
     const { minWidth, maxWidth } = container;
 
