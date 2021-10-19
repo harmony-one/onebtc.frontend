@@ -24,7 +24,7 @@ export const TransferForm: React.FC<Props> = () => {
         label="OneBTC Amount"
         name="oneBTCAmount"
         type="decimal"
-        precision="4"
+        precision="8"
         delimiter="."
         placeholder="0.0"
         renderRight={

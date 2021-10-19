@@ -33,6 +33,6 @@ export const config = {
   },
   wallets: {
     metamask: true,
-    onewallet: false,
+    onewallet: true,
   },
 } as const;

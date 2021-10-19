@@ -1,3 +1,3 @@
 export * from './BaseContainer';
-export * from './Head';
+export * from './Head/Head';
 export * from './PageContainer';

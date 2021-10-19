@@ -12,11 +12,13 @@ export function TransferCompletedModalContent({ total, txHash }) {
         <Text>Recipient have received:</Text>
         <Text bold>{total} OneBTC</Text>
       </Box>
-      <Box>
-        <Text>
-          Tx:&nbsp;
+      <Box align="center">
+        <Box>
+          <Text align="center">Transaction:&nbsp;</Text>
+        </Box>
+        <Box>
           <LinkHarmony hash={txHash} type="tx" />
-        </Text>
+        </Box>
       </Box>
     </Box>
   );

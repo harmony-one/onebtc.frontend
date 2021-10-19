@@ -44,13 +44,13 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         label="Amount"
         name="oneBTCAmount"
         type="decimal"
-        precision="4"
+        precision="6"
         delimiter="."
         placeholder="0.0"
         renderRight={
           <Box direction="row" gap="xxsmall">
             <DividerVertical />
-            <Text bold>BTC</Text>
+            <Text bold>oneBTC</Text>
           </Box>
         }
         style={{ width: '100%' }}

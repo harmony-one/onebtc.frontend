@@ -16,10 +16,12 @@ export const IssueConfirmModalContent: React.FC<{
         <Text bold>{total} OneBTC</Text>
       </Box>
       <Box align="center">
-        <Text>
-          Transaction:&nbsp;
+        <Box>
+          <Text align="center">Transaction:</Text>
+        </Box>
+        <Box>
           <LinkHarmony hash={txHash} type="tx" />
-        </Text>
+        </Box>
       </Box>
     </Box>
   );

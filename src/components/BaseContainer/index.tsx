@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, BoxProps } from 'grommet';
-import { Head } from 'components';
+import { Head } from 'components/Head/Head';
 import { withTheme } from 'styled-components';
 import { IStyledChildrenProps } from 'interfaces';
 // import * as styles from './styles.styl';
@@ -10,7 +10,7 @@ export const BaseContainer: React.FC<IStyledChildrenProps<
   BoxProps
 >> = withTheme(
   ({ theme, children, ...props }: IStyledChildrenProps<BoxProps>) => {
-    const { palette, container } = theme;
+    const { container } = theme;
     const { minWidth, maxWidth } = container;
     return (
       <>
