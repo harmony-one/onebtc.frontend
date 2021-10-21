@@ -7,15 +7,15 @@ import { observer } from 'mobx-react';
 import { DashboardCardBtcRelay } from '../../components/Dashboard/DashboardCardBtcRelay';
 import { DashboardIssueRedeemCard } from './components/DashboardIssueRedeemCard';
 import { DashboardVaultCard } from './components/DashboardVaultCard';
-import { dashboardPageStore } from './DashboardPageStore';
-import { DashboardActiveVault } from './components/DashboardActiveVault';
+import { dashboardHistoryStore } from './DashboardHistoryStore';
+import { DashboardVaultActivityCard } from './components/DashboardVaultActivityCard';
 import { DashboardVaults } from './components/DashboardVaults';
 
 type Props = {};
 
 export const DashboardPage: React.FC<Props> = observer(() => {
   useEffect(() => {
-    dashboardPageStore.loadPageData();
+    dashboardHistoryStore.loadData();
   }, []);
 
   return (
@@ -32,7 +32,7 @@ export const DashboardPage: React.FC<Props> = observer(() => {
             <DashboardIssueRedeemCard />
             <DashboardCardBtcRelay showLink />
             <DashboardVaultCard />
-            <DashboardActiveVault />
+            <DashboardVaultActivityCard />
             <DashboardVaults />
           </Box>
         </Box>

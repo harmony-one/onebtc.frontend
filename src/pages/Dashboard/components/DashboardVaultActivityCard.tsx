@@ -5,25 +5,23 @@ import { DashboardCard } from 'components/Dashboard/DashboardCard';
 import { DashboardCardHead } from '../../../components/Dashboard/DashboardCardHead';
 import { Text } from '../../../components/Base';
 import { observer } from 'mobx-react';
-import { DashboardCollateralChart } from './DashboardCollateralChart';
+import { DashboardVaultActivityChart } from './DashboardVaultActivityChart';
 
 interface Props {}
 
-export const DashboardVaults: React.FC<Props> = observer(() => {
+export const DashboardVaultActivityCard: React.FC<Props> = observer(() => {
   return (
     <DashboardCard>
       <DashboardCardHead>
         <Box>
-          <Text>
-            Locked collateral: {dashboardHistoryStore.totalCollateral} OneBTC
-          </Text>
+          <Text>Active vaults: {dashboardHistoryStore.activeVaultCount}</Text>
         </Box>
       </DashboardCardHead>
       <Box>
-        <DashboardCollateralChart />
+        <DashboardVaultActivityChart />
       </Box>
     </DashboardCard>
   );
 });
 
-DashboardVaults.displayName = 'VaultIssuedChart';
+DashboardVaultActivityCard.displayName = 'VaultIssuedChart';
