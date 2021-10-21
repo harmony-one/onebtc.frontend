@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BaseContainer } from 'components/BaseContainer';
 import { PageContainer } from 'components/PageContainer';
 import { Divider, Title } from '../../components/Base';
@@ -7,10 +7,17 @@ import { observer } from 'mobx-react';
 import { DashboardCardBtcRelay } from '../../components/Dashboard/DashboardCardBtcRelay';
 import { DashboardIssueRedeemCard } from './components/DashboardIssueRedeemCard';
 import { DashboardVaultCard } from './components/DashboardVaultCard';
+import { dashboardPageStore } from './DashboardPageStore';
+import { DashboardActiveVault } from './components/DashboardActiveVault';
+import { DashboardVaults } from './components/DashboardVaults';
 
 type Props = {};
 
 export const DashboardPage: React.FC<Props> = observer(() => {
+  useEffect(() => {
+    dashboardPageStore.loadPageData();
+  }, []);
+
   return (
     <BaseContainer>
       <PageContainer>
@@ -21,16 +28,12 @@ export const DashboardPage: React.FC<Props> = observer(() => {
           <Box>
             <Divider colorful fullwidth />
           </Box>
-          <Box wrap direction="row">
-            <Box pad="xxsmall">
-              <DashboardIssueRedeemCard />
-            </Box>
-            <Box pad="xxsmall">
-              <DashboardCardBtcRelay showLink />
-            </Box>
-            <Box pad="xxsmall">
-              <DashboardVaultCard />
-            </Box>
+          <Box justify="center" direction="row-responsive" wrap>
+            <DashboardIssueRedeemCard />
+            <DashboardCardBtcRelay showLink />
+            <DashboardVaultCard />
+            <DashboardActiveVault />
+            <DashboardVaults />
           </Box>
         </Box>
       </PageContainer>
