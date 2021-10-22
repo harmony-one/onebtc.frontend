@@ -2,7 +2,13 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from 'grommet';
 import { Text, Divider, Button, DividerVertical } from 'components/Base';
 import { observer } from 'mobx-react';
-import { Form, isRequired, NumberInput, Select } from 'components/Form';
+import {
+  Form,
+  isRequired,
+  MobxForm,
+  NumberInput,
+  Select,
+} from 'components/Form';
 import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
@@ -14,7 +20,7 @@ type Props = Pick<IStores, 'issuePageStore'>;
 
 export const IssueForm: React.FC<Props> = observer(() => {
   const { issuePageStore, user } = useStores();
-  const [form, setForm] = useState();
+  const [form, setForm] = useState<MobxForm>();
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {

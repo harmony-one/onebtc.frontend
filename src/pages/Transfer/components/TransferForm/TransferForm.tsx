@@ -2,7 +2,13 @@ import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
 import { Divider, Button, Text, DividerVertical } from 'components/Base';
 import { useObserver } from 'mobx-react';
-import { Form, isRequired, NumberInput, Input } from 'components/Form';
+import {
+  Form,
+  isRequired,
+  NumberInput,
+  Input,
+  MobxForm,
+} from 'components/Form';
 import { lessThanSat, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 
@@ -10,7 +16,7 @@ type Props = Pick<IStores, 'issuePageStore'>;
 
 export const TransferForm: React.FC<Props> = () => {
   const { transferPageStore, user } = useStores();
-  const [form, setForm] = useState();
+  const [form, setForm] = useState<MobxForm>();
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {

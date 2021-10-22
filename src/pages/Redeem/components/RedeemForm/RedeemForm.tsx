@@ -2,7 +2,14 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from 'grommet';
 import { Text, Divider, Button, DividerVertical } from 'components/Base';
 import { observer } from 'mobx-react';
-import { Form, isRequired, NumberInput, Input, Select } from 'components/Form';
+import {
+  Form,
+  isRequired,
+  NumberInput,
+  Input,
+  Select,
+  MobxForm,
+} from 'components/Form';
 import { lessThanSat, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
@@ -14,7 +21,7 @@ type Props = Pick<IStores, 'issuePageStore'>;
 
 export const RedeemForm: React.FC<Props> = observer(() => {
   const { redeemPageStore, user, btcNodeStore } = useStores();
-  const [form, setForm] = useState();
+  const [form, setForm] = useState<MobxForm>();
 
   const vaultOptions = useMemo(() => {
     return redeemPageStore.vaultList.map(vault => {

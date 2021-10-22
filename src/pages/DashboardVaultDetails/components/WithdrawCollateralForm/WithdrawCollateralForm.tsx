@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
 import { Divider, Button, Text, DividerVertical } from 'components/Base';
 import { observer } from 'mobx-react';
-import { Form, isRequired, NumberInput } from 'components/Form';
+import { Form, isRequired, MobxForm, NumberInput } from 'components/Form';
 import {
   formatZeroDecimals,
   lessThanWei,
@@ -23,7 +23,7 @@ interface Props {
 export const WithdrawCollateralForm: React.FC<Props> = observer(
   ({ vaultId }) => {
     const { dashboardVaultDetailsStore, vaultStore } = useStores();
-    const [form, setForm] = useState();
+    const [form, setForm] = useState<MobxForm>();
 
     const handleSubmit = useCallback(() => {
       form.validateFields().then(() => {
