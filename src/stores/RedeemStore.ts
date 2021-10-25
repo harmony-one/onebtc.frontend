@@ -4,7 +4,7 @@ import { IRedeem } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
 import { satoshiToBitcoin, walletHexToBech32 } from '../services/bitcoin';
 import { config } from '../config';
-import { RedeemStatus } from '../../../onebtc.sdk.fork/lib/blockchain/hmy/types';
+import { RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
 export class RedeemStore extends EntityStore<IRedeem> {
   @action.bound

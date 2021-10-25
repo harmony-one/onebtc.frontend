@@ -9,6 +9,7 @@ import { useStores } from '../../../stores';
 import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { observer } from 'mobx-react';
 import { DashboardIssueChart } from './DashboardIssueChart';
+import { formatWithTwoDecimals } from '../../../utils';
 
 interface Props {}
 
@@ -19,10 +20,17 @@ export const DashboardIssueRedeemCard: React.FC<Props> = observer(() => {
       <DashboardCardHead>
         <Box>
           <Text>Issued</Text>
-          <Text bold>{dashboardHistoryStore.issuedToday} OneBTC</Text>
-          <Text bold>{dashboardHistoryStore.issuedToday * user.btcRate} </Text>
+          <Text bold>
+            {formatWithTwoDecimals(dashboardHistoryStore.issuedTotal)} OneBTC
+          </Text>
+          <Text bold>
+            {formatWithTwoDecimals(
+              dashboardHistoryStore.issuedTotal * user.btcRate,
+            )}
+            $
+          </Text>
         </Box>
-        <Box fill alignContent="end">
+        <Box alignContent="end">
           <Text align="right">
             <NavLink to={routing.generatePath(routes.dashboardIssue)}>
               VIEW ALL ISSUED

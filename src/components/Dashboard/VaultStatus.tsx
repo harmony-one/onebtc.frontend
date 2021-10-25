@@ -2,10 +2,21 @@ import React from 'react';
 import { Text } from '../Base';
 import { Box } from 'grommet';
 import { Theme } from '../../themes';
+import styled from 'styled-components';
 
 interface Props {
   isActive: boolean;
 }
+
+export const VaultStatusDot = styled.div<Props>`
+  background-color: ${props =>
+    props.isActive ? Theme.global.colors.Green600 : Theme.global.colors.Red600};
+  border-radius: 10px;
+  content: ' ';
+  display: block;
+  height: 10px;
+  width: 10px;
+`;
 
 export const VaultStatus: React.FC<Props> = ({ isActive }) => {
   if (isActive) {

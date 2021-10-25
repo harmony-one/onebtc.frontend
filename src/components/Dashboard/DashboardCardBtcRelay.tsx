@@ -7,6 +7,7 @@ import { DashboardCardCircle } from './DashboardCardCircle';
 import { DashboardCard } from './DashboardCard';
 import { useStores } from '../../stores';
 import { observer } from 'mobx-react';
+import { Box } from 'grommet';
 
 type Props = {
   showLink?: boolean;
@@ -16,27 +17,24 @@ export const DashboardCardBtcRelay: React.FC<Props> = observer(
   ({ showLink = false }) => {
     const { btcRelayStore } = useStores();
 
-    const text = btcRelayStore.isSynchronized ? (
-      <Text>
-        BTC Relay is{' '}
-        <Text bold color="Green500">
-          synchronized
-        </Text>
+    const status = btcRelayStore.isSynchronized ? 'success' : 'error';
+    const statusText = btcRelayStore.isSynchronized ? (
+      <Text bold color="Green500">
+        synchronized
       </Text>
     ) : (
-      <Text>
-        BTC Relay is{' '}
-        <Text bold color="Red500">
-          not synchronized
-        </Text>
+      <Text bold color="Red500">
+        not synchronized
       </Text>
     );
 
-    const status = btcRelayStore.isSynchronized ? 'success' : 'error';
     return (
       <DashboardCard>
         <DashboardCardHead>
-          <Text>{text}</Text>
+          <Box>
+            <Text>BTC Relay is: </Text>
+            {statusText}
+          </Box>
           {showLink && (
             <Text align="right">
               <NavLink to={routes.dashboardRelay}>VIEW BTC RELAY</NavLink>

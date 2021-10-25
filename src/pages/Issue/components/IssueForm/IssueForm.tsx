@@ -15,6 +15,7 @@ import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
 import { getVaultInfo } from '../../../../modules/btcRelay/vaultHelpers';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
+import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -34,15 +35,16 @@ export const IssueForm: React.FC<Props> = observer(() => {
       const vaultInfo = getVaultInfo(vault);
       return {
         text: (
-          <Text>
-            {name}:{' '}
+          <Box direction="row" gap="xxsmall" align="center">
+            <VaultStatusDot isActive={vaultInfo.isActive} />
+            <Text>{name}: </Text>
             <Text bold>
               {formatWithSixDecimals(
                 satoshiToBitcoin(vaultInfo.availableAmountSat),
               )}
-            </Text>{' '}
-            OneBTC
-          </Text>
+            </Text>
+            <Text> OneBTC</Text>
+          </Box>
         ),
         value: vault.id,
       };
@@ -88,7 +90,6 @@ export const IssueForm: React.FC<Props> = observer(() => {
         <PriceView
           value={issuePageStore.bridgeFee}
           rate={user.btcRate}
-          boxProps={{ pad: {} }}
           tokenName="BTC"
         />
       </Box>

@@ -4,7 +4,7 @@ import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
 import { satoshiToBitcoin, walletHexToBech32 } from '../services/bitcoin';
 import { toBN } from 'web3-utils';
-import { IssueStatus } from '../../../onebtc.sdk.fork/lib/blockchain/hmy/types';
+import { IssueStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 import { config } from '../config';
 
 export class IssueStore extends EntityStore<IIssue> {
