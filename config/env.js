@@ -61,69 +61,15 @@ function getClientEnvironment(publicUrl) {
         PUBLIC_URL: publicUrl,
         API_MODE: process.env.API_MODE,
         BASE_URL: process.env.BASE_URL,
-        HIDE_CONTRACT_BTN: process.env.HIDE_CONTRACT_BTN === 'true',
-        CLIENT_AUTH_HASH: new Buffer(
-          `${process.env.BACKEND_USER}:${process.env.BACKEND_PASSWORD}`,
-        ).toString('base64'),
 
-        PRIVATE_KEY: process.env.PRIVATE_KEY,
-
-        ETH_BUSD_CONTRACT: process.env.ETH_BUSD_CONTRACT,
-        ETH_BUSD_MANAGER_CONTRACT: process.env.ETH_BUSD_MANAGER_CONTRACT,
-        HMY_BUSD_CONTRACT: process.env.HMY_BUSD_CONTRACT,
-        HMY_BUSD_MANAGER_CONTRACT: process.env.HMY_BUSD_MANAGER_CONTRACT,
-
-        ETH_ERC20_MANAGER_CONTRACT: process.env.ETH_ERC20_MANAGER_CONTRACT,
-        HMY_ERC20_MANAGER_CONTRACT: process.env.HMY_ERC20_MANAGER_CONTRACT,
-
-        ETH_LINK_CONTRACT: process.env.ETH_LINK_CONTRACT,
-        ETH_LINK_MANAGER_CONTRACT: process.env.ETH_LINK_MANAGER_CONTRACT,
-        HMY_LINK_CONTRACT: process.env.HMY_LINK_CONTRACT,
-        HMY_LINK_MANAGER_CONTRACT: process.env.HMY_LINK_MANAGER_CONTRACT,
-
-        ETH_EXPLORER_URL: process.env.ETH_EXPLORER_URL,
-        HMY_EXPLORER_URL: process.env.HMY_EXPLORER_URL,
-
-        ETH_GAS_API_KEY: process.env.ETH_GAS_API_KEY,
-
-        ASSETS_INFO_SERVICE: process.env.ASSETS_INFO_SERVICE,
         NETWORK: process.env.NETWORK,
-
-        ETH_HRC20: process.env.ETH_HRC20,
-        ETH_MANAGER_CONTRACT: process.env.ETH_MANAGER_CONTRACT,
-
-        ETH_NODE_URL: process.env.ETH_NODE_URL,
-        ETH_GAS_PRICE: process.env.ETH_GAS_PRICE,
-        ETH_GAS_LIMIT: process.env.ETH_GAS_LIMIT,
-
-        HMY_DEPOSIT_CONTRACT: process.env.HMY_DEPOSIT_CONTRACT,
 
         HMY_NODE_URL: process.env.HMY_NODE_URL,
         HMY_CHAIN_ID: process.env.HMY_CHAIN_ID,
         GAS_LIMIT: process.env.GAS_LIMIT,
         GAS_PRICE: process.env.GAS_PRICE,
 
-        NFT_TOKEN_MANAGER_CONTRACT: process.env.NFT_TOKEN_MANAGER_CONTRACT,
-        ETH_ERC721_MANAGER_CONTRACT: process.env.ETH_ERC721_MANAGER_CONTRACT,
-        HMY_ERC721_MANAGER_CONTRACT: process.env.HMY_ERC721_MANAGER_CONTRACT,
-
-        HMY_HRC20_MANAGER_CONTRACT: process.env.HMY_HRC20_MANAGER_CONTRACT,
-        ETH_HRC20_MANAGER_CONTRACT: process.env.ETH_HRC20_MANAGER_CONTRACT,
-        ETH_TOKEN_MANAGER_CONTRACT: process.env.ETH_TOKEN_MANAGER_CONTRACT,
-        ONE_HRC20: process.env.ONE_HRC20,
-
-        BSC_BRIDGE_MANAGER: process.env.BSC_BRIDGE_MANAGER,
-        BSC_TOKEN_MANAGER_CONTRACT: process.env.BSC_TOKEN_MANAGER_CONTRACT,
-        HMY_BRIDGE_MANAGER: process.env.HMY_BRIDGE_MANAGER,
-        TOKEN_MANAGER_CONTRACT_FOR_BSC: process.env.TOKEN_MANAGER_CONTRACT_FOR_BSC,
-        TOKEN_MANAGER_CONTRACT: process.env.TOKEN_MANAGER_CONTRACT,
-
-        HMY_ERC20_SUB_MANAGER_CONTRACT: process.env.HMY_ERC20_SUB_MANAGER_CONTRACT,
-        HMY_BEP20_SUB_MANAGER_CONTRACT: process.env.HMY_BEP20_SUB_MANAGER_CONTRACT,
-
         BACKEND_URL: process.env.BACKEND_URL,
-        THRESHOLD: process.env.THRESHOLD,
-        GET_TOKENS_SERVICE: process.env.GET_TOKENS_SERVICE,
       },
     );
   // Stringify all values so we can feed into Webpack DefinePlugin
