@@ -1,85 +1,44 @@
-import React from 'react';
-import { WalletButton } from '../../WalletButton';
+import React, { useCallback } from 'react';
 import { Box } from 'grommet';
-import { Icon } from '../../Base';
+import { Button } from '../../Base';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react-lite';
-import { config } from '../../../config';
+import { ConnectWalletModal } from './ConnectWalletModal';
 
 export const SignInButton: React.FC = observer(() => {
-  const { user } = useStores();
+  const { user, actionModals } = useStores();
 
-  const isTestNetChain = user.metamaskChainId !== 1666700000;
+  const handleOpenModal = useCallback(() => {
+    actionModals.open(ConnectWalletModal, {
+      applyText: '',
+      closeText: '',
+      initData: {},
+      onApply: () => {
+        return Promise.resolve();
+      },
+      onClose: () => {
+        return Promise.resolve();
+      },
+    });
+  }, [actionModals]);
 
-  const chainIdError =
-    user.sessionType === 'metamask' &&
-    isTestNetChain &&
-    'Please connect to harmony testnet';
+  const handleSignOut = useCallback(() => {
+    user.signOut();
+  }, [user]);
+
   return (
-    <>
+    <Box>
       {!user.isAuthorized && (
-        <WalletButton
-          onClick={() => {
-            user.signInMetamask();
-          }}
-          error={user.error}
-        >
-          <img src="/metamask.svg" style={{ marginRight: 15, height: 22 }} />
-          Sign in by Metamask
-        </WalletButton>
+        <Button fontSize="16px" onClick={handleOpenModal}>
+          Connect wallet
+        </Button>
       )}
-      {config.wallets.onewallet && !user.isAuthorized && (
-        <WalletButton
-          onClick={() => {
-            user.signInOneWallet();
-          }}
-          error={user.error}
-        >
-          <img src="/one.svg" style={{ marginRight: 15, height: 22 }} />
-          Sign in by OneWallet
-        </WalletButton>
+      {user.isAuthorized && (
+        <Button bordered transparent fontSize="16px" onClick={handleSignOut}>
+          Logout
+        </Button>
       )}
-      {config.wallets.onewallet &&
-        user.isAuthorized &&
-        user.sessionType === 'onewallet' && (
-          <WalletButton
-            onClick={() => {
-              user.signOut();
-            }}
-            error={user.error || chainIdError}
-          >
-            <img src="/one.svg" style={{ marginRight: 15, height: 22 }} />
-            OneWallet
-            <Box pad={{ left: 'small' }}>
-              <Icon
-                glyph="Logout"
-                size="24px"
-                style={{ opacity: 0.5 }}
-                color="BlackTxt"
-              />
-            </Box>
-          </WalletButton>
-        )}
-      {user.isAuthorized && user.sessionType === 'metamask' && (
-        <WalletButton
-          onClick={() => {
-            user.signOut();
-          }}
-          error={user.error || chainIdError}
-        >
-          <img src="/metamask.svg" style={{ marginRight: 15, height: 22 }} />
-          Metamask
-          <Box pad={{ left: 'small' }}>
-            <Icon
-              glyph="Logout"
-              size="24px"
-              style={{ opacity: 0.5 }}
-              color="BlackTxt"
-            />
-          </Box>
-        </WalletButton>
-      )}
-    </>
+    </Box>
   );
 });
 
