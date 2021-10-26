@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text } from '../../../../components/Base';
-import { Box, DataChart } from 'grommet';
+import { Box } from 'grommet';
+import { DashboardCollateralChart } from '../../../Dashboard/components/DashboardCollateralChart';
 
 interface Props {}
 
@@ -16,37 +16,7 @@ for (let i = 1; i < 8; i += 1) {
 export const VaultIssuedChart: React.FC<Props> = () => {
   return (
     <Box gap="small">
-      <Text size="medium" bold align="center">
-        Total locked:
-      </Text>
-      <DataChart
-        data={data}
-        pad="none"
-        series={['date', 'amount']}
-        axis={{
-          x: { granularity: 'fine' },
-          y: false,
-        }}
-        chart={[
-          {
-            property: 'amount',
-            thickness: 'hair',
-            type: 'line',
-            color: '#47b8eb',
-          },
-          {
-            property: 'amount',
-            thickness: 'xsmall',
-            type: 'point',
-            point: 'circle',
-          },
-        ]}
-        guide={{
-          x: { granularity: 'fine' },
-          y: { granularity: 'fine' },
-        }}
-        size={{ width: 'fill' }}
-      />
+      <DashboardCollateralChart />
     </Box>
   );
 };

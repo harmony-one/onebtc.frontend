@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Button, Divider, Title } from '../../components/Base';
 import { BaseContainer } from 'components/BaseContainer';
 import { PageContainer } from 'components/PageContainer';
@@ -11,6 +11,7 @@ import { Paper } from '../../components/Paper';
 import { VaultIssuedChart } from './components/VaultIssuedChart/VaultIssuedChart';
 import { VaultLogs } from './components/VaultLogs';
 import { useVaultWatcher } from '../../hooks/useVaultWatcher';
+import { dashboardHistoryStore } from '../Dashboard/DashboardHistoryStore';
 
 interface Props {}
 
@@ -22,6 +23,10 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
   const vault = vaultStore.getEntity(vaultId);
 
   useVaultWatcher({ vaultId });
+
+  useEffect(() => {
+    dashboardHistoryStore.loadData();
+  }, []);
 
   const handleClickManage = useCallback(() => {
     dashboardVaultDetailsStore.openManageModal(vaultId);
