@@ -7,7 +7,7 @@ export const routes = {
   transfer: '/bridge/transfer',
   sandbox: '/sandbox',
   burn: '/bridge/burn',
-  myTransactions: '/bridge/myTransactions',
+  transactions: '/transactions',
   dashboard: '/dashboard',
   dashboardRelay: '/dashboard/relay',
   dashboardIssue: '/dashboard/issues/:issueId?',

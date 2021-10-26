@@ -20,6 +20,7 @@ import { DashboardRedeemsPage } from './pages/DashboardRedeems/DashboardRedeemsP
 import { DashboardVaultsPage } from './pages/DashboardVaults/DashboardVaultsPage';
 import { DashboardVaultDetailsPage } from './pages/DashboardVaultDetails/DashboardVaultDetailsPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { TransactionsPage } from './pages/Transactions/TransactionsPage';
 
 const App: React.FC = () => (
   <ErrorBoundary>
@@ -30,6 +31,7 @@ const App: React.FC = () => (
         <Route exact path={routes.transfer} component={TransferPage} />
         <Route exact path={routes.sandbox} component={SandBoxPage} />
         <Route exact path={routes.dashboard} component={DashboardPage} />
+        <Route exact path={routes.transactions} component={TransactionsPage} />
         <Route
           exact
           path={routes.dashboardRelay}

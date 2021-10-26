@@ -59,13 +59,18 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
               </Title>
             </Box>
           </Box>
-          <Box direction="row" gap="small">
+          <Box direction="row" gap="xxsmall">
             <NavLink className={s.link} to={routes.bridge}>
               <Box className={cn(s.item)}>
                 <Text>Bridge</Text>
               </Box>
             </NavLink>
-            <NavLink to={routes.dashboard} className={s.link}>
+            <NavLink to={routes.transactions}>
+              <Box className={cn(s.item)}>
+                <Text>Transactions</Text>
+              </Box>
+            </NavLink>
+            <NavLink className={s.link} to={routes.dashboard}>
               <Box className={cn(s.item)}>
                 <Text>Dashboard</Text>
               </Box>
