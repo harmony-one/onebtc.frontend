@@ -1,8 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  IIssue,
-  IRedeem,
-} from '../../../../../onebtc.sdk/lib/dashboard-api/interfaces';
+import { IIssue, IRedeem } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { Table } from '../../../components/Table';
 import { getRequesterRedeemStore } from '../utils';
 import { useStores } from '../../../stores';

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { getAddress } from '@harmony-js/crypto';
 import { DashboardIssueTableColumns } from '../../DashboardIssues/components/DashboardIssueTableColumns';
-import { IIssue } from '../../../../../onebtc.sdk/lib/dashboard-api/interfaces';
+import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { Table } from '../../../components/Table';
 import { getRequesterIssuesStore } from '../utils';
 import { useStores } from '../../../stores';
