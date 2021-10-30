@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { IRedeem } from '../../../../modules/btcRelay/btcRelayTypes';
+import { IRedeem } from '../../../../modules/dashboard/dashboardTypes';
 import { Table } from '../../../../components/Table';
 import { useStores } from '../../../../stores';
 import { getVaultRedeemStore } from './VaultRedeemTableStore';

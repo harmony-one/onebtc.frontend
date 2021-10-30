@@ -1,7 +1,7 @@
 import React from 'react';
 import { useStores } from '../../../stores';
 import { Box } from 'grommet';
-import { getVaultInfo } from '../../../modules/btcRelay/vaultHelpers';
+import { getVaultInfo } from '../../../modules/dashboard/vaultHelpers';
 import { Divider, Text } from '../../../components/Base';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
 import { LinkHarmony } from '../../../components/LinkHarmony';

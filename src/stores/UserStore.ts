@@ -231,7 +231,7 @@ export class UserStoreEx extends StoreConstructor {
   public loadOneBTCBalance = async () => {
     const hmyClient = await getOneBTCClient(this.sessionType);
 
-    this.oneBTCBalance = await hmyClient.methods.balanceOf(this.address);
+    this.oneBTCBalance = await hmyClient.balanceOf(this.address);
   };
 
   @action signInOneWallet = async () => {

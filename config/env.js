@@ -68,6 +68,7 @@ function getClientEnvironment(publicUrl) {
         HMY_CHAIN_ID: process.env.HMY_CHAIN_ID,
         GAS_LIMIT: process.env.GAS_LIMIT,
         GAS_PRICE: process.env.GAS_PRICE,
+        ONE_BTC_CONTRACT_ADDRESS: process.env.ONE_BTC_CONTRACT_ADDRESS,
 
         BACKEND_URL: process.env.BACKEND_URL,
       },

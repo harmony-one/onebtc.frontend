@@ -1,12 +1,12 @@
 import { ListStoreConstructor } from '../../stores/core/ListStoreConstructor';
 import { IStores } from '../../stores';
-import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
-import { IVault } from '../../modules/btcRelay/btcRelayTypes';
+import { dashboardClient } from '../../modules/dashboard/dashboardClient';
+import { IVault } from '../../modules/dashboard/dashboardTypes';
 
 export class VaultsListStore extends ListStoreConstructor<IVault> {
   constructor(stores: IStores) {
     const loadVaultList = params => {
-      return btcRelayClient.loadVaultList({
+      return dashboardClient.loadVaultList({
         size: params.size,
         page: params.page,
       });

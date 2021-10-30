@@ -13,7 +13,7 @@ import utils from 'web3-utils';
 import {
   calcNewVaultCollateral,
   getVaultInfo,
-} from '../../../../modules/btcRelay/vaultHelpers';
+} from '../../../../modules/dashboard/vaultHelpers';
 import { InputButton } from '../../../../components/Base/components/Inputs/InputButton';
 
 interface Props {

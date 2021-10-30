@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useStores } from '../../../stores';
 import { Table } from '../../../components/Table';
 import { observer } from 'mobx-react';
-import { IRedeem } from '../../../modules/btcRelay/btcRelayTypes';
+import { IRedeem } from '../../../modules/dashboard/dashboardTypes';
 import { useParams } from 'react-router';
 import { DashboardRedeemsTableColumns } from './DashboardRedeemsTableColumns';
 

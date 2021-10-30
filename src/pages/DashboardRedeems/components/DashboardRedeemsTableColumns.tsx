@@ -1,11 +1,14 @@
 import React from 'react';
 import { IColumn } from '../../../components/Table';
-import { IRedeem } from '../../../modules/btcRelay/btcRelayTypes';
+import { IRedeem } from '../../../modules/dashboard/dashboardTypes';
 import cn from 'classnames';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 import LinkBitcoin from '../../../components/LinkBitcoin';
-import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
+import {
+  satoshiToBitcoin,
+  btcAddressHexToBech32,
+} from '../../../services/bitcoin';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import { dateTimeAgoFormat } from '../../../utils';
 
@@ -32,7 +35,7 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
       return (
         <div onClick={e => e.stopPropagation()}>
           <LinkBitcoin
-            hash={walletHexToBech32(value.btcAddress)}
+            hash={btcAddressHexToBech32(value.btcAddress)}
             type="wallet"
           />
         </div>

@@ -7,8 +7,8 @@ import { IssueConfirmModal } from './components/IssueConfirmModal';
 import { guid } from '../../utils';
 import { UITransaction } from '../../modules/uiTransaction/UITransactionsStore';
 import { bitcoinToSatoshi } from '../../services/bitcoin';
-import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
-import { IIssue, IVault } from '../../modules/btcRelay/btcRelayTypes';
+import { dashboardClient } from '../../modules/dashboard/dashboardClient';
+import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 
 export interface ITransaction {
   amount: string;
@@ -60,11 +60,10 @@ export class IssuePageStore extends StoreConstructor {
       const address = this.stores.user.address;
 
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
-      hmyClient.setUseMathWallet(true);
 
       console.log('### run execute issuePageStore');
 
-      const result = await hmyClient.methods.executeIssue(
+      const result = await hmyClient.executeIssue(
         address,
         issueInfo.issueId,
         btcTransactionHash,
@@ -73,6 +72,9 @@ export class IssuePageStore extends StoreConstructor {
           issueUiTx.setStatusProgress();
         },
       );
+
+      console.log('### result', result);
+
       console.log('### execute issuePageStore success');
 
       issueUiTx.setStatusSuccess();
@@ -152,7 +154,7 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   public async loadVaults() {
-    const response = await btcRelayClient.loadVaultList({ size: 10, page: 0 });
+    const response = await dashboardClient.loadVaultList({ size: 10, page: 0 });
     this.vaultList = response.content;
   }
 
@@ -183,7 +185,6 @@ export class IssuePageStore extends StoreConstructor {
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       const vaultId = this.form.vaultId;
-      hmyClient.setUseOneWallet(true);
 
       console.log('### this.form.amount', this.form.amount);
       const issueAmount = bitcoinToSatoshi(this.form.amount);
@@ -194,7 +195,7 @@ export class IssuePageStore extends StoreConstructor {
 
       console.log('### issueAmount', issueAmount);
 
-      const issueRequest = await hmyClient.methods.requestIssue(
+      const issueRequest = await hmyClient.requestIssue(
         issueAmount,
         vaultId,
         txHash => {
@@ -206,15 +207,7 @@ export class IssuePageStore extends StoreConstructor {
       console.log('### GetIssueDetails');
       issueUiTx.setStatusProgress();
 
-      const issueEvent = await hmyClient.methods.getIssueDetails(
-        issueRequest.transactionHash,
-      );
-
-      if (!issueEvent) {
-        throw new Error("Can't found issue details");
-      }
-
-      const issue = await btcRelayClient.loadIssue(issueEvent.issue_id);
+      const issue = await dashboardClient.loadIssue(issueRequest.issue_id);
 
       issueUiTx.setIssueId(issue.id);
 

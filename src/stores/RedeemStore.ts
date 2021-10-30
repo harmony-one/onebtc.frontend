@@ -1,8 +1,8 @@
 import { action, get } from 'mobx';
-import { btcRelayClient } from '../modules/btcRelay/btcRelayClient';
+import { dashboardClient } from '../modules/dashboard/dashboardClient';
 import { IRedeem } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
-import { satoshiToBitcoin, walletHexToBech32 } from '../services/bitcoin';
+import { satoshiToBitcoin, btcAddressHexToBech32 } from '../services/bitcoin';
 import { config } from '../config';
 import { RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
@@ -10,7 +10,7 @@ export class RedeemStore extends EntityStore<IRedeem> {
   @action.bound
   public async loadRedeem(redeemId: string) {
     try {
-      const issue = await btcRelayClient.loadRedeem(redeemId);
+      const issue = await dashboardClient.loadRedeem(redeemId);
 
       if (!issue) {
         return null;
@@ -44,7 +44,7 @@ export class RedeemStore extends EntityStore<IRedeem> {
       sendUsdAmount: sendAmount * this.stores.user.btcRate,
       redeemId: redeem.id,
       vaultId: redeem.vault,
-      bitcoinAddress: walletHexToBech32(redeem.btcAddress),
+      bitcoinAddress: btcAddressHexToBech32(redeem.btcAddress),
       bridgeFee: satoshiToBitcoin(redeem.fee),
       totalReceived: totalReceived,
       totalReceivedUsd: totalReceived * this.stores.user.btcRate,

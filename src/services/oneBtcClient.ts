@@ -1,7 +1,14 @@
 import * as onebtcSdk from 'onebtc.sdk';
 import { config } from '../config';
+import { OneBTCClientWeb3 } from '../../../onebtc.sdk/lib/blockchain/hmy/OneBTCClientWeb3';
+import { OneBTCClientHmy } from '../../../onebtc.sdk/lib/blockchain/hmy/OneBTCClientHmy';
 
-let clients: Record<'onewallet' | 'metamask', onebtcSdk.IHmyClient> = {
+interface Clients {
+  metamask: OneBTCClientWeb3 | null;
+  onewallet: OneBTCClientHmy | null;
+}
+
+let clients: Clients = {
   metamask: null,
   onewallet: null,
 };
@@ -11,26 +18,26 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
     return clients[wallet];
   }
 
-  // new 0xBffa908aC951eD4fa224bd28f1291280E4220825
-  // old 0x45b24bE9F317054B4D5972E9d685f6e403772f6b
+  console.log('### config.', config.oneBtcContract.testnet);
+
   if (wallet === 'metamask') {
-    clients[wallet] = await onebtcSdk.getHmyClient({
-      sdk: 'web3',
-      nodeURL: 'https://api.s0.b.hmny.io',
+    clients[wallet] = await onebtcSdk.createClientWeb3({
+      useMetamask: true,
+      nodeURL: config.harmony.nodeUrl,
       btcNodeUrl: config.bitcoin.btcNodeUrl.testnet,
-      chainId: 2,
       contractAddress: config.oneBtcContract.testnet,
+      chainId: 2,
       gasLimit: 6721900,
     });
   }
 
   if (wallet === 'onewallet') {
-    clients[wallet] = await onebtcSdk.getHmyClient({
-      sdk: 'harmony',
-      nodeURL: 'https://api.s0.b.hmny.io',
-      chainId: 2,
+    clients[wallet] = await onebtcSdk.createClientHmy({
+      useOneWallet: true,
+      nodeURL: config.harmony.nodeUrl,
       btcNodeUrl: config.bitcoin.btcNodeUrl.testnet,
       contractAddress: config.oneBtcContract.testnet,
+      chainId: 2,
       gasLimit: 6721900,
     });
   }

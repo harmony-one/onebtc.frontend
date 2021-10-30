@@ -1,7 +1,7 @@
 import stores from '../../../../stores';
 import { ListStoreConstructor } from '../../../../stores/core/ListStoreConstructor';
-import { IRedeem } from '../../../../modules/btcRelay/btcRelayTypes';
-import { btcRelayClient } from '../../../../modules/btcRelay/btcRelayClient';
+import { IRedeem } from '../../../../modules/dashboard/dashboardTypes';
+import { dashboardClient } from '../../../../modules/dashboard/dashboardClient';
 
 const cache: Record<string, ListStoreConstructor<IRedeem>> = {};
 
@@ -11,7 +11,7 @@ export const getVaultRedeemStore = vaultId => {
   }
 
   const loadFn = params => {
-    return btcRelayClient.loadRedeemList({
+    return dashboardClient.loadRedeemList({
       vault: vaultId,
       ...params,
     });

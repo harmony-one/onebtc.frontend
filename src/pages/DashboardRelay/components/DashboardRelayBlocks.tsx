@@ -6,7 +6,7 @@ import { IColumn, Table } from '../../../components/Table';
 import LinkBitcoin from '../../../components/LinkBitcoin';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
-import { IEvent } from '../../../modules/btcRelay/btcRelayTypes';
+import { IEvent } from '../../../modules/dashboard/dashboardTypes';
 
 type Props = {};
 
