@@ -13,6 +13,4 @@ export interface BTCTx {
   outputs: { value: number; script: string; address: string }[];
 }
 
-export const btcNodeClient = new BTCNodeClient(
-  config.bitcoin.btcNodeUrl.testnet,
-);
+export const btcNodeClient = new BTCNodeClient(config.bitcoin.btcNodeUrl);

@@ -5,7 +5,6 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { getHmyBalance } from '../services/hmyClient';
 import { StoreConstructor } from './core/StoreConstructor';
 import * as agent from 'superagent';
-import { IOperation } from './interfaces';
 import { getOneBTCClient } from '../services/oneBtcClient';
 
 const Web3 = require('web3');
@@ -198,6 +197,8 @@ export class UserStoreEx extends StoreConstructor {
 
           this.isAuthorized = true;
           // this.metamaskNetwork = await web3.eth.net.getNetworkType()
+
+          await this.stores.configStore.loadConfig();
 
           this.oneBtcClient = await getOneBTCClient(this.sessionType);
         })

@@ -11,9 +11,9 @@ interface Props {
 }
 
 const typeMap = {
-  wallet: config.bitcoin.explorer.testnet.wallet,
-  tx: config.bitcoin.explorer.testnet.transaction,
-  block: config.bitcoin.explorer.testnet.block,
+  wallet: config.bitcoin.explorer.wallet,
+  tx: config.bitcoin.explorer.transaction,
+  block: config.bitcoin.explorer.block,
 };
 
 const LinkBitcoin: React.FC<Props> = ({

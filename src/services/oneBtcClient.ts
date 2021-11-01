@@ -18,14 +18,12 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
     return clients[wallet];
   }
 
-  console.log('### config.', config.oneBtcContract.testnet);
-
   if (wallet === 'metamask') {
     clients[wallet] = await onebtcSdk.createClientWeb3({
       useMetamask: true,
       nodeURL: config.harmony.nodeUrl,
-      btcNodeUrl: config.bitcoin.btcNodeUrl.testnet,
-      contractAddress: config.oneBtcContract.testnet,
+      btcNodeUrl: config.bitcoin.btcNodeUrl,
+      contractAddress: config.harmony.oneBtcContract,
       chainId: 2,
       gasLimit: 6721900,
     });
@@ -35,8 +33,8 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
     clients[wallet] = await onebtcSdk.createClientHmy({
       useOneWallet: true,
       nodeURL: config.harmony.nodeUrl,
-      btcNodeUrl: config.bitcoin.btcNodeUrl.testnet,
-      contractAddress: config.oneBtcContract.testnet,
+      btcNodeUrl: config.bitcoin.btcNodeUrl,
+      contractAddress: config.harmony.oneBtcContract,
       chainId: 2,
       gasLimit: 6721900,
     });

@@ -11,6 +11,7 @@ import { RedeemDetailsModal } from './components/RedeemDetailsModal/RedeemDetail
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IRedeem, IVault } from '../../modules/dashboard/dashboardTypes';
+import { retry } from '../../utils';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -49,6 +50,10 @@ export class RedeemPageStore extends StoreConstructor {
   public async loadVaults() {
     const response = await dashboardClient.loadVaultList({ size: 10, page: 0 });
     this.vaultList = response.content;
+  }
+
+  public getVaultList() {
+    return this.vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
   }
 
   @action.bound
@@ -185,8 +190,9 @@ export class RedeemPageStore extends StoreConstructor {
 
       console.log('### redeemRequest', redeemRequest);
 
-      const redeem = await this.stores.redeemStore.loadRedeem(
-        redeemRequest.redeem_id,
+      const redeem = await retry(
+        () => this.stores.redeemStore.loadRedeem(redeemRequest.redeem_id),
+        result => !!result,
       );
 
       this.stores.routing.gotToRedeemModal(redeem.id, 'withdraw');

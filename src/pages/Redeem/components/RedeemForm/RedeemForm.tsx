@@ -10,12 +10,17 @@ import {
   Select,
   MobxForm,
 } from 'components/Form';
-import { lessThanSat, moreThanZero } from '../../../../utils';
+import {
+  formatWithSixDecimals,
+  lessThanSat,
+  moreThanZero,
+} from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
 import { getVaultInfo } from '../../../../modules/dashboard/vaultHelpers';
+import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -24,15 +29,20 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   const [form, setForm] = useState<MobxForm>();
 
   const vaultOptions = useMemo(() => {
-    return redeemPageStore.vaultList.map(vault => {
+    return redeemPageStore.getVaultList().map(vault => {
       const name = cutText(vault.id);
       const vaultInfo = getVaultInfo(vault);
       const maxRedeemAmount = vaultInfo.availableToRedeem - btcNodeStore.fee;
       return {
         text: (
-          <Text>
-            {name}: <Text bold>{satoshiToBitcoin(maxRedeemAmount)}</Text> BTC
-          </Text>
+          <Box direction="row" gap="xxsmall" align="center">
+            <VaultStatusDot isActive={vaultInfo.isActive} />
+            <Text>{name}: </Text>
+            <Text bold>
+              {formatWithSixDecimals(satoshiToBitcoin(maxRedeemAmount))}
+            </Text>
+            <Text> OneBTC</Text>
+          </Box>
         ),
         value: vault.id,
       };

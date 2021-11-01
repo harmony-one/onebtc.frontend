@@ -12,8 +12,8 @@ interface Props {
 }
 
 const typeMap = {
-  address: config.harmony.explorer.testnet.address,
-  tx: config.harmony.explorer.testnet.transaction,
+  address: config.harmony.explorer.address,
+  tx: config.harmony.explorer.transaction,
 };
 
 export const LinkHarmony: React.FC<Props> = ({

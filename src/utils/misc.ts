@@ -2,6 +2,26 @@ export const sleep = (ms: number) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
+export const retry = async <T>(
+  fn: () => Promise<T>,
+  test,
+  count = 3,
+  timeout = 5000,
+): Promise<T> => {
+  const r = await fn();
+
+  if (test(r)) {
+    return r;
+  }
+
+  if (count > 0) {
+    await sleep(timeout);
+    return retry<T>(fn, test, count - 1);
+  }
+
+  return r;
+};
+
 export function downloadFile(
   anchorRef: HTMLAnchorElement,
   url: string,
