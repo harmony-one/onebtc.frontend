@@ -4,7 +4,7 @@ import { getOneBTCClient } from 'services/oneBtcClient';
 import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
 import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsModal';
 import { IssueConfirmModal } from './components/IssueConfirmModal';
-import { guid, retry, sleep } from '../../utils';
+import { guid, retry } from '../../utils';
 import { UITransaction } from '../../modules/uiTransaction/UITransactionsStore';
 import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
@@ -95,9 +95,9 @@ export class IssuePageStore extends StoreConstructor {
         },
       });
       this.status = 'success';
-      console.log('### execute issuePageStore finished');
+      console.log('### execute redeem finished');
     } catch (err) {
-      console.log('### err mock execute issuePageStore error', err);
+      console.log('### err execute redeem error', err);
       this.status = 'error';
       issueUiTx.setStatusFail();
     }

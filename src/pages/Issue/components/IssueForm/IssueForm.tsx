@@ -13,14 +13,13 @@ import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
-import { getVaultInfo } from '../../../../modules/dashboard/vaultHelpers';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
 import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const IssueForm: React.FC<Props> = observer(() => {
-  const { issuePageStore, user } = useStores();
+  const { issuePageStore, user, vaultStore } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
   const handleSubmit = useCallback(() => {
@@ -32,7 +31,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
   const vaultOptions = useMemo(() => {
     return issuePageStore.getVaultList().map(vault => {
       const name = cutText(vault.id);
-      const vaultInfo = getVaultInfo(vault);
+      const vaultInfo = vaultStore.getVaultInfo(vault);
       return {
         text: (
           <Box direction="row" gap="xxsmall" align="center">
@@ -49,7 +48,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         value: vault.id,
       };
     });
-  }, [issuePageStore.vaultList]);
+  }, [issuePageStore, vaultStore]);
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>

@@ -30,7 +30,7 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
       <PageContainer>
         <Box gap="small" pad={{ horizontal: 'xlarge' }}>
           <Box>
-            <Title align="center">Issue requests</Title>
+            <Title align="center">My Issue requests</Title>
           </Box>
           <Box>
             <Divider colorful fullwidth />
@@ -39,7 +39,7 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
             <TransactionListIssuesTable />
           </Box>
           <Box>
-            <Title align="center">Redeem requests</Title>
+            <Title align="center">My Redeem requests</Title>
           </Box>
           <Box>
             <Divider colorful fullwidth />
