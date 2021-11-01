@@ -9,7 +9,7 @@ export const config = {
       testnet: 'https://btc2.test.hmny.io',
       // mainnet: 'https://btc.main.hmny.io/',
     },
-    relayerHost: {
+    dashboardHost: {
       testnet: 'https://dashboard.btc.test.hmny.io',
     },
     explorer: {
@@ -21,6 +21,7 @@ export const config = {
     },
   },
   harmony: {
+    nodeUrl: process.env.HMY_NODE_URL,
     explorer: {
       testnet: {
         transaction: 'https://explorer.pops.one/tx/',
@@ -29,7 +30,7 @@ export const config = {
     },
   },
   oneBtcContract: {
-    testnet: '0x7172bF330D568132999c4B0ccd37a7B39AB0e722',
+    testnet: process.env.ONE_BTC_CONTRACT_ADDRESS,
   },
   wallets: {
     metamask: true,
