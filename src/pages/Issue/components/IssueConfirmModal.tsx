@@ -13,7 +13,7 @@ export const IssueConfirmModalContent: React.FC<{
     <Box direction="column" justify="center" gap="small">
       <Box align="center">
         <Text>You have received:</Text>
-        <Text bold>{total} OneBTC</Text>
+        <Text bold>{total} 1BTC</Text>
       </Box>
       <Box align="center">
         <Box>

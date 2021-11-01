@@ -27,7 +27,7 @@ export const TransferForm: React.FC<Props> = () => {
   return useObserver(() => (
     <Form ref={ref => setForm(ref)} data={transferPageStore.form}>
       <NumberInput
-        label="OneBTC Amount"
+        label="1BTC Amount"
         name="oneBTCAmount"
         type="decimal"
         precision="8"
@@ -36,7 +36,7 @@ export const TransferForm: React.FC<Props> = () => {
         renderRight={
           <Box direction="row" gap="xxsmall">
             <DividerVertical />
-            <Text bold>oneBTC</Text>
+            <Text bold>1BTC</Text>
           </Box>
         }
         style={{ width: '100%' }}

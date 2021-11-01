@@ -57,7 +57,7 @@ export const IssueDetailsModalConfirmation: React.FC<Props> = ({ issueId }) => {
         <Box>
           <Text>
             Your BTC transaction successfully confirmed. Please Execute issue to
-            receive your oneBTC on Harmony side.
+            receive your 1BTC on Harmony side.
           </Text>
         </Box>
       )}
