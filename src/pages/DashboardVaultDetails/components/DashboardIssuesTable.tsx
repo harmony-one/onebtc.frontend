@@ -7,9 +7,12 @@ import { IColumn, Table } from '../../../components/Table';
 import { useStores } from '../../../stores';
 import LinkBitcoin from '../../../components/LinkBitcoin';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
-import { satoshiToBitcoin, walletHexToBech32 } from '../../../services/bitcoin';
+import {
+  satoshiToBitcoin,
+  btcAddressHexToBech32,
+} from '../../../services/bitcoin';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
-import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
+import { IIssue } from '../../../modules/dashboard/dashboardTypes';
 import { dateFormat } from '../../../utils';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 
@@ -87,7 +90,7 @@ export const DashboardIssuesTable: React.FC<Props> = observer(() => {
         return (
           <div onClick={e => e.stopPropagation()}>
             <LinkBitcoin
-              hash={walletHexToBech32(value.btcAddress)}
+              hash={btcAddressHexToBech32(value.btcAddress)}
               type="wallet"
             />
           </div>

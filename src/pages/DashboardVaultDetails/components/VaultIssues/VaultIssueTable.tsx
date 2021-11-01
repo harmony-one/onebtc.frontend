@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';
-import { IIssue } from '../../../../modules/btcRelay/btcRelayTypes';
+import { IIssue } from '../../../../modules/dashboard/dashboardTypes';
 import { Table } from '../../../../components/Table';
 import { useStores } from '../../../../stores';
 import { getVaultIssuesStore } from './VaultIssueTableStore';

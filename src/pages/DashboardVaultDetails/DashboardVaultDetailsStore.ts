@@ -42,13 +42,12 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
     try {
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
-      hmyClient.setUseMathWallet(true);
 
       uiTx.setStatusWaitingSignIn();
 
       const amount = Number(this.formIncrease.oneAmount) * 1e18;
 
-      const result = await hmyClient.methods.lockAdditionalCollateral(
+      const result = await hmyClient.lockAdditionalCollateral(
         amount,
         txHash => {
           uiTx.setTxHash(txHash);
@@ -90,19 +89,15 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
     try {
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
-      hmyClient.setUseMathWallet(true);
 
       uiTx.setStatusWaitingSignIn();
 
       const amount = Number(this.formWithdraw.oneAmount) * 1e18;
 
-      const result = await hmyClient.methods.withdrawCollateral(
-        amount,
-        txHash => {
-          uiTx.setTxHash(txHash);
-          uiTx.setStatusProgress();
-        },
-      );
+      const result = await hmyClient.withdrawCollateral(amount, txHash => {
+        uiTx.setTxHash(txHash);
+        uiTx.setStatusProgress();
+      });
 
       this.stores.actionModals.open(IncreaseCollateralConfirmModal, {
         initData: {

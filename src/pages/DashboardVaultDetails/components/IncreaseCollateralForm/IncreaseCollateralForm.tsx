@@ -13,7 +13,7 @@ import { useStores } from '../../../../stores';
 import {
   calcNewVaultCollateral,
   getVaultInfo,
-} from '../../../../modules/btcRelay/vaultHelpers';
+} from '../../../../modules/dashboard/vaultHelpers';
 import utils from 'web3-utils';
 import { InputButton } from '../../../../components/Base/components/Inputs/InputButton';
 

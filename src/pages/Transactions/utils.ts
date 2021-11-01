@@ -1,13 +1,13 @@
-import { IIssue, IRedeem } from '../../modules/btcRelay/btcRelayTypes';
+import { IIssue, IRedeem } from '../../modules/dashboard/dashboardTypes';
 import { ListStoreConstructor } from '../../stores/core/ListStoreConstructor';
-import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
+import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import stores from '../../stores';
 
 export const getRequesterIssuesStore = (
   requesterId: string,
 ): ListStoreConstructor<IIssue> => {
   const loadFn = params => {
-    return btcRelayClient.loadIssueList({
+    return dashboardClient.loadIssueList({
       requester: requesterId,
       ...params,
     });
@@ -22,7 +22,7 @@ export const getRequesterRedeemStore = (
   requesterId: string,
 ): ListStoreConstructor<IRedeem> => {
   const loadFn = params => {
-    return btcRelayClient.loadRedeemList({
+    return dashboardClient.loadRedeemList({
       requester: requesterId,
       ...params,
     });

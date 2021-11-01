@@ -1,4 +1,4 @@
-import { IVault } from './btcRelayTypes';
+import { IVault } from './dashboardTypes';
 import { ONE_MINUTE } from '../../constants/date';
 import utils from 'web3-utils';
 import { satoshiToBitcoin } from '../../services/bitcoin';

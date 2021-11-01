@@ -1,8 +1,8 @@
 import { action, get } from 'mobx';
-import { btcRelayClient } from '../modules/btcRelay/btcRelayClient';
+import { dashboardClient } from '../modules/dashboard/dashboardClient';
 import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
-import { satoshiToBitcoin, walletHexToBech32 } from '../services/bitcoin';
+import { satoshiToBitcoin, btcAddressHexToBech32 } from '../services/bitcoin';
 import { toBN } from 'web3-utils';
 import { IssueStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 import { config } from '../config';
@@ -11,7 +11,7 @@ export class IssueStore extends EntityStore<IIssue> {
   @action.bound
   public async loadIssue(issueId: string) {
     try {
-      const issue = await btcRelayClient.loadIssue(issueId);
+      const issue = await dashboardClient.loadIssue(issueId);
 
       if (!issue) {
         return null;
@@ -55,7 +55,7 @@ export class IssueStore extends EntityStore<IIssue> {
       issueId: issue.id,
       vaultId: issue.vault,
       requester: issue.requester,
-      bitcoinAddress: walletHexToBech32(issue.btcAddress),
+      bitcoinAddress: btcAddressHexToBech32(issue.btcAddress),
       sendAmount,
       sendUsdAmount,
       bridgeFee,

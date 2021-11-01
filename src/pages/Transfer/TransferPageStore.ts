@@ -57,12 +57,10 @@ export class TransferPageStore extends StoreConstructor {
     try {
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
-      // const vaultId = this.form.vaultId;
-      hmyClient.setUseOneWallet(true);
       const issueAmount = bitcoinToSatoshi(this.form.oneBTCAmount);
       console.log('### issueAmount', issueAmount);
 
-      const result = await hmyClient.methods.transfer(
+      const result = await hmyClient.transfer(
         this.form.oneAddress,
         issueAmount,
         txHash => {

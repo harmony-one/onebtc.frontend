@@ -1,6 +1,6 @@
 import stores from '../../../../stores';
 import { ListStoreConstructor } from '../../../../stores/core/ListStoreConstructor';
-import { btcRelayClient } from '../../../../modules/btcRelay/btcRelayClient';
+import { dashboardClient } from '../../../../modules/dashboard/dashboardClient';
 
 interface IVaultInfo {
   address: string;
@@ -14,7 +14,7 @@ export const getVaultBalancesStore = vaultId => {
   }
 
   const loadFn = () => {
-    return btcRelayClient.loadVaultBalances(vaultId);
+    return dashboardClient.loadVaultBalances(vaultId);
   };
 
   const vaultBalancesStore = new ListStoreConstructor<IVaultInfo>(

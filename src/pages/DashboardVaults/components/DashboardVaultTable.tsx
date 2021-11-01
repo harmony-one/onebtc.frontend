@@ -6,10 +6,10 @@ import { observer } from 'mobx-react';
 import cn from 'classnames';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
-import { IVault } from '../../../modules/btcRelay/btcRelayTypes';
+import { IVault } from '../../../modules/dashboard/dashboardTypes';
 import { formatWithTwoDecimals } from '../../../utils';
 import { Box } from 'grommet';
-import { getVaultInfo } from '../../../modules/btcRelay/vaultHelpers';
+import { getVaultInfo } from '../../../modules/dashboard/vaultHelpers';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
 

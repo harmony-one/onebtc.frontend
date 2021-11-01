@@ -13,7 +13,7 @@ import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
-import { getVaultInfo } from '../../../../modules/btcRelay/vaultHelpers';
+import { getVaultInfo } from '../../../../modules/dashboard/vaultHelpers';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
 import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 

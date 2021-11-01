@@ -13,7 +13,7 @@ import { routes } from './constants/routes';
 import { WatcherBalance } from './components/WatcherBalance';
 import { DashboardPage } from './pages/Dashboard/DashboardPage';
 import { DashboardRelayPage } from './pages/DashboardRelay/DashboardRelayPage';
-import { WatcherBtcRelay } from './modules/btcRelay/WatcherBtcRelay';
+import { WatcherDashboard } from './modules/dashboard/WatcherDashboard';
 import { WatcherBTCNode } from './modules/btcNode/WatcherBTCNode';
 import { DashboardIssuesPage } from './pages/DashboardIssues/DashboardIssuesPage';
 import { DashboardRedeemsPage } from './pages/DashboardRedeems/DashboardRedeemsPage';
@@ -60,7 +60,7 @@ const App: React.FC = () => (
         <Redirect to={routes.issue} />
       </Switch>
       <WatcherBalance />
-      <WatcherBtcRelay />
+      <WatcherDashboard />
       <WatcherBTCNode />
       <ActionModals />
       <GlobalStyle theme={...baseTheme as any} />

@@ -4,13 +4,13 @@ import { getOneBTCClient } from 'services/oneBtcClient';
 import {
   bitcoinToSatoshi,
   satoshiToBitcoin,
-  walletBech32ToHex,
+  btcAddressBech32ToHex,
 } from '../../services/bitcoin';
 import { RedeemWithdrawModal } from './components/RedeemWithdrawModal/RedeemWithdrawModal';
 import { RedeemDetailsModal } from './components/RedeemDetailsModal/RedeemDetailsModal';
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';
-import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
-import { IRedeem, IVault } from '../../modules/btcRelay/btcRelayTypes';
+import { dashboardClient } from '../../modules/dashboard/dashboardClient';
+import { IRedeem, IVault } from '../../modules/dashboard/dashboardTypes';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -47,7 +47,7 @@ export class RedeemPageStore extends StoreConstructor {
 
   @action.bound
   public async loadVaults() {
-    const response = await btcRelayClient.loadVaultList({ size: 10, page: 0 });
+    const response = await dashboardClient.loadVaultList({ size: 10, page: 0 });
     this.vaultList = response.content;
   }
 
@@ -64,16 +64,14 @@ export class RedeemPageStore extends StoreConstructor {
       const address = this.stores.user.address;
 
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
-      hmyClient.setUseMathWallet(true);
 
       console.log('### run execute issuePageStore');
 
       redeemUiTx.setStatusWaitingSignIn();
 
-      const result = await hmyClient.methods.executeRedeem(
+      const result = await hmyClient.executeRedeem(
         address,
-        // @ts-ignore
-        redeem.redeemEvent.redeem_id,
+        redeem.redeemId,
         btcTxHash,
         txHash => {
           redeemUiTx.setTxHash(txHash);
@@ -168,15 +166,14 @@ export class RedeemPageStore extends StoreConstructor {
     try {
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
-      hmyClient.setUseOneWallet(true);
       const redeemAmount = bitcoinToSatoshi(this.form.oneBTCAmount);
       console.log('### redeemAmount', redeemAmount);
       const btcAddress = this.form.bitcoinAddress;
       const vaultId = this.form.vaultId;
 
-      const _btcAddress = walletBech32ToHex(btcAddress);
+      const _btcAddress = btcAddressBech32ToHex(btcAddress);
 
-      const redeemRequest = await hmyClient.methods.requestRedeem(
+      const redeemRequest = await hmyClient.requestRedeem(
         redeemAmount,
         _btcAddress,
         vaultId,
@@ -187,16 +184,9 @@ export class RedeemPageStore extends StoreConstructor {
       );
 
       console.log('### redeemRequest', redeemRequest);
-      const redeemEvent = await hmyClient.methods.getRedeemDetails(
-        redeemRequest.transactionHash,
-      );
-
-      if (!redeemEvent) {
-        throw new Error('Not found redeem details');
-      }
 
       const redeem = await this.stores.redeemStore.loadRedeem(
-        redeemEvent.redeem_id,
+        redeemRequest.redeem_id,
       );
 
       this.stores.routing.gotToRedeemModal(redeem.id, 'withdraw');

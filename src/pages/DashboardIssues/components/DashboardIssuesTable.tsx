@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { observer } from 'mobx-react';
 import { Table } from '../../../components/Table';
 import { useStores } from '../../../stores';
-import { IIssue } from '../../../modules/btcRelay/btcRelayTypes';
+import { IIssue } from '../../../modules/dashboard/dashboardTypes';
 import { DashboardIssueTableColumns } from './DashboardIssueTableColumns';
 
 type Props = {};

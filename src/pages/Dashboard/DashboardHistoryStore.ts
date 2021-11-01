@@ -1,5 +1,5 @@
 import { action, computed, observable } from 'mobx';
-import { btcRelayClient } from '../../modules/btcRelay/btcRelayClient';
+import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import {
   IHistoryIssueItem,
   IHistoryVaultItem,
@@ -26,17 +26,17 @@ class DashboardPageStore {
 
   @action.bound
   async loadVaultData() {
-    this._vaultHistory = await btcRelayClient.loadHistoryVault();
+    this._vaultHistory = await dashboardClient.loadHistoryVault();
   }
 
   @action.bound
   async loadIssuesData() {
-    this._issueHistory = await btcRelayClient.loadHistoryIssue();
+    this._issueHistory = await dashboardClient.loadHistoryIssue();
   }
 
   @action.bound
   async loadRedeemsData() {
-    this._redeemHistory = await btcRelayClient.loadHistoryRedeem();
+    this._redeemHistory = await dashboardClient.loadHistoryRedeem();
   }
 
   @computed
@@ -109,7 +109,7 @@ class DashboardPageStore {
 
   @computed
   get activeVaultCount() {
-    if (this._vaultHistory) {
+    if (this._vaultHistory && this._vaultHistory.content.length) {
       const len = this._vaultHistory.content.length;
 
       return this._vaultHistory.content[len - 1].activeVaults;
@@ -120,7 +120,7 @@ class DashboardPageStore {
 
   @computed
   get totalCollateral() {
-    if (this._vaultHistory) {
+    if (this._vaultHistory && this._vaultHistory.content.length) {
       const len = this._vaultHistory.content.length;
 
       return this._vaultHistory.content[len - 1].totalCollateral / 1e18;

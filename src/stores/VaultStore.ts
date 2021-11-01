@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { btcRelayClient } from '../modules/btcRelay/btcRelayClient';
+import { dashboardClient } from '../modules/dashboard/dashboardClient';
 import { IVault } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
 
@@ -9,7 +9,7 @@ export class VaultStore extends EntityStore<IVault> {
   @action.bound
   public async loadVault(vaultId: string) {
     try {
-      const vault = await btcRelayClient.loadVault(vaultId);
+      const vault = await dashboardClient.loadVault(vaultId);
 
       if (!vault) {
         return null;
@@ -27,7 +27,7 @@ export class VaultStore extends EntityStore<IVault> {
   }
 
   public async loadBalances(vaultId: string) {
-    const result = await btcRelayClient.loadVaultBalances(vaultId);
+    const result = await dashboardClient.loadVaultBalances(vaultId);
 
     vaultBalancesStore[vaultId] = result.content.reduce((acc, item) => {
       return Number(item.amount) + acc;

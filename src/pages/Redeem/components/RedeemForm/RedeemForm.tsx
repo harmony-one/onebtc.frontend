@@ -15,7 +15,7 @@ import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
-import { getVaultInfo } from '../../../../modules/btcRelay/vaultHelpers';
+import { getVaultInfo } from '../../../../modules/dashboard/vaultHelpers';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
