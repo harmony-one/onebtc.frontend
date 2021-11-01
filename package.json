@@ -34,7 +34,7 @@
     "mobx-react": "6.1.4",
     "mobx-react-router": "4.0.7",
     "moment": "^2.24.0",
-    "onebtc.sdk": "^1.1.6",
+    "onebtc.sdk": "^1.1.7",
     "query-string": "^6.10.1",
     "rc-table": "^7.4.5",
     "rc-tooltip": "^4.2.1",
