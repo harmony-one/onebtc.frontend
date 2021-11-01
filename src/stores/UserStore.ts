@@ -28,6 +28,7 @@ export class UserStoreEx extends StoreConstructor {
 
   @observable public oneRate = 0;
   @observable public btcRate = 0;
+  @observable public oneBtcRate = 0;
 
   @observable public isInfoReading = false;
   @observable public isInfoNewReading = false;
@@ -294,5 +295,11 @@ export class UserStoreEx extends StoreConstructor {
     );
 
     this.btcRate = res.body.lastPrice;
+
+    res = await agent.get(
+      'https://api.binance.com/api/v1/ticker/24hr?symbol=ONEBTC',
+    );
+
+    this.oneBtcRate = res.body.lastPrice;
   }
 }

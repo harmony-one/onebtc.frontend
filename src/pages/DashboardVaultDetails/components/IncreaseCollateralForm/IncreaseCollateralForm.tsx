@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
 import { Divider, Button, DividerVertical } from 'components/Base';
 import { Text } from 'components/Base';
@@ -10,10 +10,6 @@ import {
   moreThanZero,
 } from '../../../../utils';
 import { useStores } from '../../../../stores';
-import {
-  calcNewVaultCollateral,
-  getVaultInfo,
-} from '../../../../modules/dashboard/vaultHelpers';
 import utils from 'web3-utils';
 import { InputButton } from '../../../../components/Base/components/Inputs/InputButton';
 
@@ -41,7 +37,11 @@ export const IncreaseCollateralForm: React.FC<Props> = observer(
     const am = utils.toWei(
       dashboardVaultDetailsStore.formIncrease.oneAmount || '0',
     );
-    const vaultInfo = calcNewVaultCollateral(vault, am.toString(), 1);
+    const vaultInfo = vaultStore.calcNewVaultCollateral(
+      vault,
+      am.toString(),
+      1,
+    );
 
     const handleMaxClick = useCallback(() => {
       dashboardVaultDetailsStore.formIncrease.oneAmount = utils.fromWei(
@@ -89,7 +89,10 @@ export const IncreaseCollateralForm: React.FC<Props> = observer(
               </Box>
               <Box>
                 <Text>
-                  {formatZeroDecimals(getVaultInfo(vault).collateralTotal)}%
+                  {formatZeroDecimals(
+                    vaultStore.getVaultInfo(vault).collateralTotal,
+                  )}
+                  %
                 </Text>
               </Box>
             </Box>

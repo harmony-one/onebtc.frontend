@@ -19,19 +19,18 @@ import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
-import { getVaultInfo } from '../../../../modules/dashboard/vaultHelpers';
 import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const RedeemForm: React.FC<Props> = observer(() => {
-  const { redeemPageStore, user, btcNodeStore } = useStores();
+  const { redeemPageStore, user, btcNodeStore, vaultStore } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
   const vaultOptions = useMemo(() => {
     return redeemPageStore.getVaultList().map(vault => {
       const name = cutText(vault.id);
-      const vaultInfo = getVaultInfo(vault);
+      const vaultInfo = vaultStore.getVaultInfo(vault);
       const maxRedeemAmount = vaultInfo.availableToRedeem - btcNodeStore.fee;
       return {
         text: (
@@ -47,7 +46,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         value: vault.id,
       };
     });
-  }, [btcNodeStore.fee, redeemPageStore.vaultList]);
+  }, [btcNodeStore.fee, redeemPageStore, vaultStore]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { useStores } from '../../../stores';
 import { Box } from 'grommet';
-import { getVaultInfo } from '../../../modules/dashboard/vaultHelpers';
 import { Divider, Text } from '../../../components/Base';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
 import { LinkHarmony } from '../../../components/LinkHarmony';
@@ -18,7 +17,7 @@ export const VaultInfo: React.FC<Props> = React.memo(
     const { vaultStore } = useStores();
 
     const vault = vaultStore.getEntity(vaultId);
-    const vaultInfo = getVaultInfo(vault);
+    const vaultInfo = vaultStore.getVaultInfo(vault);
 
     const balance = vaultBalancesStore[vaultId] || 0;
 
