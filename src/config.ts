@@ -10,7 +10,7 @@ export const config = {
       // mainnet: 'https://btc.main.hmny.io/',
     },
     relayerHost: {
-      testnet: 'https://relayer.btc.test.hmny.io',
+      testnet: 'https://dashboard.btc.test.hmny.io',
     },
     explorer: {
       testnet: {
@@ -29,7 +29,7 @@ export const config = {
     },
   },
   oneBtcContract: {
-    testnet: '0x2a9B7F9013E701AA71fE050eA9686BbB49E0D105',
+    testnet: '0x7172bF330D568132999c4B0ccd37a7B39AB0e722',
   },
   wallets: {
     metamask: true,

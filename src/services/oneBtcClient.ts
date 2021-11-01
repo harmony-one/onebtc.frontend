@@ -16,7 +16,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
   if (wallet === 'metamask') {
     clients[wallet] = await onebtcSdk.getHmyClient({
       sdk: 'web3',
-      nodeURL: 'https://api.s0.b.hmny.io',
+      nodeURL: 'https://api.s0.backup1.b.hmny.io',
       btcNodeUrl: config.bitcoin.btcNodeUrl.testnet,
       chainId: 2,
       contractAddress: config.oneBtcContract.testnet,
@@ -27,7 +27,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
   if (wallet === 'onewallet') {
     clients[wallet] = await onebtcSdk.getHmyClient({
       sdk: 'harmony',
-      nodeURL: 'https://api.s0.b.hmny.io',
+      nodeURL: 'https://api.s0.backup1.b.hmny.io',
       chainId: 2,
       btcNodeUrl: config.bitcoin.btcNodeUrl.testnet,
       contractAddress: config.oneBtcContract.testnet,
