@@ -42,7 +42,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
                 satoshiToBitcoin(vaultInfo.availableAmountSat),
               )}
             </Text>
-            <Text> OneBTC</Text>
+            <Text> 1BTC</Text>
           </Box>
         ),
         value: vault.id,
@@ -125,7 +125,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
           value={issuePageStore.totalReceive}
           rate={user.btcRate}
           boxProps={{ pad: {} }}
-          tokenName="OneBTC"
+          tokenName="1BTC"
         />
       </Box>
 

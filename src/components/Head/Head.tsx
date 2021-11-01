@@ -55,7 +55,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             </Box>
             <Box>
               <Title size="medium" color="BlackTxt" bold>
-                OneBTC by Harmony
+                1BTC by Harmony
               </Title>
             </Box>
           </Box>

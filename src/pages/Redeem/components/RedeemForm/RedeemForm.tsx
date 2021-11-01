@@ -40,7 +40,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
             <Text bold>
               {formatWithSixDecimals(satoshiToBitcoin(maxRedeemAmount))}
             </Text>
-            <Text> OneBTC</Text>
+            <Text> 1BTC</Text>
           </Box>
         ),
         value: vault.id,
@@ -66,7 +66,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         renderRight={
           <Box direction="row" gap="xxsmall">
             <DividerVertical />
-            <Text bold>oneBTC</Text>
+            <Text bold>1BTC</Text>
           </Box>
         }
         style={{ width: '100%' }}

@@ -21,7 +21,7 @@ export const DashboardIssueRedeemCard: React.FC<Props> = observer(() => {
         <Box>
           <Text>Issued</Text>
           <Text bold>
-            {formatWithTwoDecimals(dashboardHistoryStore.issuedTotal)} OneBTC
+            {formatWithTwoDecimals(dashboardHistoryStore.issuedTotal)} 1BTC
           </Text>
           <Text bold>
             {formatWithTwoDecimals(
