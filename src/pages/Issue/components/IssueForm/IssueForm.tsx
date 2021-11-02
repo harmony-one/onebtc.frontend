@@ -29,7 +29,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
   }, [form, issuePageStore]);
 
   const vaultOptions = useMemo(() => {
-    return issuePageStore.getVaultList().map(vault => {
+    return issuePageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
       const vaultInfo = vaultStore.getVaultInfo(vault);
       return {
@@ -48,7 +48,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         value: vault.id,
       };
     });
-  }, [issuePageStore, vaultStore]);
+  }, [issuePageStore.vaultList, vaultStore]);
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>

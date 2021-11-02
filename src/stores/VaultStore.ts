@@ -4,6 +4,7 @@ import { IVault } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
 import { ONE_MINUTE } from '../constants/date';
 import utils from 'web3-utils';
+import BN from 'bn.js';
 
 export const vaultBalancesStore = observable({});
 
@@ -45,8 +46,43 @@ export class VaultStore extends EntityStore<IVault> {
     );
   }
 
+  public calcMaxLoanWei(onwWei: string) {
+    const one = new BN(onwWei);
+    return one.div(new BN(100)).mul(new BN(Math.ceil(100 / COLLATERAL_RATIO)));
+  }
+
+  public calcMaxLoanSat(oneWei: string) {
+    return this.weiToSatoshi(this.calcMaxLoanWei(oneWei));
+  }
+
+  public calcRequiredCollateral(sat: string | BN) {
+    const requiredSat = new BN(sat)
+      .div(new BN(100))
+      .mul(new BN(COLLATERAL_RATIO * 100));
+    return this.satoshiToWei(requiredSat);
+  }
+
+  public weiToSatoshi(wei: string | BN) {
+    if (!this.stores.user.oneBtcRate) {
+      return new BN(0);
+    }
+    const satRate = new BN(this.stores.user.oneBtcRate * 1e8);
+    const oneToSatRate = new BN(utils.toWei('1')).div(satRate);
+    return new BN(wei).div(oneToSatRate);
+  }
+
+  public satoshiToWei(sat: string | BN) {
+    if (!this.stores.user.oneBtcRate) {
+      return new BN(0);
+    }
+    const satRate = new BN(this.stores.user.oneBtcRate * 1e8);
+    const oneToSatRate = new BN(utils.toWei('1')).div(satRate);
+
+    return new BN(sat).mul(oneToSatRate);
+  }
+
   public collateralSatToOne(sat: number) {
-    return sat / this.stores.user.oneBtcRate / COLLATERAL_RATIO;
+    return (sat / 1e8 / this.stores.user.oneBtcRate) * COLLATERAL_RATIO;
   }
 
   public calcNewVaultCollateral(
@@ -66,23 +102,31 @@ export class VaultStore extends EntityStore<IVault> {
 
   public getVaultInfo(vault: IVault) {
     const collateralSat = this.collateralOneToSat(vault.collateral);
+
     const toBeIssuedSat = Number(vault.toBeIssued);
     const toBeRedeemedSat = Number(vault.toBeRedeemed);
     const issuedSat = Number(vault.issued);
+
     const collateralRedeemed = collateralSat / (toBeRedeemedSat / 100);
     const collateralIssued = collateralSat / (toBeIssuedSat / 100);
     const collateralTotal =
       collateralSat / ((issuedSat + toBeIssuedSat + toBeRedeemedSat) / 100);
 
-    const oneAmount = Number(vault.collateral) / 1e18;
-    const maxWithdraw =
-      Math.max(
-        oneAmount -
-          this.collateralSatToOne(issuedSat + toBeIssuedSat + toBeRedeemedSat),
-        0,
-      ) * 1e18;
+    const maxLoanSat = this.calcMaxLoanSat(vault.collateral);
 
-    const availableAmountSat = collateralSat - toBeRedeemedSat - toBeIssuedSat;
+    const currentLoanSat = new BN(issuedSat + toBeIssuedSat + toBeRedeemedSat);
+    const availableSatToIssue = maxLoanSat.sub(currentLoanSat);
+
+    const requiredCollateralWei = this.calcRequiredCollateral(currentLoanSat);
+    const availableWeiToWithdraw = BN.max(
+      new BN(vault.collateral).sub(requiredCollateralWei),
+      new BN(0),
+    );
+
+    const oneAmount = Number(vault.collateral) / 1e18;
+    const maxWithdraw = availableWeiToWithdraw;
+
+    const availableAmountSat = availableSatToIssue;
     const availableToRedeem = issuedSat;
     const isActive =
       vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;

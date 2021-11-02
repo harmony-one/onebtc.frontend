@@ -28,7 +28,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   const [form, setForm] = useState<MobxForm>();
 
   const vaultOptions = useMemo(() => {
-    return redeemPageStore.getVaultList().map(vault => {
+    return redeemPageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
       const vaultInfo = vaultStore.getVaultInfo(vault);
       const maxRedeemAmount = vaultInfo.availableToRedeem - btcNodeStore.fee;
@@ -46,7 +46,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         value: vault.id,
       };
     });
-  }, [btcNodeStore.fee, redeemPageStore, vaultStore]);
+  }, [btcNodeStore.fee, redeemPageStore.vaultList, vaultStore]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
