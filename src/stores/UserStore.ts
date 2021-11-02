@@ -6,6 +6,7 @@ import { getHmyBalance } from '../services/hmyClient';
 import { StoreConstructor } from './core/StoreConstructor';
 import * as agent from 'superagent';
 import { getOneBTCClient } from '../services/oneBtcClient';
+import { ConnectWalletModal } from '../components/Head/components/ConnectWalletModal';
 
 const Web3 = require('web3');
 
@@ -301,5 +302,19 @@ export class UserStoreEx extends StoreConstructor {
     );
 
     this.oneBtcRate = res.body.lastPrice;
+  }
+
+  @action public async openConnectWalletModal() {
+    this.stores.actionModals.open(ConnectWalletModal, {
+      applyText: '',
+      closeText: '',
+      initData: {},
+      onApply: () => {
+        return Promise.resolve();
+      },
+      onClose: () => {
+        return Promise.resolve();
+      },
+    });
   }
 }

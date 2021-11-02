@@ -163,6 +163,10 @@ export class RedeemPageStore extends StoreConstructor {
 
   @action.bound
   public async createRedeem() {
+    if (!this.stores.user.isAuthorized) {
+      this.stores.user.openConnectWalletModal();
+      return;
+    }
     this.status = 'pending';
 
     const redeemUiTx = this.stores.uiTransactionsStore.create();

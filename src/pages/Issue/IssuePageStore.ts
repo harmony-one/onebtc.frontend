@@ -181,6 +181,10 @@ export class IssuePageStore extends StoreConstructor {
 
   @action.bound
   public async createIssue() {
+    if (!this.stores.user.isAuthorized) {
+      this.stores.user.openConnectWalletModal();
+      return;
+    }
     this.status = 'pending';
     const uiTxId = guid();
     const issueUiTx = this.createUiTx(uiTxId);
