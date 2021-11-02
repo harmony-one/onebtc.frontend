@@ -31,7 +31,10 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     return redeemPageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
       const vaultInfo = vaultStore.getVaultInfo(vault);
-      const maxRedeemAmount = vaultInfo.availableToRedeem - btcNodeStore.fee;
+      const maxRedeemAmount = Math.max(
+        vaultInfo.availableToRedeem - btcNodeStore.fee,
+        0,
+      );
       return {
         text: (
           <Box direction="row" gap="xxsmall" align="center">
