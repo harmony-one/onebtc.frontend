@@ -28,6 +28,7 @@ export const NavigateTabs: React.FC<Props> = () => {
       justify="between"
       gap="medium"
       margin={{ bottom: 'large' }}
+      style={{ minWidth: 500 }}
     >
       <LargeTab
         title="Issue"
