@@ -28,6 +28,7 @@ export const NavigateTabs: React.FC<Props> = () => {
       justify="between"
       gap="medium"
       margin={{ bottom: 'large' }}
+      style={{ minWidth: 500 }}
     >
       <LargeTab
         title="Issue"
@@ -43,12 +44,6 @@ export const NavigateTabs: React.FC<Props> = () => {
         title="Transfer"
         onClick={handleNavigate(routes.transfer)}
         active={isActive(path, routes.transfer)}
-      />
-      <LargeTab
-        title="Burn"
-        onClick={handleNavigate(routes.burn)}
-        active={isActive(path, routes.burn)}
-        disabled
       />
     </Box>
   );

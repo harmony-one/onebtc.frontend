@@ -19,19 +19,18 @@ import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
-import { getVaultInfo } from '../../../../modules/dashboard/vaultHelpers';
 import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const RedeemForm: React.FC<Props> = observer(() => {
-  const { redeemPageStore, user, btcNodeStore } = useStores();
+  const { redeemPageStore, user, btcNodeStore, vaultStore } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
   const vaultOptions = useMemo(() => {
-    return redeemPageStore.getVaultList().map(vault => {
+    return redeemPageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
-      const vaultInfo = getVaultInfo(vault);
+      const vaultInfo = vaultStore.getVaultInfo(vault);
       const maxRedeemAmount = vaultInfo.availableToRedeem - btcNodeStore.fee;
       return {
         text: (
@@ -41,19 +40,33 @@ export const RedeemForm: React.FC<Props> = observer(() => {
             <Text bold>
               {formatWithSixDecimals(satoshiToBitcoin(maxRedeemAmount))}
             </Text>
-            <Text> OneBTC</Text>
+            <Text> 1BTC</Text>
           </Box>
         ),
         value: vault.id,
       };
     });
-  }, [btcNodeStore.fee, redeemPageStore.vaultList]);
+  }, [btcNodeStore.fee, redeemPageStore.vaultList, vaultStore]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
       redeemPageStore.createRedeem();
     });
   }, [form, redeemPageStore]);
+
+  const amountValidator = useMemo(() => {
+    const vault = redeemPageStore.getVault(redeemPageStore.form.vaultId);
+    if (!vault) {
+      return undefined;
+    }
+    const vaultInfo = vaultStore.getVaultInfo(vault);
+
+    return lessThanSat(
+      vaultInfo.availableToRedeem,
+      'redeem amount exceeds vault balance',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [redeemPageStore, vaultStore, redeemPageStore.form.vaultId]);
 
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
@@ -67,7 +80,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         renderRight={
           <Box direction="row" gap="xxsmall">
             <DividerVertical />
-            <Text bold>oneBTC</Text>
+            <Text bold>1BTC</Text>
           </Box>
         }
         style={{ width: '100%' }}
@@ -75,7 +88,8 @@ export const RedeemForm: React.FC<Props> = observer(() => {
           isRequired,
           moreThanZero,
           lessThanSat(user.oneBTCBalance, `redeem amount exceeds balance`),
-        ]}
+          amountValidator,
+        ].filter(Boolean)}
       />
 
       <Input

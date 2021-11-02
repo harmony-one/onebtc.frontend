@@ -4,15 +4,6 @@ import { getOneBTCClient } from 'services/oneBtcClient';
 import { TransferConfirmModal } from './components/TransferConfirmModal';
 import { bitcoinToSatoshi, satoshiToBitcoin } from '../../services/bitcoin';
 
-interface IIssueEvent {
-  issue_id: string;
-  requester: string;
-  vault_id: string;
-  amount: string;
-  fee: string;
-  btc_address: string;
-}
-
 export interface IDefaultForm {
   oneBTCAmount: string;
   oneAddress: string;
@@ -24,30 +15,17 @@ export class TransferPageStore extends StoreConstructor {
     oneAddress: '',
   };
 
-  @observable issuesMap: {
-    [key: string]: {
-      issueAmount: number;
-      vaultId: string;
-      issueEvent: IIssueEvent;
-      btcBase58Address: string;
-      btcAddress: string;
-    };
-  } = {};
-
   @observable status: 'init' | 'pending' | 'success' | 'cancel' | 'error' =
     'init';
 
   @observable form = this.defaultForm;
 
-  constructor(stores) {
-    super(stores);
-  }
-
-  @action.bound
-  public async mockExecuteIssue(transactionHash: string) {}
-
   @action.bound
   public async creteTransfer() {
+    if (!this.stores.user.isAuthorized) {
+      this.stores.user.openConnectWalletModal();
+      return;
+    }
     this.status = 'pending';
 
     const transferUiTx = this.stores.uiTransactionsStore.create();

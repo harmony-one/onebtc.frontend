@@ -1,10 +1,10 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
-import { action, computed, observable } from 'mobx';
+import { action, computed, get, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
 import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsModal';
 import { IssueConfirmModal } from './components/IssueConfirmModal';
-import { guid, retry, sleep } from '../../utils';
+import { guid, retry } from '../../utils';
 import { UITransaction } from '../../modules/uiTransaction/UITransactionsStore';
 import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
@@ -27,7 +27,7 @@ export class IssuePageStore extends StoreConstructor {
     'init';
 
   @observable form = this.defaultForm;
-  @observable vaultList: IVault[] = [];
+  @observable private _vaultList: IVault[] = [];
 
   @computed
   get bridgeFee() {
@@ -42,6 +42,10 @@ export class IssuePageStore extends StoreConstructor {
   @action.bound
   createUiTx(progressModalId: string): UITransaction {
     return this.stores.uiTransactionsStore.create(progressModalId);
+  }
+
+  public getVault(vaultId: string) {
+    return this._vaultList.find(vault => vault.id === vaultId);
   }
 
   @action.bound
@@ -95,9 +99,9 @@ export class IssuePageStore extends StoreConstructor {
         },
       });
       this.status = 'success';
-      console.log('### execute issuePageStore finished');
+      console.log('### execute redeem finished');
     } catch (err) {
-      console.log('### err mock execute issuePageStore error', err);
+      console.log('### err execute redeem error', err);
       this.status = 'error';
       issueUiTx.setStatusFail();
     }
@@ -155,11 +159,12 @@ export class IssuePageStore extends StoreConstructor {
 
   public async loadVaults() {
     const response = await dashboardClient.loadVaultList({ size: 10, page: 0 });
-    this.vaultList = response.content;
+    this._vaultList = response.content;
   }
 
-  public getVaultList() {
-    return this.vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
+  @get
+  public get vaultList() {
+    return this._vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
   }
 
   @action.bound
@@ -180,6 +185,10 @@ export class IssuePageStore extends StoreConstructor {
 
   @action.bound
   public async createIssue() {
+    if (!this.stores.user.isAuthorized) {
+      this.stores.user.openConnectWalletModal();
+      return;
+    }
     this.status = 'pending';
     const uiTxId = guid();
     const issueUiTx = this.createUiTx(uiTxId);

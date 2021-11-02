@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react';
 import { cutText } from '../services/cutText';
 import { config } from '../config';
+import * as s from './LinkBlockchain.styl';
 import { Box } from 'grommet';
+import cn from 'classnames';
 
 interface Props {
   hash: string;
   text?: string;
   type: 'wallet' | 'tx' | 'block';
   cut?: boolean;
+  mono?: boolean;
 }
 
 const typeMap = {
@@ -21,9 +24,9 @@ const LinkBitcoin: React.FC<Props> = ({
   type,
   text,
   cut = true,
+  mono = false,
 }) => {
   const link = typeMap[type] + hash;
-
   const content = useMemo(() => {
     if (text) {
       return text;
@@ -38,8 +41,16 @@ const LinkBitcoin: React.FC<Props> = ({
 
   return (
     <Box direction="row" align="center" gap="xxsmall">
-      <img src="/bitcoin.svg" style={{ height: 22 }} />
-      <a target="_blank" rel="noreferrer" href={link}>
+      <img src="/bitcoin.svg" alt="harmony" className={s.icon} />
+      <a
+        className={cn(s.link, {
+          [s.mono]: mono,
+        })}
+        target="_blank"
+        rel="noreferrer"
+        title={hash}
+        href={link}
+      >
         {content}
       </a>
     </Box>

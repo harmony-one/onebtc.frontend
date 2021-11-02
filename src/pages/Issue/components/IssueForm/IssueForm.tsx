@@ -9,18 +9,21 @@ import {
   NumberInput,
   Select,
 } from 'components/Form';
-import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
+import {
+  formatWithSixDecimals,
+  lessThanSat,
+  moreThanZero,
+} from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
-import { getVaultInfo } from '../../../../modules/dashboard/vaultHelpers';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
 import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const IssueForm: React.FC<Props> = observer(() => {
-  const { issuePageStore, user } = useStores();
+  const { issuePageStore, user, vaultStore } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
   const handleSubmit = useCallback(() => {
@@ -30,9 +33,9 @@ export const IssueForm: React.FC<Props> = observer(() => {
   }, [form, issuePageStore]);
 
   const vaultOptions = useMemo(() => {
-    return issuePageStore.getVaultList().map(vault => {
+    return issuePageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
-      const vaultInfo = getVaultInfo(vault);
+      const vaultInfo = vaultStore.getVaultInfo(vault);
       return {
         text: (
           <Box direction="row" gap="xxsmall" align="center">
@@ -40,16 +43,30 @@ export const IssueForm: React.FC<Props> = observer(() => {
             <Text>{name}: </Text>
             <Text bold>
               {formatWithSixDecimals(
-                satoshiToBitcoin(vaultInfo.availableAmountSat),
+                satoshiToBitcoin(vaultInfo.availableAmountSat.toString()),
               )}
             </Text>
-            <Text> OneBTC</Text>
+            <Text> 1BTC</Text>
           </Box>
         ),
         value: vault.id,
       };
     });
-  }, [issuePageStore.vaultList]);
+  }, [issuePageStore.vaultList, vaultStore]);
+
+  const amountValidator = useMemo(() => {
+    const vault = issuePageStore.getVault(issuePageStore.form.vaultId);
+    if (!vault) {
+      return undefined;
+    }
+    const vaultInfo = vaultStore.getVaultInfo(vault);
+
+    return lessThanSat(
+      vaultInfo.availableAmountSat.toString(),
+      'redeem amount exceeds vault balance',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
@@ -67,7 +84,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         }
         placeholder="0.0"
         style={{ width: '100%' }}
-        rules={[isRequired, moreThanZero]}
+        rules={[isRequired, moreThanZero, amountValidator].filter(Boolean)}
       />
 
       <Select
@@ -126,7 +143,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
           value={issuePageStore.totalReceive}
           rate={user.btcRate}
           boxProps={{ pad: {} }}
-          tokenName="OneBTC"
+          tokenName="1BTC"
         />
       </Box>
 

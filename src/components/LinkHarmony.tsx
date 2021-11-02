@@ -3,12 +3,14 @@ import { cutText } from '../services/cutText';
 import { config } from '../config';
 import { Box } from 'grommet';
 import * as s from './LinkBlockchain.styl';
+import cn from 'classnames';
 
 interface Props {
   hash: string;
   text?: string;
   type: 'address' | 'tx' | 'block';
   cut?: boolean;
+  mono?: boolean;
 }
 
 const typeMap = {
@@ -21,6 +23,7 @@ export const LinkHarmony: React.FC<Props> = ({
   type,
   text,
   cut = true,
+  mono = false,
 }) => {
   const link = typeMap[type] + hash;
 
@@ -38,8 +41,16 @@ export const LinkHarmony: React.FC<Props> = ({
 
   return (
     <Box direction="row" align="center" gap="xxsmall">
-      <img src="/one.svg" className={s.icon} />
-      <a className={s.link} target="_blank" rel="noreferrer" href={link}>
+      <img src="/one.svg" className={s.icon} alt="bitcoin" />
+      <a
+        className={cn(s.link, {
+          [s.mono]: mono,
+        })}
+        title={hash}
+        target="_blank"
+        rel="noreferrer"
+        href={link}
+      >
         {content}
       </a>
     </Box>

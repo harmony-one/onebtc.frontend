@@ -10,10 +10,6 @@ import {
 } from '../../../../utils';
 import { useStores } from '../../../../stores';
 import utils from 'web3-utils';
-import {
-  calcNewVaultCollateral,
-  getVaultInfo,
-} from '../../../../modules/dashboard/vaultHelpers';
 import { InputButton } from '../../../../components/Base/components/Inputs/InputButton';
 
 interface Props {
@@ -40,12 +36,16 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
     const oneAmount = utils.toWei(
       dashboardVaultDetailsStore.formWithdraw.oneAmount || '0',
     );
-    const vaultInfo = getVaultInfo(vault);
-    const _vaultInfo = calcNewVaultCollateral(vault, oneAmount.toString(), -1);
+    const vaultInfo = vaultStore.getVaultInfo(vault);
+    const _vaultInfo = vaultStore.calcNewVaultCollateral(
+      vault,
+      oneAmount.toString(),
+      -1,
+    );
 
     const handleMaxClick = useCallback(() => {
       dashboardVaultDetailsStore.formWithdraw.oneAmount = utils.fromWei(
-        Math.ceil(vaultInfo.maxWithdraw).toString(),
+        vaultInfo.maxWithdraw,
       );
     }, [
       dashboardVaultDetailsStore.formWithdraw.oneAmount,
@@ -62,7 +62,7 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
             label="Withdraw collateral"
             name="oneAmount"
             type="decimal"
-            precision="8"
+            precision="16"
             delimiter="."
             placeholder="0.0"
             renderRight={
@@ -92,7 +92,10 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
               </Box>
               <Box>
                 <Text>
-                  {formatZeroDecimals(getVaultInfo(vault).collateralTotal)}%
+                  {formatZeroDecimals(
+                    vaultStore.getVaultInfo(vault).collateralTotal,
+                  )}
+                  %
                 </Text>
               </Box>
             </Box>

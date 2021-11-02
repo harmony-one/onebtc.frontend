@@ -3,24 +3,13 @@ import { Box } from 'grommet';
 import { Button } from '../../Base';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react-lite';
-import { ConnectWalletModal } from './ConnectWalletModal';
 
 export const SignInButton: React.FC = observer(() => {
-  const { user, actionModals } = useStores();
+  const { user } = useStores();
 
   const handleOpenModal = useCallback(() => {
-    actionModals.open(ConnectWalletModal, {
-      applyText: '',
-      closeText: '',
-      initData: {},
-      onApply: () => {
-        return Promise.resolve();
-      },
-      onClose: () => {
-        return Promise.resolve();
-      },
-    });
-  }, [actionModals]);
+    user.openConnectWalletModal();
+  }, [user]);
 
   const handleSignOut = useCallback(() => {
     user.signOut();

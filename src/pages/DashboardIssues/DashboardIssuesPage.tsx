@@ -36,7 +36,7 @@ export const DashboardIssuesPage: React.FC<Props> = observer(() => {
                   <Box>
                     <Text>Issued:</Text>
                   </Box>
-                  <Box>{dashboardHistoryStore.issuedTotal} OneBTC</Box>
+                  <Box>{dashboardHistoryStore.issuedTotal} 1BTC</Box>
                 </Box>
                 <Divider fullwidth />
                 <Box

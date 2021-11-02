@@ -1,5 +1,5 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
-import { action, computed, observable } from 'mobx';
+import { action, computed, get, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import {
   bitcoinToSatoshi,
@@ -34,7 +34,7 @@ export class RedeemPageStore extends StoreConstructor {
     'init';
 
   @observable form = this.defaultForm;
-  @observable vaultList: IVault[] = [];
+  @observable _vaultList: IVault[] = [];
 
   @computed
   get bridgeFee() {
@@ -49,11 +49,16 @@ export class RedeemPageStore extends StoreConstructor {
   @action.bound
   public async loadVaults() {
     const response = await dashboardClient.loadVaultList({ size: 10, page: 0 });
-    this.vaultList = response.content;
+    this._vaultList = response.content;
   }
 
-  public getVaultList() {
-    return this.vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
+  @get
+  public get vaultList() {
+    return this._vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
+  }
+
+  public getVault(vaultId: string) {
+    return this._vaultList.find(vault => vault.id === vaultId);
   }
 
   @action.bound
@@ -162,6 +167,10 @@ export class RedeemPageStore extends StoreConstructor {
 
   @action.bound
   public async createRedeem() {
+    if (!this.stores.user.isAuthorized) {
+      this.stores.user.openConnectWalletModal();
+      return;
+    }
     this.status = 'pending';
 
     const redeemUiTx = this.stores.uiTransactionsStore.create();

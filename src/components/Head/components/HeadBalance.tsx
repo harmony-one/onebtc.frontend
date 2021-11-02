@@ -24,7 +24,7 @@ export const HeadBalance: React.FC = observer(() => {
         <Text size="small" weight="bold">
           {satoshiToBitcoin(user.oneBTCBalance)}
         </Text>
-        <Text size="small">&nbsp;OneBTC</Text>
+        <Text size="small">&nbsp;1BTC</Text>
       </Box>
     </Box>
   );

@@ -55,7 +55,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             </Box>
             <Box>
               <Title size="medium" color="BlackTxt" bold>
-                OneBTC by Harmony
+                1BTC by Harmony
               </Title>
             </Box>
           </Box>
@@ -67,7 +67,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             </NavLink>
             <NavLink to={routes.transactions}>
               <Box className={cn(s.item)}>
-                <Text>Transactions</Text>
+                <Text>My Transactions</Text>
               </Box>
             </NavLink>
             <NavLink className={s.link} to={routes.dashboard}>

@@ -19,7 +19,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box align="center">
-        <Title>{issueInfo.totalReceived} OneBTC</Title>
+        <Title>{issueInfo.totalReceived} 1BTC</Title>
         <Text color="#748695" size="small" inline>
           ≈ ${formatWithSixDecimals(issueInfo.totalReceivedUsd)}
         </Text>
@@ -45,7 +45,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <PriceView
-            tokenName="OneBTC"
+            tokenName="1BTC"
             value={issueInfo.totalReceived}
             rate={user.btcRate}
           />
@@ -58,7 +58,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmony hash={issueInfo.requester} type="address" />
+            <LinkHarmony mono hash={issueInfo.requester} type="address" />
           </Text>
         </Box>
       </Box>
@@ -69,7 +69,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmony hash={issueInfo.vaultId} type="address" />
+            <LinkHarmony mono hash={issueInfo.vaultId} type="address" />
           </Text>
         </Box>
       </Box>
@@ -80,7 +80,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <Text bold>
-            <LinkBitcoin type="wallet" hash={issueInfo.bitcoinAddress} />
+            <LinkBitcoin mono type="wallet" hash={issueInfo.bitcoinAddress} />
           </Text>
         </Box>
       </Box>
@@ -90,7 +90,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
           <Text inline bold color="Red">
             Note:
           </Text>{' '}
-          OneBTC is a fully decentralized system. Please make sure you send the
+          1BTC is a fully decentralized system. Please make sure you send the
           right amount of BTC, we cannot guarantee that the vault will return
           the additional BTC that you sent by mistake.
         </Text>

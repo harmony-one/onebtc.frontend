@@ -32,12 +32,9 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box align="center">
-        <Text>
-          Send{' '}
-          <Text inline color="Orange500">
-            {issueInfo.sendAmount}
-          </Text>
-          &nbsp;BTC
+        <Text inline>Send</Text>
+        <Text inline color="Orange500">
+          {issueInfo.sendAmount} BTC
         </Text>
         <Text color="#748695" size="small" inline>
           ≈ ${formatWithSixDecimals(issueInfo.sendUsdAmount)}
@@ -61,8 +58,8 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
           <Text inline bold color="Red">
             Warning:
           </Text>{' '}
-          Some Bitcoin wallets display values in oneBTC. Please ensure you send
-          the correct amount:1000 oneBTC
+          Some Bitcoin wallets display values in 1BTC. Please ensure you send
+          the correct amount:1000 1BTC
         </Text>
       </Box>
 
