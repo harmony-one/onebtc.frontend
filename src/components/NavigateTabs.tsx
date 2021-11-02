@@ -44,12 +44,6 @@ export const NavigateTabs: React.FC<Props> = () => {
         onClick={handleNavigate(routes.transfer)}
         active={isActive(path, routes.transfer)}
       />
-      <LargeTab
-        title="Burn"
-        onClick={handleNavigate(routes.burn)}
-        active={isActive(path, routes.burn)}
-        disabled
-      />
     </Box>
   );
 };
