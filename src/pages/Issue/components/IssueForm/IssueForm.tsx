@@ -39,7 +39,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
             <Text>{name}: </Text>
             <Text bold>
               {formatWithSixDecimals(
-                satoshiToBitcoin(vaultInfo.availableAmountSat),
+                satoshiToBitcoin(vaultInfo.availableAmountSat.toString()),
               )}
             </Text>
             <Text> 1BTC</Text>
