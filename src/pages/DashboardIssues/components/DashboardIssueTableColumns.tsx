@@ -1,6 +1,6 @@
 import React from 'react';
 import { IColumn } from '../../../components/Table';
-import { IIssue } from '../../../modules/dashboard/dashboardTypes';
+import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import cn from 'classnames';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { LinkHarmony } from '../../../components/LinkHarmony';
@@ -60,7 +60,7 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     render: value => {
       const amount = utils.toBN(value.amount);
       const fee = utils.toBN(value.fee);
-      return <div>{satoshiToBitcoin(amount.add(fee).toString())} BTC</div>;
+      return <div>{satoshiToBitcoin(amount.add(fee).toString())} 1BTC</div>;
     },
   },
   {

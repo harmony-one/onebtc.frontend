@@ -18,7 +18,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box align="center">
-        <Title>{redeemInfo.totalReceived} OneBTC</Title>
+        <Title>{redeemInfo.totalReceived} 1BTC</Title>
         <Text color="#748695" size="small" inline>
           ≈ ${formatWithSixDecimals(redeemInfo.totalReceivedUsd)}
         </Text>
@@ -91,7 +91,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
           <Text inline bold color="Red">
             Note:
           </Text>{' '}
-          OneBTC is a fully decentralized system. Please make sure you send the
+          1BTC is a fully decentralized system. Please make sure you send the
           right amount of BTC, we cannot guarantee that the vault will return
           the additional BTC that you sent by mistake.
         </Text>

@@ -13,14 +13,13 @@ import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
-import { getVaultInfo } from '../../../../modules/dashboard/vaultHelpers';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
 import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const IssueForm: React.FC<Props> = observer(() => {
-  const { issuePageStore, user } = useStores();
+  const { issuePageStore, user, vaultStore } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
   const handleSubmit = useCallback(() => {
@@ -30,9 +29,9 @@ export const IssueForm: React.FC<Props> = observer(() => {
   }, [form, issuePageStore]);
 
   const vaultOptions = useMemo(() => {
-    return issuePageStore.getVaultList().map(vault => {
+    return issuePageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
-      const vaultInfo = getVaultInfo(vault);
+      const vaultInfo = vaultStore.getVaultInfo(vault);
       return {
         text: (
           <Box direction="row" gap="xxsmall" align="center">
@@ -40,16 +39,16 @@ export const IssueForm: React.FC<Props> = observer(() => {
             <Text>{name}: </Text>
             <Text bold>
               {formatWithSixDecimals(
-                satoshiToBitcoin(vaultInfo.availableAmountSat),
+                satoshiToBitcoin(vaultInfo.availableAmountSat.toString()),
               )}
             </Text>
-            <Text> OneBTC</Text>
+            <Text> 1BTC</Text>
           </Box>
         ),
         value: vault.id,
       };
     });
-  }, [issuePageStore.vaultList]);
+  }, [issuePageStore.vaultList, vaultStore]);
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
@@ -126,7 +125,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
           value={issuePageStore.totalReceive}
           rate={user.btcRate}
           boxProps={{ pad: {} }}
-          tokenName="OneBTC"
+          tokenName="1BTC"
         />
       </Box>
 

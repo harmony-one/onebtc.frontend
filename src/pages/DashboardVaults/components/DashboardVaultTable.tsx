@@ -6,17 +6,16 @@ import { observer } from 'mobx-react';
 import cn from 'classnames';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
-import { IVault } from '../../../modules/dashboard/dashboardTypes';
+import { IVault } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { formatWithTwoDecimals } from '../../../utils';
 import { Box } from 'grommet';
-import { getVaultInfo } from '../../../modules/dashboard/vaultHelpers';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
 
 type Props = {};
 
 export const DashboardVaultTable: React.FC<Props> = observer(() => {
-  const { vaultListStore, routing } = useStores();
+  const { vaultListStore, routing, vaultStore } = useStores();
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
@@ -83,7 +82,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: vault => {
-        const vaultInfo = getVaultInfo(vault);
+        const vaultInfo = vaultStore.getVaultInfo(vault);
         const colorIssued = vaultInfo.collateralIssued >= 150 ? 'Green' : 'Red';
         const colorTotal = vaultInfo.collateralTotal >= 150 ? 'Green' : 'Red';
 
@@ -110,7 +109,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: vault => {
-        const { isActive } = getVaultInfo(vault);
+        const { isActive } = vaultStore.getVaultInfo(vault);
         return <VaultStatus isActive={isActive} />;
       },
     },

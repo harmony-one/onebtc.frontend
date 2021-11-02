@@ -3,6 +3,7 @@ import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { getOneBTCClient } from '../../services/oneBtcClient';
 import { IncreaseCollateralConfirmModal } from './components/IncreaseCollateralConfirmModal';
 import { VaultManageModal } from './components/VaultManageModal';
+import utils from 'web3-utils';
 
 export class DashboardVaultDetailsStore extends StoreConstructor {
   @observable
@@ -45,9 +46,10 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       uiTx.setStatusWaitingSignIn();
 
-      const amount = Number(this.formIncrease.oneAmount) * 1e18;
+      const amount = utils.toWei(this.formIncrease.oneAmount);
 
       const result = await hmyClient.lockAdditionalCollateral(
+        // @ts-ignore
         amount,
         txHash => {
           uiTx.setTxHash(txHash);
@@ -92,8 +94,9 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       uiTx.setStatusWaitingSignIn();
 
-      const amount = Number(this.formWithdraw.oneAmount) * 1e18;
+      const amount = utils.toWei(this.formWithdraw.oneAmount);
 
+      // @ts-ignore
       const result = await hmyClient.withdrawCollateral(amount, txHash => {
         uiTx.setTxHash(txHash);
         uiTx.setStatusProgress();
