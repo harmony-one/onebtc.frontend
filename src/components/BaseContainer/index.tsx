@@ -39,7 +39,6 @@ export const BaseContainer: React.FC<IStyledChildrenProps<
             }}
             {...props}
           >
-            {process.env.NODE_ENV === 'testnet' ? <Disclaimer /> : null}
             {children}
           </Box>
         </div>
