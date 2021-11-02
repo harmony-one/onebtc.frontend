@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { cutText } from '../services/cutText';
 import { config } from '../config';
 import * as s from './LinkBlockchain.styl';
-import { Box, ResponsiveContext } from 'grommet';
+import { Box } from 'grommet';
 import cn from 'classnames';
 
 interface Props {
@@ -27,11 +27,6 @@ const LinkBitcoin: React.FC<Props> = ({
   mono = false,
 }) => {
   const link = typeMap[type] + hash;
-
-  const size = React.useContext(ResponsiveContext);
-
-  console.log('### size', size);
-
   const content = useMemo(() => {
     if (text) {
       return text;
