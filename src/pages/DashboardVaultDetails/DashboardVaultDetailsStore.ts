@@ -59,7 +59,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       this.stores.actionModals.open(IncreaseCollateralConfirmModal, {
         initData: {
-          total: this.formWithdraw.oneAmount,
+          total: utils.fromWei(amount),
           txHash: result.transactionHash,
         },
         applyText: '',
@@ -104,7 +104,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       this.stores.actionModals.open(IncreaseCollateralConfirmModal, {
         initData: {
-          total: this.formIncrease.oneAmount,
+          total: utils.fromWei(amount),
           txHash: result.transactionHash,
         },
         applyText: '',
