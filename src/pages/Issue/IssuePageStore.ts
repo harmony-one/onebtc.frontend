@@ -44,6 +44,10 @@ export class IssuePageStore extends StoreConstructor {
     return this.stores.uiTransactionsStore.create(progressModalId);
   }
 
+  public getVault(vaultId: string) {
+    return this._vaultList.find(vault => vault.id === vaultId);
+  }
+
   @action.bound
   async executeIssue(issueId: string, btcTransactionHash: string) {
     console.log('### executeIssue');

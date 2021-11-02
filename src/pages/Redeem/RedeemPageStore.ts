@@ -57,6 +57,10 @@ export class RedeemPageStore extends StoreConstructor {
     return this._vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
   }
 
+  public getVault(vaultId: string) {
+    return this._vaultList.find(vault => vault.id === vaultId);
+  }
+
   @action.bound
   public async executeRedeem(redeemId: string, btcTxHash: string) {
     this.status = 'pending';

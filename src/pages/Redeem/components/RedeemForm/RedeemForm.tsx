@@ -54,6 +54,20 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     });
   }, [form, redeemPageStore]);
 
+  const amountValidator = useMemo(() => {
+    const vault = redeemPageStore.getVault(redeemPageStore.form.vaultId);
+    if (!vault) {
+      return undefined;
+    }
+    const vaultInfo = vaultStore.getVaultInfo(vault);
+
+    return lessThanSat(
+      vaultInfo.availableToRedeem,
+      'redeem amount exceeds vault balance',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [redeemPageStore, vaultStore, redeemPageStore.form.vaultId]);
+
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
       <NumberInput
@@ -74,7 +88,8 @@ export const RedeemForm: React.FC<Props> = observer(() => {
           isRequired,
           moreThanZero,
           lessThanSat(user.oneBTCBalance, `redeem amount exceeds balance`),
-        ]}
+          amountValidator,
+        ].filter(Boolean)}
       />
 
       <Input

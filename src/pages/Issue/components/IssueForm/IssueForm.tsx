@@ -9,7 +9,11 @@ import {
   NumberInput,
   Select,
 } from 'components/Form';
-import { formatWithSixDecimals, moreThanZero } from '../../../../utils';
+import {
+  formatWithSixDecimals,
+  lessThanSat,
+  moreThanZero,
+} from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
@@ -50,6 +54,20 @@ export const IssueForm: React.FC<Props> = observer(() => {
     });
   }, [issuePageStore.vaultList, vaultStore]);
 
+  const amountValidator = useMemo(() => {
+    const vault = issuePageStore.getVault(issuePageStore.form.vaultId);
+    if (!vault) {
+      return undefined;
+    }
+    const vaultInfo = vaultStore.getVaultInfo(vault);
+
+    return lessThanSat(
+      vaultInfo.availableAmountSat.toString(),
+      'redeem amount exceeds vault balance',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
+
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
       <NumberInput
@@ -66,7 +84,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         }
         placeholder="0.0"
         style={{ width: '100%' }}
-        rules={[isRequired, moreThanZero]}
+        rules={[isRequired, moreThanZero, amountValidator].filter(Boolean)}
       />
 
       <Select
