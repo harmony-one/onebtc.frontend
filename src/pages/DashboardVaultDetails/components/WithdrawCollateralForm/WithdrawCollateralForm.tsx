@@ -45,7 +45,7 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
 
     const handleMaxClick = useCallback(() => {
       dashboardVaultDetailsStore.formWithdraw.oneAmount = utils.fromWei(
-        Math.ceil(vaultInfo.maxWithdraw).toString(),
+        vaultInfo.maxWithdraw,
       );
     }, [
       dashboardVaultDetailsStore.formWithdraw.oneAmount,
