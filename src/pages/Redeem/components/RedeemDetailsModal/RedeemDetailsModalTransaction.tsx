@@ -70,7 +70,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
         </Box>
         <Box>
           <Text bold>
-            <LinkBitcoin type="wallet" hash={redeemInfo.bitcoinAddress} />
+            <LinkBitcoin mono type="wallet" hash={redeemInfo.bitcoinAddress} />
           </Text>
         </Box>
       </Box>
@@ -81,7 +81,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmony hash={redeemInfo.vaultId} type="address" />
+            <LinkHarmony mono hash={redeemInfo.vaultId} type="address" />
           </Text>
         </Box>
       </Box>

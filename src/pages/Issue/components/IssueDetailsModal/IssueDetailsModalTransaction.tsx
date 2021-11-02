@@ -58,7 +58,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmony hash={issueInfo.requester} type="address" />
+            <LinkHarmony mono hash={issueInfo.requester} type="address" />
           </Text>
         </Box>
       </Box>
@@ -69,7 +69,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmony hash={issueInfo.vaultId} type="address" />
+            <LinkHarmony mono hash={issueInfo.vaultId} type="address" />
           </Text>
         </Box>
       </Box>
@@ -80,7 +80,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
         <Box>
           <Text bold>
-            <LinkBitcoin type="wallet" hash={issueInfo.bitcoinAddress} />
+            <LinkBitcoin mono type="wallet" hash={issueInfo.bitcoinAddress} />
           </Text>
         </Box>
       </Box>
