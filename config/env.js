@@ -68,9 +68,17 @@ function getClientEnvironment(publicUrl) {
         HMY_CHAIN_ID: process.env.HMY_CHAIN_ID,
         GAS_LIMIT: process.env.GAS_LIMIT,
         GAS_PRICE: process.env.GAS_PRICE,
+        BTC_NODE_URL: process.env.BTC_NODE_URL,
         ONE_BTC_CONTRACT_ADDRESS: process.env.ONE_BTC_CONTRACT_ADDRESS,
 
         BACKEND_URL: process.env.BACKEND_URL,
+        BTC_WAIT_CONFIRMATIONS_COUNT: process.env.BTC_WAIT_CONFIRMATIONS_COUNT,
+        BTC_EXPLORER_WALLET: process.env.BTC_EXPLORER_WALLET,
+        BTC_EXPLORER_TX: process.env.BTC_EXPLORER_TX,
+        BTC_EXPLORER_BLOCK: process.env.BTC_EXPLORER_BLOCK,
+        DASHBOARD_URL: process.env.DASHBOARD_URL,
+        HMY_EXPLORER_TX: process.env.HMY_EXPLORER_TX,
+        HMY_EXPLORER_ADDRESS: process.env.HMY_EXPLORER_ADDRESS,
       },
     );
   // Stringify all values so we can feed into Webpack DefinePlugin

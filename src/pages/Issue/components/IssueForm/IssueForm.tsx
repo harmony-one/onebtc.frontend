@@ -88,7 +88,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
       />
 
       <Select
-        label="Vault identity"
+        label="Vault"
         name="vaultId"
         style={{ width: '100%' }}
         rules={[isRequired]}

@@ -200,8 +200,6 @@ export class UserStoreEx extends StoreConstructor {
           this.isAuthorized = true;
           // this.metamaskNetwork = await web3.eth.net.getNetworkType()
 
-          await this.stores.configStore.loadConfig();
-
           this.oneBtcClient = await getOneBTCClient(this.sessionType);
         })
         .catch(err => {

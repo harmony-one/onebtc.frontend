@@ -1,14 +1,3 @@
-export enum ConfigType {
-  TESTNET = 'testnet',
-  MAINNET = 'mainnet',
-}
-
-interface dynamicConfig {
-  hmyNodeUrl: string;
-  btcNodeUrl: string;
-  oneBtcContract: string;
-}
-
 interface Config {
   bitcoin: {
     waitConfirmations: number;
@@ -21,7 +10,7 @@ interface Config {
   };
   harmony: {
     nodeUrl: string;
-    dashboardHost: string;
+    dashboardUrl: string;
     oneBtcContract: string;
     explorer: {
       transaction: string;
@@ -34,87 +23,26 @@ interface Config {
   };
 }
 
-const configTestnet: Config = {
-  bitcoin: {
-    waitConfirmations: parseInt(
-      process.env.BITCOINT_WAIT_CONFIRMATIONS_COUNT || '2',
-      10,
-    ),
-    btcNodeUrl: 'https://btc2.test.hmny.io',
-    explorer: {
-      wallet: 'https://www.blockchain.com/btc-testnet/address/',
-      transaction: 'https://www.blockchain.com/btc-testnet/tx/',
-      block: 'https://www.blockchain.com/btc-testnet/block/',
-    },
-  },
-  harmony: {
-    nodeUrl: process.env.HMY_NODE_URL,
-    oneBtcContract: process.env.ONE_BTC_CONTRACT_ADDRESS,
-    dashboardHost: 'https://dashboard.btc.test.hmny.io',
-    explorer: {
-      transaction: 'https://explorer.pops.one/tx/',
-      address: 'https://explorer.pops.one/address/',
-    },
-  },
-  wallets: {
-    metamask: true,
-    onewallet: true,
-  },
-};
-
-const configMainnet: Config = {
-  bitcoin: {
-    waitConfirmations: parseInt(
-      process.env.BITCOINT_WAIT_CONFIRMATIONS_COUNT || '10',
-      10,
-    ),
-    btcNodeUrl: 'https://btc2.test.hmny.io',
-    explorer: {
-      wallet: 'https://www.blockchain.com/btc/address/',
-      transaction: 'https://www.blockchain.com/btc/tx/',
-      block: 'https://www.blockchain.com/btc/block/',
-    },
-  },
-  harmony: {
-    nodeUrl: process.env.HMY_NODE_URL,
-    oneBtcContract: process.env.ONE_BTC_CONTRACT_ADDRESS,
-    dashboardHost: 'https://dashboard.btc.test.hmny.io',
-    explorer: {
-      transaction: 'https://explorer.harmony.one/tx/',
-      address: 'https://explorer.harmony.one/address/',
-    },
-  },
-  wallets: {
-    metamask: true,
-    onewallet: true,
-  },
-};
-
-const configMap = {
-  testnet: configTestnet,
-  mainnet: configMainnet,
-};
-
 export const config: Config = {
   bitcoin: {
     waitConfirmations: parseInt(
-      process.env.BITCOINT_WAIT_CONFIRMATIONS_COUNT || '2',
+      process.env.BTC_WAIT_CONFIRMATIONS_COUNT || '2',
       10,
     ),
-    btcNodeUrl: 'https://btc2.test.hmny.io',
+    btcNodeUrl: process.env.BTC_NODE_URL,
     explorer: {
-      wallet: 'https://www.blockchain.com/btc-testnet/address/',
-      transaction: 'https://www.blockchain.com/btc-testnet/tx/',
-      block: 'https://www.blockchain.com/btc-testnet/block/',
+      wallet: process.env.BTC_EXPLORER_WALLET,
+      transaction: process.env.BTC_EXPLORER_TX,
+      block: process.env.BTC_EXPLORER_BLOCK,
     },
   },
   harmony: {
     nodeUrl: process.env.HMY_NODE_URL,
     oneBtcContract: process.env.ONE_BTC_CONTRACT_ADDRESS,
-    dashboardHost: 'https://dashboard.btc.test.hmny.io',
+    dashboardUrl: process.env.DASHBOARD_URL,
     explorer: {
-      transaction: 'https://explorer.pops.one/tx/',
-      address: 'https://explorer.pops.one/address/',
+      transaction: process.env.HMY_EXPLORER_TX,
+      address: process.env.HMY_EXPLORER_ADDRESS,
     },
   },
   wallets: {
@@ -123,6 +51,4 @@ export const config: Config = {
   },
 } as const;
 
-export const getConfig = (type: ConfigType): Config => {
-  return configMap[type];
-};
+console.log('### config', config);
