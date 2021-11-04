@@ -50,6 +50,7 @@ export class IssueStore extends EntityStore<IIssue> {
       issue.btcTx.confirmations >= config.bitcoin.waitConfirmations;
 
     return {
+      openTime: Number(issue.opentime) * 1000,
       rawIssue: issue,
       amount: amount,
       issueId: issue.id,

@@ -5,6 +5,8 @@ import { Text } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
 import React from 'react';
 import { useStores } from '../../../../stores';
+import { Countdown } from '../../../../components/Countdown';
+import { ONE_DAY } from '../../../../constants/date';
 
 interface Props {
   issueId: string;
@@ -50,6 +52,9 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
             {issueInfo.bitcoinAddress}
           </Text>
         </Box>
+        <Text>
+          <Countdown endTimestamp={issueInfo.openTime + ONE_DAY} />
+        </Text>
       </Box>
 
       <Box alignSelf="start">
