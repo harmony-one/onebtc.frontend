@@ -62,7 +62,6 @@ export class IssuePageStore extends StoreConstructor {
 
       const issueInfo = this.stores.issueStore.getIssueInfo(issueId);
 
-      // @ts-expect-error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
       await hmyClient.cancelIssue(issueInfo.requester, issueId, txHash => {
         issueUiTx.setTxHash(txHash);
         issueUiTx.setStatusProgress();

@@ -49,7 +49,6 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
       const amount = utils.toWei(this.formIncrease.oneAmount);
 
       const result = await hmyClient.lockAdditionalCollateral(
-        // @ts-expect-error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
         amount,
         txHash => {
           uiTx.setTxHash(txHash);

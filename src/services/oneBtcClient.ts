@@ -1,14 +1,14 @@
 import * as onebtcSdk from 'onebtc.sdk';
-import { config } from '../config';
 import { OneBTCClientWeb3 } from 'onebtc.sdk/lib/blockchain/hmy/OneBTCClientWeb3';
 import { OneBTCClientHmy } from 'onebtc.sdk/lib/blockchain/hmy/OneBTCClientHmy';
+import { dashboardClient } from '../modules/dashboard/dashboardClient';
 
 interface Clients {
   metamask: OneBTCClientWeb3 | null;
   onewallet: OneBTCClientHmy | null;
 }
 
-let clients: Clients = {
+const clients: Clients = {
   metamask: null,
   onewallet: null,
 };
@@ -18,12 +18,14 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
     return clients[wallet];
   }
 
+  const dashboardConfig = await dashboardClient.loadDashboardConfig();
+
   if (wallet === 'metamask') {
     clients[wallet] = await onebtcSdk.createClientWeb3({
       useMetamask: true,
-      nodeURL: config.harmony.nodeUrl,
-      btcNodeUrl: config.bitcoin.btcNodeUrl,
-      contractAddress: config.harmony.oneBtcContract,
+      nodeURL: dashboardConfig.relayerClient.hmyNodeUrl,
+      btcNodeUrl: dashboardConfig.relayerClient.btcNodeUrl,
+      contractAddress: dashboardConfig.mainEvents.contractAddress,
       chainId: 2,
       gasLimit: 6721900,
     });
@@ -32,9 +34,9 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
   if (wallet === 'onewallet') {
     clients[wallet] = await onebtcSdk.createClientHmy({
       useOneWallet: true,
-      nodeURL: config.harmony.nodeUrl,
-      btcNodeUrl: config.bitcoin.btcNodeUrl,
-      contractAddress: config.harmony.oneBtcContract,
+      nodeURL: dashboardConfig.relayerClient.hmyNodeUrl,
+      btcNodeUrl: dashboardConfig.relayerClient.btcNodeUrl,
+      contractAddress: dashboardConfig.mainEvents.contractAddress,
       chainId: 2,
       gasLimit: 6721900,
     });
