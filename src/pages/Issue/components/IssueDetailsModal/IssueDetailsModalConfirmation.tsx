@@ -53,7 +53,7 @@ export const IssueDetailsModalConfirmation: React.FC<Props> = ({ issueId }) => {
           text="View on explorer"
         />
       </Box>
-      {issueInfo.isConfirmedBtcTX && (
+      {!issueInfo.isCompleted && issueInfo.isConfirmedBtcTX && (
         <Box>
           <Text>
             Your BTC transaction successfully confirmed. Please Execute issue to
