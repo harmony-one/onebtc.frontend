@@ -50,7 +50,6 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
             {issueInfo.bitcoinAddress}
           </Text>
         </Box>
-        <Text>Within 0 Days 23:54:22</Text>
       </Box>
 
       <Box alignSelf="start">
@@ -58,8 +57,8 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
           <Text inline bold color="Red">
             Warning:
           </Text>{' '}
-          Some Bitcoin wallets display values in 1BTC. Please ensure you send
-          the correct amount:1000 1BTC
+          Some Bitcoin wallets display values in mBTC. Please ensure you send
+          the correct amount: {issueInfo.sendAmount * 1000} mBTC
         </Text>
       </Box>
 
@@ -73,7 +72,7 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
             Note:
           </Text>{' '}
           If you have already made the payment, please wait for a few minutes
-          for it to be confirmed in the table below.
+          for it to be confirmed.
         </Text>
       </Box>
     </Box>
