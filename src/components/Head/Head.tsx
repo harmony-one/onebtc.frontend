@@ -83,7 +83,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             <Button
               bordered
               color="Orange"
-              style={{ borderColor: 'Orange' }}
+              style={{ borderColor: 'Orange', padding: '10px' }}
               transparent
               fontSize="14px"
               onClick={() => {

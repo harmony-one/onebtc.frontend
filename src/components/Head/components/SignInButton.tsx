@@ -18,12 +18,22 @@ export const SignInButton: React.FC = observer(() => {
   return (
     <Box>
       {!user.isAuthorized && (
-        <Button fontSize="16px" onClick={handleOpenModal}>
+        <Button
+          fontSize="16px"
+          style={{ padding: '10px' }}
+          onClick={handleOpenModal}
+        >
           Connect wallet
         </Button>
       )}
       {user.isAuthorized && (
-        <Button bordered transparent fontSize="16px" onClick={handleSignOut}>
+        <Button
+          bordered
+          style={{ padding: '10px' }}
+          transparent
+          fontSize="16px"
+          onClick={handleSignOut}
+        >
           Logout
         </Button>
       )}
