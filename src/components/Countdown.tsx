@@ -34,7 +34,7 @@ export const Countdown: React.FC<Props> = React.memo(({ endTimestamp }) => {
     texts[1] = `${mins} mins, and`;
   }
 
-  return <>texts.join(' ')</>;
+  return <>{texts.join(' ')}</>;
 });
 
 Countdown.displayName = 'Countdown';
