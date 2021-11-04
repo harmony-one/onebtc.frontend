@@ -5,10 +5,11 @@ import { observer } from 'mobx-react-lite';
 import cn from 'classnames';
 import { IStyledChildrenProps } from 'interfaces';
 import { NavLink } from 'react-router-dom';
-import { Title, Text } from '../Base';
+import { Title, Text, Button } from '../Base';
 import { SignInButton } from './components/SignInButton';
 import { HeadBalance } from './components/HeadBalance';
 import { routes } from '../../constants/routes';
+import { Share } from 'grommet-icons';
 import * as s from './styles.styl';
 
 const MainLogo = styled.img`
@@ -79,6 +80,19 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
 
           <Box direction="row" align="center" gap="small">
             <HeadBalance />
+            <Button
+              bordered
+              color="Orange"
+              style={{ borderColor: 'Orange' }}
+              transparent
+              fontSize="14px"
+              onClick={() => {
+                window.open('https://testnet-faucet.mempool.co/', '_blank');
+              }}
+            >
+              BTC Faucet&nbsp;
+              <Share color="Orange" size="small" />
+            </Button>
             <SignInButton />
           </Box>
         </Box>
