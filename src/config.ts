@@ -1,4 +1,6 @@
 interface Config {
+  network: string;
+  isTestnet: boolean;
   bitcoin: {
     waitConfirmations: number;
     btcNodeUrl: string;
@@ -24,6 +26,8 @@ interface Config {
 }
 
 export const config: Config = {
+  network: process.env.NETWORK,
+  isTestnet: process.env.NETWORK === 'testnet',
   bitcoin: {
     waitConfirmations: parseInt(
       process.env.BTC_WAIT_CONFIRMATIONS_COUNT || '2',

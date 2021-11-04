@@ -5,12 +5,13 @@ import { observer } from 'mobx-react-lite';
 import cn from 'classnames';
 import { IStyledChildrenProps } from 'interfaces';
 import { NavLink } from 'react-router-dom';
-import { Title, Text, Button } from '../Base';
+import { Title, Text } from '../Base';
 import { SignInButton } from './components/SignInButton';
 import { HeadBalance } from './components/HeadBalance';
 import { routes } from '../../constants/routes';
-import { Share } from 'grommet-icons';
 import * as s from './styles.styl';
+import { config } from '../../config';
+import { FaucetButtons } from './components/FaucetButtons';
 
 const MainLogo = styled.img`
   width: auto;
@@ -78,21 +79,9 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
             </NavLink>
           </Box>
 
-          <Box direction="row" align="center" gap="small">
+          <Box direction="row" align="center" gap="xsmall">
             <HeadBalance />
-            <Button
-              bordered
-              color="Orange"
-              style={{ borderColor: 'Orange', padding: '10px' }}
-              transparent
-              fontSize="14px"
-              onClick={() => {
-                window.open('https://testnet-faucet.mempool.co/', '_blank');
-              }}
-            >
-              BTC Faucet&nbsp;
-              <Share color="Orange" size="small" />
-            </Button>
+            {config.isTestnet && <FaucetButtons />}
             <SignInButton />
           </Box>
         </Box>
