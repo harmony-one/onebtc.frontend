@@ -33,7 +33,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
 
   const columns: IColumn<IVault>[] = [
     {
-      title: 'Account ID',
+      title: 'Vault Address',
       width: '33',
       className: cn(s.column, s.columnAddress),
       key: 'id',

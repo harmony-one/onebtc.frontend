@@ -15,7 +15,7 @@ import { dateTimeAgoFormat } from '../../../utils';
 
 export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
   {
-    title: 'Vault Account',
+    title: 'Vault Address',
     className: cn(s.column, s.columnAddress),
     key: 'id',
     width: '33',

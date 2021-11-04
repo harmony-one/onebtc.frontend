@@ -1,6 +1,6 @@
 import React from 'react';
 import { IColumn } from '../../../components/Table';
-import { IRedeem } from '../../../modules/dashboard/dashboardTypes';
+import { IRedeem } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import cn from 'classnames';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { LinkHarmony } from '../../../components/LinkHarmony';
@@ -14,7 +14,7 @@ import { dateTimeAgoFormat } from '../../../utils';
 
 export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
   {
-    title: 'Vault Account',
+    title: 'Vault Address',
     className: cn(s.column, s.columnAddress),
     key: 'id',
     width: '33',
