@@ -5,5 +5,9 @@ export class StoreConstructor {
 
   constructor(stores: IStores) {
     this.stores = stores;
+
+    this.init();
   }
+
+  init(): void {}
 }
