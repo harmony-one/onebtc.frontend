@@ -3,7 +3,7 @@ import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
 import { Text } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useStores } from '../../../../stores';
 import { Countdown } from '../../../../components/Countdown';
 import { ONE_DAY } from '../../../../constants/date';
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
-  const { issueStore } = useStores();
+  const { issueStore, issuePageStore } = useStores();
   const issueInfo = issueStore.getIssueInfo(issueId);
 
   const qrData = `bitcoin:${issueInfo.bitcoinAddress}?amount=${issueInfo.sendAmount}`;
@@ -30,6 +30,10 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
       },
     },
   });
+
+  const handleCancelIssue = useCallback(() => {
+    issuePageStore.cancelIssue(issueId);
+  }, [issueId, issuePageStore]);
 
   return useObserver(() => (
     <Box gap="small" align="center">
@@ -57,6 +61,10 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
         </Text>
       </Box>
 
+      <Box>
+        <canvas ref={qrRef} />
+      </Box>
+
       <Box alignSelf="start">
         <Text>
           <Text inline bold color="Red">
@@ -65,10 +73,6 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
           Some Bitcoin wallets display values in mBTC. Please ensure you send
           the correct amount: {issueInfo.sendAmount * 1000} mBTC
         </Text>
-      </Box>
-
-      <Box>
-        <canvas ref={qrRef} />
       </Box>
 
       <Box alignSelf="start" margin={{ bottom: 'small' }}>
@@ -80,6 +84,9 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
           for it to be confirmed.
         </Text>
       </Box>
+
+      {/* Wait contract */}
+      {/*<Button onClick={handleCancelIssue}>Cancel Issue</Button>*/}
     </Box>
   ));
 };

@@ -9,6 +9,7 @@ import { UITransaction } from '../../modules/uiTransaction/UITransactionsStore';
 import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
+import { IssueCanceledModal } from './components/IssueCanceledModal';
 
 export interface ITransaction {
   amount: string;
@@ -46,6 +47,43 @@ export class IssuePageStore extends StoreConstructor {
 
   public getVault(vaultId: string) {
     return this._vaultList.find(vault => vault.id === vaultId);
+  }
+
+  @action
+  async cancelIssue(issueId: string) {
+    const uiTxId = guid();
+
+    const issueUiTx = this.createUiTx(uiTxId);
+    issueUiTx.setStatusWaitingSignIn();
+    issueUiTx.showModal();
+
+    try {
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+
+      const issueInfo = this.stores.issueStore.getIssueInfo(issueId);
+
+      // @ts-expect-error TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+      await hmyClient.cancelIssue(issueInfo.requester, issueId, txHash => {
+        issueUiTx.setTxHash(txHash);
+        issueUiTx.setStatusProgress();
+      });
+
+      this.stores.actionModals.open(IssueCanceledModal, {
+        initData: {},
+        applyText: '',
+        closeText: '',
+        noValidation: true,
+        width: '320px',
+        showOther: true,
+        onApply: () => {
+          return Promise.resolve();
+        },
+      });
+    } catch (err) {
+      console.log('### err execute cancelIssue error', err);
+      this.status = 'error';
+      issueUiTx.setStatusFail();
+    }
   }
 
   @action.bound
