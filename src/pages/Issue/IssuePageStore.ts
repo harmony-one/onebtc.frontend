@@ -18,7 +18,7 @@ export interface ITransaction {
 export class IssuePageStore extends StoreConstructor {
   defaultForm: ITransaction = {
     amount: '0.0001',
-    vaultId: '0xFbE0741bC1B52dD723A6bfA145E0a15803AC9581',
+    vaultId: '',
   };
 
   @observable issuesMap: Record<string, IIssue> = {};
