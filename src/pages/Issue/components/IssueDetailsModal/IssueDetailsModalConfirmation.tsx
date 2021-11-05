@@ -72,6 +72,17 @@ export const IssueDetailsModalConfirmation: React.FC<Props> = ({ issueId }) => {
           </Button>
         </Box>
       )}
+      {!issueInfo.isConfirmedBtcTX && (
+        <Box>
+          <Text>
+            <Text inline bold color="Red">
+              Note:
+            </Text>{' '}
+            BTC confirmations could take up to 20 mins to complete. Please be
+            patient.
+          </Text>
+        </Box>
+      )}
     </Box>
   );
 };
