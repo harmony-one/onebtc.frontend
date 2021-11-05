@@ -1,10 +1,12 @@
 import * as bitcoin from 'bitcoinjs-lib';
+import { config } from '../config';
 
 export const btcAddressHexToBech32 = (address: string) => {
+  const prefix = config.isTestnet ? 'tb' : 'bc';
   return bitcoin.address.toBech32(
     Buffer.from(address.slice(2), 'hex'),
     0,
-    'tb',
+    prefix,
   );
 };
 
