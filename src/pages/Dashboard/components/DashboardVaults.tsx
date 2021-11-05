@@ -6,6 +6,7 @@ import { DashboardCardHead } from '../../../components/Dashboard/DashboardCardHe
 import { Text } from '../../../components/Base';
 import { observer } from 'mobx-react';
 import { DashboardCollateralChart } from './DashboardCollateralChart';
+import { formatZeroDecimals } from '../../../utils';
 
 interface Props {}
 
@@ -15,7 +16,8 @@ export const DashboardVaults: React.FC<Props> = observer(() => {
       <DashboardCardHead>
         <Box>
           <Text>
-            Locked collateral: {dashboardHistoryStore.totalCollateral} ONE
+            Locked collateral:{' '}
+            {formatZeroDecimals(dashboardHistoryStore.totalCollateral)} ONE
           </Text>
         </Box>
       </DashboardCardHead>
