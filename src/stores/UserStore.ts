@@ -44,9 +44,7 @@ export class UserStoreEx extends StoreConstructor {
     super(stores);
 
     setInterval(async () => {
-      // @ts-ignore
       this.isOneWallet = window.onewallet && window.onewallet.isOneWallet;
-      // @ts-ignore
       this.onewallet = window.onewallet;
     }, 3000);
 
@@ -58,9 +56,7 @@ export class UserStoreEx extends StoreConstructor {
 
     this.getRates();
 
-    // @ts-ignore
     this.isOneWallet = window.onewallet && window.onewallet.isOneWallet;
-    // @ts-ignore
     this.onewallet = window.onewallet;
 
     const session = localStorage.getItem('harmony_session');
@@ -220,7 +216,7 @@ export class UserStoreEx extends StoreConstructor {
   @action public getBalances = async () => {
     if (this.address && (!this.isMetamask || this.isNetworkActual)) {
       try {
-        let res = await getHmyBalance(this.address);
+        const res = await getHmyBalance(this.address);
         this.balance = res && res.result;
       } catch (e) {
         console.error(e);
@@ -236,9 +232,7 @@ export class UserStoreEx extends StoreConstructor {
   };
 
   @action signInOneWallet = async () => {
-    // @ts-ignore
     if (window.onewallet) {
-      // @ts-ignore
       const account = await window.onewallet.getAccount();
 
       this.address = account.address;
@@ -246,6 +240,8 @@ export class UserStoreEx extends StoreConstructor {
       this.isAuthorized = true;
       this.sessionType = 'onewallet';
       this.syncLocalStorage();
+    } else {
+      throw new Error('One wallet not found');
     }
   };
 
