@@ -20,18 +20,23 @@ export const Countdown: React.FC<Props> = React.memo(({ endTimestamp }) => {
     },
   });
 
-  const hrs = duration.hours(),
+  const days = duration.days(),
+    hrs = duration.hours(),
     mins = duration.minutes(),
     secs = duration.seconds();
 
-  const texts = ['', '', `${secs} seconds`];
+  const texts = ['', '', '', `${secs} seconds`];
 
-  if (hrs > 0) {
-    texts[0] = `${hrs} hour,`;
+  if (Math.abs(days) > 0) {
+    texts[0] = `${days} day,`;
   }
 
-  if (hrs > 0 || mins > 0) {
-    texts[1] = `${mins} mins, and`;
+  if (Math.abs(hrs) > 0) {
+    texts[1] = `${hrs} hour,`;
+  }
+
+  if (Math.abs(hrs) > 0 || mins > 0) {
+    texts[2] = `${mins} mins, and`;
   }
 
   return <>{texts.join(' ')}</>;

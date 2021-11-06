@@ -49,8 +49,14 @@ export class IssueStore extends EntityStore<IIssue> {
       issue.btcTx &&
       issue.btcTx.confirmations >= config.bitcoin.waitConfirmations;
 
+    const openTime = Number(issue.opentime) * 1000;
+    const period = Number(issue.period) * 1000;
+    const expiredTime = openTime + period;
+
     return {
-      openTime: Number(issue.opentime) * 1000,
+      openTime,
+      expiredTime,
+      isExpired: Date.now() - expiredTime >= 0,
       rawIssue: issue,
       amount: amount,
       issueId: issue.id,

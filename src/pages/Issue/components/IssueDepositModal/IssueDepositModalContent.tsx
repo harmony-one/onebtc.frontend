@@ -1,12 +1,11 @@
 import { useQRCode } from 'react-qrcodes';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
-import { Text } from '../../../../components/Base';
+import { Button, Text } from '../../../../components/Base';
 import { formatWithSixDecimals } from '../../../../utils';
 import React, { useCallback } from 'react';
 import { useStores } from '../../../../stores';
 import { Countdown } from '../../../../components/Countdown';
-import { ONE_DAY } from '../../../../constants/date';
 
 interface Props {
   issueId: string;
@@ -56,9 +55,11 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
             {issueInfo.bitcoinAddress}
           </Text>
         </Box>
-        <Text>
-          <Countdown endTimestamp={issueInfo.openTime + ONE_DAY} />
-        </Text>
+        {!issueInfo.isExpired && (
+          <Text>
+            <Countdown endTimestamp={issueInfo.expiredTime} />
+          </Text>
+        )}
       </Box>
 
       <Box>
@@ -85,8 +86,9 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
         </Text>
       </Box>
 
-      {/* Wait contract */}
-      {/*<Button onClick={handleCancelIssue}>Cancel Issue</Button>*/}
+      {issueInfo.isExpired && (
+        <Button onClick={handleCancelIssue}>Cancel Issue</Button>
+      )}
     </Box>
   ));
 };
