@@ -13,6 +13,9 @@ export const HeadBalance: React.FC = observer(() => {
     return null;
   }
 
+  const btcAmount = satoshiToBitcoin(user.oneBTCBalance);
+  const btcBalance = btcAmount > 0 ? btcAmount.toFixed(8) : 0;
+
   return (
     <Box direction="column" justify="center" align="end">
       <Box direction="row">
@@ -23,7 +26,7 @@ export const HeadBalance: React.FC = observer(() => {
       </Box>
       <Box direction="row">
         <Text size="small" bold>
-          {satoshiToBitcoin(user.oneBTCBalance).toFixed(8)}
+          {btcBalance.toString()}
         </Text>
         <Text size="small">&nbsp;1BTC</Text>
       </Box>
