@@ -78,7 +78,7 @@ export const IssueDetailsModalConfirmation: React.FC<Props> = ({ issueId }) => {
             <Text inline bold color="Red">
               Note:
             </Text>{' '}
-            BTC confirmations could take up to 20 mins to complete. Please be
+            BTC confirmations could take up to 1 hour to complete. Please be
             patient.
           </Text>
         </Box>
