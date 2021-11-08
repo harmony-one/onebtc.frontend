@@ -59,8 +59,8 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
           </Text>
         </Box>
         {!issueInfo.isExpired && (
-          <Text>
-            <Countdown endTimestamp={issueInfo.expiredTime} />
+          <Text align="center">
+            Remaining time: <Countdown endTimestamp={issueInfo.expiredTime} />
           </Text>
         )}
       </Box>
