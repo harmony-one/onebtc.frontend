@@ -4,8 +4,8 @@ import { getOneBTCClient } from 'services/oneBtcClient';
 import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
 import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsModal';
 import { IssueConfirmModal } from './components/IssueConfirmModal';
-import { guid, retry } from '../../utils';
-import { UITransaction } from '../../modules/uiTransaction/UITransactionsStore';
+import { retry } from '../../utils';
+import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
@@ -40,20 +40,13 @@ export class IssuePageStore extends StoreConstructor {
     return Number(this.form.amount) - this.bridgeFee;
   }
 
-  @action.bound
-  createUiTx(progressModalId: string): UITransaction {
-    return this.stores.uiTransactionsStore.create(progressModalId);
-  }
-
   public getVault(vaultId: string) {
     return this._vaultList.find(vault => vault.id === vaultId);
   }
 
   @action
   async cancelIssue(issueId: string) {
-    const uiTxId = guid();
-
-    const issueUiTx = this.createUiTx(uiTxId);
+    const issueUiTx = this.stores.uiTransactionsStore.create();
     issueUiTx.setStatusWaitingSignIn();
     issueUiTx.showModal();
 
@@ -67,6 +60,7 @@ export class IssuePageStore extends StoreConstructor {
         issueUiTx.setStatusProgress();
       });
 
+      issueUiTx.hideModal();
       this.stores.actionModals.open(IssueCanceledModal, {
         initData: {},
         applyText: '',
@@ -89,9 +83,14 @@ export class IssuePageStore extends StoreConstructor {
   async executeIssue(issueId: string, btcTransactionHash: string) {
     this.status = 'pending';
 
-    const uiTxId = guid();
-
-    const issueUiTx = this.createUiTx(uiTxId);
+    const issueUiTx = this.stores.uiTransactionsStore.create(undefined, {
+      titles: {
+        [UITransactionStatus.WAITING_SIGN_IN]:
+          'Waiting for user to sign execute issue request',
+        [UITransactionStatus.PROGRESS]:
+          'Waiting for execute issue transaction to confirm',
+      },
+    });
     issueUiTx.setStatusWaitingSignIn();
     issueUiTx.showModal();
     try {
@@ -101,23 +100,18 @@ export class IssuePageStore extends StoreConstructor {
 
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
-      issueUiTx.setTitle('Waiting for user to sign execute issue request');
       const result = await hmyClient.executeIssue(
         address,
         issueInfo.issueId,
         btcTransactionHash,
         txHash => {
           issueUiTx.setTxHash(txHash);
-          issueUiTx.setTitle(
-            'Waiting for execute issue transaction to confirm',
-          );
           issueUiTx.setStatusProgress();
         },
       );
 
       issueUiTx.setStatusSuccess();
       issueUiTx.hideModal();
-      issueUiTx.setTitle('');
 
       this.stores.actionModals.open(IssueConfirmModal, {
         initData: {
@@ -225,8 +219,15 @@ export class IssuePageStore extends StoreConstructor {
       return;
     }
     this.status = 'pending';
-    const uiTxId = guid();
-    const issueUiTx = this.createUiTx(uiTxId);
+
+    const issueUiTx = this.stores.uiTransactionsStore.create(undefined, {
+      titles: {
+        [UITransactionStatus.WAITING_SIGN_IN]:
+          'Waiting to user to sign issue request',
+        [UITransactionStatus.PROGRESS]:
+          'Waiting for confirmation of issue request',
+      },
+    });
     issueUiTx.showModal();
 
     try {
@@ -234,15 +235,9 @@ export class IssuePageStore extends StoreConstructor {
 
       const vaultId = this.form.vaultId;
 
-      console.log('### this.form.amount', this.form.amount);
       const issueAmount = bitcoinToSatoshi(this.form.amount);
 
-      console.log('### Request Issue');
-
       issueUiTx.setStatusWaitingSignIn();
-      issueUiTx.setTitle('Waiting to user to sign issue request');
-
-      console.log('### issueAmount', issueAmount);
 
       const issueRequest = await hmyClient.requestIssue(
         issueAmount,
@@ -250,11 +245,9 @@ export class IssuePageStore extends StoreConstructor {
         txHash => {
           issueUiTx.setTxHash(txHash);
           issueUiTx.setStatusProgress();
-          issueUiTx.setTitle('Waiting for confirmation of issue request');
         },
       );
 
-      console.log('### GetIssueDetails');
       issueUiTx.setStatusProgress();
 
       const issue = await retry(

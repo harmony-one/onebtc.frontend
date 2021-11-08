@@ -12,6 +12,10 @@ export enum UITransactionStatus {
   FAIL = 'fail',
 }
 
+export interface UITransactionConfig {
+  titles?: Partial<Record<UITransactionStatus, string>>;
+}
+
 export class UITransaction extends StoreConstructor {
   public id: string;
 
@@ -35,14 +39,26 @@ export class UITransaction extends StoreConstructor {
     burnId: string;
   };
 
+  titles: Record<UITransactionStatus, string> = {
+    [UITransactionStatus.WAITING_SIGN_IN]: 'Waiting for sign',
+    [UITransactionStatus.SUCCESS]: 'Transaction success',
+    [UITransactionStatus.PROGRESS]: 'Waiting for transaction',
+    [UITransactionStatus.FAIL]: 'Transaction fail',
+    [UITransactionStatus.INIT]: 'Init',
+  };
+
   @observable
   error: Error;
   @observable
   private _title: string = '';
 
-  constructor(id: string, stores: IStores) {
+  constructor(id: string, config: UITransactionConfig, stores: IStores) {
     super(stores);
     this.id = id;
+
+    if (config.titles) {
+      this.titles = { ...this.titles, ...config.titles };
+    }
   }
 
   @action.bound
@@ -57,7 +73,7 @@ export class UITransaction extends StoreConstructor {
 
   @computed
   get title() {
-    return this._title;
+    return this.titles[this.status];
   }
 
   @action.bound
@@ -169,9 +185,9 @@ export class UITransactionsStore extends StoreConstructor {
   }
 
   @action.bound
-  create(txId?: string) {
+  create(txId?: string, config: UITransactionConfig = {}) {
     const _txId = txId || guid();
-    const tx = new UITransaction(_txId, this.stores);
+    const tx = new UITransaction(_txId, config, this.stores);
     this.map[_txId] = tx;
     return tx;
   }

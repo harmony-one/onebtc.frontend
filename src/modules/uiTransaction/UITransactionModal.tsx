@@ -9,21 +9,6 @@ import { LinkHarmony } from '../../components/LinkHarmony';
 import { ModalHeader } from '../../components/ActionModals/components/ModalHeader';
 import { TActionModalProps } from '../../components/ActionModals';
 
-function getUITxTitle(status: UITransactionStatus) {
-  switch (status) {
-    case UITransactionStatus.WAITING_SIGN_IN:
-      return `Waiting for sign`;
-    case UITransactionStatus.PROGRESS:
-      return 'Waiting for transaction';
-    case UITransactionStatus.SUCCESS:
-      return 'Transaction success';
-    case UITransactionStatus.FAIL:
-      return 'Transaction fail';
-    default:
-      return 'Init';
-  }
-}
-
 interface UITxModalContentProps {
   txHash: string;
   status: UITransactionStatus;
@@ -80,10 +65,7 @@ export const UITransactionModal: React.FC<TActionModalProps> = observer(
 
     return (
       <Box pad={{ horizontal: 'medium', vertical: 'medium' }} gap="small">
-        <ModalHeader
-          title={uiTx.title || getUITxTitle(uiTx.status)}
-          onClose={onClose}
-        />
+        <ModalHeader title={uiTx.title} onClose={onClose} />
         <UITxModalContent
           txHash={uiTx.txHash}
           status={uiTx.status}

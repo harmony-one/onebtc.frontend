@@ -12,6 +12,7 @@ import { RedeemConfirmModal } from './components/RedeemConfirmModal';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IRedeem, IVault } from '../../modules/dashboard/dashboardTypes';
 import { retry } from '../../utils';
+import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -65,7 +66,14 @@ export class RedeemPageStore extends StoreConstructor {
   public async executeRedeem(redeemId: string, btcTxHash: string) {
     this.status = 'pending';
 
-    const redeemUiTx = this.stores.uiTransactionsStore.create();
+    const redeemUiTx = this.stores.uiTransactionsStore.create(undefined, {
+      titles: {
+        [UITransactionStatus.WAITING_SIGN_IN]:
+          'Waiting for user to sign execute redeem request',
+        [UITransactionStatus.PROGRESS]:
+          'Waiting for execute redeem transaction to confirm',
+      },
+    });
     redeemUiTx.setStatusProgress();
     redeemUiTx.showModal();
     try {
@@ -75,24 +83,17 @@ export class RedeemPageStore extends StoreConstructor {
 
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
-      console.log('### run execute issuePageStore');
-
       redeemUiTx.setStatusWaitingSignIn();
 
-      redeemUiTx.setTitle('Waiting for user to sign execute redeem request');
       const result = await hmyClient.executeRedeem(
         address,
         redeem.redeemId,
         btcTxHash,
         txHash => {
           redeemUiTx.setTxHash(txHash);
-          redeemUiTx.setTitle(
-            'Waiting for execute redeem transaction to confirm',
-          );
           redeemUiTx.setStatusProgress();
         },
       );
-      console.log('### execute redeem success');
       redeemUiTx.hideModal();
       redeemUiTx.setStatusSuccess();
 
@@ -177,7 +178,14 @@ export class RedeemPageStore extends StoreConstructor {
     }
     this.status = 'pending';
 
-    const redeemUiTx = this.stores.uiTransactionsStore.create();
+    const redeemUiTx = this.stores.uiTransactionsStore.create(undefined, {
+      titles: {
+        [UITransactionStatus.WAITING_SIGN_IN]:
+          'Waiting for user to sign request redeem request',
+        [UITransactionStatus.PROGRESS]:
+          'Waiting for confirmation of redeem request',
+      },
+    });
 
     redeemUiTx.setStatusWaitingSignIn();
     redeemUiTx.showModal();
@@ -185,25 +193,20 @@ export class RedeemPageStore extends StoreConstructor {
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       const redeemAmount = bitcoinToSatoshi(this.form.oneBTCAmount);
-      console.log('### redeemAmount', redeemAmount);
       const btcAddress = this.form.bitcoinAddress;
       const vaultId = this.form.vaultId;
 
       const _btcAddress = btcAddressBech32ToHex(btcAddress);
 
-      redeemUiTx.setTitle('Waiting for user to sign request redeem request');
       const redeemRequest = await hmyClient.requestRedeem(
         redeemAmount,
         _btcAddress,
         vaultId,
         txHash => {
           redeemUiTx.setTxHash(txHash);
-          redeemUiTx.setTitle('Waiting for confirmation of redeem request');
           redeemUiTx.setStatusProgress();
         },
       );
-
-      console.log('### redeemRequest', redeemRequest);
 
       const redeem = await retry(
         () => this.stores.redeemStore.loadRedeem(redeemRequest.redeem_id),

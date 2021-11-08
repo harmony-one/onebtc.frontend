@@ -3,6 +3,7 @@ import { action, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import { TransferConfirmModal } from './components/TransferConfirmModal';
 import { bitcoinToSatoshi, satoshiToBitcoin } from '../../services/bitcoin';
+import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -28,7 +29,14 @@ export class TransferPageStore extends StoreConstructor {
     }
     this.status = 'pending';
 
-    const transferUiTx = this.stores.uiTransactionsStore.create();
+    const transferUiTx = this.stores.uiTransactionsStore.create(undefined, {
+      titles: {
+        [UITransactionStatus.WAITING_SIGN_IN]:
+          'Waiting for user to sign transfer request',
+        [UITransactionStatus.PROGRESS]:
+          'Waiting for transfer transaction to confirm',
+      },
+    });
     transferUiTx.setStatusWaitingSignIn();
     transferUiTx.showModal();
 
@@ -38,13 +46,11 @@ export class TransferPageStore extends StoreConstructor {
       const issueAmount = bitcoinToSatoshi(this.form.oneBTCAmount);
       console.log('### issueAmount', issueAmount);
 
-      transferUiTx.setTitle('Waiting for user to sign transfer request');
       const result = await hmyClient.transfer(
         this.form.oneAddress,
         issueAmount,
         txHash => {
           transferUiTx.setTxHash(txHash);
-          transferUiTx.setTitle('Waiting for transfer transaction to confirm');
           transferUiTx.setStatusProgress();
         },
       );
