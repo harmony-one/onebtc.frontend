@@ -55,35 +55,50 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
       </Box>
 
-      <Box direction="row" width="100%" align="start" justify="between">
+      <Box direction="column" width="100%" align="start" justify="between">
         <Box>
-          <Text>Destination Address</Text>
+          <Text>Destination Address:</Text>
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmony mono hash={issueInfo.requester} type="address" />
+            <LinkHarmony
+              mono
+              cut={false}
+              hash={issueInfo.requester}
+              type="address"
+            />
           </Text>
         </Box>
       </Box>
 
-      <Box direction="row" width="100%" align="start" justify="between">
+      <Box direction="column" width="100%" align="start" justify="between">
         <Box>
-          <Text>Vault Account</Text>
+          <Text>Vault Account:</Text>
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmony mono hash={issueInfo.vaultId} type="address" />
+            <LinkHarmony
+              mono
+              cut={false}
+              hash={issueInfo.vaultId}
+              type="address"
+            />
           </Text>
         </Box>
       </Box>
 
-      <Box direction="row" width="100%" align="start" justify="between">
+      <Box direction="column" width="100%" align="start" justify="between">
         <Box>
-          <Text>Vault BTC Address</Text>
+          <Text>Vault BTC Address:</Text>
         </Box>
         <Box>
           <Text bold>
-            <LinkBitcoin mono type="wallet" hash={issueInfo.bitcoinAddress} />
+            <LinkBitcoin
+              mono
+              cut={false}
+              type="wallet"
+              hash={issueInfo.bitcoinAddress}
+            />
           </Text>
         </Box>
       </Box>

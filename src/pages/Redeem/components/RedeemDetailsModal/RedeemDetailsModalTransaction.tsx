@@ -67,24 +67,34 @@ export const RedeemDetailsModalTransaction: React.FC<{
         </Box>
       </Box>
 
-      <Box direction="row" width="100%" align="start" justify="between">
+      <Box direction="column" width="100%" align="start" justify="between">
         <Box>
-          <Text>Destination Address</Text>
+          <Text>Destination Address:</Text>
         </Box>
         <Box>
           <Text bold>
-            <LinkBitcoin mono type="wallet" hash={redeemInfo.bitcoinAddress} />
+            <LinkBitcoin
+              mono
+              cut={false}
+              type="wallet"
+              hash={redeemInfo.bitcoinAddress}
+            />
           </Text>
         </Box>
       </Box>
 
-      <Box direction="row" width="100%" align="start" justify="between">
+      <Box direction="column" width="100%" align="start" justify="between">
         <Box>
-          <Text>Vault Account</Text>
+          <Text>Vault Account:</Text>
         </Box>
         <Box>
           <Text bold>
-            <LinkHarmony mono hash={redeemInfo.vaultId} type="address" />
+            <LinkHarmony
+              mono
+              cut={false}
+              hash={redeemInfo.vaultId}
+              type="address"
+            />
           </Text>
         </Box>
       </Box>
