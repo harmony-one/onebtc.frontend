@@ -80,7 +80,10 @@ export const UITransactionModal: React.FC<TActionModalProps> = observer(
 
     return (
       <Box pad={{ horizontal: 'medium', vertical: 'medium' }} gap="small">
-        <ModalHeader title={getUITxTitle(uiTx.status)} onClose={onClose} />
+        <ModalHeader
+          title={uiTx.title || getUITxTitle(uiTx.status)}
+          onClose={onClose}
+        />
         <UITxModalContent
           txHash={uiTx.txHash}
           status={uiTx.status}

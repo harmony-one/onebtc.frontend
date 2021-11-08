@@ -87,7 +87,6 @@ export class IssuePageStore extends StoreConstructor {
 
   @action.bound
   async executeIssue(issueId: string, btcTransactionHash: string) {
-    console.log('### executeIssue');
     this.status = 'pending';
 
     const uiTxId = guid();
@@ -102,21 +101,19 @@ export class IssuePageStore extends StoreConstructor {
 
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
-      console.log('### run execute issuePageStore');
-
+      issueUiTx.setTitle('Waiting for user to sign execute issue request');
       const result = await hmyClient.executeIssue(
         address,
         issueInfo.issueId,
         btcTransactionHash,
         txHash => {
           issueUiTx.setTxHash(txHash);
+          issueUiTx.setTitle(
+            'Waiting for execute issue transaction to confirm',
+          );
           issueUiTx.setStatusProgress();
         },
       );
-
-      console.log('### result', result);
-
-      console.log('### execute issuePageStore success');
 
       issueUiTx.setStatusSuccess();
       issueUiTx.hideModal();
@@ -242,6 +239,7 @@ export class IssuePageStore extends StoreConstructor {
       console.log('### Request Issue');
 
       issueUiTx.setStatusWaitingSignIn();
+      issueUiTx.setTitle('Waiting to user to sign issue request');
 
       console.log('### issueAmount', issueAmount);
 
@@ -251,6 +249,7 @@ export class IssuePageStore extends StoreConstructor {
         txHash => {
           issueUiTx.setTxHash(txHash);
           issueUiTx.setStatusProgress();
+          issueUiTx.setTitle('Waiting for confirmation of issue request');
         },
       );
 

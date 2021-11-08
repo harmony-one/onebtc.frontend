@@ -79,12 +79,16 @@ export class RedeemPageStore extends StoreConstructor {
 
       redeemUiTx.setStatusWaitingSignIn();
 
+      redeemUiTx.setTitle('Waiting for user to sign execute redeem request');
       const result = await hmyClient.executeRedeem(
         address,
         redeem.redeemId,
         btcTxHash,
         txHash => {
           redeemUiTx.setTxHash(txHash);
+          redeemUiTx.setTitle(
+            'Waiting for execute redeem transaction to confirm',
+          );
           redeemUiTx.setStatusProgress();
         },
       );
@@ -187,12 +191,14 @@ export class RedeemPageStore extends StoreConstructor {
 
       const _btcAddress = btcAddressBech32ToHex(btcAddress);
 
+      redeemUiTx.setTitle('Waiting for user to sign request redeem request');
       const redeemRequest = await hmyClient.requestRedeem(
         redeemAmount,
         _btcAddress,
         vaultId,
         txHash => {
           redeemUiTx.setTxHash(txHash);
+          redeemUiTx.setTitle('Waiting for confirmation of redeem request');
           redeemUiTx.setStatusProgress();
         },
       );

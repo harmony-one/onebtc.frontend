@@ -19,12 +19,9 @@ export const RedeemWithdrawModalContent: React.FC<{ redeemId: string }> = ({
       </Box>
 
       <Box align="center">
-        <Text>
-          You will receive&nbsp;
-          <Text inline color="Orange500">
-            {redeemInfo.totalReceived}
-          </Text>
-          &nbsp;BTC
+        <Text>You will receive:</Text>
+        <Text inline color="Orange500">
+          {redeemInfo.totalReceived} &nbsp;BTC
         </Text>
         <Text color="#748695" size="small" inline>
           ≈ ${formatWithSixDecimals(redeemInfo.totalReceivedUsd)}

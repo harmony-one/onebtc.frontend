@@ -37,6 +37,8 @@ export class UITransaction extends StoreConstructor {
 
   @observable
   error: Error;
+  @observable
+  private _title: string = '';
 
   constructor(id: string, stores: IStores) {
     super(stores);
@@ -46,6 +48,16 @@ export class UITransaction extends StoreConstructor {
   @action.bound
   setStatusWaitingSignIn() {
     this.status = UITransactionStatus.WAITING_SIGN_IN;
+  }
+
+  @action.bound
+  setTitle(title: string) {
+    this._title = title;
+  }
+
+  @computed
+  get title() {
+    return this._title;
   }
 
   @action.bound

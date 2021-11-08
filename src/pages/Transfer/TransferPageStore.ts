@@ -38,11 +38,13 @@ export class TransferPageStore extends StoreConstructor {
       const issueAmount = bitcoinToSatoshi(this.form.oneBTCAmount);
       console.log('### issueAmount', issueAmount);
 
+      transferUiTx.setTitle('Waiting for user to sign transfer request');
       const result = await hmyClient.transfer(
         this.form.oneAddress,
         issueAmount,
         txHash => {
           transferUiTx.setTxHash(txHash);
+          transferUiTx.setTitle('Waiting for transfer transaction to confirm');
           transferUiTx.setStatusProgress();
         },
       );
