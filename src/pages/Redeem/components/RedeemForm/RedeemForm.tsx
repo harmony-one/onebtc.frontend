@@ -11,7 +11,7 @@ import {
   MobxForm,
 } from 'components/Form';
 import {
-  formatWithSixDecimals,
+  formatWithEightDecimals,
   lessThanSat,
   moreThanZero,
 } from '../../../../utils';
@@ -41,7 +41,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
             <VaultStatusDot isActive={vaultInfo.isActive} />
             <Text>{name}: </Text>
             <Text bold>
-              {formatWithSixDecimals(satoshiToBitcoin(maxRedeemAmount))}
+              {formatWithEightDecimals(satoshiToBitcoin(maxRedeemAmount))}
             </Text>
             <Text> 1BTC</Text>
           </Box>

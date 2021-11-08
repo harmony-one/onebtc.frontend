@@ -10,7 +10,7 @@ import {
   Select,
 } from 'components/Form';
 import {
-  formatWithSixDecimals,
+  formatWithEightDecimals,
   lessThanSat,
   moreThanZero,
 } from '../../../../utils';
@@ -42,7 +42,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
             <VaultStatusDot isActive={vaultInfo.isActive} />
             <Text>{name}: </Text>
             <Text bold>
-              {formatWithSixDecimals(
+              {formatWithEightDecimals(
                 satoshiToBitcoin(vaultInfo.availableAmountSat.toString()),
               )}
             </Text>
