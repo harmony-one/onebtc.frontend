@@ -140,9 +140,10 @@ export const RedeemForm: React.FC<Props> = observer(() => {
           Bitcoin Network Fee
         </Text>
         <PriceView
-          value={satoshiToBitcoin(btcNodeStore.fee)}
+          value={formatWithEightDecimals(
+            satoshiToBitcoin(btcNodeStore.networkFee),
+          )}
           rate={user.btcRate}
-          boxProps={{ pad: {} }}
           tokenName="BTC"
         />
       </Box>
@@ -161,7 +162,6 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         <PriceView
           value={redeemPageStore.totalReceived}
           rate={user.btcRate}
-          boxProps={{ pad: {} }}
           tokenName="BTC"
         />
       </Box>

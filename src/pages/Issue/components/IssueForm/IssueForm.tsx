@@ -120,12 +120,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         <Text size="small" bold={true}>
           Security Deposit
         </Text>
-        <PriceView
-          value={1}
-          rate={user.oneRate}
-          boxProps={{ pad: {} }}
-          tokenName="ONE"
-        />
+        <PriceView value={1} rate={user.oneRate} tokenName="ONE" />
       </Box>
 
       <Divider colorful fullwidth />
@@ -142,7 +137,6 @@ export const IssueForm: React.FC<Props> = observer(() => {
         <PriceView
           value={issuePageStore.totalReceive}
           rate={user.btcRate}
-          boxProps={{ pad: {} }}
           tokenName="1BTC"
         />
       </Box>

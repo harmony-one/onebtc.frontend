@@ -9,7 +9,7 @@ export const WatcherBTCNode: React.FC = React.memo(() => {
     btcNodeStore.loadBasicInfo();
   }, [btcNodeStore]);
 
-  useInterval({ callback: updateInfo, timeout: 5000 });
+  useInterval({ callback: updateInfo, timeout: 15000 });
 
   return null;
 });
