@@ -39,7 +39,7 @@ export class UITransaction extends StoreConstructor {
     burnId: string;
   };
 
-  titles: Record<UITransactionStatus, string> = {
+  private _titles: Record<UITransactionStatus, string> = {
     [UITransactionStatus.WAITING_SIGN_IN]: 'Waiting for sign',
     [UITransactionStatus.SUCCESS]: 'Transaction success',
     [UITransactionStatus.PROGRESS]: 'Waiting for transaction',
@@ -49,15 +49,13 @@ export class UITransaction extends StoreConstructor {
 
   @observable
   error: Error;
-  @observable
-  private _title: string = '';
 
   constructor(id: string, config: UITransactionConfig, stores: IStores) {
     super(stores);
     this.id = id;
 
     if (config.titles) {
-      this.titles = { ...this.titles, ...config.titles };
+      this._titles = { ...this._titles, ...config.titles };
     }
   }
 
@@ -66,14 +64,9 @@ export class UITransaction extends StoreConstructor {
     this.status = UITransactionStatus.WAITING_SIGN_IN;
   }
 
-  @action.bound
-  setTitle(title: string) {
-    this._title = title;
-  }
-
   @computed
   get title() {
-    return this.titles[this.status];
+    return this._titles[this.status];
   }
 
   @action.bound
@@ -112,7 +105,7 @@ export class UITransaction extends StoreConstructor {
       },
       closeText: '',
       noValidation: true,
-      width: '320px',
+      width: '700px',
       showOther: true,
       onApply: () => {
         return Promise.resolve();

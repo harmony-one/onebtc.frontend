@@ -7,7 +7,7 @@ import cn from 'classnames';
 import * as s from '../../../components/Table/Dashboard/DashboardTableStyles.styl';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
 import { IVault } from 'onebtc.sdk/lib/dashboard-api/interfaces';
-import { formatWithTwoDecimals } from '../../../utils';
+import { formatWithEightDecimals, formatWithTwoDecimals } from '../../../utils';
 import { Box } from 'grommet';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
@@ -64,7 +64,8 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: value => {
-        return <Text>{satoshiToBitcoin(value.toBeIssued)} BTC</Text>;
+        const amount = satoshiToBitcoin(value.toBeIssued);
+        return <Text>{formatWithEightDecimals(amount)} BTC</Text>;
       },
     },
     {
@@ -73,7 +74,9 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       render: value => {
-        return <Text>{satoshiToBitcoin(value.issued)} BTC</Text>;
+        const vaultInfo = vaultStore.getVaultInfo(value);
+        const amount = satoshiToBitcoin(vaultInfo.toBeRedeemedSat);
+        return <Text>{formatWithEightDecimals(amount)} BTC</Text>;
       },
     },
     {

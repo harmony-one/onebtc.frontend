@@ -7,6 +7,7 @@ import { LinkHarmony } from '../../../components/LinkHarmony';
 import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
 import { vaultBalancesStore } from '../../../stores/VaultStore';
 import { observer } from 'mobx-react';
+import { formatWithEightDecimals } from '../../../utils';
 
 interface Props {
   vaultId: string;
@@ -34,13 +35,13 @@ export const VaultInfo: React.FC<Props> = React.memo(
           </Box>
         </Box>
         <Divider fullwidth />
-        <Box direction="row" width="100%" align="start" justify="between">
+        <Box direction="column" width="100%">
           <Box>
             <Text>Address:</Text>
           </Box>
           <Box>
             <Text bold>
-              <LinkHarmony hash={vault.id} type="address" />
+              <LinkHarmony cut={false} hash={vault.id} type="address" />
             </Text>
           </Box>
         </Box>
@@ -59,7 +60,9 @@ export const VaultInfo: React.FC<Props> = React.memo(
             <Text>Total issued:</Text>
           </Box>
           <Box>
-            <Text bold>{satoshiToBitcoin(balance)} BTC</Text>
+            <Text bold>
+              {formatWithEightDecimals(satoshiToBitcoin(balance))} BTC
+            </Text>
           </Box>
         </Box>
         <Divider fullwidth />
@@ -77,7 +80,12 @@ export const VaultInfo: React.FC<Props> = React.memo(
             <Text>Pending:</Text>
           </Box>
           <Box>
-            <Text bold>{satoshiToBitcoin(vaultInfo.toBeIssuedSat)} BTC</Text>
+            <Text bold>
+              {formatWithEightDecimals(
+                satoshiToBitcoin(vaultInfo.toBeIssuedSat),
+              )}{' '}
+              BTC
+            </Text>
           </Box>
         </Box>
         <Divider fullwidth />
@@ -86,7 +94,12 @@ export const VaultInfo: React.FC<Props> = React.memo(
             <Text>Locked:</Text>
           </Box>
           <Box>
-            <Text bold>{satoshiToBitcoin(vaultInfo.toBeRedeemedSat)} BTC</Text>
+            <Text bold>
+              {formatWithEightDecimals(
+                satoshiToBitcoin(vaultInfo.toBeRedeemedSat),
+              )}{' '}
+              BTC
+            </Text>
           </Box>
         </Box>
       </Box>

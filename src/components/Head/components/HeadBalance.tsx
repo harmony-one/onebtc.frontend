@@ -1,7 +1,11 @@
 import React from 'react';
 import { Text } from '../../Base';
 import { Box } from 'grommet';
-import { formatWithTwoDecimals, ones } from '../../../utils';
+import {
+  formatWithEightDecimals,
+  formatWithTwoDecimals,
+  ones,
+} from '../../../utils';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react-lite';
 import { satoshiToBitcoin } from '../../../services/bitcoin';
@@ -14,7 +18,6 @@ export const HeadBalance: React.FC = observer(() => {
   }
 
   const btcAmount = satoshiToBitcoin(user.oneBTCBalance);
-  const btcBalance = btcAmount > 0 ? btcAmount.toFixed(8) : 0;
 
   return (
     <Box direction="column" justify="center" align="end">
@@ -26,7 +29,7 @@ export const HeadBalance: React.FC = observer(() => {
       </Box>
       <Box direction="row">
         <Text size="small" bold>
-          {btcBalance.toString()}
+          {formatWithEightDecimals(btcAmount)}
         </Text>
         <Text size="small">&nbsp;1BTC</Text>
       </Box>

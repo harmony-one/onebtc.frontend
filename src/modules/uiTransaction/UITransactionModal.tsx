@@ -31,9 +31,9 @@ export const UITxModalContent: React.FC<UITxModalContentProps> = ({
         </Box>
       )}
       {txHash && (
-        <Box direction="row">
+        <Box direction="column">
           <Text align="center">Transaction:&nbsp;</Text>
-          <LinkHarmony hash={txHash} type="tx" />
+          <LinkHarmony cut={false} hash={txHash} type="tx" />
         </Box>
       )}
 

@@ -20,7 +20,7 @@ export const IssueConfirmModalContent: React.FC<{
           <Text align="center">Transaction:</Text>
         </Box>
         <Box>
-          <LinkHarmony hash={txHash} type="tx" />
+          <LinkHarmony cut={false} hash={txHash} type="tx" />
         </Box>
       </Box>
     </Box>

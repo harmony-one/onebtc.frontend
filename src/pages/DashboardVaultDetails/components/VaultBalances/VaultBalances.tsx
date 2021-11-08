@@ -6,6 +6,7 @@ import { getVaultBalancesStore } from './VaultBalancesStore';
 import { observer } from 'mobx-react';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
+import { formatWithEightDecimals } from '../../../../utils';
 
 interface Props {
   vaultId: string;
@@ -33,7 +34,11 @@ export const VaultBalances: React.FC<Props> = observer(({ vaultId }) => {
       className: s.column,
       key: 'amount',
       render: value => {
-        return <div>{satoshiToBitcoin(value.amount)} BTC</div>;
+        return (
+          <div>
+            {formatWithEightDecimals(satoshiToBitcoin(value.amount))} BTC
+          </div>
+        );
       },
     },
   ];

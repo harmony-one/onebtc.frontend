@@ -89,6 +89,7 @@ export class IssuePageStore extends StoreConstructor {
           'Waiting for user to sign execute issue request',
         [UITransactionStatus.PROGRESS]:
           'Waiting for execute issue transaction to confirm',
+        [UITransactionStatus.FAIL]: 'Error while execute issue transaction',
       },
     });
     issueUiTx.setStatusWaitingSignIn();
@@ -121,7 +122,7 @@ export class IssuePageStore extends StoreConstructor {
         applyText: '',
         closeText: '',
         noValidation: true,
-        width: '320px',
+        width: '700px',
         showOther: true,
         onApply: () => {
           return Promise.resolve();
@@ -226,6 +227,7 @@ export class IssuePageStore extends StoreConstructor {
           'Waiting to user to sign issue request',
         [UITransactionStatus.PROGRESS]:
           'Waiting for confirmation of issue request',
+        [UITransactionStatus.FAIL]: 'Error while issue request transaction',
       },
     });
     issueUiTx.showModal();
