@@ -66,16 +66,6 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
         <canvas ref={qrRef} />
       </Box>
 
-      <Box alignSelf="start">
-        <Text>
-          <Text inline bold color="Red">
-            Warning:
-          </Text>{' '}
-          Some Bitcoin wallets display values in mBTC. Please ensure you send
-          the correct amount: {issueInfo.sendAmount * 1000} mBTC
-        </Text>
-      </Box>
-
       <Box alignSelf="start" margin={{ bottom: 'small' }}>
         <Text>
           <Text inline bold color="Red">
