@@ -160,7 +160,10 @@ export const RedeemForm: React.FC<Props> = observer(() => {
           You will receive
         </Text>
         <PriceView
-          value={redeemPageStore.totalReceived}
+          value={
+            redeemPageStore.totalReceived -
+            satoshiToBitcoin(btcNodeStore.networkFee)
+          }
           rate={user.btcRate}
           tokenName="BTC"
         />

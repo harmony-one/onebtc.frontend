@@ -24,8 +24,11 @@ export class BTCNodeStore extends StoreConstructor {
 
   @action.bound
   async loadFee(): Promise<number> {
-    const response = await axios.get('https://api.blockcypher.com/v1/btc/main');
-    return response.data.medium_fee_per_kb / 2;
+    const response = await axios.get(
+      'https://bitcoiner.live/api/fees/estimates/latest',
+    );
+    const fee = response.data.estimates[30].total.p2wpkh.satoshi;
+    return Math.round(fee);
   }
 
   @action.bound
