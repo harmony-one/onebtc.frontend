@@ -74,7 +74,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         label={`Amount`}
         name="amount"
         type="decimal"
-        precision="6"
+        precision="8"
         delimiter="."
         renderRight={
           <Box direction="row" gap="xxsmall">

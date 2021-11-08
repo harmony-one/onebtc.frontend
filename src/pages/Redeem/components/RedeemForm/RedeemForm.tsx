@@ -77,7 +77,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         label="Amount"
         name="oneBTCAmount"
         type="decimal"
-        precision="6"
+        precision="8"
         delimiter="."
         placeholder="0.0"
         renderRight={

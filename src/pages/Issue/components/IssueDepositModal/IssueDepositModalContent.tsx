@@ -2,7 +2,10 @@ import { useQRCode } from 'react-qrcodes';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
 import { Button, Text } from '../../../../components/Base';
-import { formatWithSixDecimals } from '../../../../utils';
+import {
+  formatWithEightDecimals,
+  formatWithSixDecimals,
+} from '../../../../utils';
 import React, { useCallback } from 'react';
 import { useStores } from '../../../../stores';
 import { Countdown } from '../../../../components/Countdown';
@@ -39,7 +42,7 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
       <Box align="center">
         <Text inline>Send</Text>
         <Text inline color="Orange500">
-          {issueInfo.sendAmount} BTC
+          {formatWithEightDecimals(issueInfo.sendAmount)} BTC
         </Text>
         <Text color="#748695" size="small" inline>
           ≈ ${formatWithSixDecimals(issueInfo.sendUsdAmount)}

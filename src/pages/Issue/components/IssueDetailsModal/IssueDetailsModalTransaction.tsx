@@ -2,7 +2,10 @@ import { useStores } from '../../../../stores';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
 import { Divider, Text, Title } from '../../../../components/Base';
-import { formatWithSixDecimals } from '../../../../utils';
+import {
+  formatWithEightDecimals,
+  formatWithSixDecimals,
+} from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
 import React from 'react';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
@@ -17,9 +20,9 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
   const issueInfo = issueStore.getIssueInfo(issueId);
 
   return useObserver(() => (
-    <Box gap="small" align="center">
+    <Box height="100%" gap="small" align="center" alignSelf="stretch">
       <Box align="center">
-        <Title>{issueInfo.totalReceived} 1BTC</Title>
+        <Title>{formatWithEightDecimals(issueInfo.totalReceived)} 1BTC</Title>
         <Text color="#748695" size="small" inline>
           ≈ ${formatWithSixDecimals(issueInfo.totalReceivedUsd)}
         </Text>
@@ -85,7 +88,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
       </Box>
 
-      <Box alignSelf="start" margin={{ bottom: 'small' }}>
+      <Box margin={{ top: 'auto', bottom: 'small' }}>
         <Text>
           <Text inline bold color="Red">
             Note:

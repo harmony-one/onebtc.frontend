@@ -24,7 +24,7 @@ export const IssueDetailsModalContent: React.FC<Props> = ({ issueId }) => {
       </Text>
       <Divider fullwidth colorful />
       <Box direction="row-responsive" gap="medium" basis="full" align="start">
-        <Box basis="1/2">
+        <Box basis="1/2" alignSelf="stretch">
           <IssueDetailsModalTransaction issueId={issueId} />
         </Box>
         <Box basis="1/2">

@@ -11,7 +11,7 @@ import {
 } from '../../../services/bitcoin';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
 import utils from 'web3-utils';
-import { dateTimeAgoFormat } from '../../../utils';
+import { dateTimeAgoFormat, formatWithEightDecimals } from '../../../utils';
 
 export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
   {
@@ -60,7 +60,9 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     render: value => {
       const amount = utils.toBN(value.amount);
       const fee = utils.toBN(value.fee);
-      return <div>{satoshiToBitcoin(amount.add(fee).toString())} 1BTC</div>;
+      const totalAmount = amount.add(fee).toString();
+      const totalBtcAmount = satoshiToBitcoin(totalAmount);
+      return <div>{formatWithEightDecimals(totalBtcAmount)} 1BTC</div>;
     },
   },
   {

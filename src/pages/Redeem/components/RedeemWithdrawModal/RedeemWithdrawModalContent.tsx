@@ -2,7 +2,10 @@ import { useStores } from '../../../../stores';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
 import { Text } from '../../../../components/Base';
-import { formatWithSixDecimals } from '../../../../utils';
+import {
+  formatWithEightDecimals,
+  formatWithSixDecimals,
+} from '../../../../utils';
 import React from 'react';
 
 export const RedeemWithdrawModalContent: React.FC<{ redeemId: string }> = ({
@@ -21,7 +24,7 @@ export const RedeemWithdrawModalContent: React.FC<{ redeemId: string }> = ({
       <Box align="center">
         <Text>You will receive:</Text>
         <Text inline color="Orange500">
-          {redeemInfo.totalReceived} &nbsp;BTC
+          {formatWithEightDecimals(redeemInfo.totalReceived)} BTC
         </Text>
         <Text color="#748695" size="small" inline>
           ≈ ${formatWithSixDecimals(redeemInfo.totalReceivedUsd)}

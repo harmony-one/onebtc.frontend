@@ -117,6 +117,7 @@ export class IssuePageStore extends StoreConstructor {
 
       issueUiTx.setStatusSuccess();
       issueUiTx.hideModal();
+      issueUiTx.setTitle('');
 
       this.stores.actionModals.open(IssueConfirmModal, {
         initData: {

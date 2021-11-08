@@ -3,7 +3,10 @@ import { useStores } from '../../../../stores';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
 import { Divider, Text, Title } from '../../../../components/Base';
-import { formatWithSixDecimals } from '../../../../utils';
+import {
+  formatWithEightDecimals,
+  formatWithSixDecimals,
+} from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
 import { LinkHarmony } from '../../../../components/LinkHarmony';
@@ -18,7 +21,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box align="center">
-        <Title>{redeemInfo.totalReceived} 1BTC</Title>
+        <Title>{formatWithEightDecimals(redeemInfo.totalReceived)} 1BTC</Title>
         <Text color="#748695" size="small" inline>
           ≈ ${formatWithSixDecimals(redeemInfo.totalReceivedUsd)}
         </Text>

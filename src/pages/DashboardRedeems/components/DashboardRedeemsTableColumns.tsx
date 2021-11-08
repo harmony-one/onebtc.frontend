@@ -10,7 +10,7 @@ import {
   btcAddressHexToBech32,
 } from '../../../services/bitcoin';
 import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
-import { dateTimeAgoFormat } from '../../../utils';
+import { dateTimeAgoFormat, formatWithTenDecimals } from '../../../utils';
 
 export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
   {
@@ -57,7 +57,8 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     key: 'id',
     width: '33',
     render: (value: IRedeem) => {
-      return <div>{satoshiToBitcoin(value.amountBtc)} BTC</div>;
+      const amountBtc = satoshiToBitcoin(value.amountBtc);
+      return <div>{formatWithTenDecimals(amountBtc)} BTC</div>;
     },
   },
   {
