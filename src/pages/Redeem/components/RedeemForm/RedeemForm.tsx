@@ -24,7 +24,13 @@ import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const RedeemForm: React.FC<Props> = observer(() => {
-  const { redeemPageStore, user, btcNodeStore, vaultStore } = useStores();
+  const {
+    redeemPageStore,
+    user,
+    btcNodeStore,
+    ratesStore,
+    vaultStore,
+  } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
   const vaultOptions = useMemo(() => {
@@ -124,7 +130,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         </Text>
         <PriceView
           value={redeemPageStore.bridgeFee}
-          rate={user.btcRate}
+          rate={ratesStore.BTC_USDT}
           boxProps={{ pad: {} }}
           tokenName="BTC"
         />
@@ -143,7 +149,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
           value={formatWithEightDecimals(
             satoshiToBitcoin(btcNodeStore.networkFee),
           )}
-          rate={user.btcRate}
+          rate={ratesStore.BTC_USDT}
           tokenName="BTC"
         />
       </Box>
@@ -164,7 +170,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
             redeemPageStore.totalReceived -
             satoshiToBitcoin(btcNodeStore.networkFee)
           }
-          rate={user.btcRate}
+          rate={ratesStore.BTC_USDT}
           tokenName="BTC"
         />
       </Box>

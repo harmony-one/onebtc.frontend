@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
-  const { user, issueStore } = useStores();
+  const { ratesStore, issueStore } = useStores();
   const issueInfo = issueStore.getIssueInfo(issueId);
 
   return useObserver(() => (
@@ -35,7 +35,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
           <PriceView
             tokenName="BTC"
             value={issueInfo.bridgeFee}
-            rate={user.btcRate}
+            rate={ratesStore.BTC_USDT}
           />
         </Box>
       </Box>
@@ -50,7 +50,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
           <PriceView
             tokenName="1BTC"
             value={issueInfo.totalReceived}
-            rate={user.btcRate}
+            rate={ratesStore.BTC_USDT}
           />
         </Box>
       </Box>

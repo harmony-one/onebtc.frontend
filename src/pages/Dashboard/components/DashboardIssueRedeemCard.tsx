@@ -14,7 +14,7 @@ import { formatWithTwoDecimals } from '../../../utils';
 interface Props {}
 
 export const DashboardIssueRedeemCard: React.FC<Props> = observer(() => {
-  const { routing, user } = useStores();
+  const { routing, ratesStore } = useStores();
   return (
     <DashboardCard>
       <DashboardCardHead>
@@ -25,7 +25,7 @@ export const DashboardIssueRedeemCard: React.FC<Props> = observer(() => {
           </Text>
           <Text bold>
             {formatWithTwoDecimals(
-              dashboardHistoryStore.issuedTotal * user.btcRate,
+              dashboardHistoryStore.issuedTotal * ratesStore.BTC_USDT,
             )}
             $
           </Text>

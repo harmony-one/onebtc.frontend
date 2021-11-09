@@ -23,7 +23,7 @@ import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const IssueForm: React.FC<Props> = observer(() => {
-  const { issuePageStore, user, vaultStore } = useStores();
+  const { issuePageStore, vaultStore, ratesStore } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
   const handleSubmit = useCallback(() => {
@@ -106,7 +106,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         </Text>
         <PriceView
           value={issuePageStore.bridgeFee}
-          rate={user.btcRate}
+          rate={ratesStore.BTC_USDT}
           tokenName="BTC"
         />
       </Box>
@@ -120,7 +120,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         <Text size="small" bold={true}>
           Security Deposit
         </Text>
-        <PriceView value={1} rate={user.oneRate} tokenName="ONE" />
+        <PriceView value={1} rate={ratesStore.ONE_USDT} tokenName="ONE" />
       </Box>
 
       <Divider colorful fullwidth />
@@ -136,7 +136,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         </Text>
         <PriceView
           value={issuePageStore.totalReceive}
-          rate={user.btcRate}
+          rate={ratesStore.BTC_USDT}
           tokenName="1BTC"
         />
       </Box>

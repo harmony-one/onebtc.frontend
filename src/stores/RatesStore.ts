@@ -15,7 +15,6 @@ export class RatesStore extends StoreConstructor {
   }
 
   @action public async loadRates() {
-    console.log('### loadRates');
     const [BTC_USDT, ONE_USDT, ONE_BTC] = await Promise.all([
       this.loadRate('BTCUSDT'),
       this.loadRate('ONEUSDT'),

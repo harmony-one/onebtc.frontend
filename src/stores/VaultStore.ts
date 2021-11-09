@@ -42,7 +42,8 @@ export class VaultStore extends EntityStore<IVault> {
   public collateralOneToSat(oneWei: string) {
     const oneAmount = utils.fromWei(oneWei);
     return (
-      (Number(oneAmount) * 1e8 * this.stores.user.oneBtcRate) / COLLATERAL_RATIO
+      (Number(oneAmount) * 1e8 * this.stores.ratesStore.ONE_BTC) /
+      COLLATERAL_RATIO
     );
   }
 
@@ -63,26 +64,26 @@ export class VaultStore extends EntityStore<IVault> {
   }
 
   public weiToSatoshi(wei: string | BN) {
-    if (!this.stores.user.oneBtcRate) {
+    if (!this.stores.ratesStore.ONE_BTC) {
       return new BN(0);
     }
-    const satRate = new BN(this.stores.user.oneBtcRate * 1e8);
+    const satRate = new BN(this.stores.ratesStore.ONE_BTC * 1e8);
     const oneToSatRate = new BN(utils.toWei('1')).div(satRate);
     return new BN(wei).div(oneToSatRate);
   }
 
   public satoshiToWei(sat: string | BN) {
-    if (!this.stores.user.oneBtcRate) {
+    if (!this.stores.ratesStore.ONE_BTC) {
       return new BN(0);
     }
-    const satRate = new BN(this.stores.user.oneBtcRate * 1e8);
+    const satRate = new BN(this.stores.ratesStore.ONE_BTC * 1e8);
     const oneToSatRate = new BN(utils.toWei('1')).div(satRate);
 
     return new BN(sat).mul(oneToSatRate);
   }
 
   public collateralSatToOne(sat: number) {
-    return (sat / 1e8 / this.stores.user.oneBtcRate) * COLLATERAL_RATIO;
+    return (sat / 1e8 / this.stores.ratesStore.ONE_BTC) * COLLATERAL_RATIO;
   }
 
   public calcNewVaultCollateral(

@@ -4,7 +4,6 @@ import { statusFetching } from '../constants';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { getHmyBalance } from '../services/hmyClient';
 import { StoreConstructor } from './core/StoreConstructor';
-import * as agent from 'superagent';
 import { getOneBTCClient } from '../services/oneBtcClient';
 import { ConnectWalletModal } from '../components/Head/components/ConnectWalletModal';
 
@@ -26,10 +25,6 @@ export class UserStoreEx extends StoreConstructor {
   @observable public address: string;
 
   @observable public balance: string = '0';
-
-  @observable public oneRate = 0;
-  @observable public btcRate = 0;
-  @observable public oneBtcRate = 0;
 
   @observable public isInfoReading = false;
   @observable public isInfoNewReading = false;
@@ -53,8 +48,6 @@ export class UserStoreEx extends StoreConstructor {
     //   console.log('### newBalance', newBalance);
     //   this.setBalance(newBalance / 1e8);
     // }, 3000);
-
-    this.getRates();
 
     this.isOneWallet = window.onewallet && window.onewallet.isOneWallet;
     this.onewallet = window.onewallet;
@@ -276,26 +269,6 @@ export class UserStoreEx extends StoreConstructor {
         isInfoNewReading2: this.isInfoNewReading,
       }),
     );
-  }
-
-  @action public async getRates() {
-    let res = await agent.get(
-      'https://api.binance.com/api/v1/ticker/24hr?symbol=ONEUSDT',
-    );
-
-    this.oneRate = res.body.lastPrice;
-
-    res = await agent.get(
-      'https://api.binance.com/api/v1/ticker/24hr?symbol=BTCUSDT',
-    );
-
-    this.btcRate = res.body.lastPrice;
-
-    res = await agent.get(
-      'https://api.binance.com/api/v1/ticker/24hr?symbol=ONEBTC',
-    );
-
-    this.oneBtcRate = res.body.lastPrice;
   }
 
   @action public async openConnectWalletModal() {

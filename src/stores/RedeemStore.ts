@@ -41,7 +41,7 @@ export class RedeemStore extends EntityStore<IRedeem> {
 
     return {
       sendAmount,
-      sendUsdAmount: sendAmount * this.stores.user.btcRate,
+      sendUsdAmount: sendAmount * this.stores.ratesStore.BTC_USDT,
       redeemId: redeem.id,
       vaultId: redeem.vault,
       bitcoinAddress: btcAddressHexToBech32(redeem.btcAddress),
@@ -49,7 +49,7 @@ export class RedeemStore extends EntityStore<IRedeem> {
       // @ts-expect-error transferFeeBtc
       transferFeeBtc: satoshiToBitcoin(redeem.transferFeeBtc),
       totalReceived: totalReceived,
-      totalReceivedUsd: totalReceived * this.stores.user.btcRate,
+      totalReceivedUsd: totalReceived * this.stores.ratesStore.BTC_USDT,
       rawRedeem: redeem,
       btcTx: redeem.btcTx,
       isConfirmedBtcTX,

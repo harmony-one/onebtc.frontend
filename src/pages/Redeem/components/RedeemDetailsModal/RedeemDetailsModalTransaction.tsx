@@ -14,7 +14,7 @@ import { LinkHarmony } from '../../../../components/LinkHarmony';
 export const RedeemDetailsModalTransaction: React.FC<{
   redeemId: string;
 }> = props => {
-  const { user, redeemStore } = useStores();
+  const { ratesStore, redeemStore } = useStores();
 
   const redeemInfo = redeemStore.getRedeemInfo(props.redeemId);
 
@@ -34,7 +34,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
           <PriceView
             tokenName="BTC"
             value={redeemInfo.bridgeFee}
-            rate={user.btcRate}
+            rate={ratesStore.BTC_USDT}
           />
         </Box>
       </Box>
@@ -47,7 +47,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
           <PriceView
             tokenName="BTC"
             value={redeemInfo.transferFeeBtc}
-            rate={user.btcRate}
+            rate={ratesStore.BTC_USDT}
           />
         </Box>
       </Box>
@@ -62,7 +62,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
           <PriceView
             tokenName="BTC"
             value={redeemInfo.totalReceived}
-            rate={user.btcRate}
+            rate={ratesStore.BTC_USDT}
           />
         </Box>
       </Box>

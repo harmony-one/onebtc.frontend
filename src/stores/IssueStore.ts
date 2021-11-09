@@ -33,7 +33,7 @@ export class IssueStore extends EntityStore<IIssue> {
       return null;
     }
 
-    const btcRate = this.stores.user.btcRate;
+    const btcRate = this.stores.ratesStore.BTC_USDT;
     const amount = satoshiToBitcoin(issue.amount);
     const sendAmount = satoshiToBitcoin(
       toBN(issue.amount)
