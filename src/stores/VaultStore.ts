@@ -128,7 +128,9 @@ export class VaultStore extends EntityStore<IVault> {
     const maxWithdraw = availableWeiToWithdraw;
 
     const availableAmountSat = availableSatToIssue;
-    const availableToRedeem = issuedSat;
+    const availableToRedeem = new BN(vault.toBeIssued).sub(
+      new BN(vault.toBeRedeemed),
+    );
     const isActive =
       vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
 
