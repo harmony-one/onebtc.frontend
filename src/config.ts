@@ -1,5 +1,5 @@
 interface Config {
-  network: string;
+  network: 'mainnet' | 'testnet';
   isTestnet: boolean;
   bitcoin: {
     waitConfirmations: number;
@@ -26,7 +26,7 @@ interface Config {
 }
 
 export const config: Config = {
-  network: process.env.NETWORK,
+  network: process.env.NETWORK as 'mainnet' | 'testnet',
   isTestnet: process.env.NETWORK === 'testnet',
   bitcoin: {
     waitConfirmations: parseInt(
