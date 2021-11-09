@@ -46,6 +46,8 @@ export class RedeemStore extends EntityStore<IRedeem> {
       vaultId: redeem.vault,
       bitcoinAddress: btcAddressHexToBech32(redeem.btcAddress),
       bridgeFee: satoshiToBitcoin(redeem.fee),
+      // @ts-expect-error transferFeeBtc
+      transferFeeBtc: satoshiToBitcoin(redeem.transferFeeBtc),
       totalReceived: totalReceived,
       totalReceivedUsd: totalReceived * this.stores.user.btcRate,
       rawRedeem: redeem,

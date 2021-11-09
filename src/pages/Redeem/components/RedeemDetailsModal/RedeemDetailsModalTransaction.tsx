@@ -46,7 +46,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
         <Box>
           <PriceView
             tokenName="BTC"
-            value={redeemInfo.bridgeFee}
+            value={redeemInfo.transferFeeBtc}
             rate={user.btcRate}
           />
         </Box>
