@@ -4,6 +4,5 @@ import { DashboardApi } from 'onebtc.sdk/lib/dashboard-api';
 export const dashboardClient = new DashboardApi({
   dashboardUrl: config.harmony.dashboardUrl,
   btcNodeUrl: config.bitcoin.btcNodeUrl,
-  // @ts-expect-error networkType does not exist
   networkType: config.network,
 });
