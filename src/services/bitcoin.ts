@@ -19,7 +19,7 @@ export const btcAddressBech32ToHex = (address: string) => {
 };
 
 export const bitcoinToSatoshi = (amount: string | number) => {
-  return Math.ceil(Number(amount) * 1e8);
+  return Math.round(Number(amount) * 1e8);
 };
 
 export const satoshiToBitcoin = (amount: string | number) => {
