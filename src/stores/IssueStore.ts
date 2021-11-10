@@ -35,13 +35,7 @@ export class IssueStore extends EntityStore<IIssue> {
   }
 
   @get
-  getIssueExtendeStatus(issueId: string): IssueExtendedStatus {
-    const issue = this.getEntity(issueId);
-
-    if (!issue) {
-      return null;
-    }
-
+  getIssueExtendedStatus(issue: IIssue): IssueExtendedStatus {
     if (issue.status === IssueStatus.COMPLETED) {
       return IssueExtendedStatus.COMPLETED;
     }
@@ -103,7 +97,7 @@ export class IssueStore extends EntityStore<IIssue> {
       expiredTime,
       isExpired: Date.now() - expiredTime >= 0,
       isCanceled: issue.status === IssueStatus.CANCELED,
-      extendedStatus: this.getIssueExtendeStatus(issueId),
+      extendedStatus: this.getIssueExtendedStatus(issue),
       rawIssue: issue,
       amount: amount,
       issueId: issue.id,

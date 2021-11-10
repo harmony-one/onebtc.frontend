@@ -9,7 +9,7 @@ import {
   satoshiToBitcoin,
   btcAddressHexToBech32,
 } from '../../../services/bitcoin';
-import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
+import { IssueStatusExtended } from '../../../components/Dashboard/EntityStatus';
 import utils from 'web3-utils';
 import { dateTimeAgoFormat, formatWithEightDecimals } from '../../../utils';
 
@@ -48,8 +48,8 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     className: s.column,
     key: 'id',
     width: '33',
-    render: value => {
-      return <EntityStatus status={value.status} />;
+    render: (value: IIssue) => {
+      return <IssueStatusExtended issue={value} />;
     },
   },
   {
