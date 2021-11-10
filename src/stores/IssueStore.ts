@@ -2,7 +2,7 @@ import { action, get } from 'mobx';
 import { dashboardClient } from '../modules/dashboard/dashboardClient';
 import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
-import { satoshiToBitcoin, btcAddressHexToBech32 } from '../services/bitcoin';
+import { btcAddressHexToBech32, satoshiToBitcoin } from '../services/bitcoin';
 import { toBN } from 'web3-utils';
 import { IssueStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 import { config } from '../config';
@@ -57,6 +57,7 @@ export class IssueStore extends EntityStore<IIssue> {
       openTime,
       expiredTime,
       isExpired: Date.now() - expiredTime >= 0,
+      isCanceled: issue.status === IssueStatus.CANCELED,
       rawIssue: issue,
       amount: amount,
       issueId: issue.id,

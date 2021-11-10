@@ -79,7 +79,7 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
         </Text>
       </Box>
 
-      {issueInfo.isExpired && (
+      {issueInfo.isExpired && !issueInfo.isCanceled && (
         <Button onClick={handleCancelIssue}>Cancel Issue</Button>
       )}
     </Box>
