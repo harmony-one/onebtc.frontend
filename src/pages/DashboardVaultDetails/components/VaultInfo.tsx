@@ -61,10 +61,23 @@ export const VaultInfo: React.FC<Props> = React.memo(
           </Box>
           <Box>
             <Text bold>
+              {formatWithEightDecimals(satoshiToBitcoin(vaultInfo.issuedSat))}{' '}
+              BTC
+            </Text>
+          </Box>
+        </Box>
+        <Divider fullwidth />
+        <Box direction="row" width="100%" align="start" justify="between">
+          <Box>
+            <Text>Total BTC balance:</Text>
+          </Box>
+          <Box>
+            <Text bold>
               {formatWithEightDecimals(satoshiToBitcoin(balance))} BTC
             </Text>
           </Box>
         </Box>
+
         <Divider fullwidth />
         <Box direction="row" width="100%" align="start" justify="between">
           <Box>

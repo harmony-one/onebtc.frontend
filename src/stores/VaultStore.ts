@@ -128,9 +128,12 @@ export class VaultStore extends EntityStore<IVault> {
     const maxWithdraw = availableWeiToWithdraw;
 
     const availableAmountSat = availableSatToIssue;
-    const availableToRedeem = new BN(vault.toBeIssued).sub(
+    const availableBalanceSatBN = new BN(vault.issued).sub(
       new BN(vault.toBeRedeemed),
     );
+
+    const networkFeeBN = new BN(this.stores.btcNodeStore.networkFee);
+    const availableToRedeem = availableBalanceSatBN.sub(networkFeeBN);
     const isActive =
       vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
 

@@ -37,17 +37,15 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     return redeemPageStore.vaultList.map(vault => {
       const name = cutText(vault.id);
       const vaultInfo = vaultStore.getVaultInfo(vault);
-      const maxRedeemAmount = Math.max(
-        vaultInfo.availableToRedeem - btcNodeStore.fee,
-        0,
-      );
       return {
         text: (
           <Box direction="row" gap="xxsmall" align="center">
             <VaultStatusDot isActive={vaultInfo.isActive} />
             <Text>{name}: </Text>
             <Text bold>
-              {formatWithEightDecimals(satoshiToBitcoin(maxRedeemAmount))}
+              {formatWithEightDecimals(
+                satoshiToBitcoin(vaultInfo.availableToRedeem.toString()),
+              )}
             </Text>
             <Text> 1BTC</Text>
           </Box>
@@ -55,7 +53,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         value: vault.id,
       };
     });
-  }, [btcNodeStore.fee, redeemPageStore.vaultList, vaultStore]);
+  }, [redeemPageStore.vaultList, vaultStore]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
