@@ -1,6 +1,11 @@
 import React from 'react';
 import { IssueStatus, RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
-import { Clock, StatusCritical, StatusGood } from 'grommet-icons';
+import {
+  Clock,
+  StatusWarning,
+  StatusCritical,
+  StatusGood,
+} from 'grommet-icons';
 import { Box } from 'grommet';
 import { Text } from 'components/Base';
 
@@ -17,7 +22,7 @@ const boxProps = {
 export const StatusError: React.FC = () => {
   return (
     <Box {...boxProps}>
-      <StatusCritical color="Red" />
+      <StatusWarning color="Red" />
       <Text color="Red">Error</Text>
     </Box>
   );
@@ -35,6 +40,17 @@ export const StatusPending: React.FC = () => {
 };
 
 StatusPending.displayName = 'StatusPending';
+
+export const StatusCanceled: React.FC = () => {
+  return (
+    <Box {...boxProps}>
+      <StatusCritical color="Gray" />
+      <Text color="Gray">Canceled</Text>
+    </Box>
+  );
+};
+
+StatusCanceled.displayName = 'StatusCanceled';
 
 export const StatusCompleted: React.FC = () => {
   return (
@@ -54,6 +70,10 @@ export const EntityStatus: React.FC<Props> = ({ status }) => {
 
   if (status === RedeemStatus.PENDING) {
     return <StatusPending />;
+  }
+
+  if (status === RedeemStatus.CANCELED) {
+    return <StatusCanceled />;
   }
 
   return <StatusError />;
