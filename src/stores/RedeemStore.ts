@@ -37,7 +37,7 @@ export class RedeemStore extends EntityStore<IRedeem> {
 
     const isConfirmedBtcTX =
       redeem.btcTx &&
-      redeem.btcTx.confirmations >= config.bitcoin.waitConfirmations;
+      redeem.btcTx.confirmations >= config.bitcoin.waitConfirmationsCount;
 
     return {
       sendAmount,

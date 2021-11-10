@@ -2,7 +2,7 @@ interface Config {
   network: 'mainnet' | 'testnet';
   isTestnet: boolean;
   bitcoin: {
-    waitConfirmations: number;
+    waitConfirmationsCount: number;
     btcNodeUrl: string;
     explorer: {
       wallet: string;
@@ -29,7 +29,7 @@ export const config: Config = {
   network: process.env.NETWORK as 'mainnet' | 'testnet',
   isTestnet: process.env.NETWORK === 'testnet',
   bitcoin: {
-    waitConfirmations: parseInt(
+    waitConfirmationsCount: parseInt(
       process.env.BTC_WAIT_CONFIRMATIONS_COUNT || '2',
       10,
     ),

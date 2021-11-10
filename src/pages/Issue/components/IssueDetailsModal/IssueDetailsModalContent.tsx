@@ -2,10 +2,14 @@ import React from 'react';
 import { Box } from 'grommet';
 import { Divider, Text } from '../../../../components/Base';
 import { IssueDetailsModalTransaction } from './IssueDetailsModalTransaction';
-import { IssueDetailsModalConfirmation } from './IssueDetailsModalConfirmation';
 import { IssueDepositModalContent } from '../IssueDepositModal/IssueDepositModalContent';
 import { useStores } from '../../../../stores';
 import { useIssueWatcher } from '../../../../hooks/useIssueWatcher';
+import { IssueDetailsModalCanceled } from './IssueDetailsModalCanceled';
+import { IssueExtendedStatus } from '../../../../stores/IssueStore';
+import { IssueDetailsModalCompleted } from './IssueDetailsModalCompleted';
+import { IssueDetailsModalWaitBtcTxConfirmation } from './IssueDetailsModalWaitBtcTxConfirmation';
+import { IssueDetailsModalWaitExecute } from './IssueDetailsModalWaitExecute';
 
 interface Props {
   issueId: string;
@@ -28,11 +32,22 @@ export const IssueDetailsModalContent: React.FC<Props> = ({ issueId }) => {
           <IssueDetailsModalTransaction issueId={issueId} />
         </Box>
         <Box basis="1/2">
-          {!issueInfo.isCompleted && !issueInfo.btcTx && (
+          {issueInfo.extendedStatus === IssueExtendedStatus.CANCELED && (
+            <IssueDetailsModalCanceled issueId={issueId} />
+          )}
+          {issueInfo.extendedStatus ===
+            IssueExtendedStatus.WAIT_BTC_TRANSACTION && (
             <IssueDepositModalContent issueId={issueId} />
           )}
-          {issueInfo.btcTx && (
-            <IssueDetailsModalConfirmation issueId={issueId} />
+          {issueInfo.extendedStatus === IssueExtendedStatus.COMPLETED && (
+            <IssueDetailsModalCompleted issueId={issueId} />
+          )}
+          {issueInfo.extendedStatus ===
+            IssueExtendedStatus.WAIT_BTC_CONFIRMATION && (
+            <IssueDetailsModalWaitBtcTxConfirmation issueId={issueId} />
+          )}
+          {issueInfo.extendedStatus === IssueExtendedStatus.WAIT_EXECUTE && (
+            <IssueDetailsModalWaitExecute issueId={issueId} />
           )}
         </Box>
       </Box>

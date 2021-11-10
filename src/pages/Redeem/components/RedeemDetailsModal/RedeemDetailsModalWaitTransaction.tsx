@@ -3,7 +3,7 @@ import { Box } from 'grommet';
 import { Text, Title } from '../../../../components/Base';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { config } from '../../../../config';
-import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModalConfirmation.styl';
+import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModals.styl';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
 import { useStores } from '../../../../stores';
@@ -28,7 +28,7 @@ export const RedeemDetailsModalWaitTransaction: React.FC<{
         <SpinnerContainer boxSize={32}>
           <Text inline style={{ textAlign: 'center' }}>
             Waiting confirmations: {redeemInfo.btcTx.confirmations}/
-            {config.bitcoin.waitConfirmations}
+            {config.bitcoin.waitConfirmationsCount}
           </Text>
         </SpinnerContainer>
       </Box>

@@ -7,6 +7,15 @@ import { toBN } from 'web3-utils';
 import { IssueStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 import { config } from '../config';
 
+export enum IssueExtendedStatus {
+  UNEXPECTED = 'UNEXPECTED',
+  WAIT_BTC_TRANSACTION = 'wait_btc_transaction',
+  WAIT_BTC_CONFIRMATION = 'wait_btc_confirmation',
+  WAIT_EXECUTE = 'wait_execute',
+  CANCELED = 'canceled',
+  COMPLETED = 'completed',
+}
+
 export class IssueStore extends EntityStore<IIssue> {
   @action.bound
   public async loadIssue(issueId: string) {
@@ -23,6 +32,42 @@ export class IssueStore extends EntityStore<IIssue> {
       console.log('### err', err);
       return null;
     }
+  }
+
+  @get
+  getIssueExtendeStatus(issueId: string): IssueExtendedStatus {
+    const issue = this.getEntity(issueId);
+
+    if (!issue) {
+      return null;
+    }
+
+    if (issue.status === IssueStatus.COMPLETED) {
+      return IssueExtendedStatus.COMPLETED;
+    }
+
+    if (issue.status === IssueStatus.CANCELED) {
+      return IssueExtendedStatus.CANCELED;
+    }
+
+    const isPending = issue.status === IssueStatus.PENDING;
+    const hasBtcTx = !!issue.btcTx;
+
+    if (isPending && !hasBtcTx) {
+      return IssueExtendedStatus.WAIT_BTC_TRANSACTION;
+    }
+
+    if (isPending && hasBtcTx) {
+      const isBtcTxConfirmed =
+        issue.btcTx &&
+        issue.btcTx.confirmations >= config.bitcoin.waitConfirmationsCount;
+
+      return isBtcTxConfirmed
+        ? IssueExtendedStatus.WAIT_EXECUTE
+        : IssueExtendedStatus.WAIT_BTC_CONFIRMATION;
+    }
+
+    return IssueExtendedStatus.UNEXPECTED;
   }
 
   @get
@@ -47,7 +92,7 @@ export class IssueStore extends EntityStore<IIssue> {
 
     const isConfirmedBtcTX =
       issue.btcTx &&
-      issue.btcTx.confirmations >= config.bitcoin.waitConfirmations;
+      issue.btcTx.confirmations >= config.bitcoin.waitConfirmationsCount;
 
     const openTime = Number(issue.opentime) * 1000;
     const period = Number(issue.period) * 1000;
@@ -58,6 +103,7 @@ export class IssueStore extends EntityStore<IIssue> {
       expiredTime,
       isExpired: Date.now() - expiredTime >= 0,
       isCanceled: issue.status === IssueStatus.CANCELED,
+      extendedStatus: this.getIssueExtendeStatus(issueId),
       rawIssue: issue,
       amount: amount,
       issueId: issue.id,
