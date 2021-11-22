@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { LargeTab } from './LargeTab/LargeTab';
 import { Box } from 'grommet';
 import { useStores } from '../stores';
@@ -27,8 +27,7 @@ export const NavigateTabs: React.FC<Props> = () => {
       direction="row"
       justify="between"
       gap="medium"
-      margin={{ bottom: 'large' }}
-      style={{ minWidth: 500 }}
+      margin={{ bottom: 'medium' }}
     >
       <LargeTab
         title="Issue"

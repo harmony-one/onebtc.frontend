@@ -35,7 +35,6 @@ export const LargeTab: React.FC<Props> = props => {
         [styles.disabled]: disabled,
       })}
       onClick={handleClick}
-      gap="10px"
     >
       <Box align="center">
         <Text size="large" className={styles.title}>

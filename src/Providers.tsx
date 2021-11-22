@@ -1,9 +1,9 @@
 import * as React from 'react';
-import stores, { StoresProvider } from 'stores';
+import { Grommet } from 'grommet';
 import { Router } from 'react-router';
 import { Provider as MobxProvider } from 'mobx-react';
-import { Grommet } from 'grommet';
-import { Theme, baseTheme } from 'themes';
+import stores, { StoresProvider } from './stores';
+import { Theme, baseTheme } from './themes';
 
 export const Providers: React.FC = ({ children }) => (
   <StoresProvider stores={stores as any}>
