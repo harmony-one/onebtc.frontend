@@ -6,7 +6,6 @@ import { Providers } from './Providers';
 import { Redirect, Route, Switch } from 'react-router';
 import { ActionModals } from './components/ActionModals';
 import { IssuePage } from './pages/Issue/IssuePage';
-import { SandBoxPage } from './pages/Sandbox/SandBoxPage';
 import { RedeemPage } from './pages/Redeem/RedeemPage';
 import { TransferPage } from './pages/Transfer/TransferPage';
 import { routes } from './constants/routes';
@@ -29,7 +28,6 @@ const App: React.FC = () => (
         <Route exact path={routes.issue} component={IssuePage} />
         <Route exact path={routes.redeem} component={RedeemPage} />
         <Route exact path={routes.transfer} component={TransferPage} />
-        <Route exact path={routes.sandbox} component={SandBoxPage} />
         <Route exact path={routes.dashboard} component={DashboardPage} />
         <Route exact path={routes.transactions} component={TransactionsPage} />
         <Route

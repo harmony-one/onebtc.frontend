@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { BaseContainer } from 'components/BaseContainer';
-import { PageContainer } from 'components/PageContainer';
 import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { observer } from 'mobx-react';
@@ -10,6 +8,7 @@ import { DashboardVaultCard } from './components/DashboardVaultCard';
 import { dashboardHistoryStore } from './DashboardHistoryStore';
 import { DashboardVaultActivityCard } from './components/DashboardVaultActivityCard';
 import { DashboardVaults } from './components/DashboardVaults';
+import { BaseLayout } from '../../components/Layouts/BaseLayout';
 
 type Props = {};
 
@@ -19,25 +18,23 @@ export const DashboardPage: React.FC<Props> = observer(() => {
   }, []);
 
   return (
-    <BaseContainer>
-      <PageContainer>
-        <Box gap="small" pad={{ horizontal: 'xlarge' }}>
-          <Box>
-            <Title align="center">Dashboard</Title>
-          </Box>
-          <Box>
-            <Divider colorful fullwidth />
-          </Box>
-          <Box justify="center" direction="row-responsive" wrap>
-            <DashboardIssueRedeemCard />
-            <DashboardCardBtcRelay showLink />
-            <DashboardVaultCard />
-            <DashboardVaultActivityCard />
-            <DashboardVaults />
-          </Box>
+    <BaseLayout>
+      <Box gap="small" pad={{ horizontal: 'xlarge' }}>
+        <Box>
+          <Title align="center">Dashboard</Title>
         </Box>
-      </PageContainer>
-    </BaseContainer>
+        <Box>
+          <Divider colorful fullwidth />
+        </Box>
+        <Box justify="center" direction="row-responsive" wrap>
+          <DashboardIssueRedeemCard />
+          <DashboardCardBtcRelay showLink />
+          <DashboardVaultCard />
+          <DashboardVaultActivityCard />
+          <DashboardVaults />
+        </Box>
+      </Box>
+    </BaseLayout>
   );
 });
 
