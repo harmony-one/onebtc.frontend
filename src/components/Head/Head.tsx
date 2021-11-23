@@ -1,23 +1,12 @@
 import * as React from 'react';
-import styled, { withTheme } from 'styled-components';
+import { withTheme } from 'styled-components';
 import { Box, BoxProps } from 'grommet';
 import { observer } from 'mobx-react-lite';
-import cn from 'classnames';
-import { IStyledChildrenProps } from 'interfaces';
-import { NavLink } from 'react-router-dom';
-import { Title, Text } from '../Base';
+import { IStyledChildrenProps } from '../../interfaces';
 import { SignInButton } from './components/SignInButton';
 import { HeadBalance } from './components/HeadBalance';
-import { routes } from '../../constants/routes';
-import * as s from './styles.styl';
 import { config } from '../../config';
 import { FaucetButtons } from './components/FaucetButtons';
-
-const MainLogo = styled.img`
-  width: auto;
-  height: 32px;
-  margin-bottom: 4px;
-`;
 
 export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
   observer(({ theme }: IStyledChildrenProps<BoxProps>) => {
