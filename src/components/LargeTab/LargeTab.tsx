@@ -29,7 +29,7 @@ export const LargeTab: React.FC<Props> = props => {
       direction="column"
       align="center"
       justify="center"
-      basis="full"
+      fill="horizontal"
       className={cn(styles.largeButtonContainer, {
         [styles.active]: active,
         [styles.disabled]: disabled,

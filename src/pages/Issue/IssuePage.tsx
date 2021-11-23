@@ -38,7 +38,7 @@ export const IssuePage = () => {
             direction="column"
             align="center"
             justify="center"
-            fill={true}
+            fill="horizontal"
             pad="medium"
             className={styles.issueContainer}
           >

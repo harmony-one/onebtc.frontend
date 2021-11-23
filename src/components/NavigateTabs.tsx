@@ -23,7 +23,7 @@ export const NavigateTabs: React.FC<Props> = () => {
 
   return (
     <Box
-      fill
+      fill="horizontal"
       direction="row"
       justify="between"
       gap="medium"
