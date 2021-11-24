@@ -1,14 +1,14 @@
 import React from 'react';
-import { Box } from 'grommet';
+import { CardHeader } from 'grommet';
 
 type Props = {};
 
 export const DashboardCardHead: React.FC<Props> = ({ children }) => {
   return (
-    <Box direction="row" fill="horizontal" gap="small" justify="between">
+    <CardHeader background="light-1" gap="xsmall" justify="start" pad="small">
       {children}
-    </Box>
+    </CardHeader>
   );
 };
 
-DashboardCardHead.displayName = 'DashboradCardHead';
+DashboardCardHead.displayName = 'DashboardCardHead';

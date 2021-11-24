@@ -6,6 +6,7 @@ import { DashboardCardHead } from '../../../components/Dashboard/DashboardCardHe
 import { Text } from '../../../components/Base';
 import { observer } from 'mobx-react';
 import { DashboardVaultActivityChart } from './DashboardVaultActivityChart';
+import { DashboardCardBody } from '../../../components/Dashboard/DashboardCardBody';
 
 interface Props {}
 
@@ -17,9 +18,9 @@ export const DashboardVaultActivityCard: React.FC<Props> = observer(() => {
           <Text>Active vaults: {dashboardHistoryStore.activeVaultCount}</Text>
         </Box>
       </DashboardCardHead>
-      <Box>
+      <DashboardCardBody>
         <DashboardVaultActivityChart />
-      </Box>
+      </DashboardCardBody>
     </DashboardCard>
   );
 });

@@ -7,7 +7,8 @@ import { DashboardCardCircle } from './DashboardCardCircle';
 import { DashboardCard } from './DashboardCard';
 import { useStores } from '../../stores';
 import { observer } from 'mobx-react';
-import { Box } from 'grommet';
+import { DashboardCardFooter } from './DashboardCardFooter';
+import { DashboardCardBody } from './DashboardCardBody';
 
 type Props = {
   showLink?: boolean;
@@ -31,21 +32,23 @@ export const DashboardCardBtcRelay: React.FC<Props> = observer(
     return (
       <DashboardCard>
         <DashboardCardHead>
-          <Box>
-            <Text>BTC Relay is: </Text>
-            {statusText}
-          </Box>
+          <Text>BTC Relay: </Text>
+          {statusText}
+        </DashboardCardHead>
+        <DashboardCardBody>
+          <DashboardCardCircle
+            title="Synced Blocks"
+            subtext={btcRelayStore.lastBlockHeight}
+            status={status}
+          />
+        </DashboardCardBody>
+        <DashboardCardFooter>
           {showLink && (
             <Text align="right">
-              <NavLink to={routes.dashboardRelay}>VIEW BTC RELAY</NavLink>
+              <NavLink to={routes.dashboardRelay}>View BTC relay</NavLink>
             </Text>
           )}
-        </DashboardCardHead>
-        <DashboardCardCircle
-          title="Synced Blocks"
-          subtext={btcRelayStore.lastBlockHeight}
-          status={status}
-        />
+        </DashboardCardFooter>
       </DashboardCard>
     );
   },
