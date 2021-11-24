@@ -11,6 +11,10 @@ export default class CustomRouterStore extends RouterStore {
     this.history = syncHistoryWithStore(browserHistory, this);
   }
 
+  goTo(path: string) {
+    this.push(this.generatePath(path));
+  }
+
   generatePath(route: string) {
     return generatePath(route);
   }

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Box } from 'grommet';
-import { BaseContainer, PageContainer } from 'components';
 import * as styles from './IssuePageStyles.styl';
 import { IssueForm } from './components/IssueForm/IssueForm';
 import { NavigateTabs } from '../../components/NavigateTabs';
 import { useParams } from 'react-router';
 import { useEffect } from 'react';
 import { useStores } from '../../stores';
+import { BaseLayout } from '../../components/Layouts/BaseLayout';
 
 export const IssuePage = () => {
   const { issueId, modal } = useParams<{ issueId?: string; modal: string }>();
@@ -28,25 +28,23 @@ export const IssuePage = () => {
   }, [issuePageStore, issueId, modal]);
 
   return (
-    <BaseContainer>
-      <PageContainer>
-        <Box align="center" margin={{ top: 'large', bottom: 'large' }}>
-          <Box align="center" className={styles.contentContainer}>
-            <NavigateTabs />
+    <BaseLayout>
+      <Box align="center">
+        <Box align="center" className={styles.contentContainer}>
+          <NavigateTabs />
 
-            <Box
-              direction="column"
-              align="center"
-              justify="center"
-              fill={true}
-              pad="medium"
-              className={styles.issueContainer}
-            >
-              <IssueForm />
-            </Box>
+          <Box
+            direction="column"
+            align="center"
+            justify="center"
+            fill="horizontal"
+            pad="medium"
+            className={styles.issueContainer}
+          >
+            <IssueForm />
           </Box>
         </Box>
-      </PageContainer>
-    </BaseContainer>
+      </Box>
+    </BaseLayout>
   );
 };

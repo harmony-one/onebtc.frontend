@@ -1,12 +1,11 @@
 import React from 'react';
-import { BaseContainer } from 'components/BaseContainer';
-import { PageContainer } from 'components/PageContainer';
 import { Divider, Text, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { observer } from 'mobx-react';
 import { TransactionListIssuesTable } from './components/TransactionListIssuesTable';
 import { TransactionListRedeemTable } from './components/TransactionListRedeemTable';
 import { useStores } from '../../stores';
+import { BaseLayout } from '../../components/Layouts/BaseLayout';
 
 type Props = {};
 
@@ -15,41 +14,37 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
 
   if (!user.isAuthorized) {
     return (
-      <BaseContainer>
-        <PageContainer>
-          <Box align="center" justify="center">
-            <Text>You have not connected wallet</Text>
-          </Box>
-        </PageContainer>
-      </BaseContainer>
+      <BaseLayout>
+        <Box align="center" justify="center">
+          <Text>You have not connected wallet</Text>
+        </Box>
+      </BaseLayout>
     );
   }
 
   return (
-    <BaseContainer>
-      <PageContainer>
-        <Box gap="small" pad={{ horizontal: 'xlarge' }}>
-          <Box>
-            <Title align="center">My Issue requests</Title>
-          </Box>
-          <Box>
-            <Divider colorful fullwidth />
-          </Box>
-          <Box>
-            <TransactionListIssuesTable />
-          </Box>
-          <Box>
-            <Title align="center">My Redeem requests</Title>
-          </Box>
-          <Box>
-            <Divider colorful fullwidth />
-          </Box>
-          <Box>
-            <TransactionListRedeemTable />
-          </Box>
+    <BaseLayout>
+      <Box gap="medium">
+        <Box>
+          <Title align="center">My Issue requests</Title>
         </Box>
-      </PageContainer>
-    </BaseContainer>
+        <Box>
+          <Divider colorful fullwidth />
+        </Box>
+        <Box>
+          <TransactionListIssuesTable />
+        </Box>
+        <Box>
+          <Title align="center">My Redeem requests</Title>
+        </Box>
+        <Box>
+          <Divider colorful fullwidth />
+        </Box>
+        <Box>
+          <TransactionListRedeemTable />
+        </Box>
+      </Box>
+    </BaseLayout>
   );
 });
 
