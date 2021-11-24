@@ -42,13 +42,13 @@ export const DashboardCardBtcRelay: React.FC<Props> = observer(
             status={status}
           />
         </DashboardCardBody>
-        <DashboardCardFooter>
-          {showLink && (
+        {showLink && (
+          <DashboardCardFooter>
             <Text align="right">
               <NavLink to={routes.dashboardRelay}>View BTC relay</NavLink>
             </Text>
-          )}
-        </DashboardCardFooter>
+          </DashboardCardFooter>
+        )}
       </DashboardCard>
     );
   },
