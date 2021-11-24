@@ -30,12 +30,12 @@ export const RedeemPage = () => {
 
   return (
     <BaseLayout>
-      <Box align="center" margin={{ top: 'large', bottom: 'large' }}>
+      <Box align="center">
         <Box align="center" className={styles.contentContainer}>
           <NavigateTabs />
 
           <Box
-            fill
+            fill="horizontal"
             direction="column"
             align="center"
             justify="center"

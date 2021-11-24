@@ -24,7 +24,7 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
 
   return (
     <BaseLayout>
-      <Box gap="small" pad={{ horizontal: 'xlarge' }}>
+      <Box gap="medium">
         <Box>
           <Title align="center">My Issue requests</Title>
         </Box>

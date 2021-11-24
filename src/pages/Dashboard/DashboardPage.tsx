@@ -19,7 +19,7 @@ export const DashboardPage: React.FC<Props> = observer(() => {
 
   return (
     <BaseLayout>
-      <Box gap="small" pad={{ horizontal: 'xlarge' }}>
+      <Box gap="medium">
         <Box>
           <Title align="center">Dashboard</Title>
         </Box>
