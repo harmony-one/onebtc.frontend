@@ -1,11 +1,15 @@
 import React from 'react';
 import { BoxTypes, Card } from 'grommet';
 
-type Props = {} & Pick<BoxTypes, 'pad'>;
+type Props = {} & Pick<BoxTypes, 'pad' | 'fill' | 'width'>;
 
-export const DashboardCard: React.FC<Props> = ({ children, pad = 'none' }) => {
+export const DashboardCard: React.FC<Props> = ({
+  children,
+  pad = 'none',
+  width = 'medium',
+}) => {
   return (
-    <Card background="white" width="medium" height="medium" pad={pad}>
+    <Card background="white" width={width} height="medium" pad={pad}>
       {children}
     </Card>
   );
