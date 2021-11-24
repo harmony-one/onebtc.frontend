@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react';
 import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
-import { Text } from 'components/Base';
+import { Text } from '../../components/Base';
 import { DashboardIssuesTable } from './components/DashboardIssuesTable';
 import { DashboardIssueChart } from '../Dashboard/components/DashboardIssueChart';
-import { Paper } from '../../components/Paper';
-import { useStores } from '../../stores';
 import { observer } from 'mobx-react';
 import { dashboardHistoryStore } from '../Dashboard/DashboardHistoryStore';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
+import { DashboardCard } from '../../components/Dashboard/DashboardCard';
+import { DashboardCardBody } from '../../components/Dashboard/DashboardCardBody';
+import { DashboardCardHead } from '../../components/Dashboard/DashboardCardHead';
 
 type Props = {};
 
 export const DashboardIssuesPage: React.FC<Props> = observer(() => {
-  const { issueListStore } = useStores();
-
   useEffect(() => {
     dashboardHistoryStore.loadData();
   }, []);
@@ -23,38 +22,18 @@ export const DashboardIssuesPage: React.FC<Props> = observer(() => {
       <Box gap="medium">
         <Title align="center">Issue Requests</Title>
         <Divider colorful fullwidth />
-        <Box direction="row-responsive" gap="medium" alignContent="stretch">
-          <Paper>
-            <Box gap="xsmall">
-              <Box
-                align="center"
-                direction="row"
-                width="100%"
-                justify="between"
-              >
-                <Box>
-                  <Text>Issued:</Text>
-                </Box>
-                <Box>{dashboardHistoryStore.issuedTotal} 1BTC</Box>
-              </Box>
-              <Divider fullwidth />
-              <Box
-                align="center"
-                direction="row"
-                width="100%"
-                justify="between"
-              >
-                <Box>
-                  <Text>Successful Issue Requests:</Text>
-                </Box>
-                <Box>{issueListStore.paginationData.totalElements}</Box>
-              </Box>
-            </Box>
-          </Paper>
-          <Paper>
-            <DashboardIssueChart />
-          </Paper>
+
+        <Box align="center">
+          <DashboardCard width="medium">
+            <DashboardCardHead>
+              <Text bold>Issued: {dashboardHistoryStore.issuedTotal} 1BTC</Text>
+            </DashboardCardHead>
+            <DashboardCardBody>
+              <DashboardIssueChart />
+            </DashboardCardBody>
+          </DashboardCard>
         </Box>
+
         <DashboardIssuesTable />
       </Box>
     </BaseLayout>
