@@ -11,6 +11,7 @@ import { isFilterApplied } from './utils/filters';
 
 import './styles.styl';
 import { TableProps } from 'rc-table/es/Table';
+import { Box, Card, ResponsiveContext } from 'grommet';
 
 const LoaderWrap = styled.div`
   position: absolute;
@@ -86,8 +87,6 @@ export class Table extends React.Component<IProps> {
       options = {},
     } = this.props;
 
-    const hasAnyActiveFilter = this.hasAnyActiveFilter();
-
     return columns.map(column => {
       const { title } = column;
 
@@ -115,53 +114,104 @@ export class Table extends React.Component<IProps> {
     onChangeDataFlow({ ...dataLayerConfig, sorter });
   }
 
-  render() {
-    const {
-      data,
-      dataLayerConfig,
-      onChangeDataFlow,
-      onRowClicked,
-      isPending,
-      hidePagination,
-      tableParams,
-      scroll = {},
-    } = this.props;
-    const { paginationData } = dataLayerConfig;
+  renderCardList() {
+    const { data, onRowClicked } = this.props;
 
     return (
+      <Box gap="small">
+        {data.map((item, index) => {
+          const content = this.props.columns.map(column => {
+            return (
+              <Box direction="row">
+                {column.title}:&nbsp;{column.render(item, item)}
+              </Box>
+            );
+          });
+
+          return (
+            <Card
+              pad="medium"
+              background="white"
+              onClick={() => onRowClicked(item, index)}
+            >
+              {content}
+            </Card>
+          );
+        })}
+      </Box>
+    );
+  }
+
+  renderTable() {
+    const { data, onRowClicked, tableParams, scroll = {} } = this.props;
+
+    return (
+      <RcTable
+        {...tableParams}
+        data={data}
+        columns={this.columns as any}
+        emptyText="No data"
+        scroll={scroll}
+        onRow={(rowData, index) => {
+          return {
+            onClick: () =>
+              onRowClicked instanceof Function && onRowClicked(rowData, index),
+            style: {
+              cursor: onRowClicked instanceof Function ? 'pointer' : 'auto',
+            },
+          };
+        }}
+      />
+    );
+  }
+
+  renderLoader() {
+    if (!this.props.isPending) {
+      return null;
+    }
+
+    return (
+      <LoaderWrap>
+        <Spinner style={{ width: 24, height: 24 }} />
+      </LoaderWrap>
+    );
+  }
+
+  renderPagination() {
+    const { dataLayerConfig, onChangeDataFlow, hidePagination } = this.props;
+    const { paginationData } = dataLayerConfig;
+
+    if (hidePagination) {
+      return null;
+    }
+
+    return (
+      <CustomPagination
+        config={paginationData}
+        onChange={config => {
+          onChangeDataFlow({ paginationData: config });
+        }}
+        activeColor="Blue600"
+      />
+    );
+  }
+
+  renderContent(size: string) {
+    return (
       <div style={{ position: 'relative' }}>
-        {isPending && (
-          <LoaderWrap>
-            <Spinner style={{ width: 24, height: 24 }} />
-          </LoaderWrap>
-        )}
-        <RcTable
-          {...tableParams}
-          data={data}
-          columns={this.columns as any}
-          emptyText="No data"
-          scroll={scroll}
-          onRow={(rowData, index) => {
-            return {
-              onClick: () =>
-                onRowClicked instanceof Function &&
-                onRowClicked(rowData, index),
-              style: {
-                cursor: onRowClicked instanceof Function ? 'pointer' : 'auto',
-              },
-            };
-          }}
-        />
-        {!hidePagination && (
-          <CustomPagination
-            config={paginationData}
-            onChange={config => {
-              onChangeDataFlow({ paginationData: config });
-            }}
-            activeColor="Blue600"
-          />
-        )}
+        {this.renderLoader()}
+        {size === 'small' && this.renderCardList()}
+        {size !== 'small' && this.renderTable()}
+        {this.renderPagination()}
       </div>
+    );
+  }
+
+  render() {
+    return (
+      <ResponsiveContext.Consumer>
+        {size => this.renderContent(size)}
+      </ResponsiveContext.Consumer>
     );
   }
 }
