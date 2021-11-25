@@ -1,17 +1,18 @@
 import React from 'react';
-import { Paper } from 'components/Paper';
-import { Box } from 'grommet';
-import * as s from './DashboardCard.styl';
+import { BoxTypes, Card } from 'grommet';
 
-type Props = {};
+type Props = {} & Pick<BoxTypes, 'pad' | 'fill' | 'width' | 'height'>;
 
-export const DashboardCard: React.FC<Props> = ({ children }) => {
+export const DashboardCard: React.FC<Props> = ({
+  children,
+  pad = 'none',
+  width = 'medium',
+  height = 'medium',
+}) => {
   return (
-    <Paper className={s.DashboardCard}>
-      <Box gap="small" align="center">
-        {children}
-      </Box>
-    </Paper>
+    <Card background="white" width={width} height={height} pad={pad}>
+      {children}
+    </Card>
   );
 };
 

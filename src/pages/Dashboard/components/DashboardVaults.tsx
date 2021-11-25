@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from 'grommet';
 import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { DashboardCard } from 'components/Dashboard/DashboardCard';
 import { DashboardCardHead } from '../../../components/Dashboard/DashboardCardHead';
@@ -7,6 +6,7 @@ import { Text } from '../../../components/Base';
 import { observer } from 'mobx-react';
 import { DashboardCollateralChart } from './DashboardCollateralChart';
 import { formatZeroDecimals } from '../../../utils';
+import { DashboardCardBody } from '../../../components/Dashboard/DashboardCardBody';
 
 interface Props {}
 
@@ -14,16 +14,14 @@ export const DashboardVaults: React.FC<Props> = observer(() => {
   return (
     <DashboardCard>
       <DashboardCardHead>
-        <Box>
-          <Text>
-            Locked collateral:{' '}
-            {formatZeroDecimals(dashboardHistoryStore.totalCollateral)} ONE
-          </Text>
-        </Box>
+        <Text>
+          Locked collateral:{' '}
+          {formatZeroDecimals(dashboardHistoryStore.totalCollateral)} ONE
+        </Text>
       </DashboardCardHead>
-      <Box>
+      <DashboardCardBody>
         <DashboardCollateralChart />
-      </Box>
+      </DashboardCardBody>
     </DashboardCard>
   );
 });

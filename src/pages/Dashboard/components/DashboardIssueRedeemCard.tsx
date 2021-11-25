@@ -1,5 +1,4 @@
 import { DashboardCardHead } from '../../../components/Dashboard/DashboardCardHead';
-import { Box } from 'grommet';
 import { Text } from '../../../components/Base';
 import { NavLink } from 'react-router-dom';
 import { routes } from '../../../constants/routes';
@@ -10,42 +9,43 @@ import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { observer } from 'mobx-react';
 import { DashboardIssueChart } from './DashboardIssueChart';
 import { formatWithTwoDecimals } from '../../../utils';
+import { DashboardCardBody } from '../../../components/Dashboard/DashboardCardBody';
+import { DashboardCardFooter } from '../../../components/Dashboard/DashboardCardFooter';
 
 interface Props {}
 
 export const DashboardIssueRedeemCard: React.FC<Props> = observer(() => {
   const { routing, ratesStore } = useStores();
+
   return (
     <DashboardCard>
       <DashboardCardHead>
-        <Box>
-          <Text>Issued</Text>
-          <Text bold>
-            {formatWithTwoDecimals(dashboardHistoryStore.issuedTotal)} 1BTC
-          </Text>
-          <Text bold>
-            {formatWithTwoDecimals(
-              dashboardHistoryStore.issuedTotal * ratesStore.BTC_USDT,
-            )}
-            $
-          </Text>
-        </Box>
-        <Box alignContent="end">
-          <Text align="right">
-            <NavLink to={routing.generatePath(routes.dashboardIssue)}>
-              VIEW ALL ISSUED
-            </NavLink>
-          </Text>
-          <Text align="right">
-            <NavLink to={routing.generatePath(routes.dashboardRedeem)}>
-              VIEW ALL REDEEMED
-            </NavLink>
-          </Text>
-        </Box>
+        <Text bold>Issued</Text>
+        <Text bold>
+          {formatWithTwoDecimals(dashboardHistoryStore.issuedTotal)} 1BTC
+        </Text>
+        <Text bold>
+          {formatWithTwoDecimals(
+            dashboardHistoryStore.issuedTotal * ratesStore.BTC_USDT,
+          )}
+          $
+        </Text>
       </DashboardCardHead>
-      <Box>
+      <DashboardCardBody>
         <DashboardIssueChart />
-      </Box>
+      </DashboardCardBody>
+      <DashboardCardFooter>
+        <Text>
+          <NavLink to={routing.generatePath(routes.dashboardIssue)}>
+            View all issued
+          </NavLink>
+        </Text>
+        <Text>
+          <NavLink to={routing.generatePath(routes.dashboardRedeem)}>
+            View all redeemed
+          </NavLink>
+        </Text>
+      </DashboardCardFooter>
     </DashboardCard>
   );
 });

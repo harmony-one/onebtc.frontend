@@ -27,11 +27,21 @@ export const DashboardPage: React.FC<Props> = observer(() => {
           <Divider colorful fullwidth />
         </Box>
         <Box justify="center" direction="row-responsive" wrap>
-          <DashboardIssueRedeemCard />
-          <DashboardCardBtcRelay showLink />
-          <DashboardVaultCard />
-          <DashboardVaultActivityCard />
-          <DashboardVaults />
+          <Box pad="xxsmall" align="center">
+            <DashboardIssueRedeemCard />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardCardBtcRelay showLink />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardVaultCard />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardVaultActivityCard />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardVaults />
+          </Box>
         </Box>
       </Box>
     </BaseLayout>
