@@ -34,7 +34,7 @@ export const BaseLayout: React.FC<Props> = ({ children }) => {
               <Button onClick={() => setOpen(true)} icon={<Menu />} />
             </Header>
           )}
-          <Box pad="xsmall">{children}</Box>
+          <Box pad="medium">{children}</Box>
         </Box>
       </Box>
     </Box>
