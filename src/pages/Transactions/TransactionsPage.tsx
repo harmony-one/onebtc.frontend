@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Divider, Text, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { observer } from 'mobx-react';
@@ -6,11 +6,30 @@ import { TransactionListIssuesTable } from './components/TransactionListIssuesTa
 import { TransactionListRedeemTable } from './components/TransactionListRedeemTable';
 import { useStores } from '../../stores';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
+import { LargeTab } from '../../components/LargeTab/LargeTab';
 
 type Props = {};
 
+enum Tabs {
+  ISSUES = 'issues',
+  REDEEMS = 'redeems',
+}
+
 export const TransactionsPage: React.FC<Props> = observer(() => {
   const { user } = useStores();
+
+  const [activeTab, setActiveTab] = useState(Tabs.ISSUES);
+
+  const isActiveTab = useCallback(
+    currentTab => {
+      return activeTab === currentTab;
+    },
+    [activeTab],
+  );
+
+  const handleTabClick = useCallback(tabId => {
+    setActiveTab(tabId);
+  }, []);
 
   if (!user.isAuthorized) {
     return (
@@ -26,22 +45,28 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
     <BaseLayout>
       <Box gap="medium">
         <Box>
-          <Title align="center">My Issue requests</Title>
+          <Title align="center">My transactions</Title>
         </Box>
         <Box>
           <Divider colorful fullwidth />
         </Box>
-        <Box>
-          <TransactionListIssuesTable />
+        <Box direction="row" width="medium" gap="small">
+          <LargeTab
+            id={Tabs.ISSUES}
+            title="Issues"
+            onClick={handleTabClick}
+            active={isActiveTab(Tabs.ISSUES)}
+          />
+          <LargeTab
+            id={Tabs.REDEEMS}
+            title="Redeems"
+            onClick={handleTabClick}
+            active={isActiveTab(Tabs.REDEEMS)}
+          />
         </Box>
         <Box>
-          <Title align="center">My Redeem requests</Title>
-        </Box>
-        <Box>
-          <Divider colorful fullwidth />
-        </Box>
-        <Box>
-          <TransactionListRedeemTable />
+          {activeTab === Tabs.ISSUES && <TransactionListIssuesTable />}
+          {activeTab === Tabs.REDEEMS && <TransactionListRedeemTable />}
         </Box>
       </Box>
     </BaseLayout>
