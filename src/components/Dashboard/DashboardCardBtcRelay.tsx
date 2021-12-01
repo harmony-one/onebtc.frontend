@@ -2,7 +2,7 @@ import React from 'react';
 import { DashboardCardHead } from './DashboardCardHead';
 import { Text } from '../Base';
 import { NavLink } from 'react-router-dom';
-import { routes } from '../../constants/routes';
+import { routes } from '../../constants/routePaths';
 import { DashboardCardCircle } from './DashboardCardCircle';
 import { DashboardCard } from './DashboardCard';
 import { useStores } from '../../stores';

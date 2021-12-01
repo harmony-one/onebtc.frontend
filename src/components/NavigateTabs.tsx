@@ -3,15 +3,15 @@ import { LargeTab } from './LargeTab/LargeTab';
 import { Box } from 'grommet';
 import { useStores } from '../stores';
 import { useRouteMatch, generatePath } from 'react-router';
-import { Routes, routes } from '../constants/routes';
+import { routes } from '../constants/routePaths';
 
 type Props = {};
 
 export const NavigateTabs: React.FC<Props> = () => {
   const { routing } = useStores();
 
-  const handleNavigate = (route: Routes) => () => {
-    const path = generatePath(route);
+  const handleNavigate = (routePath: string) => () => {
+    const path = generatePath(routePath);
     routing.push(path, {});
   };
 

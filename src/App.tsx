@@ -8,7 +8,7 @@ import { ActionModals } from './components/ActionModals';
 import { IssuePage } from './pages/Issue/IssuePage';
 import { RedeemPage } from './pages/Redeem/RedeemPage';
 import { TransferPage } from './pages/Transfer/TransferPage';
-import { routes } from './constants/routes';
+import { routes } from './constants/routePaths';
 import { WatcherBalance } from './components/WatcherBalance';
 import { DashboardPage } from './pages/Dashboard/DashboardPage';
 import { DashboardRelayPage } from './pages/DashboardRelay/DashboardRelayPage';

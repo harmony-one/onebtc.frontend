@@ -1,7 +1,7 @@
 import { createBrowserHistory } from 'history';
 import { RouterStore, syncHistoryWithStore } from 'mobx-react-router';
 import { generatePath } from 'react-router';
-import { routes } from '../constants/routes';
+import { routes } from '../constants/routePaths';
 
 export default class CustomRouterStore extends RouterStore {
   constructor() {

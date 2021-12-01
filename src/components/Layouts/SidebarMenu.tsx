@@ -1,12 +1,7 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router';
 import { useStores } from '../../stores';
-import {
-  getRouteName,
-  isBelongsTo,
-  ROUTE_NAMES,
-  routes,
-} from '../../constants/routes';
+import { ROUTE_NAMES, routes, router } from '../../constants/routePaths';
 import { SideBarButton } from './SideBarButton';
 import { BarChart, Iteration, PowerCycle } from 'grommet-icons';
 import { Box } from 'grommet';
@@ -18,7 +13,7 @@ export const SidebarMenu: React.FC<Props> = () => {
 
   const { routing } = useStores();
 
-  const routeName = getRouteName(route.path);
+  const routeName = router.findRouteNameByPath(route.path);
 
   const navigateToRoute = (routePath: string) => () => {
     routing.goTo(routePath);
@@ -27,19 +22,19 @@ export const SidebarMenu: React.FC<Props> = () => {
     <Box gap="xsmall">
       <SideBarButton
         label="Bridge"
-        active={isBelongsTo(ROUTE_NAMES.BRIDGE, routeName)}
+        active={router.isBelongsTo(ROUTE_NAMES.BRIDGE, routeName)}
         onClick={navigateToRoute(routes.issue)}
         icon={<PowerCycle />}
       />
       <SideBarButton
         label="My transactions"
-        active={isBelongsTo(ROUTE_NAMES.TRANSACTIONS, routeName)}
+        active={router.isBelongsTo(ROUTE_NAMES.TRANSACTIONS, routeName)}
         onClick={navigateToRoute(routes.transactions)}
         icon={<Iteration />}
       />
       <SideBarButton
         label="Dashboard"
-        active={isBelongsTo(ROUTE_NAMES.DASHBOARD, routeName)}
+        active={router.isBelongsTo(ROUTE_NAMES.DASHBOARD, routeName)}
         onClick={navigateToRoute(routes.dashboard)}
         icon={<BarChart />}
       />

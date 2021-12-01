@@ -8,7 +8,7 @@ import { observer } from 'mobx-react';
 import { DashboardVaultActivityChart } from './DashboardVaultActivityChart';
 import { DashboardCardBody } from '../../../components/Dashboard/DashboardCardBody';
 import { NavLink } from 'react-router-dom';
-import { routes } from '../../../constants/routes';
+import { routes } from '../../../constants/routePaths';
 import { DashboardCardFooter } from '../../../components/Dashboard/DashboardCardFooter';
 
 interface Props {}
