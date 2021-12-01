@@ -107,6 +107,7 @@ export class VaultStore extends EntityStore<IVault> {
     const toBeIssuedSat = Number(vault.toBeIssued);
     const toBeRedeemedSat = Number(vault.toBeRedeemed);
     const issuedSat = Number(vault.issued);
+    const lockedSat = new BN(vault.issued).add(new BN(vault.toBeIssued));
 
     const collateralRedeemed = collateralSat / (toBeRedeemedSat / 100);
     const collateralIssued = collateralSat / (toBeIssuedSat / 100);
@@ -147,6 +148,7 @@ export class VaultStore extends EntityStore<IVault> {
       collateralIssued,
       collateralTotal,
       issuedSat,
+      lockedSat,
       isActive,
       maxWithdraw,
     };

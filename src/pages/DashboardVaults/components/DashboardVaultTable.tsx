@@ -75,7 +75,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       width: '33',
       render: value => {
         const vaultInfo = vaultStore.getVaultInfo(value);
-        const amount = satoshiToBitcoin(vaultInfo.toBeRedeemedSat);
+        const amount = satoshiToBitcoin(vaultInfo.lockedSat.toString());
         return <Text>{formatWithEightDecimals(amount)} BTC</Text>;
       },
     },
