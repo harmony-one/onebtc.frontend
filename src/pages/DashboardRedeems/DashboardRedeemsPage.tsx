@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { Text } from '../../components/Base';
@@ -10,13 +10,19 @@ import { BaseLayout } from '../../components/Layouts/BaseLayout';
 import { DashboardCardHead } from '../../components/Dashboard/DashboardCardHead';
 import { DashboardCard } from 'components/Dashboard/DashboardCard';
 import { DashboardCardBody } from '../../components/Dashboard/DashboardCardBody';
+import { useInterval } from '../../hooks/useInterval';
+import { ONE_SECOND } from '../../constants/date';
 
 type Props = {};
 
 export const DashboardRedeemsPage: React.FC<Props> = observer(() => {
-  useEffect(() => {
-    dashboardHistoryStore.loadData();
-  }, []);
+  useInterval({
+    callback: () => {
+      dashboardHistoryStore.loadData();
+    },
+    timeout: ONE_SECOND * 10,
+  });
+
   return (
     <BaseLayout>
       <Box gap="medium">

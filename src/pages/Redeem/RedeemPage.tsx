@@ -8,14 +8,19 @@ import { useParams } from 'react-router';
 import { useStores } from '../../stores';
 import { useEffect } from 'react';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
+import { useInterval } from '../../hooks/useInterval';
+import { ONE_SECOND } from '../../constants/date';
 
 export const RedeemPage = () => {
   const { redeemId, modal } = useParams<{ redeemId?: string; modal: string }>();
   const { redeemPageStore } = useStores();
 
-  useEffect(() => {
-    redeemPageStore.loadVaults();
-  }, [redeemPageStore]);
+  useInterval({
+    callback: () => {
+      redeemPageStore.loadVaults();
+    },
+    timeout: ONE_SECOND * 10,
+  });
 
   useEffect(() => {
     if (redeemId) {

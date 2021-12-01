@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { observer } from 'mobx-react';
@@ -9,13 +9,18 @@ import { dashboardHistoryStore } from './DashboardHistoryStore';
 import { DashboardVaultActivityCard } from './components/DashboardVaultActivityCard';
 import { DashboardVaults } from './components/DashboardVaults';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
+import { useInterval } from '../../hooks/useInterval';
+import { ONE_SECOND } from '../../constants/date';
 
 type Props = {};
 
 export const DashboardPage: React.FC<Props> = observer(() => {
-  useEffect(() => {
-    dashboardHistoryStore.loadData();
-  }, []);
+  useInterval({
+    callback: () => {
+      dashboardHistoryStore.loadData();
+    },
+    timeout: ONE_SECOND * 10,
+  });
 
   return (
     <BaseLayout>
