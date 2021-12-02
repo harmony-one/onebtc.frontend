@@ -22,6 +22,7 @@ export interface IBasicMobxFormItemProps {
   componentClassName?: string;
   componentStyle?: React.CSSProperties;
   help?: any;
+  error?: string;
   wrapperRef?: any;
   componentRef?: any;
   onChange?(value: any): void;
@@ -131,6 +132,7 @@ export class MobxFormItem extends React.Component<IMobxFormItemProps> {
       fieldParams,
       rules,
       help,
+      error,
       normalize,
       wrapperRef,
       componentRef,
@@ -182,7 +184,7 @@ export class MobxFormItem extends React.Component<IMobxFormItemProps> {
 
     if (hasError) {
       wrapperProps.validateStatus = 'error';
-      wrapperProps.help = err.length ? err[0].message : '';
+      wrapperProps.error = err.length ? err[0].message : '';
     } else {
       wrapperProps.validateStatus = componentProps.value
         ? (wrapperProps.validateStatus = 'success')

@@ -17,13 +17,26 @@ import { FieldWrapper, IFieldWrapperProps } from './FieldWrapper';
 
 type WrapperedInputProps<T> = T & IPartialWrapperProps;
 
-const withWrapper = <T extends {}>(Component) => (props: WrapperedInputProps<T>) => {
-  const { title, label, className, help, visible = true, isRowLabel, margin, ...rest } = props;
+const withWrapper = <T extends {}>(Component) => (
+  props: WrapperedInputProps<T>,
+) => {
+  const {
+    title,
+    label,
+    className,
+    help,
+    error,
+    visible = true,
+    isRowLabel,
+    margin,
+    ...rest
+  } = props;
   const wrapperProps = {
     title,
     label,
     className,
     help,
+    error,
     visible,
     isRowLabel,
     margin,

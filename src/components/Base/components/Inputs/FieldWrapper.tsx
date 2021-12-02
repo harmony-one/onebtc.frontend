@@ -15,9 +15,11 @@ export interface IFieldWrapperProps {
   children: any;
   className: string;
   help: string;
+  error: string;
   visible: boolean;
   isRowLabel: boolean;
   margin?: object;
+  inputLabel?: React.ReactNode;
 }
 
 export const FieldWrapper = (props: IFieldWrapperProps) => {
@@ -27,9 +29,11 @@ export const FieldWrapper = (props: IFieldWrapperProps) => {
     children,
     className,
     help,
+    error,
     visible = true,
     isRowLabel,
     margin,
+    inputLabel,
   } = props;
 
   const text = title || label;
@@ -49,12 +53,13 @@ export const FieldWrapper = (props: IFieldWrapperProps) => {
                   style={{
                     fontSize: '18px',
                     color: '#212D5E',
-                    fontWeight: "bold",
+                    fontWeight: 'bold',
                   }}
                 >
                   {text}
                 </Text>
               )}
+              {inputLabel}
               {children}
             </Box>
           )}
@@ -72,6 +77,13 @@ export const FieldWrapper = (props: IFieldWrapperProps) => {
             <Box margin={{ top: 'xsmall' }}>
               <Text size="14px" color="#FF0000">
                 {help}
+              </Text>
+            </Box>
+          )}
+          {error && (
+            <Box margin={{ top: 'xsmall' }}>
+              <Text size="14px" color="#FF0000">
+                {error}
               </Text>
             </Box>
           )}
