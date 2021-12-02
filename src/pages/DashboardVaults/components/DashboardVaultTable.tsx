@@ -121,7 +121,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
   return (
     <Table
       columns={columns}
-      data={vaultListStore.data}
+      data={vaultListStore.data.filter(item => !!item.collateral)}
       isPending={vaultListStore.isPending}
       dataLayerConfig={vaultListStore.dataFlow}
       onChangeDataFlow={handleChangeDataFlow}
