@@ -18,7 +18,7 @@ export interface ITransaction {
 
 export class IssuePageStore extends StoreConstructor {
   defaultForm: ITransaction = {
-    amount: '0.0001',
+    amount: '0',
     vaultId: '',
   };
 
@@ -105,6 +105,7 @@ export class IssuePageStore extends StoreConstructor {
         address,
         issueInfo.issueId,
         btcTransactionHash,
+        issueInfo.bitcoinAddress,
         txHash => {
           issueUiTx.setTxHash(txHash);
           issueUiTx.setStatusProgress();
