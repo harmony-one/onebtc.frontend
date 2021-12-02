@@ -11,6 +11,7 @@ import {
 } from 'components/Form';
 import {
   formatWithEightDecimals,
+  formatWithTwoDecimals,
   lessThanSat,
   moreThanZero,
 } from '../../../../utils';
@@ -77,7 +78,13 @@ export const IssueForm: React.FC<Props> = observer(() => {
         precision="8"
         delimiter="."
         renderRight={
-          <Box direction="row" gap="xxsmall">
+          <Box direction="row" gap="8px">
+            <Text>
+              ≈ ${' '}
+              {formatWithTwoDecimals(
+                Number(issuePageStore.form.amount) * ratesStore.BTC_USDT,
+              )}
+            </Text>
             <DividerVertical />
             <Text bold>BTC</Text>
           </Box>

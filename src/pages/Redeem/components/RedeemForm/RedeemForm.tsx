@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from 'grommet';
-import { Text, Divider, Button, DividerVertical } from 'components/Base';
+import { Text, Divider, Button } from 'components/Base';
 import { observer } from 'mobx-react';
 import {
   Form,
@@ -20,6 +20,8 @@ import { PriceView } from '../../../../components/PriceView';
 import { cutText } from '../../../../services/cutText';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
 import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
+import { InputLabelAvailableBalance } from '../../../../components/Form/components/InputLabelAvailableBalance';
+import { InputMaxAmountControl } from '../../../../components/Form/components/InputMaxAmountControl';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -61,6 +63,12 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     });
   }, [form, redeemPageStore]);
 
+  const handleMaxClick = useCallback(() => {
+    redeemPageStore.form.oneBTCAmount = satoshiToBitcoin(
+      user.oneBTCBalance,
+    ).toString();
+  }, [redeemPageStore.form.oneBTCAmount, user.oneBTCBalance]);
+
   const amountValidator = useMemo(() => {
     const vault = redeemPageStore.getVault(redeemPageStore.form.vaultId);
     if (!vault) {
@@ -78,17 +86,20 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
       <NumberInput
-        label="Amount"
         name="oneBTCAmount"
         type="decimal"
         precision="8"
         delimiter="."
         placeholder="0.0"
+        inputLabel={
+          <InputLabelAvailableBalance
+            label="Amount"
+            balance={satoshiToBitcoin(user.oneBTCBalance).toString()}
+            tokenName="1BTC"
+          />
+        }
         renderRight={
-          <Box direction="row" gap="xxsmall">
-            <DividerVertical />
-            <Text bold>1BTC</Text>
-          </Box>
+          <InputMaxAmountControl onClick={handleMaxClick} tokenName="1BTC" />
         }
         style={{ width: '100%' }}
         rules={[

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
-import { Divider, Button, Text, DividerVertical } from 'components/Base';
+import { Divider, Button, Text } from 'components/Base';
 import { observer } from 'mobx-react';
 import { Form, isRequired, MobxForm, NumberInput } from 'components/Form';
 import {
@@ -10,7 +10,8 @@ import {
 } from '../../../../utils';
 import { useStores } from '../../../../stores';
 import utils from 'web3-utils';
-import { InputButton } from '../../../../components/Base/components/Inputs/InputButton';
+import { InputLabelAvailableBalance } from '../../../../components/Form/components/InputLabelAvailableBalance';
+import { InputMaxAmountControl } from '../../../../components/Form/components/InputMaxAmountControl';
 
 interface Props {
   vaultId: string;
@@ -59,20 +60,20 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
       >
         <Box gap="xsmall">
           <NumberInput
-            label="Withdraw collateral"
             name="oneAmount"
             type="decimal"
             precision="16"
             delimiter="."
             placeholder="0.0"
+            inputLabel={
+              <InputLabelAvailableBalance
+                label="Withdraw"
+                balance={utils.fromWei(vaultInfo.maxWithdraw)}
+                tokenName="ONE"
+              />
+            }
             renderRight={
-              <Box direction="row" gap="xxsmall">
-                <InputButton onClick={handleMaxClick}>
-                  <Text color="inherit">MAX</Text>
-                </InputButton>
-                <DividerVertical />
-                <Text bold>ONE</Text>
-              </Box>
+              <InputMaxAmountControl onClick={handleMaxClick} tokenName="ONE" />
             }
             style={{ width: '100%' }}
             rules={[

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
-import { Divider, Button, Text, DividerVertical } from 'components/Base';
+import { Divider, Button } from 'components/Base';
 import { useObserver } from 'mobx-react';
 import {
   Form,
@@ -11,12 +11,17 @@ import {
 } from 'components/Form';
 import { lessThanSat, moreThanZero } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
+import { InputMaxAmountControl } from 'components/Form/components/InputMaxAmountControl';
+import { satoshiToBitcoin } from '../../../../services/bitcoin';
+import { InputLabelAvailableBalance } from '../../../../components/Form/components/InputLabelAvailableBalance';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const TransferForm: React.FC<Props> = () => {
   const { transferPageStore, user } = useStores();
   const [form, setForm] = useState<MobxForm>();
+
+  const hancleMaxClick = useCallback(() => {}, []);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -27,17 +32,20 @@ export const TransferForm: React.FC<Props> = () => {
   return useObserver(() => (
     <Form ref={ref => setForm(ref)} data={transferPageStore.form}>
       <NumberInput
-        label="1BTC Amount"
         name="oneBTCAmount"
         type="decimal"
         precision="8"
         delimiter="."
         placeholder="0.0"
+        inputLabel={
+          <InputLabelAvailableBalance
+            label="Amount"
+            balance={satoshiToBitcoin(user.oneBTCBalance).toString()}
+            tokenName="1BTC"
+          />
+        }
         renderRight={
-          <Box direction="row" gap="xxsmall">
-            <DividerVertical />
-            <Text bold>1BTC</Text>
-          </Box>
+          <InputMaxAmountControl onClick={hancleMaxClick} tokenName="1BTC" />
         }
         style={{ width: '100%' }}
         rules={[
