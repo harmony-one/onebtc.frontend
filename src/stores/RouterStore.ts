@@ -11,12 +11,12 @@ export default class CustomRouterStore extends RouterStore {
     this.history = syncHistoryWithStore(browserHistory, this);
   }
 
-  goTo(path: string) {
-    this.push(this.generatePath(path));
+  goTo(path: string, params: Record<string, string | number> = {}) {
+    this.push(this.generatePath(path, params));
   }
 
-  generatePath(route: string) {
-    return generatePath(route);
+  generatePath(route: string, params: Record<string, string | number> = {}) {
+    return generatePath(route, params);
   }
 
   goToDashboardIssue(params: { issueId?: string; replace?: boolean }) {

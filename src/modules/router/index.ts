@@ -1,5 +1,3 @@
-import { ROUTE_NAMES } from '../../constants/routePaths';
-
 const getKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>;
 
 export type RouteNode<T> = {
@@ -51,10 +49,7 @@ export class Router<T extends string> {
     }, flatMap);
   }
 
-  private findNode(
-    routeNode: RouteNode<T>,
-    name: ROUTE_NAMES,
-  ): RouteNode<T> | null {
+  private findNode(routeNode: RouteNode<T>, name: T): RouteNode<T> | null {
     if (routeNode.name === name) {
       return routeNode;
     }
@@ -78,7 +73,7 @@ export class Router<T extends string> {
     }, null);
   }
 
-  public isBelongsTo(parentName: ROUTE_NAMES, childName: ROUTE_NAMES): boolean {
+  public isBelongsTo(parentName: T, childName: T): boolean {
     const parentNode = this.findNode(this._routeTree, parentName);
 
     if (!parentNode) {

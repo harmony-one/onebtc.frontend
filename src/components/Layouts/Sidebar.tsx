@@ -1,17 +1,14 @@
 import React from 'react';
-import { Nav, Sidebar as GSidebar } from 'grommet';
-import { SidebarMenu } from './SidebarMenu';
+import { Nav, Sidebar as GrommetSidebar } from 'grommet';
 import { BridgeLogo } from '../BridgeLogo';
 
 interface Props {}
 
-export const Sidebar: React.FC<Props> = React.memo(() => {
+export const Sidebar: React.FC<Props> = React.memo(({ children }) => {
   return (
-    <GSidebar header={<BridgeLogo />}>
-      <Nav align="start">
-        <SidebarMenu />
-      </Nav>
-    </GSidebar>
+    <GrommetSidebar header={<BridgeLogo />}>
+      <Nav align="start">{children}</Nav>
+    </GrommetSidebar>
   );
 });
 
