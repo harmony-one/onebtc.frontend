@@ -34,8 +34,6 @@ class VaultClient {
         .post(`${this.host}/vault-client/register`)
         .set('Content-Type', 'application/json')
         .send({ collateral: 10 });
-
-      this.loadInfo();
     } catch (err) {
       console.error('### err', err);
     }

@@ -57,7 +57,8 @@ export class VaultAppStore extends StoreConstructor {
 
   @action.bound
   async registerVault() {
-    vaultClient.registration();
+    await vaultClient.registration();
+    await this.onInit();
     this.stores.routing.goTo(routes.vaultDetails, {
       vaultId: this.vaultInfo.vaultAddress,
     });
