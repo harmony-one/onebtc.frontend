@@ -12,7 +12,7 @@ const routeTree: RouteNode<ROUTE_NAMES> = {
   children: [
     {
       name: ROUTE_NAMES.INITIALIZATION,
-      path: '/init',
+      path: '/',
     },
     {
       name: ROUTE_NAMES.VAULT_DETAILS,

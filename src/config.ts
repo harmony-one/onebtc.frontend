@@ -57,7 +57,7 @@ export const config: Config = {
     onewallet: true,
   },
   vaultApp: {
-    vaultHost: process.env.VAULT_CLIENT_HOST,
+    vaultHost: process.env.VAULT_CLIENT_HOST || `${window.origin}/api`,
   },
 } as const;
 
