@@ -3,12 +3,13 @@ import { useVaultWatcher } from '../../../hooks/useVaultWatcher';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react';
 import { Box } from 'grommet';
-import { Button, Divider, Loader, Title } from '../../../components/Base';
+import { Button, Divider, Title } from '../../../components/Base';
 import { Paper } from '../../../components/Paper';
 import { VaultInfo } from '../../../pages/DashboardVaultDetails/components/VaultInfo';
 import { VaultIssuedChart } from '../../../pages/DashboardVaultDetails/components/VaultIssuedChart/VaultIssuedChart';
 import { VaultLogs } from '../../../pages/DashboardVaultDetails/components/VaultLogs';
 import { VaultAppLayout } from '../../components/Layouts/VaultAppLayout';
+import { Spinner } from '../../../ui';
 
 interface Props {}
 
@@ -36,7 +37,9 @@ export const VaultDetailsPage: React.FC<Props> = observer(() => {
   if (!vault) {
     return (
       <VaultAppLayout>
-        <Loader />
+        <Box align="center">
+          <Spinner />
+        </Box>
       </VaultAppLayout>
     );
   }
@@ -69,7 +72,12 @@ export const VaultDetailsPage: React.FC<Props> = observer(() => {
           >
             <Box basis="1/2">
               <Paper pad="medium">
-                {vault && <VaultInfo vaultId={vaultId} />}
+                {vault && (
+                  <VaultInfo
+                    vaultId={vaultId}
+                    syncProgress={vaultAppStore.syncProgress}
+                  />
+                )}
               </Paper>
             </Box>
             <Box basis="1/2">

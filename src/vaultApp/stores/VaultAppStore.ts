@@ -3,20 +3,9 @@ import { vaultClient, VaultInfo } from '../modules/vaultClient/VaultClient';
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { routes } from '../routes/routes';
 
-export enum VaultClientStatus {
-  INIT = 'init',
-  WAITING_SYNC = 'waiting_sync',
-  WAITING_LAUNCH = 'waiting_launch',
-  WAITING_REGISTRATION = 'waiting_registration',
-  READY = 'ready',
-}
-
 export class VaultAppStore extends StoreConstructor {
   @observable
   public vaultInfo: VaultInfo;
-
-  @observable
-  public status: VaultClientStatus = VaultClientStatus.INIT;
 
   init() {
     this.onInit();
@@ -32,33 +21,46 @@ export class VaultAppStore extends StoreConstructor {
   }
 
   @action.bound
+  async loadVaultInfo() {
+    this.vaultInfo = await vaultClient.loadInfo();
+    return this.vaultInfo;
+  }
+
+  @action.bound
   async onInit() {
-    const response = await vaultClient.loadInfo();
-    this.vaultInfo = response;
+    try {
+      const vaultInfo = await this.loadVaultInfo();
 
-    if (!response.synchronized) {
-      this.status = VaultClientStatus.WAITING_SYNC;
+      if (!vaultInfo.registered) {
+        this.stores.routing.goTo(routes.registration);
+        return;
+      }
+
+      this.stores.routing.goTo(routes.vaultDetails, {
+        vaultId: vaultInfo.vaultAddress,
+      });
       return;
+    } catch (err) {
+      console.error('### err', err);
+      this.stores.routing.goTo(routes.initError);
     }
-
-    if (response.status !== 'LAUNCHED') {
-      this.status = VaultClientStatus.WAITING_LAUNCH;
-      return;
-    }
-
-    if (!response.registered) {
-      this.status = VaultClientStatus.WAITING_REGISTRATION;
-      return;
-    }
-
-    this.status = VaultClientStatus.READY;
-    return;
   }
 
   @action.bound
   async registerVault() {
-    await vaultClient.registration();
-    await this.onInit();
+    try {
+      await vaultClient.registration();
+      await this.onInit();
+      this.goToDetailsPage();
+    } catch (err) {
+      console.error('### err', err);
+      throw err;
+    }
+  }
+
+  @get
+  get syncProgress() {
+    return (this.vaultInfo && this.vaultInfo.syncProgress) || '0';
   }
 
   @action.bound

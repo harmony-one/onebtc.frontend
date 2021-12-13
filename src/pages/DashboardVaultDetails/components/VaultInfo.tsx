@@ -11,10 +11,11 @@ import { formatWithEightDecimals } from '../../../utils';
 
 interface Props {
   vaultId: string;
+  syncProgress?: string;
 }
 
 export const VaultInfo: React.FC<Props> = React.memo(
-  observer(({ vaultId }) => {
+  observer(({ vaultId, syncProgress }) => {
     const { vaultStore } = useStores();
 
     const vault = vaultStore.getEntity(vaultId);
@@ -34,6 +35,18 @@ export const VaultInfo: React.FC<Props> = React.memo(
             </Text>
           </Box>
         </Box>
+
+        {syncProgress && (
+          <Box align="center" direction="row" width="100%" justify="between">
+            <Box>
+              <Text>Synchronized:</Text>
+            </Box>
+            <Box>
+              <Text bold>{Number(syncProgress) * 100}%</Text>
+            </Box>
+          </Box>
+        )}
+
         <Divider fullwidth />
         <Box direction="column" width="100%">
           <Box>

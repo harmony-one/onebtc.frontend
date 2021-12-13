@@ -33,9 +33,10 @@ class VaultClient {
       await agent
         .post(`${this.host}/vault-client/register`)
         .set('Content-Type', 'application/json')
-        .send({ collateral: 10 });
+        .send({ collateral: '10' });
     } catch (err) {
       console.error('### err', err);
+      throw err;
     }
   }
 }

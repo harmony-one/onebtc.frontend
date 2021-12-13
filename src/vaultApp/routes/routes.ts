@@ -3,7 +3,9 @@ import { RouteNode, Router } from '../../modules/router';
 export enum ROUTE_NAMES {
   HOME = 'home',
   VAULT_DETAILS = 'vaultDetails',
-  INITIALIZATION = 'initialization',
+  INIT = 'init',
+  REGISTRATION = 'registration',
+  INIT_ERROR = 'initError',
 }
 
 const routeTree: RouteNode<ROUTE_NAMES> = {
@@ -11,8 +13,16 @@ const routeTree: RouteNode<ROUTE_NAMES> = {
   path: '/',
   children: [
     {
-      name: ROUTE_NAMES.INITIALIZATION,
-      path: '/',
+      name: ROUTE_NAMES.REGISTRATION,
+      path: '/registration',
+    },
+    {
+      name: ROUTE_NAMES.INIT,
+      path: '/init',
+    },
+    {
+      name: ROUTE_NAMES.INIT_ERROR,
+      path: '/initError',
     },
     {
       name: ROUTE_NAMES.VAULT_DETAILS,
