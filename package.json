@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.js",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.js --progress --colors --open",
+    "dev": "cross-env NODE_ENV=mainnet webpack-dev-server --config config/webpack.config.js --progress --colors --open",
     "build:prod": "node scripts/build.js --stats",
     "build:testnet": "CI=false NODE_ENV=testnet node scripts/build.js --stats",
     "build:mainnet": "CI=false NODE_ENV=mainnet node scripts/build.js --stats",
@@ -37,7 +37,7 @@
     "mobx-react": "6.1.4",
     "mobx-react-router": "4.0.7",
     "moment": "^2.24.0",
-    "onebtc.sdk": "^1.1.11",
+    "onebtc.sdk": "^1.1.13",
     "polished": "^4.1.3",
     "query-string": "^6.10.1",
     "rc-table": "^7.4.5",
