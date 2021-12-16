@@ -9,11 +9,11 @@ interface WatcherProps {
 export const useVaultWatcher = ({ vaultId }: WatcherProps) => {
   const { vaultStore } = useStores();
 
-  const loadIssue = useCallback(() => {
+  const loadVault = useCallback(() => {
     vaultStore.loadVault(vaultId);
   }, [vaultStore, vaultId]);
 
-  useInterval({ callback: loadIssue, timeout: 5000 });
+  useInterval({ callback: loadVault, timeout: 30000 });
 
   return null;
 };

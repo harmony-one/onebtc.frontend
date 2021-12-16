@@ -23,6 +23,9 @@ interface Config {
     metamask: boolean;
     onewallet: boolean;
   };
+  vaultApp: {
+    vaultHost: string;
+  };
 }
 
 export const config: Config = {
@@ -52,6 +55,9 @@ export const config: Config = {
   wallets: {
     metamask: true,
     onewallet: true,
+  },
+  vaultApp: {
+    vaultHost: process.env.VAULT_CLIENT_HOST || `${window.origin}/api`,
   },
 } as const;
 

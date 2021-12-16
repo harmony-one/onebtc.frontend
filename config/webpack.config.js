@@ -6,8 +6,14 @@ const getClientEnvironment = require('./env');
 // variables
 const srcDir = 'src';
 const buildDir = 'build';
+
+const entryPointFile = process.env.ENTRYPOINT || 'index.tsx';
+
+console.log('### process.env.ENTRYPOINT', process.env.ENTRYPOINT);
+console.log('### entryPointFile', entryPointFile);
 const isProduction = process.env.NODE_ENV !== 'development';
 const sourcePath = path.join(__dirname, '..', `./${srcDir}`);
+const entryPoint = `${sourcePath}/${entryPointFile}`;
 const outPath = path.join(__dirname, '..', `./${buildDir}`);
 const publicUrl = '';
 const env = getClientEnvironment(publicUrl);
@@ -33,7 +39,7 @@ const otherRules = require('./rules/other');
 
 //PROD
 const configProd = {
-  app: [`${sourcePath}/index.tsx`],
+  app: [`${entryPoint}`],
   appFilename: 'static/js/app-[hash].js',
   vendorFilename: 'static/js/vendor-[contenthash].js',
   devtool: '',
@@ -51,7 +57,7 @@ const configProd = {
 // DEV
 const configDev = {
   mode: 'development',
-  app: ['react-hot-loader/patch', `${sourcePath}/index.tsx`],
+  app: ['react-hot-loader/patch', `${entryPoint}`],
   appFilename: 'app-debug.js',
   vendorFilename: 'vendor-debug.js',
   // devtool: 'source-map',

@@ -1,0 +1,15 @@
+FROM node:14.17.6
+
+WORKDIR /usr/src/app
+
+COPY package.json package-lock.json ./
+
+RUN npm i -g npm
+RUN npm install
+
+COPY . ./
+
+RUN npm run build:vault
+RUN npm install -g serve
+
+CMD ["serve", "build"]

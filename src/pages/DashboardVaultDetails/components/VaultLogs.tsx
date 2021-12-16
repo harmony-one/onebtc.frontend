@@ -16,7 +16,7 @@ enum Tabs {
 }
 
 export const VaultLogs: React.FC<Props> = React.memo(({ vaultId }) => {
-  const [tab, setTab] = useState<Tabs>(Tabs.BALANCES);
+  const [tab, setTab] = useState<Tabs>(Tabs.ISSUES);
 
   const handleTabClick = useCallback(tabId => {
     setTab(tabId);
@@ -34,12 +34,6 @@ export const VaultLogs: React.FC<Props> = React.memo(({ vaultId }) => {
       <Box direction="row">
         <Box direction="row" basis="medium" gap="small">
           <LargeTab
-            id={Tabs.BALANCES}
-            title="Balances"
-            active={isActive(Tabs.BALANCES)}
-            onClick={handleTabClick}
-          />
-          <LargeTab
             id={Tabs.ISSUES}
             title="Issues"
             active={isActive(Tabs.ISSUES)}
@@ -49,6 +43,12 @@ export const VaultLogs: React.FC<Props> = React.memo(({ vaultId }) => {
             id={Tabs.REDEEMS}
             title="Redeems"
             active={isActive(Tabs.REDEEMS)}
+            onClick={handleTabClick}
+          />
+          <LargeTab
+            id={Tabs.BALANCES}
+            title="Balances"
+            active={isActive(Tabs.BALANCES)}
             onClick={handleTabClick}
           />
         </Box>

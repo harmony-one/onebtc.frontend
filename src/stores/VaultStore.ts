@@ -13,6 +13,10 @@ const COLLATERAL_RATIO = 1.5;
 export class VaultStore extends EntityStore<IVault> {
   @action.bound
   public async loadVault(vaultId: string) {
+    if (!vaultId) {
+      return null;
+    }
+
     try {
       const vault = await dashboardClient.loadVault(vaultId);
 
@@ -26,7 +30,7 @@ export class VaultStore extends EntityStore<IVault> {
 
       return vault;
     } catch (err) {
-      console.log('### err', err);
+      console.error('### err', err);
       return null;
     }
   }
