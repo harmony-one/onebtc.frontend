@@ -7,7 +7,7 @@ import { LinkHarmony } from '../../../components/LinkHarmony';
 import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
 import { vaultBalancesStore } from '../../../stores/VaultStore';
 import { observer } from 'mobx-react';
-import { formatWithEightDecimals } from '../../../utils';
+import { formatWithEightDecimals, formatZeroDecimals } from '../../../utils';
 
 interface Props {
   vaultId: string;
@@ -42,7 +42,9 @@ export const VaultInfo: React.FC<Props> = React.memo(
               <Text>Synchronized:</Text>
             </Box>
             <Box>
-              <Text bold>{Number(syncProgress) * 100}%</Text>
+              <Text bold>
+                {formatZeroDecimals(Number(syncProgress) * 100)}%
+              </Text>
             </Box>
           </Box>
         )}

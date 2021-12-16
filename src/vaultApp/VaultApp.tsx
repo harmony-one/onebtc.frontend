@@ -15,6 +15,7 @@ import { ActionModals } from '../components/ActionModals';
 import { RegistrationPage } from './pages/registration/RegistrationPage';
 import { InitErrorPage } from './pages/initError/InitErrorPage';
 import { WatcherVaultInfo } from './components/WatcherVaultInfo';
+import { OperationListPage } from './pages/operations/OperationListPage';
 
 const VaultApp: React.FC = () => (
   <ErrorBoundary>
@@ -22,6 +23,11 @@ const VaultApp: React.FC = () => (
       <Switch>
         <Route exact path={routes.init} component={InitializationPage} />
         <Route exact path={routes.vaultDetails} component={VaultDetailsPage} />
+        <Route
+          exact
+          path={routes.operationList}
+          component={OperationListPage}
+        />
         <Route exact path={routes.registration} component={RegistrationPage} />
         <Route exact path={routes.initError} component={InitErrorPage} />
         <Redirect to={routes.init} />

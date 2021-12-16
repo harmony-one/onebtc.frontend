@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRouteMatch } from 'react-router';
-import { Iteration } from 'grommet-icons';
+import { Iteration, Cube } from 'grommet-icons';
 import { Box } from 'grommet';
 import { useStores } from '../../../stores';
 import { SideBarButton } from '../../../components/Layouts/SideBarButton';
@@ -10,12 +10,6 @@ interface Props {}
 
 export const SidebarMenu: React.FC<Props> = () => {
   const route = useRouteMatch();
-
-  const { vaultAppStore } = useStores().vaultApp;
-
-  useEffect(() => {
-    vaultAppStore.onInit();
-  }, [vaultAppStore]);
 
   const { routing } = useStores();
 
@@ -27,16 +21,16 @@ export const SidebarMenu: React.FC<Props> = () => {
 
   return (
     <Box gap="xsmall">
-      {/*<SideBarButton*/}
-      {/*  label="Status"*/}
-      {/*  active={router.isBelongsTo(ROUTE_NAMES.INIT, routeName)}*/}
-      {/*  onClick={navigateToRoute(routes.init)}*/}
-      {/*  icon={<PowerCycle />}*/}
-      {/*/>*/}
       <SideBarButton
         label="Details"
         active={router.isBelongsTo(ROUTE_NAMES.VAULT_DETAILS, routeName)}
         onClick={navigateToRoute(routes.vaultDetails)}
+        icon={<Cube />}
+      />
+      <SideBarButton
+        label="Operations"
+        active={router.isBelongsTo(ROUTE_NAMES.OPERATION_LIST, routeName)}
+        onClick={navigateToRoute(routes.operationList)}
         icon={<Iteration />}
       />
     </Box>

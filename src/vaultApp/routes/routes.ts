@@ -6,6 +6,7 @@ export enum ROUTE_NAMES {
   INIT = 'init',
   REGISTRATION = 'registration',
   INIT_ERROR = 'initError',
+  OPERATION_LIST = 'operationList',
 }
 
 const routeTree: RouteNode<ROUTE_NAMES> = {
@@ -27,6 +28,10 @@ const routeTree: RouteNode<ROUTE_NAMES> = {
     {
       name: ROUTE_NAMES.VAULT_DETAILS,
       path: '/details',
+    },
+    {
+      name: ROUTE_NAMES.OPERATION_LIST,
+      path: '/operations',
     },
   ],
 };

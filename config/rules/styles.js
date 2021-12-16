@@ -1,18 +1,9 @@
-const cssLoader = {
-  loader: 'css-loader',
-  options: {
-    modules: {
-      localIdentName: '[name]__[local]--[hash:base64:5]',
-    },
-  },
-};
-
 module.exports = () => [
   {
     test: /\.(styl)$/,
     use: [
       'style-loader',
-      cssLoader,
+      'css-loader?modules',
       // 'css-loader',
       {
         loader: 'stylus-loader', // compiles Stylus to CSS
@@ -24,10 +15,10 @@ module.exports = () => [
   },
   {
     test: /\.(css)$/,
-    use: ['style-loader', cssLoader],
+    use: ['style-loader', 'css-loader'],
   },
   {
     test: /\.(scss)$/,
-    use: ['style-loader', cssLoader, 'sass-loader'],
+    use: ['style-loader', 'css-loader', 'sass-loader'],
   },
 ];
