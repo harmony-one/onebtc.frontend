@@ -9,6 +9,23 @@ import { dateTimeAgoFormat } from '../../../../utils';
 import { Text } from '../../../../components/Base';
 import * as s from './OperationDetails.styl';
 import { OperationActionStatus } from '../../../components/OperationActionStatus';
+import LinkBitcoin from '../../../../components/LinkBitcoin';
+
+interface OperationActionTxLinkProps {
+  action: OperationAction;
+}
+
+const OperationActionTxLink: React.FC<OperationActionTxLinkProps> = ({
+  action,
+}: {
+  action: OperationAction;
+}) => {
+  if (action.type === 'transferBTC' || action.type === 'waitingConfirmations') {
+    return <LinkBitcoin hash={action.transactionHash} type="tx" />;
+  }
+
+  return <LinkHarmony hash={action.transactionHash} type="tx" />;
+};
 
 interface OperationActionProps {
   action: OperationAction;
@@ -16,28 +33,28 @@ interface OperationActionProps {
 
 const OperationAction: React.FC<OperationActionProps> = ({ action }) => {
   return (
-    <Box direction="row" gap="xsmall" margin={{ top: 'small' }} key={action.id}>
-      <Box>
+    <Box
+      direction="row"
+      gap="xsmall"
+      margin={{ left: 'medium', top: 'small' }}
+      key={action.id}
+    >
+      <Box basis="xsmall">
         <div className={s.tree} />
       </Box>
-      <Box width="200px">
+      <Box basis="full">
         <Text>{action.type}</Text>
       </Box>
-      <Box width="120px">
+      <Box basis="full">
         <OperationActionStatus action={action} />
       </Box>
-      <Box width="200px">
-        {action.transactionHash && (
-          <LinkHarmony hash={action.transactionHash} type="tx" />
-        )}
+      <Box basis="full">
+        {action.transactionHash && <OperationActionTxLink action={action} />}
         {action.error && <Text>{action.error}</Text>}
       </Box>
-      <Box width="200px">{dateTimeAgoFormat(action.timestamp)}</Box>
-      {/*<Box>*/}
-      {/*  {action.payload && (*/}
-      {/*    <LinkHarmony hash={action.payload.transactionHash} type="tx" />*/}
-      {/*  )}*/}
-      {/*</Box>*/}
+      <Box basis="full">
+        {action.timestamp && dateTimeAgoFormat(action.timestamp * 1000)}
+      </Box>
     </Box>
   );
 };
