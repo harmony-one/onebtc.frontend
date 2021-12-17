@@ -9,7 +9,11 @@ import {
   Input,
   MobxForm,
 } from 'components/Form';
-import { lessThanSat, moreThanZero } from '../../../../utils';
+import {
+  formatWithEightDecimals,
+  lessThanSat,
+  moreThanZero,
+} from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { InputMaxAmountControl } from 'components/Form/components/InputMaxAmountControl';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
@@ -21,7 +25,11 @@ export const TransferForm: React.FC<Props> = () => {
   const { transferPageStore, user } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
-  const hancleMaxClick = useCallback(() => {}, []);
+  const handleMaxClick = useCallback(() => {
+    transferPageStore.form.oneBTCAmount = formatWithEightDecimals(
+      satoshiToBitcoin(user.oneBTCBalance),
+    );
+  }, [transferPageStore.form.oneBTCAmount, user.oneBTCBalance]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -40,12 +48,14 @@ export const TransferForm: React.FC<Props> = () => {
         inputLabel={
           <InputLabelAvailableBalance
             label="Amount"
-            balance={satoshiToBitcoin(user.oneBTCBalance).toString()}
+            balance={formatWithEightDecimals(
+              satoshiToBitcoin(user.oneBTCBalance).toString(),
+            )}
             tokenName="1BTC"
           />
         }
         renderRight={
-          <InputMaxAmountControl onClick={hancleMaxClick} tokenName="1BTC" />
+          <InputMaxAmountControl onClick={handleMaxClick} tokenName="1BTC" />
         }
         style={{ width: '100%' }}
         rules={[

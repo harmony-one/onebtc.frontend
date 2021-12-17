@@ -10,6 +10,7 @@ import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
+import { VaultStore } from '../../stores/VaultStore';
 
 export interface ITransaction {
   amount: string;
@@ -196,6 +197,11 @@ export class IssuePageStore extends StoreConstructor {
   @get
   public get vaultList() {
     return this._vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
+  }
+
+  @get
+  public get vaultActiveList() {
+    return this.vaultList.filter(VaultStore.isVaultOnline);
   }
 
   @action.bound

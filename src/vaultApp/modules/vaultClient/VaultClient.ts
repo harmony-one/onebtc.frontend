@@ -24,7 +24,7 @@ export interface OperationAction {
   status: 'success' | 'waiting' | 'error';
   transactionHash: string;
   error?: string;
-  timestamp: number;
+  timestamp?: number;
   payload: {
     transactionHash: string;
   } | null;

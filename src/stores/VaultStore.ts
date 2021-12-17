@@ -105,6 +105,10 @@ export class VaultStore extends EntityStore<IVault> {
     });
   }
 
+  static isVaultOnline(vault: IVault) {
+    return vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
+  }
+
   public getVaultInfo(vault: IVault) {
     const collateralSat = this.collateralOneToSat(vault.collateral);
 
@@ -139,8 +143,7 @@ export class VaultStore extends EntityStore<IVault> {
 
     const networkFeeBN = new BN(this.stores.btcNodeStore.networkFee);
     const availableToRedeem = availableBalanceSatBN.sub(networkFeeBN);
-    const isActive =
-      vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
+    const isActive = VaultStore.isVaultOnline(vault);
 
     return {
       oneAmount,

@@ -4,7 +4,7 @@ import * as styles from './IssuePageStyles.styl';
 import { IssueForm } from './components/IssueForm/IssueForm';
 import { NavigateTabs } from '../../components/NavigateTabs';
 import { useParams } from 'react-router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useStores } from '../../stores';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
 import { useInterval } from '../../hooks/useInterval';
@@ -14,10 +14,12 @@ export const IssuePage = () => {
   const { issueId, modal } = useParams<{ issueId?: string; modal: string }>();
   const { issuePageStore } = useStores();
 
+  const loadVaults = useCallback(() => {
+    issuePageStore.loadVaults();
+  }, [issuePageStore]);
+
   useInterval({
-    callback: () => {
-      issuePageStore.loadVaults();
-    },
+    callback: loadVaults,
     timeout: ONE_SECOND * 10,
   });
 

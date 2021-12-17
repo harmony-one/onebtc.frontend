@@ -36,7 +36,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   const [form, setForm] = useState<MobxForm>();
 
   const vaultOptions = useMemo(() => {
-    return redeemPageStore.vaultList.map(vault => {
+    return redeemPageStore.vaultActiveList.map(vault => {
       const name = cutText(vault.id);
       const vaultInfo = vaultStore.getVaultInfo(vault);
       return {
@@ -64,9 +64,9 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   }, [form, redeemPageStore]);
 
   const handleMaxClick = useCallback(() => {
-    redeemPageStore.form.oneBTCAmount = satoshiToBitcoin(
-      user.oneBTCBalance,
-    ).toString();
+    redeemPageStore.form.oneBTCAmount = formatWithEightDecimals(
+      satoshiToBitcoin(user.oneBTCBalance),
+    );
   }, [redeemPageStore.form.oneBTCAmount, user.oneBTCBalance]);
 
   const amountValidator = useMemo(() => {
@@ -94,7 +94,9 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         inputLabel={
           <InputLabelAvailableBalance
             label="Amount"
-            balance={satoshiToBitcoin(user.oneBTCBalance).toString()}
+            balance={formatWithEightDecimals(
+              satoshiToBitcoin(user.oneBTCBalance).toString(),
+            )}
             tokenName="1BTC"
           />
         }

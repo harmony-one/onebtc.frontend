@@ -13,6 +13,7 @@ import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IRedeem, IVault } from '../../modules/dashboard/dashboardTypes';
 import { retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
+import { VaultStore } from '../../stores/VaultStore';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -56,6 +57,11 @@ export class RedeemPageStore extends StoreConstructor {
   @get
   public get vaultList() {
     return this._vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
+  }
+
+  @get
+  public get vaultActiveList() {
+    return this.vaultList.filter(VaultStore.isVaultOnline);
   }
 
   public getVault(vaultId: string) {
