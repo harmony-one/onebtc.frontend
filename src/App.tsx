@@ -20,6 +20,7 @@ import { DashboardVaultsPage } from './pages/DashboardVaults/DashboardVaultsPage
 import { DashboardVaultDetailsPage } from './pages/DashboardVaultDetails/DashboardVaultDetailsPage';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { TransactionsPage } from './pages/Transactions/TransactionsPage';
+import { Disclaimer } from './components/DisclaimerWarning';
 
 const App: React.FC = () => (
   <ErrorBoundary>
@@ -57,6 +58,7 @@ const App: React.FC = () => (
         />
         <Redirect to={routes.issue} />
       </Switch>
+      <Disclaimer />
       <WatcherBalance />
       <WatcherDashboard />
       <WatcherBTCNode />

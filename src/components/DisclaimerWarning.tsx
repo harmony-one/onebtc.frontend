@@ -10,7 +10,7 @@ const styles = {
     backgroundColor: '',
     fontSize: '16px',
     fontWeight: 600,
-    position: 'relative',
+    position: 'fixed',
     top: 0,
     display: 'flex',
     flexDirection: 'row',
@@ -56,9 +56,9 @@ const styles = {
 export const Disclaimer = () => (
   <CookieBanner
     styles={styles}
-    message="NOTE: All myTransactions are on the Harmony Testnet and Kovan Test Network. Use at your own risk. If you find a bug, send them here support@harmony.one"
+    message="NOTE: Official launch coming soon. Please use for testing purposes only."
     onAccept={() => {}}
-    cookie="soccerplayers-accept-no-commerce"
+    cookie="onebtc-info-accept"
     dismissOnScroll={false}
     dismissOnClick={false}
   />
