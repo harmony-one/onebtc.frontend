@@ -14,6 +14,7 @@ import { IRedeem, IVault } from '../../modules/dashboard/dashboardTypes';
 import { retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { VaultStore } from '../../stores/VaultStore';
+import { RedeemCanceledModal } from './components/RedeemCanceledModal';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -229,6 +230,41 @@ export class RedeemPageStore extends StoreConstructor {
       redeemUiTx.setStatusFail();
       console.log('### Error during create issuePageStore', err);
       this.status = 'error';
+    }
+  }
+
+  @action
+  async cancelIssue(redeemId: string) {
+    const uiTx = this.stores.uiTransactionsStore.create();
+    uiTx.setStatusWaitingSignIn();
+    uiTx.showModal();
+
+    try {
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+
+      const redeemInfo = this.stores.redeemStore.getRedeemInfo(redeemId);
+
+      await hmyClient.cancelRedeem(redeemInfo.requester, redeemId, txHash => {
+        uiTx.setTxHash(txHash);
+        uiTx.setStatusProgress();
+      });
+
+      uiTx.hideModal();
+      this.stores.actionModals.open(RedeemCanceledModal, {
+        initData: {},
+        applyText: '',
+        closeText: '',
+        noValidation: true,
+        width: '320px',
+        showOther: true,
+        onApply: () => {
+          return Promise.resolve();
+        },
+      });
+    } catch (err) {
+      console.log('### err execute cancelRedeem error', err);
+      this.status = 'error';
+      uiTx.setStatusFail();
     }
   }
 }

@@ -39,8 +39,15 @@ export class RedeemStore extends EntityStore<IRedeem> {
       redeem.btcTx &&
       redeem.btcTx.confirmations >= config.bitcoin.waitConfirmationsCount;
 
+    const openTime = Number(redeem.opentime) * 1000;
+    const period = Number(redeem.period) * 1000;
+    const expiredTime = openTime + period;
+
     return {
       sendAmount,
+      expiredTime,
+      isExpired: Date.now() - expiredTime >= 0,
+      requester: redeem.requester,
       sendUsdAmount: sendAmount * this.stores.ratesStore.BTC_USDT,
       redeemId: redeem.id,
       vaultId: redeem.vault,
@@ -55,6 +62,7 @@ export class RedeemStore extends EntityStore<IRedeem> {
       isConfirmedBtcTX,
       isPending: redeem.status === RedeemStatus.PENDING,
       isCompleted: redeem.status === RedeemStatus.COMPLETED,
+      isCanceled: redeem.status === RedeemStatus.CANCELED,
     };
   }
 }

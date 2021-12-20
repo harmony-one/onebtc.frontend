@@ -29,7 +29,9 @@ export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
           <RedeemDetailsModalTransaction redeemId={redeemId} />
         </Box>
         <Box basis="1/2" gap="medium" align="center">
-          {!redeemInfo.btcTx && <RedeemDetailsModalWaitVault />}
+          {!redeemInfo.btcTx && (
+            <RedeemDetailsModalWaitVault redeemId={redeemId} />
+          )}
           {redeemInfo.btcTx &&
             !redeemInfo.isConfirmedBtcTX &&
             !redeemInfo.isCompleted && (
@@ -37,7 +39,9 @@ export const RedeemDetailsModalContent: React.FC<Props> = ({ redeemId }) => {
             )}
           {redeemInfo.btcTx &&
             redeemInfo.isConfirmedBtcTX &&
-            !redeemInfo.isCompleted && <RedeemDetailsModalWaitVault />}
+            !redeemInfo.isCompleted && (
+              <RedeemDetailsModalWaitVault redeemId={redeemId} />
+            )}
           {redeemInfo.btcTx && redeemInfo.isCompleted && (
             <RedeemDetailsModalConfirmation redeemId={redeemId} />
           )}

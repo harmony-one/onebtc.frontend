@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useObserver } from 'mobx-react';
 import { Box } from 'grommet';
-import { Text, Title } from '../../../../components/Base';
+import { Button, Text, Title } from '../../../../components/Base';
 import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModals.styl';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
+import { useStores } from '../../../../stores';
 
-export const RedeemDetailsModalWaitVault: React.FC<{}> = () => {
+export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
+  redeemId,
+}) => {
+  const { redeemStore, redeemPageStore } = useStores();
+  const redeemInfo = redeemStore.getRedeemInfo(redeemId);
+  const handleCancelRedeem = useCallback(() => {
+    redeemPageStore.cancelIssue(redeemId);
+  }, [redeemId, redeemPageStore]);
+
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box>
@@ -18,6 +27,11 @@ export const RedeemDetailsModalWaitVault: React.FC<{}> = () => {
           </Text>
         </SpinnerContainer>
       </Box>
+      {redeemInfo.isExpired && !redeemInfo.isCanceled && (
+        <Box>
+          <Button onClick={handleCancelRedeem}>Cancel Redeem</Button>
+        </Box>
+      )}
     </Box>
   ));
 };
