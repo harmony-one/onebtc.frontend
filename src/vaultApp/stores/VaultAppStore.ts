@@ -7,10 +7,6 @@ export class VaultAppStore extends StoreConstructor {
   @observable
   public vaultInfo: VaultInfo;
 
-  init() {
-    this.onInit();
-  }
-
   @get
   get vaultId() {
     if (this.vaultInfo) {
@@ -27,7 +23,7 @@ export class VaultAppStore extends StoreConstructor {
   }
 
   @action.bound
-  async onInit() {
+  async bootstrap() {
     try {
       const vaultInfo = await this.loadVaultInfo();
 
@@ -50,7 +46,7 @@ export class VaultAppStore extends StoreConstructor {
   async registerVault() {
     try {
       await vaultClient.registration();
-      await this.onInit();
+      await this.bootstrap();
       this.goToDetailsPage();
     } catch (err) {
       console.error('### err', err);
