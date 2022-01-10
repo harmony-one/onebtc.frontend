@@ -190,7 +190,7 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   public async loadVaults() {
-    const response = await dashboardClient.loadVaultList({ size: 10, page: 0 });
+    const response = await dashboardClient.loadVaultList({ size: 50, page: 0 });
     this._vaultList = response.content;
   }
 
