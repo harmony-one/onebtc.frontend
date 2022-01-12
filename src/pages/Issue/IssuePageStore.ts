@@ -11,6 +11,7 @@ import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
 import { VaultStore } from '../../stores/VaultStore';
+import BN from 'bn.js';
 
 export interface ITransaction {
   amount: string;
@@ -201,7 +202,14 @@ export class IssuePageStore extends StoreConstructor {
 
   @get
   public get vaultActiveList() {
-    return this.vaultList.filter(VaultStore.isVaultOnline);
+    return this.vaultList
+      .filter(VaultStore.isVaultOnline)
+      .filter(vault =>
+        VaultStore.calcAvailableToIssueSat(
+          vault,
+          this.stores.ratesStore.ONE_BTC,
+        ).gt(new BN(0)),
+      );
   }
 
   @action.bound
