@@ -109,7 +109,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         align="start"
       >
         <Text size="small" bold={true}>
-          Bridge Fee
+          Bridge Fee {issuePageStore.bridgeRatio}%
         </Text>
         <PriceView
           value={issuePageStore.bridgeFee}

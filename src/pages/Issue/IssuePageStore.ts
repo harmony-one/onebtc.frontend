@@ -18,6 +18,8 @@ export interface ITransaction {
   vaultId: string;
 }
 
+const BRIDGE_RATIO = 2;
+
 export class IssuePageStore extends StoreConstructor {
   defaultForm: ITransaction = {
     amount: '0',
@@ -34,7 +36,11 @@ export class IssuePageStore extends StoreConstructor {
 
   @computed
   get bridgeFee() {
-    return (Number(this.form.amount) * 2) / 1000;
+    return (Number(this.form.amount) * BRIDGE_RATIO) / 1000;
+  }
+
+  get bridgeRatio() {
+    return (BRIDGE_RATIO / 1000) * 100;
   }
 
   @computed
