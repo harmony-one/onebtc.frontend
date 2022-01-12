@@ -44,7 +44,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
             <Text>{name}: </Text>
             <Text bold>
               {formatWithEightDecimals(
-                satoshiToBitcoin(vaultInfo.availableAmountSat.toString()),
+                satoshiToBitcoin(vaultInfo.availableToIssueSat.toString()),
               )}
             </Text>
             <Text> 1BTC</Text>
@@ -63,7 +63,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
     const vaultInfo = vaultStore.getVaultInfo(vault);
 
     return lessThanSat(
-      vaultInfo.availableAmountSat.toString(),
+      vaultInfo.availableToIssueSat.toString(),
       'redeem amount exceeds vault balance',
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -51,36 +51,39 @@ export class VaultStore extends EntityStore<IVault> {
     );
   }
 
-  public calcMaxLoanWei(onwWei: string) {
+  static calcMaxLoanWei(onwWei: string) {
     const one = new BN(onwWei);
     return one.div(new BN(100)).mul(new BN(Math.ceil(100 / COLLATERAL_RATIO)));
   }
 
-  public calcMaxLoanSat(oneWei: string) {
-    return this.weiToSatoshi(this.calcMaxLoanWei(oneWei));
+  static calcMaxLoanSat(oneWei: string, oneBtcRate: number) {
+    return VaultStore.weiToSatoshi(
+      VaultStore.calcMaxLoanWei(oneWei),
+      oneBtcRate,
+    );
   }
 
-  public calcRequiredCollateral(sat: string | BN) {
+  static calcRequiredCollateral(sat: string | BN, oneBtcRate: number) {
     const requiredSat = new BN(sat)
       .div(new BN(100))
       .mul(new BN(COLLATERAL_RATIO * 100));
-    return this.satoshiToWei(requiredSat);
+    return VaultStore.satoshiToWei(requiredSat, oneBtcRate);
   }
 
-  public weiToSatoshi(wei: string | BN) {
-    if (!this.stores.ratesStore.ONE_BTC) {
+  static weiToSatoshi(wei: string | BN, oneBtcRate: number) {
+    if (!oneBtcRate) {
       return new BN(0);
     }
-    const satRate = new BN(this.stores.ratesStore.ONE_BTC * 1e8);
+    const satRate = new BN(oneBtcRate * 1e8);
     const oneToSatRate = new BN(utils.toWei('1')).div(satRate);
     return new BN(wei).div(oneToSatRate);
   }
 
-  public satoshiToWei(sat: string | BN) {
-    if (!this.stores.ratesStore.ONE_BTC) {
+  static satoshiToWei(sat: string | BN, oneBtcRate: number) {
+    if (!oneBtcRate) {
       return new BN(0);
     }
-    const satRate = new BN(this.stores.ratesStore.ONE_BTC * 1e8);
+    const satRate = new BN(oneBtcRate * 1e8);
     const oneToSatRate = new BN(utils.toWei('1')).div(satRate);
 
     return new BN(sat).mul(oneToSatRate);
@@ -109,6 +112,49 @@ export class VaultStore extends EntityStore<IVault> {
     return vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
   }
 
+  static calcCollateral(collateralSat: number, volumeSat: number) {
+    if (collateralSat === 0) {
+      return 0;
+    }
+    return collateralSat / (volumeSat / 100);
+  }
+
+  static calcAvailableToIssueSat(vault: IVault, oneBtcRate: number) {
+    const maxLoanSat = VaultStore.calcMaxLoanSat(vault.collateral, oneBtcRate);
+    const currentLoanSat = VaultStore.calcCurrentLoan(vault);
+
+    return BN.max(new BN(0), maxLoanSat.sub(currentLoanSat));
+  }
+
+  static calcAvailableToRedeemSat(vault: IVault, networkFee: number) {
+    const availableBalanceSatBN = new BN(vault.issued).sub(
+      new BN(vault.toBeRedeemed),
+    );
+
+    const networkFeeBN = new BN(networkFee);
+    return availableBalanceSatBN.sub(networkFeeBN);
+  }
+
+  static calcAvailableToWithdrawWei(vault: IVault, oneBtcRate: number) {
+    const currentLoanSat = VaultStore.calcCurrentLoan(vault);
+
+    const requiredCollateralWei = VaultStore.calcRequiredCollateral(
+      currentLoanSat,
+      oneBtcRate,
+    );
+
+    return BN.max(
+      new BN(vault.collateral).sub(requiredCollateralWei),
+      new BN(0),
+    );
+  }
+
+  static calcCurrentLoan(vault: IVault) {
+    return new BN(vault.issued)
+      .add(new BN(vault.toBeIssued))
+      .add(new BN(vault.toBeRedeemed));
+  }
+
   public getVaultInfo(vault: IVault) {
     const collateralSat = this.collateralOneToSat(vault.collateral);
 
@@ -117,47 +163,43 @@ export class VaultStore extends EntityStore<IVault> {
     const issuedSat = Number(vault.issued);
     const lockedSat = new BN(vault.issued).add(new BN(vault.toBeIssued));
 
-    const collateralRedeemed = collateralSat / (toBeRedeemedSat / 100);
-    const collateralIssued = collateralSat / (toBeIssuedSat / 100);
-    const collateralTotal =
-      collateralSat / ((issuedSat + toBeIssuedSat + toBeRedeemedSat) / 100);
+    const oneBtcRate = this.stores.ratesStore.ONE_BTC;
 
-    const maxLoanSat = this.calcMaxLoanSat(vault.collateral);
-
-    const currentLoanSat = new BN(issuedSat + toBeIssuedSat + toBeRedeemedSat);
-    const availableSatToIssue = maxLoanSat.sub(currentLoanSat);
-
-    const requiredCollateralWei = this.calcRequiredCollateral(currentLoanSat);
-    const availableWeiToWithdraw = BN.max(
-      new BN(vault.collateral).sub(requiredCollateralWei),
-      new BN(0),
+    const availableToIssueSat = VaultStore.calcAvailableToIssueSat(
+      vault,
+      oneBtcRate,
     );
 
-    const oneAmount = Number(vault.collateral) / 1e18;
-    const maxWithdraw = availableWeiToWithdraw;
-
-    const availableAmountSat = availableSatToIssue;
-    const availableBalanceSatBN = new BN(vault.issued).sub(
-      new BN(vault.toBeRedeemed),
+    const availableToRedeemSat = VaultStore.calcAvailableToRedeemSat(
+      vault,
+      this.stores.btcNodeStore.networkFee,
     );
 
-    const networkFeeBN = new BN(this.stores.btcNodeStore.networkFee);
-    const availableToRedeem = availableBalanceSatBN.sub(networkFeeBN);
+    const availableToWithdrawWei = VaultStore.calcAvailableToWithdrawWei(
+      vault,
+      oneBtcRate,
+    );
+
+    const collateralIssued = VaultStore.calcCollateral(
+      collateralSat,
+      issuedSat + toBeIssuedSat,
+    );
+
+    const collateralTotal = VaultStore.calcCollateral(collateralSat, issuedSat);
     const isActive = VaultStore.isVaultOnline(vault);
 
     return {
-      oneAmount,
-      availableAmountSat,
-      availableToRedeem,
+      collateral: vault.collateral,
+      issuedSat,
       toBeIssuedSat,
       toBeRedeemedSat,
-      collateralRedeemed,
+      lockedSat,
+      availableToIssueSat,
+      availableToRedeemSat,
+      availableToWithdrawWei,
       collateralIssued,
       collateralTotal,
-      issuedSat,
-      lockedSat,
       isActive,
-      maxWithdraw,
     };
   }
 }

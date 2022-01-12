@@ -46,11 +46,11 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
 
     const handleMaxClick = useCallback(() => {
       dashboardVaultDetailsStore.formWithdraw.oneAmount = utils.fromWei(
-        vaultInfo.maxWithdraw,
+        vaultInfo.availableToWithdrawWei,
       );
     }, [
       dashboardVaultDetailsStore.formWithdraw.oneAmount,
-      vaultInfo.maxWithdraw,
+      vaultInfo.availableToWithdrawWei,
     ]);
 
     return (
@@ -68,7 +68,7 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
             inputLabel={
               <InputLabelAvailableBalance
                 label="Withdraw"
-                balance={utils.fromWei(vaultInfo.maxWithdraw)}
+                balance={utils.fromWei(vaultInfo.availableToWithdrawWei)}
                 tokenName="ONE"
               />
             }

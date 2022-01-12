@@ -99,7 +99,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
             <Text>
               Pending:{' '}
               <Text bold color={colorIssued}>
-                {formatWithTwoDecimals(vaultInfo.collateralTotal)}%
+                {formatWithTwoDecimals(vaultInfo.collateralIssued)}%
               </Text>
             </Text>
           </Box>

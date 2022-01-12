@@ -8,6 +8,7 @@ import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
 import { vaultBalancesStore } from '../../../stores/VaultStore';
 import { observer } from 'mobx-react';
 import { formatWithEightDecimals, formatZeroDecimals } from '../../../utils';
+import utils from 'web3-utils';
 
 interface Props {
   vaultId: string;
@@ -66,7 +67,7 @@ export const VaultInfo: React.FC<Props> = React.memo(
             <Text>Collateral:</Text>
           </Box>
           <Box>
-            <Text bold>{vaultInfo.oneAmount} ONE</Text>
+            <Text bold>{utils.fromWei(vaultInfo.collateral)} ONE</Text>
           </Box>
         </Box>
         <Divider fullwidth />
