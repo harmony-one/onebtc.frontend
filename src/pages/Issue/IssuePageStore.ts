@@ -208,14 +208,13 @@ export class IssuePageStore extends StoreConstructor {
 
   @get
   public get vaultActiveList() {
-    return this.vaultList
-      .filter(VaultStore.isVaultOnline)
-      .filter(vault =>
-        VaultStore.calcAvailableToIssueSat(
-          vault,
-          this.stores.ratesStore.ONE_BTC,
-        ).gt(new BN(0)),
-      );
+    return this.vaultList.filter(VaultStore.isVaultOnline);
+    // .filter(vault =>
+    //   VaultStore.calcAvailableToIssueSat(
+    //     vault,
+    //     this.stores.ratesStore.ONE_BTC,
+    //   ).gt(new BN(0)),
+    // );
   }
 
   @action.bound
