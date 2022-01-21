@@ -1,4 +1,5 @@
 import { action, autorun, computed, observable } from 'mobx';
+import { getAddress } from '@harmony-js/crypto';
 import { IStores } from 'stores';
 import { statusFetching } from '../constants';
 import detectEthereumProvider from '@metamask/detect-provider';
@@ -228,7 +229,7 @@ export class UserStoreEx extends StoreConstructor {
     if (window.onewallet) {
       const account = await window.onewallet.getAccount();
 
-      this.address = account.address;
+      this.address = getAddress(account.address).checksum;
       this.isOneWallet = true;
       this.isAuthorized = true;
       this.sessionType = 'onewallet';

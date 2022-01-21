@@ -10,6 +10,7 @@ import { VaultIssuedChart } from '../../../pages/DashboardVaultDetails/component
 import { VaultLogs } from '../../../pages/DashboardVaultDetails/components/VaultLogs';
 import { VaultAppLayout } from '../../components/Layouts/VaultAppLayout';
 import { Spinner } from '../../../ui';
+import { addressIsEq } from '../../../utils/hmy';
 
 interface Props {}
 
@@ -31,7 +32,7 @@ export const VaultDetailsPage: React.FC<Props> = observer(() => {
       return false;
     }
 
-    return vault.id.toLowerCase() === user.address.toLowerCase();
+    return addressIsEq(user.address, vault.id);
   }, [vault, user]);
 
   if (!vault) {

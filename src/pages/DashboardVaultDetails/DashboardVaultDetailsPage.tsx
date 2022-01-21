@@ -11,6 +11,7 @@ import { VaultLogs } from './components/VaultLogs';
 import { useVaultWatcher } from '../../hooks/useVaultWatcher';
 import { dashboardHistoryStore } from '../Dashboard/DashboardHistoryStore';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
+import { addressIsEq } from '../../utils/hmy';
 
 interface Props {}
 
@@ -36,7 +37,7 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(() => {
       return false;
     }
 
-    return vault.id.toLowerCase() === user.address.toLowerCase();
+    return addressIsEq(user.address, vault.id);
   }, [vault, user]);
 
   return (
