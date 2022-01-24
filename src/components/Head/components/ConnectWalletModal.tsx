@@ -39,17 +39,17 @@ export const ConnectWalletModal: React.FC<TActionModalProps> = props => {
             Sign in by Metamask
           </WalletButton>
         )}
-        {config.wallets.onewallet && !user.isAuthorized && (
-          <WalletButton
-            onClick={() => {
-              user.signInOneWallet().then(() => handleCloseModal());
-            }}
-            error={user.error}
-          >
-            <img src="/one.svg" style={{ marginRight: 15, height: 22 }} />
-            Sign in by OneWallet
-          </WalletButton>
-        )}
+        {/*{config.wallets.onewallet && !user.isAuthorized && (*/}
+        {/*  <WalletButton*/}
+        {/*    onClick={() => {*/}
+        {/*      user.signInOneWallet().then(() => handleCloseModal());*/}
+        {/*    }}*/}
+        {/*    error={user.error}*/}
+        {/*  >*/}
+        {/*    <img src="/one.svg" style={{ marginRight: 15, height: 22 }} />*/}
+        {/*    Sign in by OneWallet*/}
+        {/*  </WalletButton>*/}
+        {/*)}*/}
         {config.wallets.onewallet &&
           user.isAuthorized &&
           user.sessionType === 'onewallet' && (
