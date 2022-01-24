@@ -53,6 +53,7 @@ function selectValueByOption(option: IReactSelectOption) {
 
 function selectOptionByValue(
   value: string,
+  defaultValue: string,
   options: IReactSelectOption[],
   noDefaultValue: boolean,
 ) {
@@ -60,11 +61,15 @@ function selectOptionByValue(
     return undefined;
   }
 
-  return options.find(i => i.value === value) || ({} as IReactSelectOption);
+  return (
+    options.find(i => i.value === value || i.value === defaultValue) ||
+    ({} as IReactSelectOption)
+  );
 }
 
 export interface ISelectProps extends ICommonInputProps {
   value?: any;
+  defaultValue?: any;
   theme?: ThemeConfig;
   options: ISelectOption[];
   type?: SelectType;
@@ -117,6 +122,7 @@ const SelectClass = (props: ICommonInputProps & ISelectProps) => {
     disabled,
     placeholder,
     noDefaultValue,
+    defaultValue,
   } = props;
 
   const mappedOptions = mapOptions(props.options);
@@ -139,6 +145,7 @@ const SelectClass = (props: ICommonInputProps & ISelectProps) => {
       options={mappedOptions}
       defaultValue={selectOptionByValue(
         props.value,
+        defaultValue,
         mappedOptions,
         noDefaultValue,
       )}
