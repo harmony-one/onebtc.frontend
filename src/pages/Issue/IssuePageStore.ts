@@ -11,7 +11,6 @@ import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
 import { VaultStore } from '../../stores/VaultStore';
-import BN from 'bn.js';
 
 export interface ITransaction {
   amount: string;
@@ -215,6 +214,30 @@ export class IssuePageStore extends StoreConstructor {
     //     this.stores.ratesStore.ONE_BTC,
     //   ).gt(new BN(0)),
     // );
+  }
+
+  @get
+  public get defaultVaultId() {
+    if (!this.vaultActiveList.length) {
+      return '';
+    }
+
+    return this.vaultActiveList.reduce((acc, vault) => {
+      if (!acc) {
+        return vault;
+      }
+
+      const accVaultInfo = this.stores.vaultStore.getVaultInfo(acc);
+      const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
+
+      if (
+        vaultInfo.availableToRedeemSat.gt(accVaultInfo.availableToRedeemSat)
+      ) {
+        return vault;
+      }
+
+      return acc;
+    }, null).id;
   }
 
   @action.bound

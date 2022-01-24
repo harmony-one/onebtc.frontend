@@ -53,7 +53,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         value: vault.id,
       };
     });
-  }, [issuePageStore.vaultList, vaultStore]);
+  }, [issuePageStore.vaultActiveList, vaultStore]);
 
   const amountValidator = useMemo(() => {
     const vault = issuePageStore.getVault(issuePageStore.form.vaultId);
@@ -94,13 +94,16 @@ export const IssueForm: React.FC<Props> = observer(() => {
         rules={[isRequired, moreThanZero, amountValidator].filter(Boolean)}
       />
 
-      <Select
-        label="Vault"
-        name="vaultId"
-        style={{ width: '100%' }}
-        rules={[isRequired]}
-        options={vaultOptions}
-      />
+      {issuePageStore.defaultVaultId && (
+        <Select
+          label="Vault"
+          name="vaultId"
+          style={{ width: '100%' }}
+          rules={[isRequired]}
+          options={vaultOptions}
+          defaultValue={issuePageStore.defaultVaultId}
+        />
+      )}
 
       <Box
         direction="row"

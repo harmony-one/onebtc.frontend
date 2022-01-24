@@ -65,6 +65,30 @@ export class RedeemPageStore extends StoreConstructor {
     return this.vaultList.filter(VaultStore.isVaultOnline);
   }
 
+  @get
+  public get defaultVaultId() {
+    if (!this.vaultActiveList.length) {
+      return '';
+    }
+
+    return this.vaultActiveList.reduce((acc, vault) => {
+      if (!acc) {
+        return vault;
+      }
+
+      const accVaultInfo = this.stores.vaultStore.getVaultInfo(acc);
+      const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
+
+      if (
+        vaultInfo.availableToRedeemSat.gt(accVaultInfo.availableToRedeemSat)
+      ) {
+        return vault;
+      }
+
+      return acc;
+    }, null).id;
+  }
+
   public getVault(vaultId: string) {
     return this._vaultList.find(vault => vault.id === vaultId);
   }

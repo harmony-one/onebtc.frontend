@@ -55,7 +55,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         value: vault.id,
       };
     });
-  }, [redeemPageStore.vaultList, vaultStore]);
+  }, [redeemPageStore.vaultActiveList, vaultStore]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -122,13 +122,16 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         rules={[isRequired]}
       />
 
-      <Select
-        label="Vault"
-        name="vaultId"
-        style={{ width: '100%' }}
-        rules={[isRequired]}
-        options={vaultOptions}
-      />
+      {redeemPageStore.defaultVaultId && (
+        <Select
+          label="Vault"
+          name="vaultId"
+          style={{ width: '100%' }}
+          rules={[isRequired]}
+          options={vaultOptions}
+          defaultValue={redeemPageStore.defaultVaultId}
+        />
+      )}
 
       <Box
         direction="row"
