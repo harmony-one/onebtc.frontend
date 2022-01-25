@@ -83,7 +83,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [redeemPageStore, vaultStore, redeemPageStore.form.vaultId]);
 
-  const isFormDisabled = !user.isIssueAndRedeemAvailable;
+  const isFormDisabled = !user.isBridgeAvailable;
 
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>

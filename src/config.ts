@@ -1,3 +1,5 @@
+import { parseInt } from 'lodash';
+
 interface Config {
   network: 'mainnet' | 'testnet';
   isTestnet: boolean;
@@ -26,7 +28,10 @@ interface Config {
   vaultApp: {
     vaultHost: string;
   };
-  whitelistAddresses: string[];
+  bridge: {
+    available: boolean;
+    whiteListAddresses: string[];
+  };
 }
 
 export const config: Config = {
@@ -60,7 +65,12 @@ export const config: Config = {
   vaultApp: {
     vaultHost: process.env.VAULT_CLIENT_HOST || `${window.origin}/api`,
   },
-  whitelistAddresses: (process.env.WHITELIST_ADDRESSES || '').split(','),
+  bridge: {
+    available: !!parseInt(process.env.SERVICE_AVAILABLE, 0),
+    whiteListAddresses: (
+      process.env.SERVICE_AVAILABLE_WHITELIST_ADDRESSES || ''
+    ).split(','),
+  },
 } as const;
 
 console.log('### config', config);

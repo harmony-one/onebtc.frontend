@@ -131,8 +131,20 @@ export class UserStoreEx extends StoreConstructor {
   }
 
   @computed
-  get isIssueAndRedeemAvailable() {
-    return config.whitelistAddresses.reduce((acc, item) => {
+  get isBridgeAvailable() {
+    if (config.bridge.available) {
+      return true;
+    }
+
+    if (config.bridge.whiteListAddresses.length === 0) {
+      return false;
+    }
+
+    if (!this.address) {
+      return false;
+    }
+
+    return config.bridge.whiteListAddresses.reduce((acc, item) => {
       if (acc) {
         return acc;
       }

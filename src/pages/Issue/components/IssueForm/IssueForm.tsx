@@ -69,7 +69,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
 
-  const isFormDisabled = !user.isIssueAndRedeemAvailable;
+  const isFormDisabled = !user.isBridgeAvailable;
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
@@ -101,7 +101,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         <Select
           label="Vault"
           name="vaultId"
-          disabled={true}
+          disabled={isFormDisabled}
           style={{ width: '100%' }}
           rules={[isRequired]}
           options={vaultOptions}
