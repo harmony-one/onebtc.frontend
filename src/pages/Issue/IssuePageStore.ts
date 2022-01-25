@@ -4,7 +4,7 @@ import { getOneBTCClient } from 'services/oneBtcClient';
 import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
 import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsModal';
 import { IssueConfirmModal } from './components/IssueConfirmModal';
-import { retry } from '../../utils';
+import { randomInt, retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
@@ -222,22 +222,28 @@ export class IssuePageStore extends StoreConstructor {
       return '';
     }
 
-    return this.vaultActiveList.reduce((acc, vault) => {
-      if (!acc) {
-        return vault;
-      }
+    const max = this.vaultActiveList.length - 1;
+    const min = 0;
+    const index = randomInt(min, max);
 
-      const accVaultInfo = this.stores.vaultStore.getVaultInfo(acc);
-      const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
+    return this.vaultActiveList[index].id;
 
-      if (
-        vaultInfo.availableToRedeemSat.gt(accVaultInfo.availableToRedeemSat)
-      ) {
-        return vault;
-      }
-
-      return acc;
-    }, null).id;
+    // return this.vaultActiveList.reduce((acc, vault) => {
+    //   if (!acc) {
+    //     return vault;
+    //   }
+    //
+    //   const accVaultInfo = this.stores.vaultStore.getVaultInfo(acc);
+    //   const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
+    //
+    //   if (
+    //     vaultInfo.availableToRedeemSat.gt(accVaultInfo.availableToRedeemSat)
+    //   ) {
+    //     return vault;
+    //   }
+    //
+    //   return acc;
+    // }, null).id;
   }
 
   @action.bound

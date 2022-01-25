@@ -1,6 +1,12 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box } from 'grommet';
-import { Text, Divider, Button, DividerVertical } from 'components/Base';
+import {
+  Text,
+  Divider,
+  Button,
+  DividerVertical,
+  Checkbox,
+} from 'components/Base';
 import { observer } from 'mobx-react';
 import {
   Form,
@@ -26,6 +32,7 @@ type Props = Pick<IStores, 'issuePageStore'>;
 export const IssueForm: React.FC<Props> = observer(() => {
   const { issuePageStore, vaultStore, ratesStore, user } = useStores();
   const [form, setForm] = useState<MobxForm>();
+  const [isCustomVault, setCustomVault] = useState(false);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -98,15 +105,27 @@ export const IssueForm: React.FC<Props> = observer(() => {
       />
 
       {issuePageStore.defaultVaultId && (
-        <Select
-          label="Vault"
-          name="vaultId"
-          disabled={isFormDisabled}
-          style={{ width: '100%' }}
-          rules={[isRequired]}
-          options={vaultOptions}
-          defaultValue={issuePageStore.defaultVaultId}
-        />
+        <Box>
+          <Box direction="row" align="center" justify="between">
+            <Text size="large" bold>
+              Vault
+            </Text>
+            <Checkbox
+              disabled={isFormDisabled}
+              label="Don't like the vault, let me select"
+              value={isCustomVault}
+              onChange={setCustomVault}
+            />
+          </Box>
+          <Select
+            name="vaultId"
+            disabled={isFormDisabled || !isCustomVault}
+            style={{ width: '100%' }}
+            rules={[isRequired]}
+            options={vaultOptions}
+            defaultValue={issuePageStore.defaultVaultId}
+          />
+        </Box>
       )}
 
       <Box

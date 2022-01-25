@@ -11,7 +11,7 @@ import { RedeemDetailsModal } from './components/RedeemDetailsModal/RedeemDetail
 import { RedeemConfirmModal } from './components/RedeemConfirmModal';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IRedeem, IVault } from '../../modules/dashboard/dashboardTypes';
-import { retry } from '../../utils';
+import { randomInt, retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { VaultStore } from '../../stores/VaultStore';
 import { RedeemCanceledModal } from './components/RedeemCanceledModal';
@@ -71,22 +71,28 @@ export class RedeemPageStore extends StoreConstructor {
       return '';
     }
 
-    return this.vaultActiveList.reduce((acc, vault) => {
-      if (!acc) {
-        return vault;
-      }
+    const max = this.vaultActiveList.length - 1;
+    const min = 0;
+    const index = randomInt(min, max);
 
-      const accVaultInfo = this.stores.vaultStore.getVaultInfo(acc);
-      const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
+    return this.vaultActiveList[index].id;
 
-      if (
-        vaultInfo.availableToRedeemSat.gt(accVaultInfo.availableToRedeemSat)
-      ) {
-        return vault;
-      }
-
-      return acc;
-    }, null).id;
+    // return this.vaultActiveList.reduce((acc, vault) => {
+    //   if (!acc) {
+    //     return vault;
+    //   }
+    //
+    //   const accVaultInfo = this.stores.vaultStore.getVaultInfo(acc);
+    //   const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
+    //
+    //   if (
+    //     vaultInfo.availableToRedeemSat.gt(accVaultInfo.availableToRedeemSat)
+    //   ) {
+    //     return vault;
+    //   }
+    //
+    //   return acc;
+    // }, null).id;
   }
 
   public getVault(vaultId: string) {
