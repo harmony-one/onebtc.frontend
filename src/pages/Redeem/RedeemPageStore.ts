@@ -37,7 +37,7 @@ export class RedeemPageStore extends StoreConstructor {
     'init';
 
   @observable form = this.defaultForm;
-  @observable _vaultList: IVault[] = [];
+  @observable private _vaultList: IVault[] = [];
 
   @computed
   get bridgeFee() {
@@ -53,46 +53,36 @@ export class RedeemPageStore extends StoreConstructor {
   public async loadVaults() {
     const response = await dashboardClient.loadVaultList({ size: 50, page: 0 });
     this._vaultList = response.content;
+
+    const defaultVaultId = this.getDefaultVaultId(
+      this.getActiveVaultList(this._vaultList),
+    );
+
+    this.form.vaultId = defaultVaultId;
+  }
+
+  getDefaultVaultId(vaultList: IVault[]) {
+    const max = vaultList.length - 1;
+    const min = 0;
+    const index = randomInt(min, max);
+
+    return vaultList[index].id;
   }
 
   @get
   public get vaultList() {
-    return this._vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
+    return this._vaultList.filter(VaultStore.isVaultHasCollateral);
+  }
+
+  getActiveVaultList(vaultList: IVault[]) {
+    return vaultList
+      .filter(VaultStore.isVaultHasCollateral)
+      .filter(VaultStore.isVaultOnline);
   }
 
   @get
   public get vaultActiveList() {
-    return this.vaultList.filter(VaultStore.isVaultOnline);
-  }
-
-  @get
-  public get defaultVaultId() {
-    if (!this.vaultActiveList.length) {
-      return '';
-    }
-
-    const max = this.vaultActiveList.length - 1;
-    const min = 0;
-    const index = randomInt(min, max);
-
-    return this.vaultActiveList[index].id;
-
-    // return this.vaultActiveList.reduce((acc, vault) => {
-    //   if (!acc) {
-    //     return vault;
-    //   }
-    //
-    //   const accVaultInfo = this.stores.vaultStore.getVaultInfo(acc);
-    //   const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
-    //
-    //   if (
-    //     vaultInfo.availableToRedeemSat.gt(accVaultInfo.availableToRedeemSat)
-    //   ) {
-    //     return vault;
-    //   }
-    //
-    //   return acc;
-    // }, null).id;
+    return this.getActiveVaultList(this._vaultList);
   }
 
   public getVault(vaultId: string) {

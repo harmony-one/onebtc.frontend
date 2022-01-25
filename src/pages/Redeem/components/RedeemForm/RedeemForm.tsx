@@ -17,11 +17,10 @@ import {
 } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
-import { cutText } from '../../../../services/cutText';
 import { satoshiToBitcoin } from '../../../../services/bitcoin';
-import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 import { InputLabelAvailableBalance } from '../../../../components/Form/components/InputLabelAvailableBalance';
 import { InputMaxAmountControl } from '../../../../components/Form/components/InputMaxAmountControl';
+import { VaultRedeemSelectItem } from 'components/VaultRedeemSelectItem';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -38,25 +37,12 @@ export const RedeemForm: React.FC<Props> = observer(() => {
 
   const vaultOptions = useMemo(() => {
     return redeemPageStore.vaultActiveList.map(vault => {
-      const name = cutText(vault.id);
-      const vaultInfo = vaultStore.getVaultInfo(vault);
       return {
-        text: (
-          <Box direction="row" gap="xxsmall" align="center">
-            <VaultStatusDot isActive={vaultInfo.isActive} />
-            <Text>{name}: </Text>
-            <Text bold>
-              {formatWithEightDecimals(
-                satoshiToBitcoin(vaultInfo.availableToRedeemSat.toString()),
-              )}
-            </Text>
-            <Text> 1BTC</Text>
-          </Box>
-        ),
+        text: <VaultRedeemSelectItem vault={vault} />,
         value: vault.id,
       };
     });
-  }, [redeemPageStore.vaultActiveList, vaultStore]);
+  }, [redeemPageStore.vaultActiveList]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -85,6 +71,10 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   }, [redeemPageStore, vaultStore, redeemPageStore.form.vaultId]);
 
   const isFormDisabled = !user.isBridgeAvailable;
+
+  const vault = redeemPageStore.vaultActiveList.find(
+    vault => vault.id === redeemPageStore.form.vaultId,
+  );
 
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
@@ -127,7 +117,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         rules={[isRequired]}
       />
 
-      {redeemPageStore.defaultVaultId && (
+      {redeemPageStore.form.vaultId && (
         <Box>
           <Box direction="row" align="center" justify="between">
             <Text size="large" bold>
@@ -140,21 +130,27 @@ export const RedeemForm: React.FC<Props> = observer(() => {
               onChange={setCustomVault}
             />
           </Box>
-          <Select
-            name="vaultId"
-            disabled={isFormDisabled || !isCustomVault}
-            style={{ width: '100%' }}
-            rules={[isRequired]}
-            options={vaultOptions}
-            defaultValue={redeemPageStore.defaultVaultId}
-          />
+          {isCustomVault && (
+            <Select
+              name="vaultId"
+              disabled={isFormDisabled || !isCustomVault}
+              style={{ width: '100%' }}
+              rules={[isRequired]}
+              options={vaultOptions}
+            />
+          )}
+          {!isCustomVault && (
+            <Box pad={{ vertical: '12px' }}>
+              <VaultRedeemSelectItem vault={vault} />
+            </Box>
+          )}
         </Box>
       )}
 
       <Box
         direction="row"
         justify="between"
-        margin={{ bottom: 'medium' }}
+        margin={{ bottom: 'medium', top: 'medium' }}
         align="start"
       >
         <Text size="small" bold={true}>

@@ -16,16 +16,13 @@ import {
   Select,
 } from 'components/Form';
 import {
-  formatWithEightDecimals,
   formatWithTwoDecimals,
   lessThanSat,
   moreThanZero,
 } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
-import { cutText } from '../../../../services/cutText';
-import { satoshiToBitcoin } from '../../../../services/bitcoin';
-import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
+import { VaultIssueSelectItem } from '../../../../components/VaultIssueSelectItem';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -42,25 +39,12 @@ export const IssueForm: React.FC<Props> = observer(() => {
 
   const vaultOptions = useMemo(() => {
     return issuePageStore.vaultActiveList.map(vault => {
-      const name = cutText(vault.id);
-      const vaultInfo = vaultStore.getVaultInfo(vault);
       return {
-        text: (
-          <Box direction="row" gap="xxsmall" align="center">
-            <VaultStatusDot isActive={vaultInfo.isActive} />
-            <Text>{name}: </Text>
-            <Text bold>
-              {formatWithEightDecimals(
-                satoshiToBitcoin(vaultInfo.availableToIssueSat.toString()),
-              )}
-            </Text>
-            <Text> 1BTC</Text>
-          </Box>
-        ),
+        text: <VaultIssueSelectItem vault={vault} />,
         value: vault.id,
       };
     });
-  }, [issuePageStore.vaultActiveList, vaultStore]);
+  }, [issuePageStore.vaultActiveList]);
 
   const amountValidator = useMemo(() => {
     const vault = issuePageStore.getVault(issuePageStore.form.vaultId);
@@ -77,6 +61,10 @@ export const IssueForm: React.FC<Props> = observer(() => {
   }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
 
   const isFormDisabled = !user.isBridgeAvailable;
+
+  const vault = issuePageStore.vaultActiveList.find(
+    vault => vault.id === issuePageStore.form.vaultId,
+  );
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
@@ -104,7 +92,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         rules={[isRequired, moreThanZero, amountValidator].filter(Boolean)}
       />
 
-      {issuePageStore.defaultVaultId && (
+      {issuePageStore.form.vaultId && (
         <Box>
           <Box direction="row" align="center" justify="between">
             <Text size="large" bold>
@@ -117,21 +105,27 @@ export const IssueForm: React.FC<Props> = observer(() => {
               onChange={setCustomVault}
             />
           </Box>
-          <Select
-            name="vaultId"
-            disabled={isFormDisabled || !isCustomVault}
-            style={{ width: '100%' }}
-            rules={[isRequired]}
-            options={vaultOptions}
-            defaultValue={issuePageStore.defaultVaultId}
-          />
+          {isCustomVault && (
+            <Select
+              name="vaultId"
+              disabled={isFormDisabled || !isCustomVault}
+              style={{ width: '100%' }}
+              rules={[isRequired]}
+              options={vaultOptions}
+            />
+          )}
+          {!isCustomVault && (
+            <Box pad={{ vertical: '12px' }}>
+              <VaultIssueSelectItem vault={vault} />
+            </Box>
+          )}
         </Box>
       )}
 
       <Box
         direction="row"
         justify="between"
-        margin={{ bottom: 'medium' }}
+        margin={{ bottom: 'medium', top: 'medium' }}
         align="start"
       >
         <Text size="small" bold={true}>

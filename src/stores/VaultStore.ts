@@ -108,6 +108,10 @@ export class VaultStore extends EntityStore<IVault> {
     });
   }
 
+  static isVaultHasCollateral(vault: IVault) {
+    return parseInt(vault.collateral, 10) > 0;
+  }
+
   static isVaultOnline(vault: IVault) {
     return vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
   }

@@ -198,6 +198,20 @@ export class IssuePageStore extends StoreConstructor {
   public async loadVaults() {
     const response = await dashboardClient.loadVaultList({ size: 50, page: 0 });
     this._vaultList = response.content;
+
+    const defaultVaultId = this.getDefaultVaultId(
+      this.getActiveVaultList(this._vaultList),
+    );
+
+    this.form.vaultId = defaultVaultId;
+  }
+
+  getDefaultVaultId(vaultList: IVault[]) {
+    const max = vaultList.length - 1;
+    const min = 0;
+    const index = randomInt(min, max);
+
+    return vaultList[index].id;
   }
 
   @get
@@ -207,43 +221,13 @@ export class IssuePageStore extends StoreConstructor {
 
   @get
   public get vaultActiveList() {
-    return this.vaultList.filter(VaultStore.isVaultOnline);
-    // .filter(vault =>
-    //   VaultStore.calcAvailableToIssueSat(
-    //     vault,
-    //     this.stores.ratesStore.ONE_BTC,
-    //   ).gt(new BN(0)),
-    // );
+    return this.getActiveVaultList(this._vaultList);
   }
 
-  @get
-  public get defaultVaultId() {
-    if (!this.vaultActiveList.length) {
-      return '';
-    }
-
-    const max = this.vaultActiveList.length - 1;
-    const min = 0;
-    const index = randomInt(min, max);
-
-    return this.vaultActiveList[index].id;
-
-    // return this.vaultActiveList.reduce((acc, vault) => {
-    //   if (!acc) {
-    //     return vault;
-    //   }
-    //
-    //   const accVaultInfo = this.stores.vaultStore.getVaultInfo(acc);
-    //   const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
-    //
-    //   if (
-    //     vaultInfo.availableToRedeemSat.gt(accVaultInfo.availableToRedeemSat)
-    //   ) {
-    //     return vault;
-    //   }
-    //
-    //   return acc;
-    // }, null).id;
+  getActiveVaultList(vaultList: IVault[]) {
+    return vaultList
+      .filter(VaultStore.isVaultHasCollateral)
+      .filter(VaultStore.isVaultOnline);
   }
 
   @action.bound
