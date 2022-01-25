@@ -24,7 +24,7 @@ import { VaultStatusDot } from '../../../../components/Dashboard/VaultStatus';
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const IssueForm: React.FC<Props> = observer(() => {
-  const { issuePageStore, vaultStore, ratesStore } = useStores();
+  const { issuePageStore, vaultStore, ratesStore, user } = useStores();
   const [form, setForm] = useState<MobxForm>();
 
   const handleSubmit = useCallback(() => {
@@ -69,7 +69,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
 
-  const isFormDisabled = true;
+  const isFormDisabled = !user.isIssueAndRedeemAvailable;
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>

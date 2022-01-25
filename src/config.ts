@@ -26,6 +26,7 @@ interface Config {
   vaultApp: {
     vaultHost: string;
   };
+  whitelistAddresses: string[];
 }
 
 export const config: Config = {
@@ -59,6 +60,7 @@ export const config: Config = {
   vaultApp: {
     vaultHost: process.env.VAULT_CLIENT_HOST || `${window.origin}/api`,
   },
+  whitelistAddresses: (process.env.WHITELIST_ADDRESSES || '').split(','),
 } as const;
 
 console.log('### config', config);

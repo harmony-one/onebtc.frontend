@@ -80,6 +80,7 @@ function getClientEnvironment(publicUrl) {
         HMY_EXPLORER_TX: process.env.HMY_EXPLORER_TX,
         HMY_EXPLORER_ADDRESS: process.env.HMY_EXPLORER_ADDRESS,
         VAULT_CLIENT_HOST: process.env.VAULT_CLIENT_HOST,
+        WHITELIST_ADDRESSES: process.env.WHITELIST_ADDRESSES,
       },
     );
   // Stringify all values so we can feed into Webpack DefinePlugin

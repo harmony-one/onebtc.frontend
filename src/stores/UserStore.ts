@@ -7,6 +7,8 @@ import { getHmyBalance } from '../services/hmyClient';
 import { StoreConstructor } from './core/StoreConstructor';
 import { getOneBTCClient } from '../services/oneBtcClient';
 import { ConnectWalletModal } from '../components/Head/components/ConnectWalletModal';
+import { config } from '../config';
+import { addressIsEq } from '../utils/hmy';
 
 const Web3 = require('web3');
 
@@ -126,6 +128,17 @@ export class UserStoreEx extends StoreConstructor {
       this.address = args[0][0];
       this.syncLocalStorage();
     }
+  }
+
+  @computed
+  get isIssueAndRedeemAvailable() {
+    return config.whitelistAddresses.reduce((acc, item) => {
+      if (acc) {
+        return acc;
+      }
+
+      return addressIsEq(item, this.address);
+    }, false);
   }
 
   @action.bound

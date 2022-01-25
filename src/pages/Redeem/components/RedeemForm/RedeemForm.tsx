@@ -83,7 +83,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [redeemPageStore, vaultStore, redeemPageStore.form.vaultId]);
 
-  const isFormDisabled = true;
+  const isFormDisabled = !user.isIssueAndRedeemAvailable;
 
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
@@ -199,7 +199,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
           bgColor="#00ADE8"
           onClick={handleSubmit}
           transparent={false}
-          disabled={redeemPageStore.status === 'pending'}
+          disabled={isFormDisabled || redeemPageStore.status === 'pending'}
           isLoading={redeemPageStore.status === 'pending'}
         >
           Continue
