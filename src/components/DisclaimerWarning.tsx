@@ -5,7 +5,7 @@ const styles = {
   banner: {
     fontFamily: 'Nunito',
     height: 80,
-    background: 'rgba(31, 39, 49, 0.88)',
+    background: 'rgba(31, 39, 49, 0.95)',
     backgroundSize: '30px 30px',
     backgroundColor: '',
     fontSize: '16px',
@@ -42,7 +42,7 @@ const styles = {
     display: 'block',
     lineHeight: 1.5,
     textAlign: 'left',
-    color: 'red',
+    color: '#ff4b4b',
     marginLeft: 32,
     // fontWeight: "bold"
     fontSize: '17px',
