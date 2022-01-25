@@ -83,6 +83,8 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [redeemPageStore, vaultStore, redeemPageStore.form.vaultId]);
 
+  const isFormDisabled = true;
+
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
       <NumberInput
@@ -90,6 +92,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         type="decimal"
         precision="8"
         delimiter="."
+        disabled={isFormDisabled}
         placeholder="0.0"
         inputLabel={
           <InputLabelAvailableBalance
@@ -117,6 +120,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         name="bitcoinAddress"
         type="string"
         precision="6"
+        disabled={isFormDisabled}
         placeholder="Enter your BTC address"
         style={{ width: '100%' }}
         rules={[isRequired]}
@@ -126,6 +130,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         <Select
           label="Vault"
           name="vaultId"
+          disabled={isFormDisabled}
           style={{ width: '100%' }}
           rules={[isRequired]}
           options={vaultOptions}
@@ -189,7 +194,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         />
       </Box>
 
-      <Box>
+      <Box direction="row" align="center" gap="small">
         <Button
           bgColor="#00ADE8"
           onClick={handleSubmit}
@@ -199,6 +204,13 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         >
           Continue
         </Button>
+        {isFormDisabled && (
+          <Box>
+            <Text color="red" bold>
+              Redeem temporary disabled
+            </Text>
+          </Box>
+        )}
       </Box>
     </Form>
   );

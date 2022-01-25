@@ -69,12 +69,15 @@ export const IssueForm: React.FC<Props> = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
 
+  const isFormDisabled = true;
+
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
       <NumberInput
         label={`Amount`}
         name="amount"
         type="decimal"
+        disabled={isFormDisabled}
         precision="8"
         delimiter="."
         renderRight={
@@ -98,6 +101,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         <Select
           label="Vault"
           name="vaultId"
+          disabled={true}
           style={{ width: '100%' }}
           rules={[isRequired]}
           options={vaultOptions}
@@ -151,16 +155,23 @@ export const IssueForm: React.FC<Props> = observer(() => {
         />
       </Box>
 
-      <Box>
+      <Box direction="row" align="center" gap="small">
         <Button
           bgColor="#00ADE8"
           onClick={handleSubmit}
           transparent={false}
-          disabled={issuePageStore.status === 'pending'}
+          disabled={isFormDisabled || issuePageStore.status === 'pending'}
           isLoading={issuePageStore.status === 'pending'}
         >
           Continue
         </Button>
+        {isFormDisabled && (
+          <Box>
+            <Text color="red" bold>
+              Issue temporary disabled
+            </Text>
+          </Box>
+        )}
       </Box>
     </Form>
   );
