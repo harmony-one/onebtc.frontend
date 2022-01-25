@@ -35,7 +35,7 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
     return (
       <BaseLayout>
         <Box align="center" justify="center">
-          <Text>You have not connected wallet</Text>
+          <Text>You have not connected your wallet</Text>
         </Box>
       </BaseLayout>
     );

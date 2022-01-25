@@ -125,7 +125,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
             </Text>
             <Checkbox
               disabled={isFormDisabled}
-              label="Don't like the vault, let me select"
+              label="I don't like this vault, let me select another"
               value={isCustomVault}
               onChange={setCustomVault}
             />
@@ -216,7 +216,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         {isFormDisabled && (
           <Box>
             <Text color="red" bold>
-              Redeem temporary disabled
+              Redeem temporarily disabled
             </Text>
           </Box>
         )}
