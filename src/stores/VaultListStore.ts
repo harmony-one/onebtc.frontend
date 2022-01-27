@@ -35,6 +35,14 @@ export class VaultListStore extends StoreConstructor {
   }
 
   @get
+  public get vaultIssueList() {
+    const oneBtcRate = this.stores.ratesStore.ONE_BTC;
+    const hasToRedeem = (vault: IVault) =>
+      VaultStore.calcAvailableToIssueSat(vault, oneBtcRate).gt(new BN(0));
+    return this.getActiveVaultList(this._vaultList).filter(hasToRedeem);
+  }
+
+  @get
   public get vaultRedeemList() {
     const oneBtcRate = this.stores.ratesStore.ONE_BTC;
     const hasToRedeem = (vault: IVault) =>

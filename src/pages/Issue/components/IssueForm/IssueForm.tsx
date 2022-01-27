@@ -44,13 +44,13 @@ export const IssueForm: React.FC<Props> = observer(() => {
   }, [form, issuePageStore]);
 
   const vaultOptions = useMemo(() => {
-    return vaultListStore.vaultActiveList.map(vault => {
+    return vaultListStore.vaultIssueList.map(vault => {
       return {
         text: <VaultIssueSelectItem vault={vault} />,
         value: vault.id,
       };
     });
-  }, [vaultListStore.vaultActiveList]);
+  }, [vaultListStore.vaultIssueList]);
 
   const amountValidator = useMemo(() => {
     const vault = vaultListStore.getVault(issuePageStore.form.vaultId);
@@ -68,7 +68,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
 
   const isFormDisabled = !user.isBridgeAvailable;
 
-  const vault = vaultListStore.vaultActiveList.find(
+  const vault = vaultListStore.vaultIssueList.find(
     vault => vault.id === issuePageStore.form.vaultId,
   );
 
