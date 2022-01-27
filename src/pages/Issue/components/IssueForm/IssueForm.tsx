@@ -27,7 +27,13 @@ import { VaultIssueSelectItem } from '../../../../components/VaultIssueSelectIte
 type Props = Pick<IStores, 'issuePageStore'>;
 
 export const IssueForm: React.FC<Props> = observer(() => {
-  const { issuePageStore, vaultStore, ratesStore, user } = useStores();
+  const {
+    issuePageStore,
+    vaultListStore,
+    vaultStore,
+    ratesStore,
+    user,
+  } = useStores();
   const [form, setForm] = useState<MobxForm>();
   const [isCustomVault, setCustomVault] = useState(false);
 
@@ -38,16 +44,16 @@ export const IssueForm: React.FC<Props> = observer(() => {
   }, [form, issuePageStore]);
 
   const vaultOptions = useMemo(() => {
-    return issuePageStore.vaultActiveList.map(vault => {
+    return vaultListStore.vaultActiveList.map(vault => {
       return {
         text: <VaultIssueSelectItem vault={vault} />,
         value: vault.id,
       };
     });
-  }, [issuePageStore.vaultActiveList]);
+  }, [vaultListStore.vaultActiveList]);
 
   const amountValidator = useMemo(() => {
-    const vault = issuePageStore.getVault(issuePageStore.form.vaultId);
+    const vault = vaultListStore.getVault(issuePageStore.form.vaultId);
     if (!vault) {
       return undefined;
     }
@@ -62,7 +68,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
 
   const isFormDisabled = !user.isBridgeAvailable;
 
-  const vault = issuePageStore.vaultActiveList.find(
+  const vault = vaultListStore.vaultActiveList.find(
     vault => vault.id === issuePageStore.form.vaultId,
   );
 

@@ -14,12 +14,12 @@ export const IssuePage = () => {
   const { issueId, modal } = useParams<{ issueId?: string; modal: string }>();
   const { issuePageStore } = useStores();
 
-  const loadVaults = useCallback(() => {
-    issuePageStore.loadVaults();
+  const loadPageData = useCallback(() => {
+    issuePageStore.loadData();
   }, [issuePageStore]);
 
   useInterval({
-    callback: loadVaults,
+    callback: loadPageData,
     timeout: ONE_SECOND * 10,
   });
 

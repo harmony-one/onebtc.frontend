@@ -15,13 +15,13 @@ import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
 type Props = {};
 
 export const DashboardVaultTable: React.FC<Props> = observer(() => {
-  const { vaultListStore, routing, vaultStore } = useStores();
+  const { dashboardVaultListStore, routing, vaultStore } = useStores();
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
-      vaultListStore.onChangeDataFlow(props);
+      dashboardVaultListStore.onChangeDataFlow(props);
     },
-    [vaultListStore],
+    [dashboardVaultListStore],
   );
 
   const handleRowClick = useCallback(
@@ -121,9 +121,9 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
   return (
     <Table
       columns={columns}
-      data={vaultListStore.data.filter(item => !!item.collateral)}
-      isPending={vaultListStore.isPending}
-      dataLayerConfig={vaultListStore.dataFlow}
+      data={dashboardVaultListStore.data.filter(item => !!item.collateral)}
+      isPending={dashboardVaultListStore.isPending}
+      dataLayerConfig={dashboardVaultListStore.dataFlow}
       onChangeDataFlow={handleChangeDataFlow}
       onRowClicked={handleRowClick}
       tableParams={{

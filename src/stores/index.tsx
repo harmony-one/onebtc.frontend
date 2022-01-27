@@ -11,13 +11,15 @@ import { BtcRelayStore } from '../modules/dashboard/BtcRelayStore';
 import { BTCNodeStore } from '../modules/btcNode/BTCNodeStore';
 import { IssueListStore } from '../pages/DashboardIssues/IssueListStore';
 import { RedeemListStore } from '../pages/DashboardRedeems/RedeemListStore';
-import { VaultsListStore } from '../pages/DashboardVaults/VaultsListStore';
+import { DashboardVaultsListStore } from '../pages/DashboardVaults/DashboardVaultsListStore';
 import { VaultStore } from './VaultStore';
 import { DashboardVaultDetailsStore } from '../pages/DashboardVaultDetails/DashboardVaultDetailsStore';
 import { IssueStore } from './IssueStore';
 import { RedeemStore } from './RedeemStore';
 import { RatesStore } from './RatesStore';
 import { VaultAppStore } from '../vaultApp/stores/VaultAppStore';
+import { AdminConfigForm } from '../pages/admin/AdminConfigForm';
+import { VaultListStore } from './VaultListStore';
 
 export interface IStores {
   routing?: RouterStore;
@@ -32,12 +34,14 @@ export interface IStores {
   btcNodeStore?: BTCNodeStore;
   issueListStore?: IssueListStore;
   redeemListStore?: RedeemListStore;
-  vaultListStore?: VaultsListStore;
+  dashboardVaultListStore?: DashboardVaultsListStore;
   vaultStore?: VaultStore;
   issueStore?: IssueStore;
   redeemStore?: RedeemStore;
   dashboardVaultDetailsStore?: DashboardVaultDetailsStore;
   ratesStore?: RatesStore;
+  adminConfigForm?: AdminConfigForm;
+  vaultListStore?: VaultListStore;
   vaultApp?: {
     vaultAppStore?: VaultAppStore;
   };
@@ -57,12 +61,14 @@ stores.btcRelayStore = new BtcRelayStore(stores);
 stores.btcNodeStore = new BTCNodeStore(stores);
 stores.issueListStore = new IssueListStore(stores);
 stores.redeemListStore = new RedeemListStore(stores);
-stores.vaultListStore = new VaultsListStore(stores);
+stores.dashboardVaultListStore = new DashboardVaultsListStore(stores);
 stores.vaultStore = new VaultStore(stores);
 stores.dashboardVaultDetailsStore = new DashboardVaultDetailsStore(stores);
 stores.issueStore = new IssueStore(stores);
 stores.redeemStore = new RedeemStore(stores);
 stores.ratesStore = new RatesStore(stores);
+stores.adminConfigForm = new AdminConfigForm(stores);
+stores.vaultListStore = new VaultListStore(stores);
 
 stores.vaultApp = {
   vaultAppStore: new VaultAppStore(stores),

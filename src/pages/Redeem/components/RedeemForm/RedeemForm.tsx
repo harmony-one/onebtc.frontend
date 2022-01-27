@@ -27,6 +27,7 @@ type Props = Pick<IStores, 'issuePageStore'>;
 export const RedeemForm: React.FC<Props> = observer(() => {
   const {
     redeemPageStore,
+    vaultListStore,
     user,
     btcNodeStore,
     ratesStore,
@@ -36,13 +37,13 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   const [isCustomVault, setCustomVault] = useState(false);
 
   const vaultOptions = useMemo(() => {
-    return redeemPageStore.vaultActiveList.map(vault => {
+    return vaultListStore.vaultActiveList.map(vault => {
       return {
         text: <VaultRedeemSelectItem vault={vault} />,
         value: vault.id,
       };
     });
-  }, [redeemPageStore.vaultActiveList]);
+  }, [vaultListStore.vaultActiveList]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -57,7 +58,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   }, [redeemPageStore.form.oneBTCAmount, user.oneBTCBalance]);
 
   const amountValidator = useMemo(() => {
-    const vault = redeemPageStore.getVault(redeemPageStore.form.vaultId);
+    const vault = vaultListStore.getVault(redeemPageStore.form.vaultId);
     if (!vault) {
       return undefined;
     }
@@ -72,7 +73,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
 
   const isFormDisabled = !user.isBridgeAvailable;
 
-  const vault = redeemPageStore.vaultActiveList.find(
+  const vault = vaultListStore.vaultActiveList.find(
     vault => vault.id === redeemPageStore.form.vaultId,
   );
 

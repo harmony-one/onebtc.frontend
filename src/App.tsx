@@ -21,6 +21,7 @@ import { DashboardVaultDetailsPage } from './pages/DashboardVaultDetails/Dashboa
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { TransactionsPage } from './pages/Transactions/TransactionsPage';
 import { Disclaimer } from './components/DisclaimerWarning';
+import { AdminHomePage } from './pages/admin/AdminHomePage';
 
 const App: React.FC = () => (
   <ErrorBoundary>
@@ -56,6 +57,7 @@ const App: React.FC = () => (
           path={routes.dashboardVaultDetails}
           component={DashboardVaultDetailsPage}
         />
+        <Route exact path={routes.adminHome} component={AdminHomePage} />
         <Redirect to={routes.issue} />
       </Switch>
       <Disclaimer />

@@ -7,6 +7,7 @@ export enum ROUTE_NAMES {
   REGISTRATION = 'registration',
   INIT_ERROR = 'initError',
   OPERATION_LIST = 'operationList',
+  ADMIN_HOME = 'adminHome',
 }
 
 const routeTree: RouteNode<ROUTE_NAMES> = {
@@ -32,6 +33,10 @@ const routeTree: RouteNode<ROUTE_NAMES> = {
     {
       name: ROUTE_NAMES.OPERATION_LIST,
       path: '/operations',
+    },
+    {
+      name: ROUTE_NAMES.ADMIN_HOME,
+      path: '/admin',
     },
   ],
 };

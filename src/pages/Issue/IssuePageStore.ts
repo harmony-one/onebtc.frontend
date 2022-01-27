@@ -1,16 +1,15 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
-import { action, computed, get, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { getOneBTCClient } from 'services/oneBtcClient';
 import { IssueDepositModal } from './components/IssueDepositModal/IssueDepositModal';
 import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsModal';
 import { IssueConfirmModal } from './components/IssueConfirmModal';
-import { randomInt, retry } from '../../utils';
+import { retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
-import { VaultStore } from '../../stores/VaultStore';
 
 export interface ITransaction {
   amount: string;
@@ -45,10 +44,6 @@ export class IssuePageStore extends StoreConstructor {
   @computed
   get totalReceive() {
     return Number(this.form.amount) - this.bridgeFee;
-  }
-
-  public getVault(vaultId: string) {
-    return this._vaultList.find(vault => vault.id === vaultId);
   }
 
   @action
@@ -195,39 +190,19 @@ export class IssuePageStore extends StoreConstructor {
     });
   }
 
-  public async loadVaults() {
-    const response = await dashboardClient.loadVaultList({ size: 50, page: 0 });
-    this._vaultList = response.content;
+  public async loadData() {
+    await this.stores.vaultListStore.loadVaults();
 
-    const defaultVaultId = this.getDefaultVaultId(
-      this.getActiveVaultList(this._vaultList),
+    const vaultList = this.stores.vaultListStore.vaultActiveList;
+
+    const defaultVaultId = this.stores.vaultListStore.getDefaultVaultId(
+      vaultList,
     );
 
+    if (this.form.vaultId) {
+      return;
+    }
     this.form.vaultId = defaultVaultId;
-  }
-
-  getDefaultVaultId(vaultList: IVault[]) {
-    const max = vaultList.length - 1;
-    const min = 0;
-    const index = randomInt(min, max);
-
-    return vaultList[index].id;
-  }
-
-  @get
-  public get vaultList() {
-    return this._vaultList.filter(vault => parseInt(vault.collateral, 10) > 0);
-  }
-
-  @get
-  public get vaultActiveList() {
-    return this.getActiveVaultList(this._vaultList);
-  }
-
-  getActiveVaultList(vaultList: IVault[]) {
-    return vaultList
-      .filter(VaultStore.isVaultHasCollateral)
-      .filter(VaultStore.isVaultOnline);
   }
 
   @action.bound

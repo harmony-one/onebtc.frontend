@@ -3,7 +3,7 @@ import { IStores } from '../../stores';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IVault } from '../../modules/dashboard/dashboardTypes';
 
-export class VaultsListStore extends ListStoreConstructor<IVault> {
+export class DashboardVaultsListStore extends ListStoreConstructor<IVault> {
   constructor(stores: IStores) {
     const loadVaultList = params => {
       return dashboardClient.loadVaultList({
