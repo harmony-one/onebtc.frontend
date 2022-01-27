@@ -37,13 +37,13 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   const [isCustomVault, setCustomVault] = useState(false);
 
   const vaultOptions = useMemo(() => {
-    return vaultListStore.vaultActiveList.map(vault => {
+    return vaultListStore.vaultRedeemList.map(vault => {
       return {
         text: <VaultRedeemSelectItem vault={vault} />,
         value: vault.id,
       };
     });
-  }, [vaultListStore.vaultActiveList]);
+  }, [vaultListStore.vaultRedeemList]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {

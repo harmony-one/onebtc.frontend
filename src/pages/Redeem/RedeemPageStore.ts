@@ -51,7 +51,7 @@ export class RedeemPageStore extends StoreConstructor {
   public async loadData() {
     await this.stores.vaultListStore.loadVaults();
 
-    const vaultList = this.stores.vaultListStore.vaultActiveList;
+    const vaultList = this.stores.vaultListStore.vaultRedeemList;
 
     const defaultVaultId = this.stores.vaultListStore.getDefaultVaultId(
       vaultList,

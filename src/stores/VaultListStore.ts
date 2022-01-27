@@ -4,6 +4,7 @@ import { dashboardClient } from '../modules/dashboard/dashboardClient';
 import { IVault } from '../modules/dashboard/dashboardTypes';
 import { randomInt } from '../utils';
 import { VaultStore } from './VaultStore';
+import BN from 'bn.js';
 
 export class VaultListStore extends StoreConstructor {
   @observable private _vaultList: IVault[] = [];
@@ -31,6 +32,14 @@ export class VaultListStore extends StoreConstructor {
   @get
   public get vaultActiveList() {
     return this.getActiveVaultList(this._vaultList);
+  }
+
+  @get
+  public get vaultRedeemList() {
+    const oneBtcRate = this.stores.ratesStore.ONE_BTC;
+    const hasToRedeem = (vault: IVault) =>
+      VaultStore.calcAvailableToRedeemSat(vault, oneBtcRate).gt(new BN(0));
+    return this.getActiveVaultList(this._vaultList).filter(hasToRedeem);
   }
 
   public getVault(vaultId: string) {
