@@ -61,7 +61,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
 
     return lessThanSat(
       vaultInfo.availableToIssueSat.toString(),
-      'redeem amount exceeds vault balance',
+      'issue amount exceeds vault balance',
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
