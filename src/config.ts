@@ -1,6 +1,7 @@
 import { parseInt } from 'lodash';
 
 interface Config {
+  version: string;
   network: 'mainnet' | 'testnet';
   isTestnet: boolean;
   bitcoin: {
@@ -35,6 +36,7 @@ interface Config {
 }
 
 export const config: Config = {
+  version: process.env.APP_VERSION,
   network: process.env.NETWORK as 'mainnet' | 'testnet',
   isTestnet: process.env.NETWORK === 'testnet',
   bitcoin: {
