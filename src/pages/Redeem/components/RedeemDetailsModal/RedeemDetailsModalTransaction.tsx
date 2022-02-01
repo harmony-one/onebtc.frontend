@@ -85,6 +85,22 @@ export const RedeemDetailsModalTransaction: React.FC<{
 
       <Box direction="column" width="100%" align="start" justify="between">
         <Box>
+          <Text>Requester Address:</Text>
+        </Box>
+        <Box>
+          <Text bold>
+            <LinkHarmony
+              mono
+              cut={false}
+              type="address"
+              hash={redeemInfo.requester}
+            />
+          </Text>
+        </Box>
+      </Box>
+
+      <Box direction="column" width="100%" align="start" justify="between">
+        <Box>
           <Text>Vault Account:</Text>
         </Box>
         <Box>

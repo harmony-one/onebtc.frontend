@@ -5,6 +5,7 @@ import { Button, Text, Title } from '../../../../components/Base';
 import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetailsModals.styl';
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { useStores } from '../../../../stores';
+import { RedeemExtendedStatus } from '../../../../stores/RedeemStore';
 
 export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
   redeemId,
@@ -26,6 +27,15 @@ export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
             Waiting for Vault
           </Text>
         </SpinnerContainer>
+      </Box>
+      <Box>
+        {redeemInfo.extendedStatus ===
+          RedeemExtendedStatus.WAIT_BTC_TRANSACTION && (
+          <Text>Waiting BTC transaction</Text>
+        )}
+        {redeemInfo.extendedStatus === RedeemExtendedStatus.WAIT_EXECUTE && (
+          <Text>Waiting for execute</Text>
+        )}
       </Box>
       {redeemInfo.isExpired && !redeemInfo.isCanceled && (
         <Box>

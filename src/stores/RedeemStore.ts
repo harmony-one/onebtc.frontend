@@ -6,6 +6,15 @@ import { satoshiToBitcoin, btcAddressHexToBech32 } from '../services/bitcoin';
 import { config } from '../config';
 import { RedeemStatus } from 'onebtc.sdk/lib/blockchain/hmy/types';
 
+export enum RedeemExtendedStatus {
+  UNEXPECTED = 'UNEXPECTED',
+  WAIT_BTC_TRANSACTION = 'wait_btc_transaction',
+  WAIT_BTC_CONFIRMATION = 'wait_btc_confirmation',
+  WAIT_EXECUTE = 'wait_execute',
+  CANCELED = 'canceled',
+  COMPLETED = 'completed',
+}
+
 export class RedeemStore extends EntityStore<IRedeem> {
   @action.bound
   public async loadRedeem(redeemId: string) {
@@ -63,6 +72,36 @@ export class RedeemStore extends EntityStore<IRedeem> {
       isPending: redeem.status === RedeemStatus.PENDING,
       isCompleted: redeem.status === RedeemStatus.COMPLETED,
       isCanceled: redeem.status === RedeemStatus.CANCELED,
+      extendedStatus: this.getRedeemExtendedStatus(redeem),
     };
+  }
+
+  getRedeemExtendedStatus(redeem: IRedeem): RedeemExtendedStatus {
+    if (redeem.status === RedeemStatus.COMPLETED) {
+      return RedeemExtendedStatus.COMPLETED;
+    }
+
+    if (redeem.status === RedeemStatus.CANCELED) {
+      return RedeemExtendedStatus.CANCELED;
+    }
+
+    const isPending = redeem.status === RedeemStatus.PENDING;
+    const hasBtcTx = !!redeem.btcTx;
+
+    if (isPending && !hasBtcTx) {
+      return RedeemExtendedStatus.WAIT_BTC_TRANSACTION;
+    }
+
+    if (isPending && hasBtcTx) {
+      const isBtcTxConfirmed =
+        redeem.btcTx &&
+        redeem.btcTx.confirmations >= config.bitcoin.waitConfirmationsCount;
+
+      return isBtcTxConfirmed
+        ? RedeemExtendedStatus.WAIT_EXECUTE
+        : RedeemExtendedStatus.WAIT_BTC_CONFIRMATION;
+    }
+
+    return RedeemExtendedStatus.UNEXPECTED;
   }
 }

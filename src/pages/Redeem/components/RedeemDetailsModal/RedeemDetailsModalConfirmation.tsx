@@ -1,4 +1,5 @@
 import React from 'react';
+import cn from 'classnames';
 import { useStores } from '../../../../stores';
 import { observer } from 'mobx-react';
 import { Box } from 'grommet';
@@ -30,7 +31,7 @@ export const RedeemDetailsModalConfirmation: React.FC<Props> = observer(
         <Box>
           <Text bold>You have received {redeemInfo.totalReceived} BTC</Text>
         </Box>
-        <Box className={styles.circle}>
+        <Box className={cn(styles.circle, styles.circleConfirmed)}>
           <Checkmark size="xlarge" color="white" />
         </Box>
         <Box>
