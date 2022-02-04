@@ -21,9 +21,11 @@ export const CommonLayout: React.FC<Props> = ({ children, leftMenu }) => {
   return (
     <Box fill>
       <div className={s.bgImage} />
-      {isOpen && <Drawer onClose={() => setOpen(false)}>{leftMenu}</Drawer>}
+      {isOpen && leftMenu && (
+        <Drawer onClose={() => setOpen(false)}>{leftMenu}</Drawer>
+      )}
       <Box direction="row" fill>
-        {!isMobileSize && (
+        {leftMenu && !isMobileSize && (
           <Box className={s.sidebarContainer}>
             <Sidebar>{leftMenu}</Sidebar>
           </Box>
