@@ -67,7 +67,7 @@ export const VaultInfo: React.FC<Props> = React.memo(
             <Text>Collateral:</Text>
           </Box>
           <Box>
-            <Text bold>{utils.fromWei(vaultInfo.collateral)} ONE</Text>
+            <Text bold>{utils.fromWei(vaultInfo.collateral || '0')} ONE</Text>
           </Box>
         </Box>
         <Divider fullwidth />

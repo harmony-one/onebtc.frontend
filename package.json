@@ -9,7 +9,7 @@
     "build:prod": "node scripts/build.js --stats",
     "build:testnet": "CI=false NODE_ENV=testnet node scripts/build.js --stats",
     "build:mainnet": "CI=false NODE_ENV=mainnet node scripts/build.js --stats",
-    "dev:vault": "cross-env NODE_ENV=mainnet VAULT_CLIENT_HOST='http://localhost:3001/api' ENTRYPOINT=vaultIndex.tsx webpack-dev-server --config config/webpack.config.js --progress --colors --open",
+    "dev:vault": "cross-env NODE_ENV=mainnet VAULT_CLIENT_HOST='http://localhost:8080' ENTRYPOINT=vaultIndex.tsx webpack-dev-server --config config/webpack.config.js --progress --colors --open",
     "build:vault": "CI=false VAULT_CLIENT_HOST='' ENTRYPOINT=vaultIndex.tsx NODE_ENV=mainnet node scripts/build.js --stats",
     "test": "jest --verbose",
     "test:watch": "jest --watch",

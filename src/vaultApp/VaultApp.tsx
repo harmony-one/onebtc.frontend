@@ -16,10 +16,12 @@ import { RegistrationPage } from './pages/registration/RegistrationPage';
 import { InitErrorPage } from './pages/initError/InitErrorPage';
 import { WatcherVaultInfo } from './components/WatcherVaultInfo';
 import { OperationListPage } from './pages/operations/OperationListPage';
+import { Bootstrap } from './Bootstrap';
 
 const VaultApp: React.FC = () => (
   <ErrorBoundary>
     <Providers>
+      <Bootstrap />
       <Switch>
         <Route exact path={routes.init} component={InitializationPage} />
         <Route exact path={routes.vaultDetails} component={VaultDetailsPage} />
