@@ -14,12 +14,16 @@ export const useInterval = ({
   const [counter, setCounter] = useState(0);
   const [isActive, setIsActive] = useState(true);
 
+  useEffect(() => {
+    callback();
+    setCounter(1);
+  }, [callback]);
+
   const watcherRun = useCallback(() => {
-    const _timeout = counter > 0 ? timeout : 0;
     return setTimeout(() => {
       setCounter(counter + 1);
       callback();
-    }, _timeout);
+    }, timeout);
   }, [counter, callback, timeout]);
 
   const stop = useCallback(() => {

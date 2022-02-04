@@ -2,6 +2,9 @@ import { action, get, observable } from 'mobx';
 import { vaultClient, VaultInfo } from '../modules/vaultClient/VaultClient';
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { routes } from '../routes/routes';
+import logger from '../../modules/logger';
+
+const log = logger.module('VaultAppStore');
 
 export class VaultAppStore extends StoreConstructor {
   @observable
@@ -24,6 +27,7 @@ export class VaultAppStore extends StoreConstructor {
 
   @action.bound
   async bootstrap() {
+    log.info('run bootstrap');
     try {
       const vaultInfo = await this.loadVaultInfo();
 
@@ -37,7 +41,7 @@ export class VaultAppStore extends StoreConstructor {
       });
       return;
     } catch (err) {
-      console.error('### err', err);
+      log.error('Error during load vault info');
       this.stores.routing.goTo(routes.initError);
     }
   }
