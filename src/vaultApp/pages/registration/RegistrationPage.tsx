@@ -81,6 +81,21 @@ export const RegistrationPage: React.FC<Props> = () => {
         <Box align="center">
           {error && <Text color="red">{error.message}</Text>}
         </Box>
+        <Box align="center">
+          <Text>Or call this cmd in terminal:</Text>
+        </Box>
+        <Box
+          align="center"
+          style={{
+            border: '1px solid #c2c2c2',
+            padding: '8px',
+            backgroundColor: '#f5f7f9',
+          }}
+        >
+          <code>
+            {`curl http://localhost:3000/api/vault-client/register -H 'Content-Type: application/json' -X POST --data '{"collateral":"10"}'`}
+          </code>
+        </Box>
       </Box>
     </VaultAppLayout>
   );
