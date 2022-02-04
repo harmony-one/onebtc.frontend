@@ -3,12 +3,16 @@ import { vaultClient, VaultInfo } from '../modules/vaultClient/VaultClient';
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { routes } from '../routes/routes';
 import logger from '../../modules/logger';
+import { getHmyBalance } from '../../services/hmyClient';
+import utils from 'web3-utils';
+import BN from 'bn.js';
 
 const log = logger.module('VaultAppStore');
 
 export class VaultAppStore extends StoreConstructor {
   @observable
   public vaultInfo: VaultInfo;
+  public vaultBalance: BN = new BN(0);
 
   @get
   get vaultId() {
@@ -22,6 +26,8 @@ export class VaultAppStore extends StoreConstructor {
   @action.bound
   async loadVaultInfo() {
     this.vaultInfo = await vaultClient.loadInfo();
+    const response = await getHmyBalance(this.vaultInfo.vaultAddress);
+    this.vaultBalance = new BN(utils.fromWei(response.result));
     return this.vaultInfo;
   }
 

@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import BN from 'bn.js';
+import { observer } from 'mobx-react';
 import { VaultAppLayout } from '../../components/Layouts/VaultAppLayout';
 import { Divider, Title, Text, Button } from '../../../components/Base';
 import { Box } from 'grommet/components/Box';
@@ -9,7 +11,7 @@ import { LinkHarmony } from '../../../components/LinkHarmony';
 
 interface Props {}
 
-export const RegistrationPage: React.FC<Props> = () => {
+export const RegistrationPage: React.FC<Props> = observer(() => {
   const { routing } = useStores();
   const { vaultAppStore } = useStores().vaultApp;
 
@@ -38,6 +40,8 @@ export const RegistrationPage: React.FC<Props> = () => {
   if (!vaultAppStore.vaultInfo) {
     return null;
   }
+
+  const isEnoughFunds = vaultAppStore.vaultBalance.gte(new BN(11));
 
   return (
     <VaultAppLayout>
@@ -72,13 +76,18 @@ export const RegistrationPage: React.FC<Props> = () => {
           <Text>Register Collateral amount: 10 ONE</Text>
           <Button
             isLoading={pending}
-            disabled={pending}
+            disabled={pending || !isEnoughFunds}
             onClick={handleRegister}
           >
             Register your vault
           </Button>
         </Box>
         <Box align="center">
+          {!isEnoughFunds && (
+            <Text color="red">
+              Insufficient funds, top up the vault balance by at least 11 ONE
+            </Text>
+          )}
           {error && <Text color="red">{error.message}</Text>}
         </Box>
         <Box align="center">
@@ -99,6 +108,6 @@ export const RegistrationPage: React.FC<Props> = () => {
       </Box>
     </VaultAppLayout>
   );
-};
+});
 
 RegistrationPage.displayName = 'RegistrationPage';
