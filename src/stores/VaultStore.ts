@@ -52,19 +52,19 @@ export class VaultStore extends EntityStore<IVault> {
   }
 
   static calcMaxLoanWei(onwWei: string) {
-    const one = new BN(onwWei);
+    const one = new BN(onwWei || '0');
     return one.div(new BN(100)).mul(new BN(Math.ceil(100 / COLLATERAL_RATIO)));
   }
 
   static calcMaxLoanSat(oneWei: string, oneBtcRate: number) {
     return VaultStore.weiToSatoshi(
-      VaultStore.calcMaxLoanWei(oneWei),
+      VaultStore.calcMaxLoanWei(oneWei || '0'),
       oneBtcRate,
     );
   }
 
   static calcRequiredCollateral(sat: string | BN, oneBtcRate: number) {
-    const requiredSat = new BN(sat)
+    const requiredSat = new BN(sat || '0')
       .div(new BN(100))
       .mul(new BN(COLLATERAL_RATIO * 100));
     return VaultStore.satoshiToWei(requiredSat, oneBtcRate);
@@ -76,7 +76,7 @@ export class VaultStore extends EntityStore<IVault> {
     }
     const satRate = new BN(oneBtcRate * 1e8);
     const oneToSatRate = new BN(utils.toWei('1')).div(satRate);
-    return new BN(wei).div(oneToSatRate);
+    return new BN(wei || '0').div(oneToSatRate);
   }
 
   static satoshiToWei(sat: string | BN, oneBtcRate: number) {
@@ -86,7 +86,7 @@ export class VaultStore extends EntityStore<IVault> {
     const satRate = new BN(oneBtcRate * 1e8);
     const oneToSatRate = new BN(utils.toWei('1')).div(satRate);
 
-    return new BN(sat).mul(oneToSatRate);
+    return new BN(sat || '0').mul(oneToSatRate);
   }
 
   public collateralSatToOne(sat: number) {
@@ -99,8 +99,8 @@ export class VaultStore extends EntityStore<IVault> {
     m: 1 | -1 = 1,
   ) {
     const newCollateral = utils
-      .toBN(vault.collateral)
-      .add(utils.toBN(amountOne).mul(utils.toBN(m)));
+      .toBN(vault.collateral || '0')
+      .add(utils.toBN(amountOne || '0').mul(utils.toBN(m)));
 
     return this.getVaultInfo({
       ...vault,
@@ -109,7 +109,7 @@ export class VaultStore extends EntityStore<IVault> {
   }
 
   static isVaultHasCollateral(vault: IVault) {
-    return parseInt(vault.collateral, 10) > 0;
+    return parseInt(vault.collateral || '0', 10) > 0;
   }
 
   static isVaultOnline(vault: IVault) {
@@ -134,8 +134,8 @@ export class VaultStore extends EntityStore<IVault> {
   }
 
   static calcAvailableToRedeemSat(vault: IVault, networkFee: number) {
-    const availableBalanceSatBN = new BN(vault.issued).sub(
-      new BN(vault.toBeRedeemed),
+    const availableBalanceSatBN = new BN(vault.issued || '0').sub(
+      new BN(vault.toBeRedeemed || '0'),
     );
 
     const networkFeeBN = new BN(networkFee);
@@ -151,7 +151,7 @@ export class VaultStore extends EntityStore<IVault> {
     );
 
     return BN.max(
-      new BN(vault.collateral).sub(requiredCollateralWei),
+      new BN(vault.collateral || '0').sub(requiredCollateralWei),
       new BN(0),
     );
   }

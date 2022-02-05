@@ -80,7 +80,7 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
               isRequired,
               moreThanZero,
               lessThanWei(
-                Number(vault.collateral),
+                Number(vaultInfo.availableToWithdrawWei),
                 'Please enter an amount no higher than your available balance.',
               ),
             ]}

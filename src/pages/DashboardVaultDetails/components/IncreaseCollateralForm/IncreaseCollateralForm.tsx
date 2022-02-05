@@ -46,7 +46,7 @@ export const IncreaseCollateralForm: React.FC<Props> = observer(
 
     const handleMaxClick = useCallback(() => {
       dashboardVaultDetailsStore.formIncrease.oneAmount = utils.fromWei(
-        user.balance,
+        user.balance || '0',
       );
     }, [dashboardVaultDetailsStore.formIncrease.oneAmount, user.balance]);
 
