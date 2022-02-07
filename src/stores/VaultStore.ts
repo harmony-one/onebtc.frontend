@@ -35,6 +35,11 @@ export class VaultStore extends EntityStore<IVault> {
     }
   }
 
+  @action.bound
+  public updateVault(vault: IVault) {
+    this.entityMap[vault.id] = vault;
+  }
+
   public async loadBalances(vaultId: string) {
     const result = await dashboardClient.loadVaultBalances(vaultId);
 

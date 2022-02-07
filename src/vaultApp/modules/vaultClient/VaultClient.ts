@@ -8,6 +8,8 @@ export interface VaultInfo {
   status: string;
   vaultAddress: string;
   vaultInfo: {
+    btcPublicKeyX: string;
+    btcPublicKeyY: string;
     collateral: string;
     issued: string;
     toBeIssued: string;

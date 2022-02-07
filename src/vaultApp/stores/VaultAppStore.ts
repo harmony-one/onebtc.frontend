@@ -28,6 +28,14 @@ export class VaultAppStore extends StoreConstructor {
     this.vaultInfo = await vaultClient.loadInfo();
     const response = await getHmyBalance(this.vaultInfo.vaultAddress);
     this.vaultBalance = new BN(utils.fromWei(response.result));
+
+    this.stores.vaultStore.updateVault({
+      id: this.vaultInfo.vaultAddress,
+      lastUpdate: Date.now(),
+      lastPing: Date.now(),
+      ...this.vaultInfo.vaultInfo,
+    });
+
     return this.vaultInfo;
   }
 
