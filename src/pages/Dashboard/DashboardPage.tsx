@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { observer } from 'mobx-react';
@@ -15,10 +15,12 @@ import { ONE_SECOND } from '../../constants/date';
 type Props = {};
 
 export const DashboardPage: React.FC<Props> = observer(() => {
+  const loadData = useCallback(() => {
+    dashboardHistoryStore.loadData();
+  }, []);
+
   useInterval({
-    callback: () => {
-      dashboardHistoryStore.loadData();
-    },
+    callback: loadData,
     timeout: ONE_SECOND * 10,
   });
 

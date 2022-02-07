@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useInterval } from '../hooks/useInterval';
 import moment from 'moment';
 
@@ -10,14 +10,16 @@ export const Countdown: React.FC<Props> = React.memo(({ endTimestamp }) => {
   const [duration, setDuration] = useState(moment.duration());
   const [endTime] = useState(endTimestamp);
 
+  const updateCountDown = useCallback(() => {
+    const end = moment(endTime);
+    const diffTime = end.diff(moment());
+    const duration = moment.duration(diffTime);
+    setDuration(duration);
+  }, [endTime]);
+
   useInterval({
     timeout: 1000,
-    callback: () => {
-      const end = moment(endTime);
-      const diffTime = end.diff(moment());
-      const duration = moment.duration(diffTime);
-      setDuration(duration);
-    },
+    callback: updateCountDown,
   });
 
   const days = duration.days(),
