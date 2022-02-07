@@ -42,14 +42,17 @@ export class VaultAppStore extends StoreConstructor {
   @action.bound
   async bootstrap() {
     log.info('run bootstrap');
+
     try {
       const vaultInfo = await this.loadVaultInfo();
 
       if (!vaultInfo.registered) {
         this.stores.routing.goTo(routes.registration);
+        log.info('navigate to registration');
         return;
       }
 
+      log.info('navigate to details');
       this.stores.routing.goTo(routes.vaultDetails, {
         vaultId: vaultInfo.vaultAddress,
       });
