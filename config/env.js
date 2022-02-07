@@ -80,6 +80,7 @@ function getClientEnvironment(publicUrl) {
         HMY_EXPLORER_TX: process.env.HMY_EXPLORER_TX,
         HMY_EXPLORER_ADDRESS: process.env.HMY_EXPLORER_ADDRESS,
         VAULT_CLIENT_HOST: process.env.VAULT_CLIENT_HOST,
+        MODE_VAULT: process.env.MODE_VAULT,
         SERVICE_AVAILABLE: process.env.SERVICE_AVAILABLE,
         SERVICE_AVAILABLE_WHITELIST_ADDRESSES:
           process.env.SERVICE_AVAILABLE_WHITELIST_ADDRESSES,

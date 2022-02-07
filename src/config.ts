@@ -38,6 +38,16 @@ interface Config {
   };
 }
 
+const isVaultApp = !!parseInt(process.env.MODE_VAULT, 0);
+
+const getDashboardUrl = (isVaultApp: boolean) => {
+  if (!isVaultApp) {
+    return process.env.DASHBOARD_URL;
+  }
+
+  return process.env.VAULT_CLIENT_HOST || `${window.origin}/api`;
+};
+
 export const config: Config = {
   version: process.env.APP_VERSION,
   network: process.env.NETWORK as 'mainnet' | 'testnet',
@@ -57,7 +67,7 @@ export const config: Config = {
   harmony: {
     nodeUrl: process.env.HMY_NODE_URL,
     oneBtcContract: process.env.ONE_BTC_CONTRACT_ADDRESS,
-    dashboardUrl: process.env.DASHBOARD_URL,
+    dashboardUrl: getDashboardUrl(isVaultApp),
     explorer: {
       transaction: process.env.HMY_EXPLORER_TX,
       address: process.env.HMY_EXPLORER_ADDRESS,
