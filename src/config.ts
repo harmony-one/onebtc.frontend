@@ -1,4 +1,7 @@
 import { parseInt } from 'lodash';
+import logger from './modules/logger';
+
+const log = logger.module('config');
 
 interface Config {
   version: string;
@@ -75,4 +78,4 @@ export const config: Config = {
   },
 } as const;
 
-console.log('### config', config);
+log.info('Config', config);
