@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import { useVaultWatcher } from '../../../hooks/useVaultWatcher';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react';
 import { Box } from 'grommet';
@@ -18,8 +17,6 @@ export const VaultDetailsPage: React.FC<Props> = observer(() => {
   const { vaultStore, user, dashboardVaultDetailsStore } = useStores();
   const { vaultAppStore } = useStores().vaultApp;
   const vaultId = vaultAppStore.vaultId;
-
-  useVaultWatcher({ vaultId });
 
   const handleClickManage = useCallback(() => {
     dashboardVaultDetailsStore.openManageModal(vaultId);
