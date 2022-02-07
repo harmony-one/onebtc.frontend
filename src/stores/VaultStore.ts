@@ -118,7 +118,9 @@ export class VaultStore extends EntityStore<IVault> {
   }
 
   static isVaultOnline(vault: IVault) {
-    return vault.lastPing && Date.now() - vault.lastPing <= 5 * ONE_MINUTE;
+    return vault.lastPing
+      ? Date.now() - vault.lastPing <= 5 * ONE_MINUTE
+      : false;
   }
 
   static calcCollateral(collateralSat: number, volumeSat: number) {

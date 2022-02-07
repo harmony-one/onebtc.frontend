@@ -10,6 +10,7 @@ import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
+import BN from 'bn.js';
 
 export interface ITransaction {
   amount: string;
@@ -24,13 +25,15 @@ export class IssuePageStore extends StoreConstructor {
     vaultId: '',
   };
 
+  @observable public issueFilter = { amount: new BN('0') };
+
   @observable issuesMap: Record<string, IIssue> = {};
 
   @observable status: 'init' | 'pending' | 'success' | 'cancel' | 'error' =
     'init';
 
   @observable form = this.defaultForm;
-  @observable private _vaultList: IVault[] = [];
+  @observable public vaultList: IVault[] = [];
 
   @computed
   get bridgeFee() {
@@ -44,6 +47,40 @@ export class IssuePageStore extends StoreConstructor {
   @computed
   get totalReceive() {
     return Number(this.form.amount) - this.bridgeFee;
+  }
+
+  @action.bound
+  updateSelectedVault() {
+    const vaultList = this.getActiveVaultList(
+      this.stores.vaultListStore.vaultList,
+    );
+    const exist = vaultList.find(vault => vault.id === this.form.vaultId);
+
+    // update selected vault
+    if (!this.form.vaultId || !exist) {
+      this.form.vaultId = this.stores.vaultListStore.getDefaultVaultId(
+        vaultList,
+      );
+    }
+  }
+
+  getActiveVaultList(vaultList: IVault[]) {
+    const amountSat = bitcoinToSatoshi(this.form.amount);
+
+    const a = vaultList.filter(vault => {
+      return this.stores.vaultListStore.isEnoughFunds(vault, amountSat);
+    });
+
+    console.log('### a.length', a.length);
+
+    return a;
+  }
+
+  @action.bound
+  public async loadData() {
+    await this.stores.vaultListStore.loadVaults();
+
+    this.updateSelectedVault();
   }
 
   @action
@@ -188,21 +225,6 @@ export class IssuePageStore extends StoreConstructor {
         return Promise.resolve();
       },
     });
-  }
-
-  public async loadData() {
-    await this.stores.vaultListStore.loadVaults();
-
-    const vaultList = this.stores.vaultListStore.vaultIssueList;
-
-    const defaultVaultId = this.stores.vaultListStore.getDefaultVaultId(
-      vaultList,
-    );
-
-    if (this.form.vaultId) {
-      return;
-    }
-    this.form.vaultId = defaultVaultId;
   }
 
   @action.bound

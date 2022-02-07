@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box } from 'grommet';
 import {
   Text,
@@ -17,12 +17,16 @@ import {
 } from 'components/Form';
 import {
   formatWithTwoDecimals,
+  formatZeroDecimals,
   lessThanSat,
   moreThanZero,
 } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { VaultIssueSelectItem } from '../../../../components/VaultIssueSelectItem';
+import { Link } from 'react-router-dom';
+import { routes } from '../../../../constants/routePaths';
+import { generatePath } from 'react-router';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -43,14 +47,22 @@ export const IssueForm: React.FC<Props> = observer(() => {
     });
   }, [form, issuePageStore]);
 
+  useEffect(() => {
+    issuePageStore.updateSelectedVault();
+  }, [issuePageStore, issuePageStore.form.amount]);
+
+  const activeVaultList = issuePageStore.getActiveVaultList(
+    vaultListStore.vaultList,
+  );
+
   const vaultOptions = useMemo(() => {
-    return vaultListStore.vaultIssueList.map(vault => {
+    return activeVaultList.map(vault => {
       return {
         text: <VaultIssueSelectItem vault={vault} />,
         value: vault.id,
       };
     });
-  }, [vaultListStore.vaultIssueList]);
+  }, [activeVaultList]);
 
   const amountValidator = useMemo(() => {
     const vault = vaultListStore.getVault(issuePageStore.form.vaultId);
@@ -68,9 +80,15 @@ export const IssueForm: React.FC<Props> = observer(() => {
 
   const isFormDisabled = !user.isBridgeAvailable;
 
-  const vault = vaultListStore.vaultIssueList.find(
-    vault => vault.id === issuePageStore.form.vaultId,
-  );
+  const vault = vaultListStore.getVault(issuePageStore.form.vaultId);
+
+  const vaultInfo = useMemo(() => {
+    if (!vault) {
+      return null;
+    }
+
+    return vaultStore.getVaultInfo(vault);
+  }, [vault, vaultStore]);
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
@@ -125,6 +143,26 @@ export const IssueForm: React.FC<Props> = observer(() => {
               <VaultIssueSelectItem vault={vault} />
             </Box>
           )}
+        </Box>
+      )}
+
+      {vaultInfo && (
+        <Box direction="row" justify="between" margin={{ bottom: 'medium' }}>
+          <Box>
+            <Link
+              to={generatePath(routes.dashboardVaultDetails, {
+                vaultId: vault.id,
+              })}
+            >
+              Vault Details
+            </Link>
+          </Box>
+          <Box>
+            <Text>
+              Collateralization: {formatZeroDecimals(vaultInfo.collateralTotal)}
+              %
+            </Text>
+          </Box>
         </Box>
       )}
 

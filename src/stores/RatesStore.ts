@@ -5,7 +5,7 @@ import * as agent from 'superagent';
 export class RatesStore extends StoreConstructor {
   @observable public ONE_USDT = 0;
   @observable public BTC_USDT = 0;
-  @observable public ONE_BTC = 0;
+  @observable public ONE_BTC = 0.00000001;
   @observable loading = false;
 
   @action loadRate(symbol: string): Promise<number> {
