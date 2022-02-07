@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { VaultAppLayout } from '../../components/Layouts/VaultAppLayout';
 import { Box } from 'grommet';
-import { Divider, Title, Text } from '../../../components/Base';
+import { Divider, Title, Text, Button } from '../../../components/Base';
 
 interface Props {}
 
 export const InitErrorPage: React.FC<Props> = () => {
+  const handleReload = useCallback(() => {
+    window.location.reload();
+  }, []);
+
   return (
     <VaultAppLayout>
       <Box gap="small">
@@ -13,7 +17,7 @@ export const InitErrorPage: React.FC<Props> = () => {
           <Title>Service starting error</Title>
           <Divider colorful fullwidth />
         </Box>
-        <Box>
+        <Box align="center">
           <Text>
             The service started with an error, please make sure that you added
             the keys according to the{' '}
@@ -22,6 +26,9 @@ export const InitErrorPage: React.FC<Props> = () => {
             </a>{' '}
             . If this didn't help, contact support.
           </Text>
+        </Box>
+        <Box align="center">
+          <Button onClick={handleReload}>Reload page</Button>
         </Box>
       </Box>
     </VaultAppLayout>
