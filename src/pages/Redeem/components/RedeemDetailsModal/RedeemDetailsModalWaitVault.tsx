@@ -6,6 +6,8 @@ import * as styles from '../../../Issue/components/IssueDetailsModal/IssueDetail
 import { SpinnerContainer } from '../../../../ui/Spinner/SpinnerContainer';
 import { useStores } from '../../../../stores';
 import { RedeemExtendedStatus } from '../../../../stores/RedeemStore';
+import { cutText } from '../../../../services/cutText';
+import LinkBitcoin from '../../../../components/LinkBitcoin';
 
 export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
   redeemId,
@@ -37,6 +39,20 @@ export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
           <Text>Waiting for execute</Text>
         )}
       </Box>
+      {redeemInfo.btcTx && (
+        <>
+          <Box>
+            <Text>BTC Transaction: {cutText(redeemInfo.btcTx.hash)}</Text>
+          </Box>
+          <Box>
+            <LinkBitcoin
+              type="tx"
+              hash={redeemInfo.btcTx.hash}
+              text="View on explorer"
+            />
+          </Box>
+        </>
+      )}
       {redeemInfo.isExpired && !redeemInfo.isCanceled && (
         <Box>
           <Button onClick={handleCancelRedeem}>Cancel Redeem</Button>
