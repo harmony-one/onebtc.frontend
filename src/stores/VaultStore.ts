@@ -127,7 +127,7 @@ export class VaultStore extends EntityStore<IVault> {
     if (collateralSat === 0) {
       return 0;
     }
-    return collateralSat / (volumeSat / 100);
+    return collateralSat / (volumeSat || 1 / 100);
   }
 
   static calcMinIssueAmountSat(collateralSat: string | number | BN) {
