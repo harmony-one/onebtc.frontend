@@ -16,7 +16,7 @@ export interface ITransaction {
   vaultId: string;
 }
 
-const BRIDGE_RATIO = 2;
+const BRIDGE_RATIO = 5;
 
 export class IssuePageStore extends StoreConstructor {
   defaultForm: ITransaction = {
