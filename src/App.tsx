@@ -22,6 +22,8 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { TransactionsPage } from './pages/Transactions/TransactionsPage';
 import { Disclaimer } from './components/DisclaimerWarning';
 import { AdminHomePage } from './pages/admin/AdminHomePage';
+import { SupportPage } from './pages/Support/SupportPage';
+import { HelpPage } from './pages/Help/HelpPage';
 
 const App: React.FC = () => (
   <ErrorBoundary>
@@ -57,6 +59,9 @@ const App: React.FC = () => (
           path={routes.dashboardVaultDetails}
           component={DashboardVaultDetailsPage}
         />
+        <Route exact path={routes.help} component={HelpPage} />
+        <Route exact path={routes.support} component={SupportPage} />
+
         <Route exact path={routes.adminHome} component={AdminHomePage} />
         <Redirect to={routes.issue} />
       </Switch>

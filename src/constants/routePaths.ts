@@ -15,6 +15,8 @@ export enum ROUTE_NAMES {
   DASHBOARD_REDEEMS = 'dashboardRedeem',
   DASHBOARD_VAULT_LIST = 'dashboardVault',
   DASHBOARD_VAULT_DETAIL = 'dashboardVaultDetails',
+  HELP = 'help',
+  SUPPORT = 'support',
   ADMIN_HOME = 'adminHome',
 }
 
@@ -73,6 +75,14 @@ const routeTree: RouteNode<ROUTE_NAMES> = {
           path: '/dashboard/vaults/:vaultId',
         },
       ],
+    },
+    {
+      name: ROUTE_NAMES.HELP,
+      path: '/help',
+    },
+    {
+      name: ROUTE_NAMES.SUPPORT,
+      path: '/support',
     },
     {
       name: ROUTE_NAMES.ADMIN_HOME,
