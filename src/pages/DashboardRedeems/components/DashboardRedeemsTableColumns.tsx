@@ -18,10 +18,12 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     className: cn(s.column, s.columnAddress),
     key: 'id',
     width: '33',
-    render: (value: IRedeem) => {
+    dataIndex: 'vault',
+    sortable: true,
+    render: (value, redeem) => {
       return (
         <div onClick={e => e.stopPropagation()}>
-          <LinkHarmony hash={value.vault} type="address" />
+          <LinkHarmony hash={redeem.vault} type="address" />
         </div>
       );
     },
@@ -31,11 +33,13 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     className: cn(s.column, s.columnAddress),
     key: 'id',
     width: '33',
-    render: (value: IRedeem) => {
+    dataIndex: 'btcAddress',
+    sortable: true,
+    render: (value, redeem) => {
       return (
         <div onClick={e => e.stopPropagation()}>
           <LinkBitcoin
-            hash={btcAddressHexToBech32(value.btcAddress)}
+            hash={btcAddressHexToBech32(redeem.btcAddress)}
             type="wallet"
           />
         </div>
@@ -47,8 +51,10 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     className: s.column,
     key: 'id',
     width: '33',
-    render: (value: IRedeem) => {
-      return <EntityStatus status={value.status} />;
+    dataIndex: 'status',
+    sortable: true,
+    render: (value, redeem) => {
+      return <EntityStatus status={redeem.status} />;
     },
   },
   {
@@ -56,8 +62,10 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     className: s.column,
     key: 'id',
     width: '33',
-    render: (value: IRedeem) => {
-      const amountBtc = satoshiToBitcoin(value.amountBtc);
+    dataIndex: 'amountBtc',
+    sortable: true,
+    render: (value, redeem) => {
+      const amountBtc = satoshiToBitcoin(redeem.amountBtc);
       return <div>{formatWithTenDecimals(amountBtc)} BTC</div>;
     },
   },

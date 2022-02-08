@@ -9,6 +9,8 @@ export class IssueListStore extends ListStoreConstructor<IIssue> {
       return dashboardClient.loadIssueList({
         size: params.size,
         page: params.page,
+        // @ts-expect-error 'sort' does not exist in type 'IGetParams'
+        sort: params.sort,
       });
     };
 

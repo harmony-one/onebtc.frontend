@@ -9,6 +9,8 @@ export class RedeemListStore extends ListStoreConstructor<IRedeem> {
       return dashboardClient.loadRedeemList({
         size: params.size,
         page: params.page,
+        // @ts-expect-error 'sort' does not exist in type 'IGetParams'
+        sort: params.sort,
       });
     };
 

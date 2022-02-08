@@ -19,10 +19,12 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     className: cn(s.column, s.columnAddress),
     key: 'id',
     width: '33',
-    render: value => {
+    dataIndex: 'vault',
+    sortable: true,
+    render: (value, issue) => {
       return (
         <div onClick={e => e.stopPropagation()}>
-          <LinkHarmony hash={value.vault} type="address" />
+          <LinkHarmony hash={issue.vault} type="address" />
         </div>
       );
     },
@@ -32,11 +34,13 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     className: cn(s.column, s.columnAddress),
     key: 'id',
     width: '33',
-    render: value => {
+    dataIndex: 'btcAddress',
+    sortable: true,
+    render: (value, issue) => {
       return (
         <div onClick={e => e.stopPropagation()}>
           <LinkBitcoin
-            hash={btcAddressHexToBech32(value.btcAddress)}
+            hash={btcAddressHexToBech32(issue.btcAddress)}
             type="wallet"
           />
         </div>
@@ -48,8 +52,10 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     className: s.column,
     key: 'id',
     width: '33',
-    render: (value: IIssue) => {
-      return <IssueStatusExtended issue={value} />;
+    dataIndex: 'status',
+    sortable: true,
+    render: (value, issue) => {
+      return <IssueStatusExtended issue={issue} />;
     },
   },
   {
@@ -57,9 +63,11 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     className: s.column,
     key: 'id',
     width: '33',
-    render: value => {
-      const amount = utils.toBN(value.amount);
-      const fee = utils.toBN(value.fee);
+    dataIndex: 'amount',
+    sortable: true,
+    render: (value, issue) => {
+      const amount = utils.toBN(issue.amount);
+      const fee = utils.toBN(issue.fee);
       const totalAmount = amount.add(fee).toString();
       const totalBtcAmount = satoshiToBitcoin(totalAmount);
       return <div>{formatWithEightDecimals(totalBtcAmount)} 1BTC</div>;

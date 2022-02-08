@@ -49,11 +49,13 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       title: 'Locked ONE',
       className: s.column,
       key: 'id',
+      sortable: true,
+      dataIndex: 'collateral',
       width: '33',
-      render: value => {
+      render: (value, vault) => {
         return (
           <Text>
-            {formatWithTwoDecimals(Number(value.collateral) / 1e18)} ONE
+            {formatWithTwoDecimals(Number(vault.collateral) / 1e18)} ONE
           </Text>
         );
       },
@@ -63,8 +65,10 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       width: '33',
-      render: value => {
-        const amount = satoshiToBitcoin(value.toBeIssued);
+      sortable: true,
+      dataIndex: 'toBeIssued',
+      render: (value, vault) => {
+        const amount = satoshiToBitcoin(vault.toBeIssued);
         return <Text>{formatWithEightDecimals(amount)} BTC</Text>;
       },
     },
@@ -73,9 +77,11 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       width: '33',
-      render: value => {
-        const vaultInfo = vaultStore.getVaultInfo(value);
-        const amount = satoshiToBitcoin(vaultInfo.lockedSat.toString());
+      sortable: true,
+      dataIndex: 'toBeRedeemed',
+      render: (value, vault) => {
+        const vaultInfo = vaultStore.getVaultInfo(vault);
+        const amount = satoshiToBitcoin(vaultInfo.toBeRedeemedSat.toString());
         return <Text>{formatWithEightDecimals(amount)} BTC</Text>;
       },
     },
@@ -83,8 +89,9 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       title: 'Collateralization',
       className: s.column,
       key: 'id',
+      dataIndex: 'collateral',
       width: '33',
-      render: vault => {
+      render: (value, vault) => {
         const vaultInfo = vaultStore.getVaultInfo(vault);
         const colorIssued = vaultInfo.collateralIssued >= 150 ? 'Green' : 'Red';
         const colorTotal = vaultInfo.collateralTotal >= 150 ? 'Green' : 'Red';
@@ -111,7 +118,9 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       className: s.column,
       key: 'id',
       width: '33',
-      render: vault => {
+      sortable: true,
+      dataIndex: 'lastPing',
+      render: (value, vault) => {
         const { isActive } = vaultStore.getVaultInfo(vault);
         return <VaultStatus isActive={isActive} />;
       },
