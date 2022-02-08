@@ -163,6 +163,12 @@ export const lessThanSat = (amount, message) => {
   }, message);
 };
 
+export const moreThenSat = (amount, message) => {
+  return createValidate((value: string) => {
+    return bitcoinToSatoshi(value) < amount;
+  }, message);
+};
+
 export const lessThanWei = (amount, message) => {
   return createValidate((value: string) => {
     return utils.toWei(value) > amount;

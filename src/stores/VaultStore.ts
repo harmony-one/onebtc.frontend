@@ -130,6 +130,10 @@ export class VaultStore extends EntityStore<IVault> {
     return collateralSat / (volumeSat / 100);
   }
 
+  static calcMinIssueAmountSat(collateralSat: string | number | BN) {
+    return new BN(collateralSat).mul(new BN(5)).div(new BN(100000));
+  }
+
   static calcAvailableToIssueSat(vault: IVault, oneBtcRate: number) {
     const maxLoanSat = VaultStore.calcMaxLoanSat(
       vault.collateral || '0',
@@ -213,6 +217,7 @@ export class VaultStore extends EntityStore<IVault> {
       availableToWithdrawWei,
       collateralIssued,
       collateralTotal,
+      collateralSat,
       isActive,
     };
   }
