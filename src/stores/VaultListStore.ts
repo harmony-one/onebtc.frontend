@@ -75,8 +75,9 @@ export class VaultListStore extends StoreConstructor {
     const isOnline = VaultStore.isVaultOnline(vault);
 
     const minIssueAmount =
+      amount.eq(new BN(0)) ||
       !isIssue ||
-      VaultStore.calcMinIssueAmountSat(vaultInfo.collateralSat).lte(amount);
+        VaultStore.calcMinIssueAmountSat(vaultInfo.collateralSat).lte(amount);
 
     return isOnline && founds && collateral && minIssueAmount;
   };
