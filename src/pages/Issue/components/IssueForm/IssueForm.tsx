@@ -17,16 +17,13 @@ import {
 } from 'components/Form';
 import {
   formatWithTwoDecimals,
-  formatZeroDecimals,
   lessThanSat,
   moreThanZero,
 } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { VaultIssueSelectItem } from '../../../../components/VaultIssueSelectItem';
-import { Link } from 'react-router-dom';
-import { routes } from '../../../../constants/routePaths';
-import { generatePath } from 'react-router';
+import { VaultInfo } from '../../../../containers/VaultInfo';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -146,23 +143,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
       )}
 
       {vaultInfo && (
-        <Box direction="row" justify="between" margin={{ bottom: 'medium' }}>
-          <Box>
-            <Link
-              to={generatePath(routes.dashboardVaultDetails, {
-                vaultId: vault.id,
-              })}
-            >
-              Vault Details
-            </Link>
-          </Box>
-          <Box>
-            <Text>
-              Collateralization: {formatZeroDecimals(vaultInfo.collateralTotal)}
-              %
-            </Text>
-          </Box>
-        </Box>
+        <VaultInfo vault={vault} issued={issuePageStore.form.amount} />
       )}
 
       <Box

@@ -65,21 +65,37 @@ export class VaultListStore extends StoreConstructor {
     amountSat: number | string | BN,
     type: 'redeem' | 'issue' = 'issue',
   ) => {
+    const isOnline = VaultStore.isVaultOnline(vault);
+
+    if (!isOnline) {
+      return false;
+    }
+
     const amount = new BN(amountSat);
-    const isIssue = type === 'issue';
     const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
-    const collateral = isIssue ? vaultInfo.collateralTotal >= 150 : true;
+    const isIssue = type === 'issue';
+
     const founds = isIssue
       ? vaultInfo.availableToIssueSat.gte(amount)
       : vaultInfo.availableToRedeemSat.gte(amount);
-    const isOnline = VaultStore.isVaultOnline(vault);
 
-    const minIssueAmount =
-      amount.eq(new BN(0)) ||
-      !isIssue ||
-        VaultStore.calcMinIssueAmountSat(vaultInfo.collateralSat).lte(amount);
+    if (!founds) {
+      return false;
+    }
 
-    return isOnline && founds && collateral && minIssueAmount;
+    const collateral = isIssue ? vaultInfo.collateralTotal >= 150 : true;
+
+    if (!collateral) {
+      return false;
+    }
+
+    const minAmount = VaultStore.calcMinIssueAmountSat(vaultInfo.collateralSat);
+
+    if (isIssue && amount.gt(new BN(0)) && amount.lte(minAmount)) {
+      return false;
+    }
+
+    return true;
   };
 
   @get
