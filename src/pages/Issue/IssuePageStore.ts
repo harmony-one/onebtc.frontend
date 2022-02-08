@@ -64,10 +64,14 @@ export class IssuePageStore extends StoreConstructor {
   }
 
   @action.bound
-  public async loadData() {
+  public async initPage() {
     await this.stores.vaultListStore.loadVaults();
-
     this.updateSelectedVault();
+  }
+
+  @action.bound
+  public updateVaults() {
+    this.stores.vaultListStore.loadVaults();
   }
 
   @action
