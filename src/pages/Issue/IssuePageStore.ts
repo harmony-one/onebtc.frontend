@@ -10,6 +10,7 @@ import { bitcoinToSatoshi } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
+import BN from 'bn.js';
 
 export interface ITransaction {
   amount: string;
@@ -258,6 +259,12 @@ export class IssuePageStore extends StoreConstructor {
 
       const vaultId = this.form.vaultId;
 
+      const vault = this.stores.vaultListStore.getVault(vaultId);
+      const oneAmount = new BN(vault.collateral)
+        .mul(new BN(5))
+        .div(new BN(100000))
+        .toString();
+
       const issueAmount = bitcoinToSatoshi(this.form.amount);
 
       issueUiTx.setStatusWaitingSignIn();
@@ -265,6 +272,7 @@ export class IssuePageStore extends StoreConstructor {
       const issueRequest = await hmyClient.requestIssue(
         issueAmount,
         vaultId,
+        oneAmount,
         txHash => {
           issueUiTx.setTxHash(txHash);
           issueUiTx.setStatusProgress();
