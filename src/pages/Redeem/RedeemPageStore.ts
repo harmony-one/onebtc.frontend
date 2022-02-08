@@ -48,6 +48,27 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   @action.bound
+  updateSelectedVault() {
+    const vaultList = this.getActiveVaultList(
+      this.stores.vaultListStore.vaultList,
+    );
+
+    this.form.vaultId = this.stores.vaultListStore.getDefaultVaultId(vaultList);
+  }
+
+  getActiveVaultList(vaultList: IVault[]) {
+    const amountSat = bitcoinToSatoshi(this.form.oneBTCAmount);
+
+    return vaultList.filter(vault => {
+      return this.stores.vaultListStore.isEnoughFunds(
+        vault,
+        amountSat,
+        'redeem',
+      );
+    });
+  }
+
+  @action.bound
   public async loadData() {
     await this.stores.vaultListStore.loadVaults();
 

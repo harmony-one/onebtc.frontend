@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box } from 'grommet';
 import { Text, Divider, Button, Checkbox } from 'components/Base';
 import { observer } from 'mobx-react';
@@ -36,14 +36,22 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   const [form, setForm] = useState<MobxForm>();
   const [isCustomVault, setCustomVault] = useState(false);
 
+  const activeVaultList = redeemPageStore.getActiveVaultList(
+    vaultListStore.vaultList,
+  );
+
   const vaultOptions = useMemo(() => {
-    return vaultListStore.vaultRedeemList.map(vault => {
+    return activeVaultList.map(vault => {
       return {
         text: <VaultRedeemSelectItem vault={vault} />,
         value: vault.id,
       };
     });
-  }, [vaultListStore.vaultRedeemList]);
+  }, [activeVaultList]);
+
+  useEffect(() => {
+    redeemPageStore.updateSelectedVault();
+  }, [redeemPageStore, redeemPageStore.form.oneBTCAmount]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
@@ -57,8 +65,9 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     );
   }, [redeemPageStore.form.oneBTCAmount, user.oneBTCBalance]);
 
+  const vault = vaultListStore.getVault(redeemPageStore.form.vaultId);
+
   const amountValidator = useMemo(() => {
-    const vault = vaultListStore.getVault(redeemPageStore.form.vaultId);
     if (!vault) {
       return undefined;
     }
@@ -69,13 +78,9 @@ export const RedeemForm: React.FC<Props> = observer(() => {
       'redeem amount exceeds vault balance',
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [redeemPageStore, vaultStore, redeemPageStore.form.vaultId]);
+  }, [vault]);
 
   const isFormDisabled = !user.isBridgeAvailable;
-
-  const vault = vaultListStore.vaultActiveList.find(
-    vault => vault.id === redeemPageStore.form.vaultId,
-  );
 
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
@@ -86,6 +91,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         delimiter="."
         disabled={isFormDisabled}
         placeholder="0.0"
+        max="9999999"
         inputLabel={
           <InputLabelAvailableBalance
             label="Amount"

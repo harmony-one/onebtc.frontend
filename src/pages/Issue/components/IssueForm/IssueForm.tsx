@@ -64,22 +64,6 @@ export const IssueForm: React.FC<Props> = observer(() => {
     });
   }, [activeVaultList]);
 
-  const amountValidator = useMemo(() => {
-    const vault = vaultListStore.getVault(issuePageStore.form.vaultId);
-    if (!vault) {
-      return undefined;
-    }
-    const vaultInfo = vaultStore.getVaultInfo(vault);
-
-    return lessThanSat(
-      vaultInfo.availableToIssueSat.toString(),
-      'issue amount exceeds vault balance',
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
-
-  const isFormDisabled = !user.isBridgeAvailable;
-
   const vault = vaultListStore.getVault(issuePageStore.form.vaultId);
 
   const vaultInfo = useMemo(() => {
@@ -90,6 +74,20 @@ export const IssueForm: React.FC<Props> = observer(() => {
     return vaultStore.getVaultInfo(vault);
   }, [vault, vaultStore]);
 
+  const amountValidator = useMemo(() => {
+    if (!vaultInfo) {
+      return undefined;
+    }
+
+    return lessThanSat(
+      vaultInfo.availableToIssueSat.toString(),
+      'issue amount exceeds vault balance',
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
+
+  const isFormDisabled = !user.isBridgeAvailable;
+
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
       <NumberInput
@@ -99,6 +97,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
         disabled={isFormDisabled}
         precision="8"
         delimiter="."
+        max="9999999"
         renderRight={
           <Box direction="row" gap="8px">
             <Text>

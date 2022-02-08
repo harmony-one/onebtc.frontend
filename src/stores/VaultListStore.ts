@@ -60,10 +60,18 @@ export class VaultListStore extends StoreConstructor {
   }
 
   @get
-  public isEnoughFunds = (vault: IVault, amountSat: number | string | BN) => {
+  public isEnoughFunds = (
+    vault: IVault,
+    amountSat: number | string | BN,
+    type: 'redeem' | 'issue' = 'issue',
+  ) => {
     const vaultInfo = this.stores.vaultStore.getVaultInfo(vault);
-    const collateral = vaultInfo.collateralTotal >= 150;
-    const founds = vaultInfo.availableToIssueSat.gte(new BN(amountSat));
+    const collateral =
+      type === 'issue' ? vaultInfo.collateralTotal >= 150 : true;
+    const founds =
+      type === 'issue'
+        ? vaultInfo.availableToIssueSat.gte(new BN(amountSat))
+        : vaultInfo.availableToRedeemSat.gte(new BN(amountSat));
     const isOnline = VaultStore.isVaultOnline(vault);
 
     return isOnline && founds && collateral;
