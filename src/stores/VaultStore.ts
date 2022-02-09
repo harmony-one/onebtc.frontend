@@ -140,7 +140,7 @@ export class VaultStore extends EntityStore<IVault> {
     if (collateralSat === 0) {
       return 0;
     }
-    return (collateralSat / Math.max(volumeSat, 1)) * 100;
+    return (collateralSat / Math.max(volumeSat, 0)) * 100;
   }
 
   static calcSecurityDeposit(collateral: number) {
