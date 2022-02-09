@@ -22,6 +22,8 @@ export interface IDefaultForm {
   vaultId: string;
 }
 
+const BRIDGE_RATIO = 5;
+
 export class RedeemPageStore extends StoreConstructor {
   defaultForm: IDefaultForm = {
     oneBTCAmount: '0.0001',
@@ -40,7 +42,11 @@ export class RedeemPageStore extends StoreConstructor {
 
   @computed
   get bridgeFee() {
-    return (Number(this.form.oneBTCAmount) * 2) / 1000;
+    return (Number(this.form.oneBTCAmount) * BRIDGE_RATIO) / 1000;
+  }
+
+  get bridgeRatio() {
+    return (BRIDGE_RATIO / 1000) * 100;
   }
 
   @computed

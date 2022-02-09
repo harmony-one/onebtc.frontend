@@ -161,7 +161,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         align="start"
       >
         <Text size="small" bold={true}>
-          Bridge Fee
+          Bridge Fee {redeemPageStore.bridgeRatio}%
         </Text>
         <PriceView
           value={redeemPageStore.bridgeFee}
