@@ -7,10 +7,14 @@ import React from 'react';
 import { DashboardCardCircle } from '../../../components/Dashboard/DashboardCardCircle';
 import { DashboardCardBody } from '../../../components/Dashboard/DashboardCardBody';
 import { DashboardCardFooter } from '../../../components/Dashboard/DashboardCardFooter';
+import { observer } from 'mobx-react';
+import { dashboardHistoryStore } from '../DashboardHistoryStore';
+import { formatZeroDecimals } from '../../../utils';
 
 interface Props {}
 
-export const DashboardVaultCard: React.FC<Props> = () => {
+export const DashboardVaultCard: React.FC<Props> = observer(() => {
+  const capacity = formatZeroDecimals(dashboardHistoryStore.capacity);
   return (
     <DashboardCard>
       <DashboardCardHead>
@@ -19,7 +23,7 @@ export const DashboardVaultCard: React.FC<Props> = () => {
       </DashboardCardHead>
       <DashboardCardBody>
         <DashboardCardCircle
-          title="513776.97001"
+          title={`${capacity} ONE`}
           subtext="Capacity"
           status="success"
         />
@@ -31,6 +35,6 @@ export const DashboardVaultCard: React.FC<Props> = () => {
       </DashboardCardFooter>
     </DashboardCard>
   );
-};
+});
 
 DashboardVaultCard.displayName = 'DashboardVaultCard';

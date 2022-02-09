@@ -6,6 +6,8 @@ import {
   IListContainer,
 } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { dateFormat } from '../../utils';
+import { getHmyBalance } from '../../services/hmyClient';
+import utils from 'web3-utils';
 
 class DashboardPageStore {
   @observable
@@ -17,11 +19,23 @@ class DashboardPageStore {
   @observable
   private _redeemHistory: IListContainer<IHistoryIssueItem> | null;
 
+  @observable capacity = '0';
+
   @action.bound
   async loadData() {
     this.loadIssuesData();
     this.loadVaultData();
     this.loadRedeemsData();
+    this.loadCapacity();
+  }
+
+  @action.bound
+  async loadCapacity() {
+    const response = await getHmyBalance(
+      '0xdc54046c0451f9269fee1840aec808d36015697d',
+    );
+
+    this.capacity = utils.fromWei(response.result);
   }
 
   @action.bound
