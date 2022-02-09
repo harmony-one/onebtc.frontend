@@ -132,7 +132,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
             </Text>
             <Checkbox
               disabled={isFormDisabled}
-              label="I don't like this vault, let me select another"
+              label="Manually select vault"
               value={isCustomVault}
               onChange={setCustomVault}
             />
