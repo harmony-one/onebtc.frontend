@@ -13,6 +13,7 @@ import { IRedeem, IVault } from '../../modules/dashboard/dashboardTypes';
 import { retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { RedeemCanceledModal } from './components/RedeemCanceledModal';
+import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -225,6 +226,7 @@ export class RedeemPageStore extends StoreConstructor {
         _btcAddress,
         vaultId,
         txHash => {
+          dashboardClient.addEvent(txHash);
           redeemUiTx.setTxHash(txHash);
           redeemUiTx.setStatusProgress();
         },

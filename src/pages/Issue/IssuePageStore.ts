@@ -274,6 +274,7 @@ export class IssuePageStore extends StoreConstructor {
         vaultId,
         oneAmount,
         txHash => {
+          dashboardClient.addEvent(txHash);
           issueUiTx.setTxHash(txHash);
           issueUiTx.setStatusProgress();
         },
