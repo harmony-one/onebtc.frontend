@@ -74,6 +74,16 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
           <Text inline bold color="Red">
             Note:
           </Text>{' '}
+          Please only send the exact amount, as over payment will not return the
+          excess BTC
+        </Text>
+      </Box>
+
+      <Box alignSelf="start" margin={{ bottom: 'small' }}>
+        <Text>
+          <Text inline bold color="Red">
+            Note:
+          </Text>{' '}
           If you have already made the payment, please wait for a few minutes
           for it to be confirmed.
         </Text>
