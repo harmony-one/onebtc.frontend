@@ -89,12 +89,6 @@ export class VaultListStore extends StoreConstructor {
       return false;
     }
 
-    const minAmount = VaultStore.calcMinIssueAmountSat(vaultInfo.collateralSat);
-
-    if (isIssue && amount.gt(new BN(0)) && amount.lte(minAmount)) {
-      return false;
-    }
-
     return true;
   };
 
