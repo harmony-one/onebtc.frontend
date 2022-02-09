@@ -16,6 +16,9 @@ export const SupportPage: React.FC<Props> = () => {
           <Divider colorful fullwidth />
         </Box>
         <Box>
+          <img alt="issue info" src="/vault_support.png" />
+        </Box>
+        <Box>
           <iframe
             title="support form"
             sandbox="allow-scripts allow-popups allow-forms allow-same-origin"
