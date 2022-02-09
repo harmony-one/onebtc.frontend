@@ -1,11 +1,14 @@
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { action, computed, observable } from 'mobx';
 import { dashboardClient } from './dashboardClient';
-import { IEvent, IBtcRelayInfo } from './dashboardTypes';
+import { IEvent, IBtcRelayInfo, IRelayInfo } from './dashboardTypes';
 
 export class BtcRelayStore extends StoreConstructor {
   @observable
   public info: IBtcRelayInfo = null;
+
+  @observable
+  public relayInfo: IRelayInfo = null;
 
   @observable
   public lastEvent: IEvent = null;
@@ -14,6 +17,7 @@ export class BtcRelayStore extends StoreConstructor {
   public async loadInfo() {
     this.info = await dashboardClient.loadInfo();
     this.lastEvent = await dashboardClient.loadLastEvent();
+    this.relayInfo = await dashboardClient.loadRelayInfo();
   }
 
   @computed

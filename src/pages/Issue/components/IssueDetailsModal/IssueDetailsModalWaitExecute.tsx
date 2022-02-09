@@ -13,12 +13,15 @@ interface Props {
 }
 
 export const IssueDetailsModalWaitExecute: React.FC<Props> = ({ issueId }) => {
-  const { issueStore, issuePageStore } = useStores();
+  const { issueStore, issuePageStore, btcRelayStore } = useStores();
   const issueInfo = issueStore.getIssueInfo(issueId);
 
   const handleClaim = useCallback(() => {
     issuePageStore.executeIssue(issueId, issueInfo.btcTx.hash);
   }, [issueId, issueInfo.btcTx.hash, issuePageStore]);
+
+  const isWaitingRelayer =
+    !btcRelayStore.relayInfo || !btcRelayStore.relayInfo.synced;
 
   return (
     <Box align="center" gap="small">
@@ -44,14 +47,17 @@ export const IssueDetailsModalWaitExecute: React.FC<Props> = ({ issueId }) => {
           receive your 1BTC on Harmony side.
         </Text>
       </Box>
-      <Box>
+      <Box align="center" gap="small">
         <Button
           bgColor="#46d7b6"
-          disabled={!issueInfo.isConfirmedBtcTX}
+          disabled={!issueInfo.isConfirmedBtcTX || isWaitingRelayer}
           onClick={handleClaim}
         >
           Execute issue
         </Button>
+        {isWaitingRelayer && (
+          <Text bold>Waiting relayer synchronization...</Text>
+        )}
       </Box>
     </Box>
   );
