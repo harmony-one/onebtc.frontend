@@ -285,6 +285,7 @@ export class IssuePageStore extends StoreConstructor {
       const issue = await retry(
         () => dashboardClient.loadIssue(issueRequest.issue_id),
         result => !!result,
+        10,
       );
 
       issueUiTx.setIssueId(issue.id);

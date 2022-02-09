@@ -235,6 +235,7 @@ export class RedeemPageStore extends StoreConstructor {
       const redeem = await retry(
         () => this.stores.redeemStore.loadRedeem(redeemRequest.redeem_id),
         result => !!result,
+        10,
       );
 
       this.stores.routing.gotToRedeemModal(redeem.id, 'withdraw');
