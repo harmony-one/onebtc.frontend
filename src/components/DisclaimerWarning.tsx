@@ -56,7 +56,7 @@ const styles = {
 export const Disclaimer = () => (
   <CookieBanner
     styles={styles}
-    message="NOTE: Official launch coming soon. Please use for testing purposes only."
+    message="The BTC bridge is still in beta, please exercise caution while using the bridge"
     onAccept={() => {}}
     cookie="onebtc-info-accept"
     dismissOnScroll={false}
