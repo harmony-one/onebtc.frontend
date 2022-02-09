@@ -259,15 +259,18 @@ export class IssuePageStore extends StoreConstructor {
 
       const vaultId = this.form.vaultId;
 
-      const vault = this.stores.vaultListStore.getVault(vaultId);
-      const oneAmount = new BN(vault.collateral)
-        .mul(new BN(5))
-        .div(new BN(100000))
-        .toString();
-
       const issueAmount = bitcoinToSatoshi(this.form.amount);
 
       issueUiTx.setStatusWaitingSignIn();
+
+      const collateralForIssued = await hmyClient.contract.methods
+        .collateralForIssued(new BN(issueAmount))
+        .call();
+
+      const oneAmount = new BN(collateralForIssued)
+        .mul(new BN(5))
+        .div(new BN(1000))
+        .toString();
 
       let transactionHash = null;
       const issueRequest = await hmyClient.requestIssue(
