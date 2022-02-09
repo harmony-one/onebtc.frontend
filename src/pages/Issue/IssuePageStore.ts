@@ -235,6 +235,23 @@ export class IssuePageStore extends StoreConstructor {
     }
   }
 
+  public async calcSecurityDeposit(issueAmountSat: number) {
+    try {
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+      const collateralForIssued = await hmyClient.contract.methods
+        .collateralForIssued(new BN(issueAmountSat))
+        .call();
+
+      return new BN(collateralForIssued)
+        .mul(new BN(5))
+        .div(new BN(1000))
+        .toString();
+    } catch (ex) {
+      console.log('### ex', ex);
+      return '0';
+    }
+  }
+
   @action.bound
   public async createIssue() {
     if (!this.stores.user.isAuthorized) {

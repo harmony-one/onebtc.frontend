@@ -24,8 +24,8 @@ import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { VaultIssueSelectItem } from '../../../../components/VaultIssueSelectItem';
 import { VaultInfo } from '../../../../containers/VaultInfo';
-import { VaultStore } from '../../../../stores/VaultStore';
 import utils from 'web3-utils';
+import { bitcoinToSatoshi } from '../../../../services/bitcoin';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -87,15 +87,14 @@ export const IssueForm: React.FC<Props> = observer(() => {
 
   const isFormDisabled = !user.isBridgeAvailable;
 
-  const securityDeposit = useMemo(() => {
-    if (!vault || !vault.collateral) {
-      return 1;
-    }
+  const [securityDeposit, setSecurityDeposit] = useState('0');
 
-    return VaultStore.calcSecurityDeposit(
-      Number(utils.fromWei(vault.collateral)),
-    );
-  }, [vault]);
+  useEffect(() => {
+    const amount = bitcoinToSatoshi(issuePageStore.form.amount);
+    issuePageStore.calcSecurityDeposit(amount).then(deposit => {
+      setSecurityDeposit(deposit);
+    });
+  }, [issuePageStore, issuePageStore.form.amount]);
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
@@ -184,7 +183,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
           Security Deposit
         </Text>
         <PriceView
-          value={securityDeposit}
+          value={utils.fromWei(securityDeposit)}
           rate={ratesStore.ONE_USDT}
           tokenName="ONE"
         />
