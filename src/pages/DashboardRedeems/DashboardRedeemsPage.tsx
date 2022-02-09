@@ -34,7 +34,7 @@ export const DashboardRedeemsPage: React.FC<Props> = observer(() => {
           <DashboardCard width="medium">
             <DashboardCardHead>
               <Text bold>
-                Redeemed: {dashboardHistoryStore.issuedTotal} BTC
+                Redeemed: {dashboardHistoryStore.redeemedTotal} BTC
               </Text>
             </DashboardCardHead>
             <DashboardCardBody>

@@ -86,7 +86,7 @@ class DashboardPageStore {
       return [];
     }
 
-    return this._issueHistory.content.map(item => {
+    return this._issueHistory.content.reverse().map(item => {
       return {
         x: dateFormat(item.date),
         issuedPerDay: item.amountPerDay / 1e8,
@@ -112,7 +112,7 @@ class DashboardPageStore {
       return [];
     }
 
-    return this._redeemHistory.content.map(item => {
+    return this._redeemHistory.content.reverse().map(item => {
       return {
         x: dateFormat(item.date),
         redeemedPerDay: item.amountPerDay / 1e8,
