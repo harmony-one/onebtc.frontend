@@ -24,6 +24,8 @@ import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
 import { VaultIssueSelectItem } from '../../../../components/VaultIssueSelectItem';
 import { VaultInfo } from '../../../../containers/VaultInfo';
+import { VaultStore } from '../../../../stores/VaultStore';
+import utils from 'web3-utils';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -84,6 +86,16 @@ export const IssueForm: React.FC<Props> = observer(() => {
   }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
 
   const isFormDisabled = !user.isBridgeAvailable;
+
+  const securityDeposit = useMemo(() => {
+    if (!vault || !vault.collateral) {
+      return 1;
+    }
+
+    return VaultStore.calcSecurityDeposit(
+      Number(utils.fromWei(vault.collateral)),
+    );
+  }, [vault]);
 
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
@@ -171,7 +183,11 @@ export const IssueForm: React.FC<Props> = observer(() => {
         <Text size="small" bold={true}>
           Security Deposit
         </Text>
-        <PriceView value={1} rate={ratesStore.ONE_USDT} tokenName="ONE" />
+        <PriceView
+          value={securityDeposit}
+          rate={ratesStore.ONE_USDT}
+          tokenName="ONE"
+        />
       </Box>
 
       <Divider colorful fullwidth />

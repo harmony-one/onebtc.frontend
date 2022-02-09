@@ -143,8 +143,8 @@ export class VaultStore extends EntityStore<IVault> {
     return (collateralSat / Math.max(volumeSat, 1)) * 100;
   }
 
-  static calcMinIssueAmountSat(collateralSat: string | number | BN) {
-    return new BN(collateralSat).mul(new BN(5)).div(new BN(100000));
+  static calcSecurityDeposit(collateral: number) {
+    return (collateral * 5) / 100000;
   }
 
   static calcNewCollateralization(
