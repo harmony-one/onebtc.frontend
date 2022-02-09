@@ -221,16 +221,21 @@ export class RedeemPageStore extends StoreConstructor {
 
       const _btcAddress = btcAddressBech32ToHex(btcAddress);
 
+      let transactionHash = null;
       const redeemRequest = await hmyClient.requestRedeem(
         redeemAmount,
         _btcAddress,
         vaultId,
         txHash => {
-          dashboardClient.addEvent(txHash);
+          transactionHash = txHash;
           redeemUiTx.setTxHash(txHash);
           redeemUiTx.setStatusProgress();
         },
       );
+
+      if (transactionHash) {
+        await dashboardClient.addEvent(transactionHash);
+      }
 
       const redeem = await retry(
         () => this.stores.redeemStore.loadRedeem(redeemRequest.redeem_id),

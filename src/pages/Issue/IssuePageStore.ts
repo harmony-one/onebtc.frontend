@@ -269,16 +269,21 @@ export class IssuePageStore extends StoreConstructor {
 
       issueUiTx.setStatusWaitingSignIn();
 
+      let transactionHash = null;
       const issueRequest = await hmyClient.requestIssue(
         issueAmount,
         vaultId,
         oneAmount,
         txHash => {
-          dashboardClient.addEvent(txHash);
+          transactionHash = txHash;
           issueUiTx.setTxHash(txHash);
           issueUiTx.setStatusProgress();
         },
       );
+
+      if (transactionHash) {
+        await dashboardClient.addEvent(transactionHash);
+      }
 
       issueUiTx.setStatusProgress();
 
