@@ -16,7 +16,7 @@ type Props = {
 
 export const DashboardCardBtcRelay: React.FC<Props> = observer(
   ({ showLink = false }) => {
-    const { btcRelayStore } = useStores();
+    const { btcRelayStore, btcNodeStore } = useStores();
 
     const status = btcRelayStore.isSynchronized ? 'success' : 'error';
     const statusText = btcRelayStore.isSynchronized ? (
@@ -29,6 +29,7 @@ export const DashboardCardBtcRelay: React.FC<Props> = observer(
       </Text>
     );
 
+    const subtext = `${btcNodeStore.lastBlockHeight} / ${btcRelayStore.lastBlockHeight}`;
     return (
       <DashboardCard>
         <DashboardCardHead>
@@ -38,7 +39,7 @@ export const DashboardCardBtcRelay: React.FC<Props> = observer(
         <DashboardCardBody>
           <DashboardCardCircle
             title="Synced Blocks"
-            subtext={btcRelayStore.lastBlockHeight}
+            subtext={subtext}
             status={status}
           />
         </DashboardCardBody>
