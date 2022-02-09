@@ -9,6 +9,7 @@ import { getOneBTCClient } from '../services/oneBtcClient';
 import { ConnectWalletModal } from '../components/Head/components/ConnectWalletModal';
 import { config } from '../config';
 import { addressIsEq } from '../utils/hmy';
+import { dashboardClient } from '../modules/dashboard/dashboardClient';
 
 const Web3 = require('web3');
 
@@ -309,5 +310,34 @@ export class UserStoreEx extends StoreConstructor {
         return Promise.resolve();
       },
     });
+  }
+
+  public async addTokenToMetamask() {
+    try {
+      const dashboardConfig = await dashboardClient.loadDashboardConfig();
+      const contractAddress = dashboardConfig.mainEvents.contractAddress;
+
+      // @ts-ignore
+      const result = await window.ethereum.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: contractAddress,
+            symbol: '1BTC',
+            decimals: 8,
+            image: window.location.origin + '/1btc.svg',
+          },
+        },
+      });
+
+      if (result) {
+        console.log('FOO successfully added to wallet!');
+      } else {
+        throw new Error('Something went wrong.');
+      }
+    } catch (err) {
+      console.log('### err', err);
+    }
   }
 }

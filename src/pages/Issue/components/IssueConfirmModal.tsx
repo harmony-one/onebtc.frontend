@@ -4,6 +4,7 @@ import { Text, Divider } from 'components/Base';
 import { LinkHarmony } from '../../../components/LinkHarmony';
 import { ModalHeader } from '../../../components/ActionModals/components/ModalHeader';
 import { TActionModalProps } from '../../../components/ActionModals';
+import { AddToMetamaskButton } from '../../../containers/AddToMetamaskButton';
 
 export const IssueConfirmModalContent: React.FC<{
   total: number;
@@ -21,6 +22,9 @@ export const IssueConfirmModalContent: React.FC<{
         </Box>
         <Box>
           <LinkHarmony cut={false} hash={txHash} type="tx" />
+        </Box>
+        <Box>
+          <AddToMetamaskButton />
         </Box>
       </Box>
     </Box>

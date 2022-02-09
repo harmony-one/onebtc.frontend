@@ -19,12 +19,18 @@ export const HelpPage: React.FC<Props> = () => {
         <Box gap="small">
           <ul>
             <li>
-              <a href="https://docs.harmony.one/home/general/bitcoin-bridge">
+              <a
+                target="_blank"
+                href="https://docs.harmony.one/home/general/bitcoin-bridge"
+              >
                 Documentation
               </a>
             </li>
             <li>
-              <a href="https://docs.harmony.one/home/general/bitcoin-bridge/user-guide">
+              <a
+                target="_blank"
+                href="https://docs.harmony.one/home/general/bitcoin-bridge/user-guide"
+              >
                 User guide
               </a>
             </li>
