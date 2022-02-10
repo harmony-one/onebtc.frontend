@@ -63,9 +63,9 @@ export class VaultStore extends EntityStore<IVault> {
     }, 0);
   }
 
-  public collateralOneToSat(oneWei: string) {
+  public collateralOneToSat(oneWei: string, oneBtcRate: number) {
     const oneAmount = utils.fromWei(oneWei || '0');
-    return Number(oneAmount) * 1e8 * this.stores.ratesStore.ONE_BTC;
+    return Number(oneAmount) * 1e8 * oneBtcRate;
   }
 
   static calcMaxLoanWei(onwWei: string) {
@@ -203,14 +203,14 @@ export class VaultStore extends EntityStore<IVault> {
   }
 
   public getVaultInfo(vault: IVault): VaultInfo {
-    const collateralSat = this.collateralOneToSat(vault.collateral);
+    const oneBtcRate = this.stores.ratesStore.ONE_BTC;
+
+    const collateralSat = this.collateralOneToSat(vault.collateral, oneBtcRate);
 
     const toBeIssuedSat = Number(vault.toBeIssued || '0');
     const toBeRedeemedSat = Number(vault.toBeRedeemed || '0');
     const issuedSat = Number(vault.issued || '0');
     const lockedSat = new BN(issuedSat).add(new BN(toBeIssuedSat));
-
-    const oneBtcRate = this.stores.ratesStore.ONE_BTC;
 
     const availableToIssueSat = VaultStore.calcAvailableToIssueSat(
       vault,
@@ -229,10 +229,13 @@ export class VaultStore extends EntityStore<IVault> {
 
     const collateralIssued = VaultStore.calcCollateral(
       collateralSat,
-      issuedSat + toBeIssuedSat,
+      issuedSat,
     );
 
-    const collateralTotal = VaultStore.calcCollateral(collateralSat, issuedSat);
+    const collateralTotal = VaultStore.calcCollateral(
+      collateralSat,
+      issuedSat + toBeIssuedSat,
+    );
     const isActive = VaultStore.isVaultOnline(vault);
 
     return {

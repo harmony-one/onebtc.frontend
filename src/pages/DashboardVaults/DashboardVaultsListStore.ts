@@ -10,12 +10,15 @@ export class DashboardVaultsListStore extends ListStoreConstructor<IVault> {
         size: params.size,
         page: params.page,
         // @ts-expect-error 'sort' does not exist in type 'IGetParams'
-        sort: params.sort,
+        sort: params.sort || 'lastPing,desc',
       });
     };
 
     const options = {
       pollingInterval: 10000,
+      paginationData: {
+        pageSize: 50,
+      },
     };
     super(stores, loadVaultList, options);
   }
