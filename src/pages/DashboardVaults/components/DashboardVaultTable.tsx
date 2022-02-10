@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useStores } from '../../../stores';
 import { IColumn, Table } from '../../../components/Table';
 import { Text } from '../../../components/Base';
@@ -15,7 +15,12 @@ import { VaultStatus } from '../../../components/Dashboard/VaultStatus';
 type Props = {};
 
 export const DashboardVaultTable: React.FC<Props> = observer(() => {
-  const { dashboardVaultListStore, routing, vaultStore } = useStores();
+  const {
+    dashboardVaultListStore,
+    routing,
+    vaultStore,
+    ratesStore,
+  } = useStores();
 
   const handleChangeDataFlow = useCallback(
     (props: any) => {
@@ -30,6 +35,13 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
     },
     [routing],
   );
+
+  // todo: hack for render collateralization
+  const [_, setS] = useState(0);
+
+  useEffect(() => {
+    setS(Date.now());
+  }, [ratesStore.ONE_BTC]);
 
   const columns: IColumn<IVault>[] = [
     {
@@ -99,14 +111,14 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
         return (
           <Box>
             <Text>
-              <Text bold color={colorTotal}>
-                {formatWithTwoDecimals(vaultInfo.collateralTotal)}%
+              <Text bold color={colorIssued}>
+                {formatWithTwoDecimals(vaultInfo.collateralIssued)}%
               </Text>
             </Text>
             <Text>
               Pending:{' '}
-              <Text bold color={colorIssued}>
-                {formatWithTwoDecimals(vaultInfo.collateralIssued)}%
+              <Text bold color={colorTotal}>
+                {formatWithTwoDecimals(vaultInfo.collateralTotal)}%
               </Text>
             </Text>
           </Box>
@@ -116,7 +128,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
     {
       title: 'Status',
       className: s.column,
-      key: 'id',
+      key: 'lastPing',
       width: '33',
       sortable: true,
       dataIndex: 'lastPing',
@@ -130,7 +142,7 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
   return (
     <Table
       columns={columns}
-      data={dashboardVaultListStore.data.filter(item => !!item.collateral)}
+      data={dashboardVaultListStore.data}
       isPending={dashboardVaultListStore.isPending}
       dataLayerConfig={dashboardVaultListStore.dataFlow}
       onChangeDataFlow={handleChangeDataFlow}

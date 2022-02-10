@@ -97,10 +97,13 @@ export const VaultInfo: React.FC<Props> = React.memo(
         <Divider fullwidth />
         <Box direction="row" width="100%" align="start" justify="between">
           <Box>
-            <Text>Collateralization:</Text>
+            <Text>Collateralization/Pending:</Text>
           </Box>
           <Box>
-            <Text bold>{Math.round(vaultInfo.collateralTotal)}%</Text>
+            <Text bold>
+              {Math.round(vaultInfo.collateralIssued)}%&nbsp;/&nbsp;
+              {Math.round(vaultInfo.collateralTotal)}%
+            </Text>
           </Box>
         </Box>
         <Divider fullwidth />

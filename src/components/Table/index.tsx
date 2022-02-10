@@ -111,7 +111,13 @@ export class Table extends React.Component<IProps> {
     const sorter = columns
       .filter(col => col.defaultSort)
       .map(col => `${String(col.key)},${col.defaultSort}`);
-    onChangeDataFlow({ ...dataLayerConfig, sorter });
+
+    if (sorter.length) {
+      onChangeDataFlow({ ...dataLayerConfig, sorter });
+      return;
+    }
+
+    onChangeDataFlow({ ...dataLayerConfig });
   }
 
   renderCardList() {
