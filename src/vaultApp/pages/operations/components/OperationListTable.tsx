@@ -1,7 +1,7 @@
 import { Table } from 'components/Table';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getOperationListStore } from '../getOperationStore';
-import { OperationListTableColumns } from './OperationListTableColumns';
+import { getOperationListTableColumns } from './OperationListTableColumns';
 import { OperationDetails } from './OperationDetails';
 import { Operation } from '../../../modules/vaultClient/VaultClient';
 import { observer } from 'mobx-react';
@@ -17,10 +17,14 @@ export const OperationListTable: React.FC<Props> = observer(() => {
     operationListStore.onChangeDataFlow(props);
   };
 
+  useEffect(() => {
+    operationListStore.init();
+  }, [])
+
   return (
     <Table
       data={operationListStore.data}
-      columns={OperationListTableColumns}
+      columns={getOperationListTableColumns(operationListStore)}
       isPending={operationListStore.isPending}
       dataLayerConfig={operationListStore.dataFlow}
       onChangeDataFlow={onChangeDataFlow}

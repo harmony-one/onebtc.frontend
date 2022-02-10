@@ -16,7 +16,7 @@ export const getOperationListStore = () => {
   };
 
   const store = new ListStoreConstructor<Operation>(stores, loadFn, {
-    pollingInterval: 10000,
+    pollingInterval: 4000,
   });
 
   cache = store;

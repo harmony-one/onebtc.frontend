@@ -10,10 +10,14 @@ import {
   satoshiToBitcoin,
 } from '../../../../services/bitcoin';
 import { dateTimeAgoFormat, formatWithTenDecimals } from '../../../../utils';
-import { Operation } from '../../../modules/vaultClient/VaultClient';
+import { Operation, vaultClient } from '../../../modules/vaultClient/VaultClient';
 import { OperationStatus } from '../../../components/OperationStatus';
+import { Button, Title } from 'components/Base';
+import { Box } from 'grommet';
+import stores from 'stores';
+import { ListStoreConstructor } from '../../../../stores/core/ListStoreConstructor';
 
-export const OperationListTableColumns: IColumn<Operation>[] = [
+export const getOperationListTableColumns = (operationListStore: ListStoreConstructor<Operation>): IColumn<Operation>[] => [
   {
     title: 'Vault Address',
     className: cn(s.column, s.columnAddress),
@@ -78,6 +82,43 @@ export const OperationListTableColumns: IColumn<Operation>[] = [
     key: 'id',
     render: (value: Operation) => {
       return <div>{dateTimeAgoFormat(Number(value.timestamp) * 1000)}</div>;
+    },
+  },
+  {
+    title: 'Manage',
+    width: '33',
+    className: s.column,
+    key: 'id',
+    render: (value: Operation) => {
+      return value.status === 'error' ? 
+        <Button 
+          onClick={() => {
+            vaultClient.restartOperation(value.id)
+              .then(async () => {
+                await operationListStore.fetch();
+                return stores.actionModals.open(
+                  () => <Box pad="large">
+                    <Title>Operation succefully restarted</Title>
+                  </Box>, 
+                  {
+                    applyText: 'Ok',
+                    noValidation: true,
+                    width: '400px',
+                    showOther: true,
+                    onApply: () => {
+                      return Promise.resolve();
+                    },
+                    onClose: () => {
+                      return Promise.resolve();
+                    },
+                });  
+              })
+              .catch((e) => alert(e))
+          }}
+        >
+          Restart
+        </Button> 
+        : null;
     },
   },
 ];

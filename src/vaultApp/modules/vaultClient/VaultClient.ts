@@ -82,6 +82,20 @@ class VaultClient {
       return { content: [] };
     }
   }
+
+  async restartOperation(operationId: string): Promise<{ content: Operation[] }> {
+    try {
+      const response = await agent
+        .post(`${this.host}/manage/actions/reset`)
+        .set('Content-Type', 'application/json')
+        .send({ operationId });
+
+      return response.body;
+    } catch (err) {
+      console.error('### err', err);
+      return { content: [] };
+    }
+  }
 }
 
 export const vaultClient = new VaultClient({
