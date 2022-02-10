@@ -56,12 +56,22 @@ export class IssuePageStore extends StoreConstructor {
     this.form.vaultId = this.stores.vaultListStore.getDefaultVaultId(vaultList);
   }
 
+  isHarmonyVault = (vaultAddr) => 
+    [
+      '0x22b7349c260277337b7e773dd223cf04b25a6ee5', 
+      '0x15938cefe05ba88521630992d4d4027eba5dbedd'
+    ].includes(vaultAddr.toLowerCase());
+
   getActiveVaultList(vaultList: IVault[]) {
     const amountSat = bitcoinToSatoshi(this.form.amount);
 
-    return vaultList.filter(vault => {
+    const allVaults = vaultList.filter(vault => {
       return this.stores.vaultListStore.isEnoughFunds(vault, amountSat);
     });
+
+    const externalVaults = allVaults.filter(v => !this.isHarmonyVault(v.id));
+
+    return externalVaults.length ? externalVaults : allVaults;
   }
 
   @action.bound
