@@ -1,6 +1,6 @@
 {
   "name": "onebtc.frontend",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=development webpack-dev-server --config config/webpack.config.js",
