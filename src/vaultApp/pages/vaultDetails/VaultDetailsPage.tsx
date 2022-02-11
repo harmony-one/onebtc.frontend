@@ -79,7 +79,7 @@ export const VaultDetailsPage: React.FC<Props> = observer(() => {
               </Paper>
             </Box>
             <Box basis="1/2">
-              <Paper pad="medium">
+              <Paper pad="medium" fill>
                 <VaultIssuedChart />
               </Paper>
             </Box>

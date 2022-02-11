@@ -9,6 +9,7 @@ import { vaultBalancesStore } from '../../../stores/VaultStore';
 import { observer } from 'mobx-react';
 import { formatWithEightDecimals, formatZeroDecimals } from '../../../utils';
 import utils from 'web3-utils';
+import { InfoBlock } from '../../../components/InfoBlock';
 
 interface Props {
   vaultId: string;
@@ -23,6 +24,11 @@ export const VaultInfo: React.FC<Props> = React.memo(
     const vaultInfo = vaultStore.getVaultInfo(vault);
 
     const balance = vaultBalancesStore[vaultId] || 0;
+
+    const collateralAlert =
+      !!vault.collateral && vaultInfo.collateralTotal <= 125;
+    const collateralWarning =
+      !!vault.collateral && !collateralAlert && vaultInfo.collateralTotal < 150;
 
     return (
       <Box direction="column" gap="xsmall">
@@ -106,6 +112,20 @@ export const VaultInfo: React.FC<Props> = React.memo(
             </Text>
           </Box>
         </Box>
+        {collateralAlert && (
+          <InfoBlock
+            title="Warning"
+            text="if the ratio falls below 100%, the vault runs into the liquidation risk"
+            color="red"
+          />
+        )}
+        {collateralWarning && (
+          <InfoBlock
+            title="Info"
+            text="if the ratio falls below 100%, the vault runs into the liquidation risk"
+            color="green"
+          />
+        )}
         <Divider fullwidth />
         <Box direction="row" width="100%" align="start" justify="between">
           <Box>
