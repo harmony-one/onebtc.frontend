@@ -6,9 +6,10 @@ import {
   formatWithEightDecimals,
   formatWithSixDecimals,
 } from '../../../../utils';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useStores } from '../../../../stores';
 import { Countdown } from '../../../../components/Countdown';
+import { ONE_SECOND } from '../../../../constants/date';
 
 interface Props {
   issueId: string;
@@ -37,6 +38,17 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
     issuePageStore.cancelIssue(issueId);
   }, [issueId, issuePageStore]);
 
+  const [progress, setProgress] = useState(false);
+
+  const handleCopy = useCallback(() => {
+    setProgress(true);
+    navigator.clipboard.writeText(issueInfo.bitcoinAddress).finally(() => {
+      setTimeout(() => {
+        setProgress(false);
+      }, ONE_SECOND / 2);
+    });
+  }, [issueInfo.bitcoinAddress]);
+
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box align="center">
@@ -50,13 +62,18 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
       </Box>
       <Box align="center" gap="xxsmall">
         <Text>in a single transaction to</Text>
-        <Box round="xxsmall" style={{ padding: '16px' }} border="all">
-          <Text
-            bold
-            style={{ textAlign: 'center', overflowWrap: 'break-word' }}
-          >
-            {issueInfo.bitcoinAddress}
-          </Text>
+        <Box direction="row" align="center" gap="xsmall">
+          <Box round="xxsmall" style={{ padding: '16px' }} border="all">
+            <Text
+              bold
+              style={{ textAlign: 'center', overflowWrap: 'break-word' }}
+            >
+              {issueInfo.bitcoinAddress}
+            </Text>
+          </Box>
+          <Button isLoading={progress} onClick={handleCopy}>
+            Copy
+          </Button>
         </Box>
         {!issueInfo.isExpired && (
           <Text align="center">
