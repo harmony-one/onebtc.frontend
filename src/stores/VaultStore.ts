@@ -11,6 +11,7 @@ export const vaultBalancesStore = observable({});
 const COLLATERAL_RATIO = 1.5;
 
 export interface VaultInfo {
+  id: string;
   collateral: string;
   issuedSat: number;
   toBeIssuedSat: number;
@@ -239,6 +240,7 @@ export class VaultStore extends EntityStore<IVault> {
     const isActive = VaultStore.isVaultOnline(vault);
 
     return {
+      id: vault.id,
       collateral: vault.collateral,
       issuedSat,
       toBeIssuedSat,

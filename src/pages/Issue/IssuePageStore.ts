@@ -6,7 +6,7 @@ import { IssueDetailsModal } from './components/IssueDetailsModal/IssueDetailsMo
 import { IssueConfirmModal } from './components/IssueConfirmModal';
 import { retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
-import { bitcoinToSatoshi } from '../../services/bitcoin';
+import { bitcoinToSatoshi, satoshiToBitcoin } from '../../services/bitcoin';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
@@ -56,10 +56,10 @@ export class IssuePageStore extends StoreConstructor {
     this.form.vaultId = this.stores.vaultListStore.getDefaultVaultId(vaultList);
   }
 
-  isHarmonyVault = (vaultAddr) => 
+  isHarmonyVault = (vaultAddr: string) =>
     [
-      '0x22b7349c260277337b7e773dd223cf04b25a6ee5', 
-      '0x15938cefe05ba88521630992d4d4027eba5dbedd'
+      '0x22b7349c260277337b7e773dd223cf04b25a6ee5',
+      '0x15938cefe05ba88521630992d4d4027eba5dbedd',
     ].includes(vaultAddr.toLowerCase());
 
   getActiveVaultList(vaultList: IVault[]) {
@@ -83,6 +83,26 @@ export class IssuePageStore extends StoreConstructor {
   @action.bound
   public updateVaults() {
     this.stores.vaultListStore.loadVaults();
+  }
+
+  @action
+  public setBiggestVault() {
+    const vaultInfo = this.stores.vaultListStore.vaultList
+      .map(vault => this.stores.vaultStore.getVaultInfo(vault))
+      .reduce((acc, vaultInfo) => {
+        if (!acc) {
+          return vaultInfo;
+        }
+
+        return vaultInfo.availableToIssueSat.gt(acc.availableToIssueSat)
+          ? vaultInfo
+          : acc;
+      }, null);
+
+    this.form.vaultId = vaultInfo.id;
+    this.form.amount = satoshiToBitcoin(
+      vaultInfo.availableToIssueSat.toString(),
+    ).toString();
   }
 
   @action
@@ -138,12 +158,10 @@ export class IssuePageStore extends StoreConstructor {
     try {
       const issueInfo = this.stores.issueStore.getIssueInfo(issueId);
 
-      const address = this.stores.user.address;
-
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       const result = await hmyClient.executeIssue(
-        address,
+        issueInfo.requester,
         issueInfo.issueId,
         btcTransactionHash,
         issueInfo.bitcoinAddress,

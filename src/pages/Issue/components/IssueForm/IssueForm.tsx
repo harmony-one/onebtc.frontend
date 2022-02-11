@@ -26,6 +26,7 @@ import { VaultIssueSelectItem } from '../../../../components/VaultIssueSelectIte
 import { VaultInfo } from '../../../../containers/VaultInfo';
 import utils from 'web3-utils';
 import { bitcoinToSatoshi } from '../../../../services/bitcoin';
+import { InputButton } from '../../../../components/Base/components/Inputs/InputButton';
 
 type Props = Pick<IStores, 'issuePageStore'>;
 
@@ -96,6 +97,10 @@ export const IssueForm: React.FC<Props> = observer(() => {
     });
   }, [issuePageStore, issuePageStore.form.amount]);
 
+  const handleMax = useCallback(() => {
+    issuePageStore.setBiggestVault();
+  }, [issuePageStore]);
+
   return (
     <Form ref={ref => setForm(ref)} data={issuePageStore.form}>
       <NumberInput
@@ -114,6 +119,10 @@ export const IssueForm: React.FC<Props> = observer(() => {
                 Number(issuePageStore.form.amount) * ratesStore.BTC_USDT,
               )}
             </Text>
+            <DividerVertical />
+            <InputButton onClick={handleMax}>
+              <Text color="inherit">MAX</Text>
+            </InputButton>
             <DividerVertical />
             <Text bold>BTC</Text>
           </Box>
