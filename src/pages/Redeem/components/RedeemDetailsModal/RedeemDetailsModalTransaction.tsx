@@ -68,8 +68,13 @@ export const RedeemDetailsModalTransaction: React.FC<{
       </Box>
 
       <Box direction="column" width="100%" align="start" justify="between">
-        <Box>
-          <Text>Destination Address:</Text>
+        <Box direction="row" gap="xsmall">
+          <Text>Destination Address</Text>
+          <Text>
+            <a target="_blank" href={`/dashboard/vaults/${redeemInfo.vaultId}`}>
+              Details Page
+            </a>
+          </Text>
         </Box>
         <Box>
           <Text bold>

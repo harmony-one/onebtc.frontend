@@ -56,6 +56,27 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
       </Box>
 
       <Box direction="column" width="100%" align="start" justify="between">
+        <Box direction="row" gap="xsmall">
+          <Text>Vault Account</Text>
+          <Text>
+            <a target="_blank" href={`/dashboard/vaults/${issueInfo.vaultId}`}>
+              Details Page
+            </a>
+          </Text>
+        </Box>
+        <Box>
+          <Text bold>
+            <LinkHarmony
+              mono
+              cut={false}
+              hash={issueInfo.vaultId}
+              type="address"
+            />
+          </Text>
+        </Box>
+      </Box>
+
+      <Box direction="column" width="100%" align="start" justify="between">
         <Box>
           <Text>Destination Address:</Text>
         </Box>
@@ -65,22 +86,6 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
               mono
               cut={false}
               hash={issueInfo.requester}
-              type="address"
-            />
-          </Text>
-        </Box>
-      </Box>
-
-      <Box direction="column" width="100%" align="start" justify="between">
-        <Box>
-          <Text>Vault Account:</Text>
-        </Box>
-        <Box>
-          <Text bold>
-            <LinkHarmony
-              mono
-              cut={false}
-              hash={issueInfo.vaultId}
               type="address"
             />
           </Text>

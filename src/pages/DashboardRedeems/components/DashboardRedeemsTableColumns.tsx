@@ -21,10 +21,17 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     dataIndex: 'vault',
     sortable: true,
     render: (value, redeem) => {
+      const handleClick = (event: React.MouseEvent) => {
+        event.stopPropagation();
+      };
+
       return (
-        <div onClick={e => e.stopPropagation()}>
-          <LinkHarmony hash={redeem.vault} type="address" />
-        </div>
+        <LinkHarmony
+          href={`/dashboard/vaults/${redeem.vault}`}
+          onClick={handleClick}
+          hash={redeem.vault}
+          type="address"
+        />
       );
     },
   },
