@@ -22,10 +22,17 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     dataIndex: 'vault',
     sortable: true,
     render: (value, issue) => {
+      const handleClick = (event: React.MouseEvent) => {
+        event.stopPropagation();
+      };
+
       return (
-        <div onClick={e => e.stopPropagation()}>
-          <LinkHarmony hash={issue.vault} type="address" />
-        </div>
+        <LinkHarmony
+          href={`/dashboard/vaults/${issue.vault}`}
+          onClick={handleClick}
+          hash={issue.vault}
+          type="address"
+        />
       );
     },
   },

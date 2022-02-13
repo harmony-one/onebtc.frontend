@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { MouseEventHandler, useMemo } from 'react';
 import { cutText } from '../services/cutText';
 import { config } from '../config';
 import { Box } from 'grommet';
@@ -7,10 +7,12 @@ import cn from 'classnames';
 
 interface Props {
   hash: string;
+  href?: string;
   text?: string;
   type: 'address' | 'tx' | 'block';
   cut?: boolean;
   mono?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 const typeMap = {
@@ -24,6 +26,8 @@ export const LinkHarmony: React.FC<Props> = ({
   text,
   cut = true,
   mono = false,
+  href,
+  onClick = () => undefined,
 }) => {
   const link = typeMap[type] + hash;
 
@@ -47,9 +51,10 @@ export const LinkHarmony: React.FC<Props> = ({
           [s.mono]: mono,
         })}
         title={hash}
+        onClick={onClick}
         target="_blank"
         rel="noreferrer"
-        href={link}
+        href={href || link}
       >
         {content}
       </a>

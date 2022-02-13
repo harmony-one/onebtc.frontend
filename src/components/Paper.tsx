@@ -5,12 +5,12 @@ import * as s from './Paper.styl';
 
 type Props = {
   className?: string;
-} & Pick<BoxProps, 'pad'>;
+} & Pick<BoxProps, 'pad' | 'fill'>;
 
 export const Paper: React.FC<Props> = React.memo(
-  ({ className = '', pad = 'small', children }) => {
+  ({ className = '', pad = 'small', fill, children }) => {
     return (
-      <Box fill pad={pad} className={cn(s.root, className)}>
+      <Box fill={fill} pad={pad} className={cn(s.root, className)}>
         {children}
       </Box>
     );
