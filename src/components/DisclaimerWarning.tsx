@@ -53,6 +53,17 @@ const styles = {
   },
 };
 
+export const Disclaimer = () => (
+  <CookieBanner
+    styles={styles}
+    message="The BTC bridge is still in beta, please exercise caution while using the bridge"
+    onAccept={() => {}}
+    cookie="onebtc-info-accept"
+    dismissOnScroll={false}
+    dismissOnClick={false}
+  />
+);
+
 // export const Disclaimer = () => (
 //   <CookieBanner
 //     styles={styles}
@@ -64,15 +75,3 @@ const styles = {
 //     dismissOnClick={false}
 //   />
 // );
-
-export const Disclaimer = () => (
-  <CookieBanner
-    styles={styles}
-    message="The BTC Bridge under maintenance. We will resume operation in under 24 hours."
-    onAccept={() => {}}
-    cookie="onebtc-info-accept-1"
-    cookieExpiration={{ "years": 0 }}
-    dismissOnScroll={false}
-    dismissOnClick={false}
-  />
-);
