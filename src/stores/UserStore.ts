@@ -10,6 +10,7 @@ import { ConnectWalletModal } from '../components/Head/components/ConnectWalletM
 import { config } from '../config';
 import { addressIsEq } from '../utils/hmy';
 import { dashboardClient } from '../modules/dashboard/dashboardClient';
+import { IVault } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 
 const Web3 = require('web3');
 
@@ -38,6 +39,8 @@ export class UserStoreEx extends StoreConstructor {
   @observable public oneBTCBalance = 0;
 
   @observable public oneBtcClient = null;
+
+  @observable public vault: null | IVault = null;
 
   constructor(stores) {
     super(stores);
@@ -127,6 +130,9 @@ export class UserStoreEx extends StoreConstructor {
       return this.setError('Please connect to MetaMask');
     } else {
       this.address = args[0][0];
+
+      this.loadUserVault();
+
       this.syncLocalStorage();
     }
   }
@@ -310,6 +316,12 @@ export class UserStoreEx extends StoreConstructor {
         return Promise.resolve();
       },
     });
+  }
+
+  @action public async loadUserVault() {
+    this.vault = await dashboardClient.loadVault(
+      getAddress(this.address).checksum,
+    );
   }
 
   public async addTokenToMetamask() {

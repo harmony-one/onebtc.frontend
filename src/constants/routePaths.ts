@@ -9,6 +9,7 @@ export enum ROUTE_NAMES {
   BRIDGE_TRANSFER = 'transfer',
   BRIDGE_BURN = 'burn',
   TRANSACTIONS = 'transactions',
+  MY_VAULT = 'myVault',
   DASHBOARD = 'dashboard',
   DASHBOARD_RELAY = 'dashboardRelay',
   DASHBOARD_ISSUES = 'dashboardIssue',
@@ -49,6 +50,10 @@ const routeTree: RouteNode<ROUTE_NAMES> = {
     {
       name: ROUTE_NAMES.TRANSACTIONS,
       path: '/transactions',
+    },
+    {
+      name: ROUTE_NAMES.MY_VAULT,
+      path: '/myVault',
     },
     {
       name: ROUTE_NAMES.DASHBOARD,

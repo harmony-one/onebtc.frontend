@@ -1,29 +1,34 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router';
 import { useStores } from '../../stores';
-import { ROUTE_NAMES, routes, router } from '../../constants/routePaths';
+import { ROUTE_NAMES, router, routes } from '../../constants/routePaths';
 import { SideBarButton } from './SideBarButton';
 import {
   BarChart,
+  Cube,
   Iteration,
   PowerCycle,
   StatusUnknown,
   Support,
 } from 'grommet-icons';
 import { Box } from 'grommet';
+import { observer } from 'mobx-react';
 
 interface Props {}
 
-export const SidebarMenu: React.FC<Props> = () => {
+export const SidebarMenu: React.FC<Props> = observer(() => {
   const route = useRouteMatch();
 
-  const { routing } = useStores();
+  const { routing, user } = useStores();
 
   const routeName = router.findRouteNameByPath(route.path);
 
   const navigateToRoute = (routePath: string) => () => {
     routing.goTo(routePath);
   };
+
+  const hasVault = !!user.vault;
+
   return (
     <Box gap="xsmall">
       <SideBarButton
@@ -38,6 +43,14 @@ export const SidebarMenu: React.FC<Props> = () => {
         onClick={navigateToRoute(routes.transactions)}
         icon={<Iteration />}
       />
+      {hasVault && (
+        <SideBarButton
+          label="My vault"
+          active={router.isBelongsTo(ROUTE_NAMES.MY_VAULT, routeName)}
+          onClick={navigateToRoute(routes.myVault)}
+          icon={<Cube />}
+        />
+      )}
       <SideBarButton
         label="Dashboard"
         active={router.isBelongsTo(ROUTE_NAMES.DASHBOARD, routeName)}
@@ -58,6 +71,6 @@ export const SidebarMenu: React.FC<Props> = () => {
       />
     </Box>
   );
-};
+});
 
 SidebarMenu.displayName = 'SidebarMenu';

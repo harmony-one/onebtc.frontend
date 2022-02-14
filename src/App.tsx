@@ -24,6 +24,7 @@ import { Disclaimer } from './components/DisclaimerWarning';
 import { AdminHomePage } from './pages/admin/AdminHomePage';
 import { SupportPage } from './pages/Support/SupportPage';
 import { HelpPage } from './pages/Help/HelpPage';
+import { MyVaultPage } from './pages/MyVault/MyVaultPage';
 
 const App: React.FC = () => (
   <ErrorBoundary>
@@ -54,10 +55,15 @@ const App: React.FC = () => (
           path={routes.dashboardVault}
           component={DashboardVaultsPage}
         />
+
+        <Route exact path={routes.myVault} component={MyVaultPage} />
+
         <Route
           exact
           path={routes.dashboardVaultDetails}
-          component={DashboardVaultDetailsPage}
+          component={({ match }) => (
+            <DashboardVaultDetailsPage vaultId={match.params.vaultId} />
+          )}
         />
         <Route exact path={routes.help} component={HelpPage} />
         <Route exact path={routes.support} component={SupportPage} />
