@@ -4,7 +4,7 @@ import { Box } from 'grommet';
 import { Divider, Text, Title } from '../../../../components/Base';
 import {
   formatWithEightDecimals,
-  formatWithSixDecimals,
+  formatWithTwoDecimals,
 } from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
 import React from 'react';
@@ -24,7 +24,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
       <Box align="center">
         <Title>{formatWithEightDecimals(issueInfo.totalReceived)} 1BTC</Title>
         <Text color="#748695" size="small" inline>
-          ≈ ${formatWithSixDecimals(issueInfo.totalReceivedUsd)}
+          ≈ ${formatWithTwoDecimals(issueInfo.totalReceivedUsd)}
         </Text>
       </Box>
       <Box direction="row" width="100%" align="start" justify="between">

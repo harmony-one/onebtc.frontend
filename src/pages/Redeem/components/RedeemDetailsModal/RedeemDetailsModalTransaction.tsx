@@ -5,7 +5,7 @@ import { Box } from 'grommet';
 import { Divider, Text, Title } from '../../../../components/Base';
 import {
   formatWithEightDecimals,
-  formatWithSixDecimals,
+  formatWithTwoDecimals,
 } from '../../../../utils';
 import { PriceView } from '../../../../components/PriceView';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
@@ -23,7 +23,7 @@ export const RedeemDetailsModalTransaction: React.FC<{
       <Box align="center">
         <Title>{formatWithEightDecimals(redeemInfo.totalReceived)} 1BTC</Title>
         <Text color="#748695" size="small" inline>
-          ≈ ${formatWithSixDecimals(redeemInfo.totalReceivedUsd)}
+          ≈ ${formatWithTwoDecimals(redeemInfo.totalReceivedUsd)}
         </Text>
       </Box>
       <Box direction="row" width="100%" align="start" justify="between">

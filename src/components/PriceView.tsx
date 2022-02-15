@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, BoxProps } from 'grommet';
 import { Text } from './Base';
-import { formatWithSixDecimals, formatWithTenDecimals } from '../utils';
+import { formatWithTenDecimals, formatWithTwoDecimals } from '../utils';
 
 type PriceViewProps = {
   tokenName: string;
@@ -19,7 +19,7 @@ export const PriceView: React.FC<PriceViewProps> = props => {
         {formatWithTenDecimals(value)}&nbsp;{tokenName}
       </Text>
       <Text size="xsmall" color="rgba(102, 102, 102, 0.9)">
-        ${formatWithSixDecimals(usdValue)}
+        ≈${formatWithTwoDecimals(usdValue)}
       </Text>
     </Box>
   );

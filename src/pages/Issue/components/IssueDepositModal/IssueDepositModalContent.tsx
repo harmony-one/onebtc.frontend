@@ -4,7 +4,7 @@ import { Box } from 'grommet';
 import { Button, Text } from '../../../../components/Base';
 import {
   formatWithEightDecimals,
-  formatWithSixDecimals,
+  formatWithTwoDecimals,
 } from '../../../../utils';
 import React, { useCallback, useState } from 'react';
 import { useStores } from '../../../../stores';
@@ -57,7 +57,7 @@ export const IssueDepositModalContent: React.FC<Props> = ({ issueId }) => {
           {formatWithEightDecimals(issueInfo.sendAmount)} BTC
         </Text>
         <Text color="#748695" size="small" inline>
-          ≈ ${formatWithSixDecimals(issueInfo.sendUsdAmount)}
+          ≈ ${formatWithTwoDecimals(issueInfo.sendUsdAmount)}
         </Text>
       </Box>
       <Box align="center" gap="xxsmall">

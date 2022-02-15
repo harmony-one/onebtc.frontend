@@ -4,7 +4,7 @@ import { Box } from 'grommet';
 import { Text } from '../../../../components/Base';
 import {
   formatWithEightDecimals,
-  formatWithSixDecimals,
+  formatWithTwoDecimals,
 } from '../../../../utils';
 import React from 'react';
 
@@ -27,7 +27,7 @@ export const RedeemWithdrawModalContent: React.FC<{ redeemId: string }> = ({
           {formatWithEightDecimals(redeemInfo.totalReceived)} BTC
         </Text>
         <Text color="#748695" size="small" inline>
-          ≈ ${formatWithSixDecimals(redeemInfo.totalReceivedUsd)}
+          ≈ ${formatWithTwoDecimals(redeemInfo.totalReceivedUsd)}
         </Text>
       </Box>
       <Box align="center" gap="xxsmall">
