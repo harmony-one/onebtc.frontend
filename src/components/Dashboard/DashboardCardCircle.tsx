@@ -6,7 +6,7 @@ import { Text } from '../Base';
 
 type Props = {
   title: string;
-  subtext: string | number;
+  subtext: string | number | React.ReactNode;
   status: 'error' | 'success';
 };
 

@@ -10,21 +10,36 @@ import { DashboardCardFooter } from '../../../components/Dashboard/DashboardCard
 import { observer } from 'mobx-react';
 import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { formatZeroDecimals } from '../../../utils';
+import { useStores } from '../../../stores';
+import { Box } from 'grommet';
 
 interface Props {}
 
 export const DashboardVaultCard: React.FC<Props> = observer(() => {
+  const { ratesStore } = useStores();
   const capacity = formatZeroDecimals(dashboardHistoryStore.capacity);
+
+  const capacityUsd =
+    Number(dashboardHistoryStore.capacity) * ratesStore.ONE_USDT;
+
+  const issuedUsd = dashboardHistoryStore.issuedTotal * ratesStore.BTC_USDT;
+  const collateralization = (capacityUsd / issuedUsd) * 100;
+
   return (
     <DashboardCard>
       <DashboardCardHead>
-        <Text>Collateralization</Text>
-        <Text bold>3351.63%</Text>
+        <Text>Collateralization:</Text>
+        <Text bold>{formatZeroDecimals(collateralization)}%</Text>
       </DashboardCardHead>
       <DashboardCardBody>
         <DashboardCardCircle
-          title={`${capacity} ONE`}
-          subtext="Capacity"
+          title="Capacity"
+          subtext={
+            <Box align="center">
+              <Box>{capacity} ONE</Box>
+              <Box>≈${`${formatZeroDecimals(capacityUsd)}`}</Box>
+            </Box>
+          }
           status="success"
         />
       </DashboardCardBody>

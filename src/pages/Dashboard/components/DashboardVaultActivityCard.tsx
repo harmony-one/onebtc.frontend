@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box } from 'grommet';
 import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { DashboardCard } from 'components/Dashboard/DashboardCard';
 import { DashboardCardHead } from '../../../components/Dashboard/DashboardCardHead';
@@ -17,9 +16,8 @@ export const DashboardVaultActivityCard: React.FC<Props> = observer(() => {
   return (
     <DashboardCard>
       <DashboardCardHead>
-        <Box>
-          <Text>Active vaults: {dashboardHistoryStore.activeVaultCount}</Text>
-        </Box>
+        <Text>Active vaults:</Text>
+        <Text bold>{dashboardHistoryStore.activeVaultCount}</Text>
       </DashboardCardHead>
       <DashboardCardBody>
         <DashboardVaultActivityChart />

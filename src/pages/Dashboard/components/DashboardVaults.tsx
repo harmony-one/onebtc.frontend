@@ -14,8 +14,8 @@ export const DashboardVaults: React.FC<Props> = observer(() => {
   return (
     <DashboardCard>
       <DashboardCardHead>
-        <Text>
-          Locked collateral:{' '}
+        <Text>Locked collateral: </Text>
+        <Text bold>
           {formatZeroDecimals(dashboardHistoryStore.totalCollateral)} ONE
         </Text>
       </DashboardCardHead>

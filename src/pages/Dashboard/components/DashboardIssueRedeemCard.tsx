@@ -8,7 +8,7 @@ import { useStores } from '../../../stores';
 import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { observer } from 'mobx-react';
 import { DashboardIssueChart } from './DashboardIssueChart';
-import { formatWithTwoDecimals } from '../../../utils';
+import { formatWithTwoDecimals, formatZeroDecimals } from '../../../utils';
 import { DashboardCardBody } from '../../../components/Dashboard/DashboardCardBody';
 import { DashboardCardFooter } from '../../../components/Dashboard/DashboardCardFooter';
 
@@ -20,15 +20,15 @@ export const DashboardIssueRedeemCard: React.FC<Props> = observer(() => {
   return (
     <DashboardCard>
       <DashboardCardHead>
-        <Text bold>Issued</Text>
+        <Text>Issued:</Text>
         <Text bold>
           {formatWithTwoDecimals(dashboardHistoryStore.issuedTotal)} 1BTC
         </Text>
         <Text bold>
-          {formatWithTwoDecimals(
+          ≈$
+          {formatZeroDecimals(
             dashboardHistoryStore.issuedTotal * ratesStore.BTC_USDT,
           )}
-          $
         </Text>
       </DashboardCardHead>
       <DashboardCardBody>
