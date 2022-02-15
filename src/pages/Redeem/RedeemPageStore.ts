@@ -109,14 +109,12 @@ export class RedeemPageStore extends StoreConstructor {
     try {
       const redeem = this.stores.redeemStore.getRedeemInfo(redeemId);
 
-      const address = this.stores.user.address;
-
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
       redeemUiTx.setStatusWaitingSignIn();
 
       const result = await hmyClient.executeRedeem(
-        address,
+        redeem.requester,
         redeem.redeemId,
         btcTxHash,
         txHash => {

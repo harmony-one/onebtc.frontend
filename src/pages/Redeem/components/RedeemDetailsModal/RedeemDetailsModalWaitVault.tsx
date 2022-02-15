@@ -18,6 +18,12 @@ export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
     redeemPageStore.cancelRedeem(redeemId);
   }, [redeemId, redeemPageStore]);
 
+  const handleExecuteRedeem = useCallback(() => {
+    if (redeemInfo && redeemInfo.btcTx) {
+      redeemPageStore.executeRedeem(redeemId, redeemInfo.btcTx.hash);
+    }
+  }, [redeemId, redeemInfo, redeemPageStore]);
+
   return useObserver(() => (
     <Box gap="small" align="center">
       <Box>
@@ -53,9 +59,16 @@ export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
           </Box>
         </>
       )}
-      {redeemInfo.isExpired && !redeemInfo.isCanceled && (
+      {redeemInfo.isExpired && !redeemInfo.btcTx && !redeemInfo.isCanceled && (
         <Box>
           <Button onClick={handleCancelRedeem}>Cancel Redeem</Button>
+        </Box>
+      )}
+      {redeemInfo.extendedStatus === RedeemExtendedStatus.WAIT_EXECUTE && (
+        <Box>
+          <Button bgColor="#46d7b6" onClick={handleExecuteRedeem}>
+            Execute Redeem
+          </Button>
         </Box>
       )}
     </Box>
