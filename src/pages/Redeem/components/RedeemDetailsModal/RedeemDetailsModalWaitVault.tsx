@@ -15,7 +15,7 @@ export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
   const { redeemStore, redeemPageStore } = useStores();
   const redeemInfo = redeemStore.getRedeemInfo(redeemId);
   const handleCancelRedeem = useCallback(() => {
-    redeemPageStore.cancelIssue(redeemId);
+    redeemPageStore.cancelRedeem(redeemId);
   }, [redeemId, redeemPageStore]);
 
   return useObserver(() => (

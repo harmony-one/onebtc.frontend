@@ -14,6 +14,7 @@ import { retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { RedeemCanceledModal } from './components/RedeemCanceledModal';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
+import { addressIsEq } from '../../utils/hmy';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -263,7 +264,7 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   @action
-  async cancelIssue(redeemId: string) {
+  async cancelRedeem(redeemId: string) {
     const uiTx = this.stores.uiTransactionsStore.create();
     uiTx.setStatusWaitingSignIn();
     uiTx.showModal();
@@ -273,10 +274,20 @@ export class RedeemPageStore extends StoreConstructor {
 
       const redeemInfo = this.stores.redeemStore.getRedeemInfo(redeemId);
 
-      await hmyClient.cancelRedeem(redeemInfo.requester, redeemId, txHash => {
-        uiTx.setTxHash(txHash);
-        uiTx.setStatusProgress();
-      });
+      const reimburse = addressIsEq(
+        redeemInfo.requester,
+        this.stores.user.address,
+      );
+
+      await hmyClient.cancelRedeem(
+        redeemInfo.requester,
+        redeemId,
+        reimburse,
+        txHash => {
+          uiTx.setTxHash(txHash);
+          uiTx.setStatusProgress();
+        },
+      );
 
       uiTx.hideModal();
       this.stores.actionModals.open(RedeemCanceledModal, {
