@@ -122,6 +122,7 @@ export class IssuePageStore extends StoreConstructor {
       });
 
       issueUiTx.hideModal();
+      await this.loadIssueDetails(issueId);
       this.stores.actionModals.open(IssueCanceledModal, {
         initData: {},
         applyText: '',
@@ -173,6 +174,8 @@ export class IssuePageStore extends StoreConstructor {
 
       issueUiTx.setStatusSuccess();
       issueUiTx.hideModal();
+
+      await this.loadIssueDetails(issueId);
 
       this.stores.actionModals.open(IssueConfirmModal, {
         initData: {
