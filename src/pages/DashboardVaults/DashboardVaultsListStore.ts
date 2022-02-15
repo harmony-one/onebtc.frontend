@@ -10,7 +10,7 @@ export class DashboardVaultsListStore extends ListStoreConstructor<IVault> {
         size: params.size,
         page: params.page,
         // @ts-expect-error 'sort' does not exist in type 'IGetParams'
-        sort: params.sort || 'lastPing,desc',
+        sort: params.sort,
         hasCollateral: '1',
       });
     };
