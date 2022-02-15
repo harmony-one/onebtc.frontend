@@ -11,7 +11,6 @@ export class DashboardVaultsListStore extends ListStoreConstructor<IVault> {
         page: params.page,
         // @ts-expect-error 'sort' does not exist in type 'IGetParams'
         sort: params.sort || 'lastPing,desc',
-        online: '1',
         hasCollateral: '1',
       });
     };
