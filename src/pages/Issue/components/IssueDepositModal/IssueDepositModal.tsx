@@ -17,10 +17,10 @@ export const IssueDepositModal: React.FC<TActionModalProps> = observer(
     useIssueWatcher({ issueId });
 
     useEffect(() => {
-      if (issueInfo.btcTx && issueInfo.btcTx.hash) {
+      if (issueInfo && issueInfo.btcTx && issueInfo.btcTx.hash) {
         props.config.options.onApply();
       }
-    }, [issueInfo.btcTx, props.config.options]);
+    }, [issueInfo, props.config.options]);
 
     return (
       <Box pad={{ horizontal: 'medium', top: 'medium' }} gap="small">
