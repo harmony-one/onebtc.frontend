@@ -7,6 +7,7 @@ import {
   formatWithTwoDecimals,
 } from '../../../../utils';
 import React from 'react';
+import { AddressWithCopyButton } from '../../../../components/AddressWithCopyButton';
 
 export const RedeemWithdrawModalContent: React.FC<{ redeemId: string }> = ({
   redeemId,
@@ -32,14 +33,7 @@ export const RedeemWithdrawModalContent: React.FC<{ redeemId: string }> = ({
       </Box>
       <Box align="center" gap="xxsmall">
         <Text>BTC destination address</Text>
-        <Box round="xxsmall" style={{ padding: '16px' }} border="all">
-          <Text
-            bold
-            style={{ textAlign: 'center', overflowWrap: 'break-word' }}
-          >
-            {redeemInfo.bitcoinAddress}
-          </Text>
-        </Box>
+        <AddressWithCopyButton address={redeemInfo.bitcoinAddress} />
       </Box>
 
       <Box alignSelf="start">
