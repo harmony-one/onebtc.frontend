@@ -23,9 +23,9 @@ export const IssueConfirmModalContent: React.FC<{
         <Box>
           <LinkHarmony cut={false} hash={txHash} type="tx" />
         </Box>
-        <Box>
-          <AddToMetamaskButton />
-        </Box>
+      </Box>
+      <Box align="center">
+        <AddToMetamaskButton />
       </Box>
     </Box>
   );
