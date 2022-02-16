@@ -10,8 +10,9 @@ import { Box } from 'grommet';
 import { Text } from 'components/Base';
 import { observer } from 'mobx-react';
 import { useStores } from '../../stores';
-import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
+import { IIssue, IRedeem } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { IssueExtendedStatus } from '../../stores/IssueStore';
+import { RedeemExtendedStatus } from '../../stores/RedeemStore';
 
 interface Props {
   status: IssueStatus | RedeemStatus;
@@ -116,6 +117,40 @@ export const IssueStatusExtended: React.FC<IssueExtendedStatusProps> = observer(
     }
 
     if (status === IssueExtendedStatus.WAIT_BTC_TRANSACTION) {
+      return <StatusPending label="Waiting for transaction" />;
+    }
+
+    return <StatusError />;
+  },
+);
+
+interface RedeemExtendedStatusProps {
+  redeem: IRedeem;
+}
+
+export const RedeemStatusExtended: React.FC<RedeemExtendedStatusProps> = observer(
+  ({ redeem }) => {
+    const { redeemStore } = useStores();
+
+    const status = redeemStore.getRedeemExtendedStatus(redeem);
+
+    if (status === RedeemExtendedStatus.COMPLETED) {
+      return <StatusCompleted />;
+    }
+
+    if (status === RedeemExtendedStatus.CANCELED) {
+      return <StatusCanceled />;
+    }
+
+    if (status === RedeemExtendedStatus.WAIT_EXECUTE) {
+      return <StatusPending label="Waiting for execute" />;
+    }
+
+    if (status === RedeemExtendedStatus.WAIT_BTC_CONFIRMATION) {
+      return <StatusPending label="Waiting for confirmation" />;
+    }
+
+    if (status === RedeemExtendedStatus.WAIT_BTC_TRANSACTION) {
       return <StatusPending label="Waiting for transaction" />;
     }
 

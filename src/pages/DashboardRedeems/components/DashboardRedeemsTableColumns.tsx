@@ -9,7 +9,7 @@ import {
   satoshiToBitcoin,
   btcAddressHexToBech32,
 } from '../../../services/bitcoin';
-import { EntityStatus } from '../../../components/Dashboard/EntityStatus';
+import { RedeemStatusExtended } from '../../../components/Dashboard/EntityStatus';
 import { dateTimeAgoFormat, formatWithTenDecimals } from '../../../utils';
 
 export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
@@ -61,7 +61,7 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     dataIndex: 'status',
     sortable: true,
     render: (value, redeem) => {
-      return <EntityStatus status={redeem.status} />;
+      return <RedeemStatusExtended redeem={redeem} />;
     },
   },
   {
