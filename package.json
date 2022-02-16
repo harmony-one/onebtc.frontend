@@ -40,7 +40,7 @@
     "mobx-react": "6.1.4",
     "mobx-react-router": "4.0.7",
     "moment": "^2.24.0",
-    "onebtc.sdk": "^1.1.18",
+    "onebtc.sdk": "^1.1.19",
     "polished": "^4.1.3",
     "query-string": "^6.10.1",
     "rc-table": "^7.4.5",
