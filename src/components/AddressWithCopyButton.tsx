@@ -52,7 +52,9 @@ export const AddressWithCopyButton: React.FC<Props> = ({ address }) => {
         </Box>
 
         <Box justify="center" border="left">
-          <Button onClick={handleCopy}>Copy</Button>
+          <Button fill="vertical" onClick={handleCopy}>
+            Copy
+          </Button>
         </Box>
       </Box>
       {/*<Button isLoading={progress} onClick={handleCopy}>*/}
