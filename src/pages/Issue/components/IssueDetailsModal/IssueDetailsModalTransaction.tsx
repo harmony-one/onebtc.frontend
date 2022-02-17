@@ -55,14 +55,16 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
         </Box>
       </Box>
 
+      <Box direction="row" width="100%" align="start">
+        <Text>
+          <a target="_blank" href={`/dashboard/vaults/${issueInfo.vaultId}`}>
+            Vault detail info
+          </a>
+        </Text>
+      </Box>
       <Box direction="column" width="100%" align="start" justify="between">
-        <Box direction="row" gap="xsmall">
+        <Box>
           <Text>Vault Account</Text>
-          <Text>
-            <a target="_blank" href={`/dashboard/vaults/${issueInfo.vaultId}`}>
-              Details Page
-            </a>
-          </Text>
         </Box>
         <Box>
           <Text bold>
