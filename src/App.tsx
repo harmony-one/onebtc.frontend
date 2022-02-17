@@ -34,7 +34,7 @@ const App: React.FC = () => (
         <Route exact path={routes.redeem} component={RedeemPage} />
         <Route exact path={routes.transfer} component={TransferPage} />
         <Route exact path={routes.dashboard} component={DashboardPage} />
-        <Route exact path={routes.transactions} component={TransactionsPage} />
+        <Route path={routes.transactions} component={TransactionsPage} />
         <Route
           exact
           path={routes.dashboardRelay}
@@ -59,7 +59,6 @@ const App: React.FC = () => (
         <Route exact path={routes.myVault} component={MyVaultPage} />
 
         <Route
-          exact
           path={routes.dashboardVaultDetails}
           component={({ match }) => (
             <DashboardVaultDetailsPage vaultId={match.params.vaultId} />

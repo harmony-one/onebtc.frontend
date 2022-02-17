@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { IRedeem } from '../../../../modules/dashboard/dashboardTypes';
+import { IRedeem } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { Table } from '../../../../components/Table';
 import { useStores } from '../../../../stores';
 import { getVaultRedeemStore } from './VaultRedeemTableStore';
@@ -11,16 +11,16 @@ interface Props {
 }
 
 export const VaultRedeemTable: React.FC<Props> = observer(({ vaultId }) => {
-  const { vaultStore, redeemPageStore } = useStores();
+  const { vaultStore, routing } = useStores();
   const vault = vaultStore.getEntity(vaultId);
 
   const store = getVaultRedeemStore(vaultId);
 
   const handleRowClick = useCallback(
     (redeem: IRedeem) => {
-      redeemPageStore.openRedeemDetailsModal(redeem.id);
+      routing.goToRedeemModalM(redeem.id);
     },
-    [redeemPageStore],
+    [routing],
   );
 
   if (!vault) {

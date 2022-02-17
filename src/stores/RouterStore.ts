@@ -49,6 +49,14 @@ export default class CustomRouterStore extends RouterStore {
     this.push(path);
   }
 
+  goToIssueModalM(issueId: string) {
+    this.push(`${this.location.pathname}/issues/${issueId}`);
+  }
+
+  goToRedeemModalM(redeemId: string) {
+    this.push(`${this.location.pathname}/redeems/${redeemId}`);
+  }
+
   gotToRedeemModal(redeemId: string, modal: 'withdraw' | 'details') {
     const path = generatePath(routes.redeem, { redeemId, modal });
     this.push(path);

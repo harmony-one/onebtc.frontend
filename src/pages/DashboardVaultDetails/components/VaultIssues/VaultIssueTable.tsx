@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { observer } from 'mobx-react';
-import { IIssue } from '../../../../modules/dashboard/dashboardTypes';
+import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { Table } from '../../../../components/Table';
 import { useStores } from '../../../../stores';
 import { getVaultIssuesStore } from './VaultIssueTableStore';
@@ -11,16 +11,16 @@ interface Props {
 }
 
 export const VaultIssueTable: React.FC<Props> = observer(({ vaultId }) => {
-  const { vaultStore, issuePageStore } = useStores();
+  const { vaultStore, routing } = useStores();
   const vault = vaultStore.getEntity(vaultId);
 
   const store = getVaultIssuesStore(vaultId);
 
   const handleRowClick = useCallback(
     (issue: IIssue) => {
-      issuePageStore.openIssueDetailsModal(issue.id);
+      routing.goToIssueModalM(issue.id);
     },
-    [issuePageStore],
+    [routing],
   );
 
   if (!vault) {

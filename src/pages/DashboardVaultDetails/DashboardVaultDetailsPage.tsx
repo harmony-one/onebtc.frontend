@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { Button, Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { useStores } from '../../stores';
-import { useParams } from 'react-router';
 import { observer } from 'mobx-react';
 import { VaultInfo } from './components/VaultInfo';
 import { Paper } from '../../components/Paper';
@@ -12,6 +11,7 @@ import { useVaultWatcher } from '../../hooks/useVaultWatcher';
 import { dashboardHistoryStore } from '../Dashboard/DashboardHistoryStore';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
 import { addressIsEq } from '../../utils/hmy';
+import { EntityModals } from '../../modules/entityModals/EntityModals';
 
 interface Props {
   vaultId: string;
@@ -83,6 +83,7 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(
             <VaultLogs vaultId={vaultId} />
           </Box>
         </Box>
+        <EntityModals />
       </BaseLayout>
     );
   },

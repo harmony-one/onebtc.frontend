@@ -10,7 +10,7 @@ import { observer } from 'mobx-react';
 interface Props {}
 
 export const TransactionListRedeemTable: React.FC<Props> = observer(() => {
-  const { user, redeemPageStore } = useStores();
+  const { user, routing } = useStores();
 
   const store = useRedeemListStore({
     requesterId: getAddress(user.address).checksum,
@@ -18,9 +18,9 @@ export const TransactionListRedeemTable: React.FC<Props> = observer(() => {
 
   const handleRowClick = useCallback(
     (redeem: IRedeem) => {
-      redeemPageStore.openRedeemDetailsModal(redeem.id);
+      routing.goToRedeemModalM(redeem.id);
     },
-    [redeemPageStore],
+    [routing],
   );
 
   return (

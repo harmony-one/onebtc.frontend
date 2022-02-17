@@ -10,6 +10,7 @@ import { IssueExtendedStatus } from '../../../../stores/IssueStore';
 import { IssueDetailsModalCompleted } from './IssueDetailsModalCompleted';
 import { IssueDetailsModalWaitBtcTxConfirmation } from './IssueDetailsModalWaitBtcTxConfirmation';
 import { IssueDetailsModalWaitExecute } from './IssueDetailsModalWaitExecute';
+import { Spinner } from '../../../../ui';
 
 interface Props {
   issueId: string;
@@ -20,6 +21,10 @@ export const IssueDetailsModalContent: React.FC<Props> = ({ issueId }) => {
   const issueInfo = issueStore.getIssueInfo(issueId);
 
   useIssueWatcher({ issueId });
+
+  if (!issueInfo) {
+    return <Spinner />;
+  }
 
   return (
     <Box pad={{ horizontal: 'medium', vertical: 'medium' }} gap="small">

@@ -10,7 +10,7 @@ import { observer } from 'mobx-react';
 interface Props {}
 
 export const TransactionListIssuesTable: React.FC<Props> = observer(() => {
-  const { user, issuePageStore } = useStores();
+  const { user, routing } = useStores();
 
   const store = useIssueListStore({
     requesterId: getAddress(user.address).checksum,
@@ -18,9 +18,9 @@ export const TransactionListIssuesTable: React.FC<Props> = observer(() => {
 
   const handleRowClick = useCallback(
     (issue: IIssue) => {
-      issuePageStore.openIssueDetailsModal(issue.id);
+      routing.goToIssueModalM(issue.id);
     },
-    [issuePageStore],
+    [routing],
   );
 
   return (

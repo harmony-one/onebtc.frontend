@@ -7,6 +7,7 @@ import { TransactionListRedeemTable } from './components/TransactionListRedeemTa
 import { useStores } from '../../stores';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
 import { LargeTab } from '../../components/LargeTab/LargeTab';
+import { EntityModals } from '../../modules/entityModals/EntityModals';
 
 type Props = {};
 
@@ -41,6 +42,8 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
     );
   }
 
+  console.log('### here');
+
   return (
     <BaseLayout>
       <Box gap="medium">
@@ -69,6 +72,7 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
           {activeTab === Tabs.REDEEMS && <TransactionListRedeemTable />}
         </Box>
       </Box>
+      <EntityModals />
     </BaseLayout>
   );
 });
