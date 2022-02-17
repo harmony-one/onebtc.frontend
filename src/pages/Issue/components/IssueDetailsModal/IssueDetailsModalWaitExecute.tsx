@@ -21,7 +21,7 @@ export const IssueDetailsModalWaitExecute: React.FC<Props> = ({ issueId }) => {
   }, [issueId, issueInfo.btcTx.hash, issuePageStore]);
 
   const isWaitingRelayer =
-    !btcRelayStore.relayInfo || !btcRelayStore.relayInfo.synced;
+    issueInfo.btcTx.height > btcRelayStore.relayInfo.height;
 
   return (
     <Box align="center" gap="small">
