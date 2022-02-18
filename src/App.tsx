@@ -56,7 +56,7 @@ const App: React.FC = () => (
           component={DashboardVaultsPage}
         />
 
-        <Route exact path={routes.myVault} component={MyVaultPage} />
+        <Route path={routes.myVault} component={MyVaultPage} />
 
         <Route
           path={routes.dashboardVaultDetails}

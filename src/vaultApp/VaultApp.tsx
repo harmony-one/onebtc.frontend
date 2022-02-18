@@ -23,7 +23,7 @@ const VaultApp: React.FC = () => (
       <Bootstrap />
       <Switch>
         <Route exact path={routes.init} component={InitializationPage} />
-        <Route exact path={routes.vaultDetails} component={VaultDetailsPage} />
+        <Route path={routes.vaultDetails} component={VaultDetailsPage} />
         <Route
           exact
           path={routes.operationList}

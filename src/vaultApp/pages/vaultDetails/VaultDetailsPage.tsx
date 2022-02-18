@@ -10,6 +10,7 @@ import { VaultLogs } from '../../../pages/DashboardVaultDetails/components/Vault
 import { VaultAppLayout } from '../../components/Layouts/VaultAppLayout';
 import { Spinner } from '../../../ui';
 import { addressIsEq } from '../../../utils/hmy';
+import { EntityModals } from '../../../modules/entityModals/EntityModals';
 
 interface Props {}
 
@@ -89,6 +90,7 @@ export const VaultDetailsPage: React.FC<Props> = observer(() => {
           <VaultLogs vaultId={vaultId} />
         </Box>
       </Box>
+      <EntityModals />
     </VaultAppLayout>
   );
 });
