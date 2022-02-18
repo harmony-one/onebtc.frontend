@@ -8,6 +8,7 @@ import { useStores } from '../../../../stores';
 import { RedeemExtendedStatus } from '../../../../stores/RedeemStore';
 import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
+import { Countdown } from '../../../../components/Countdown';
 
 export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
   redeemId,
@@ -62,6 +63,13 @@ export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
       {redeemInfo.isExpired && !redeemInfo.btcTx && !redeemInfo.isCanceled && (
         <Box>
           <Button onClick={handleCancelRedeem}>Cancel Redeem</Button>
+        </Box>
+      )}
+      {!redeemInfo.isExpired && (
+        <Box>
+          <Text align="center">
+            Remaining time: <Countdown endTimestamp={redeemInfo.expiredTime} />
+          </Text>
         </Box>
       )}
       {redeemInfo.extendedStatus === RedeemExtendedStatus.WAIT_EXECUTE && (
