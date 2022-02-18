@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { autorun } from 'mobx';
+import { autorun, observable } from 'mobx';
 import { observer, PropTypes } from 'mobx-react';
 import * as React from 'react';
 import { checkIsRequired } from '../helpers';
@@ -55,6 +55,7 @@ export class MobxFormItem extends React.Component<IMobxFormItemProps> {
     defaultItemProps: object;
   };
 
+  @observable
   public rules: IRuleObj[];
   public isRequired: boolean;
 
