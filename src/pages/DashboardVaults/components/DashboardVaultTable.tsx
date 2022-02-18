@@ -90,10 +90,10 @@ export const DashboardVaultTable: React.FC<Props> = observer(() => {
       key: 'id',
       width: '33',
       sortable: true,
-      dataIndex: 'toBeRedeemed',
+      dataIndex: 'issued',
       render: (value, vault) => {
         const vaultInfo = vaultStore.getVaultInfo(vault);
-        const amount = satoshiToBitcoin(vaultInfo.toBeRedeemedSat.toString());
+        const amount = satoshiToBitcoin(vaultInfo.issuedSat.toString());
         return <Text>{formatWithEightDecimals(amount)} BTC</Text>;
       },
     },
