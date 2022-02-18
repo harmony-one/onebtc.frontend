@@ -14,7 +14,6 @@ import { retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { RedeemCanceledModal } from './components/RedeemCanceledModal';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
-import { addressIsEq } from '../../utils/hmy';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -272,15 +271,15 @@ export class RedeemPageStore extends StoreConstructor {
 
       const redeemInfo = this.stores.redeemStore.getRedeemInfo(redeemId);
 
-      const reimburse = addressIsEq(
-        redeemInfo.requester,
-        this.stores.user.address,
-      );
+      // const reimburse = addressIsEq(
+      //   redeemInfo.requester,
+      //   this.stores.user.address,
+      // );
 
       await hmyClient.cancelRedeem(
         redeemInfo.requester,
         redeemId,
-        reimburse,
+        false,
         txHash => {
           uiTx.setTxHash(txHash);
           uiTx.setStatusProgress();
