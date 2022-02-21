@@ -4,6 +4,7 @@ import { Divider, Button, Text } from 'components/Base';
 import { observer } from 'mobx-react';
 import { Form, isRequired, MobxForm, NumberInput } from 'components/Form';
 import {
+  formatWithEightDecimals,
   formatZeroDecimals,
   lessThanWei,
   moreThanZero,
@@ -12,14 +13,26 @@ import { useStores } from '../../../../stores';
 import utils from 'web3-utils';
 import { InputLabelAvailableBalance } from '../../../../components/Form/components/InputLabelAvailableBalance';
 import { InputMaxAmountControl } from '../../../../components/Form/components/InputMaxAmountControl';
+import { useInterval } from '../../../../hooks/useInterval';
+import { ONE_SECOND } from '../../../../constants/date';
+import { observable } from 'mobx';
 
 interface Props {
   vaultId: string;
 }
 
+const localStore = observable({
+  availableToWithdrawWei: '0',
+  inProgress: false,
+});
+
 export const WithdrawCollateralForm: React.FC<Props> = observer(
   ({ vaultId }) => {
-    const { dashboardVaultDetailsStore, vaultStore } = useStores();
+    const {
+      dashboardVaultDetailsStore,
+      redeemPageStore,
+      vaultStore,
+    } = useStores();
     const [form, setForm] = useState<MobxForm>();
 
     const handleSubmit = useCallback(() => {
@@ -30,6 +43,28 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
 
     const vault = vaultStore.getEntity(vaultId);
 
+    const updateWithdraw = useCallback(async () => {
+      if (localStore.inProgress) {
+        return;
+      }
+      localStore.inProgress = true;
+
+      try {
+        localStore.availableToWithdrawWei = await redeemPageStore.loadAvailableToWithdrawWei(
+          vault,
+        );
+        localStore.inProgress = false;
+      } catch (e) {
+        console.log('### e', e);
+        localStore.inProgress = false;
+      }
+    }, [redeemPageStore, vault]);
+
+    useInterval({
+      callback: updateWithdraw,
+      timeout: ONE_SECOND * 10,
+    });
+
     if (!vault) {
       return null;
     }
@@ -37,7 +72,6 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
     const oneAmount = utils.toWei(
       dashboardVaultDetailsStore.formWithdraw.oneAmount || '0',
     );
-    const vaultInfo = vaultStore.getVaultInfo(vault);
     const _vaultInfo = vaultStore.calcNewVaultCollateral(
       vault,
       oneAmount.toString(),
@@ -46,13 +80,15 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
 
     const handleMaxClick = useCallback(() => {
       dashboardVaultDetailsStore.formWithdraw.oneAmount = utils.fromWei(
-        vaultInfo.availableToWithdrawWei,
+        localStore.availableToWithdrawWei,
       );
-    }, [
-      dashboardVaultDetailsStore.formWithdraw.oneAmount,
-      vaultInfo.availableToWithdrawWei,
-    ]);
+    }, [dashboardVaultDetailsStore.formWithdraw.oneAmount]);
 
+    const withdrawBalanceText = !localStore.inProgress
+      ? formatWithEightDecimals(
+          utils.fromWei(localStore.availableToWithdrawWei),
+        )
+      : 'Loading...';
     return (
       <Form
         ref={ref => setForm(ref)}
@@ -68,7 +104,7 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
             inputLabel={
               <InputLabelAvailableBalance
                 label="Withdraw"
-                balance={utils.fromWei(vaultInfo.availableToWithdrawWei)}
+                balance={withdrawBalanceText}
                 tokenName="ONE"
               />
             }
@@ -80,7 +116,7 @@ export const WithdrawCollateralForm: React.FC<Props> = observer(
               isRequired,
               moreThanZero,
               lessThanWei(
-                Number(vaultInfo.availableToWithdrawWei),
+                Number(localStore.availableToWithdrawWei),
                 'Please enter an amount no higher than your available balance.',
               ),
             ]}

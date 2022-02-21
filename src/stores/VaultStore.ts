@@ -198,9 +198,7 @@ export class VaultStore extends EntityStore<IVault> {
   }
 
   static calcCurrentLoan(vault: IVault) {
-    return new BN(vault.issued || '0')
-      .add(new BN(vault.toBeIssued || '0'))
-      .add(new BN(vault.toBeRedeemed || '0'));
+    return new BN(vault.issued || '0').add(new BN(vault.toBeIssued || '0'));
   }
 
   public getVaultInfo(vault: IVault): VaultInfo {

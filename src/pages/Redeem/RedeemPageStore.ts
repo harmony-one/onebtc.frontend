@@ -14,6 +14,7 @@ import { retry } from '../../utils';
 import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsStore';
 import { RedeemCanceledModal } from './components/RedeemCanceledModal';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
+import BN from 'bn.js';
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -303,5 +304,22 @@ export class RedeemPageStore extends StoreConstructor {
       this.status = 'error';
       uiTx.setStatusFail();
     }
+  }
+
+  public async loadAvailableToWithdrawWei(vault: IVault) {
+    const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+
+    const collateralBalance = await hmyClient.contract.methods
+      .CollateralBalances(vault.id)
+      .call();
+
+    const collateralForIssued = await hmyClient.contract.methods
+      .collateralForIssued(new BN(vault.issued).add(new BN(vault.toBeIssued)))
+      .call();
+
+    const c = new BN(collateralBalance).sub(new BN(collateralForIssued));
+
+    console.log('### c', c.toString());
+    return BN.max(c, new BN(0)).toString();
   }
 }
