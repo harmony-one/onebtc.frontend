@@ -65,6 +65,12 @@ export const IssueDepositModalContent: React.FC<Props> = observer(
           <Text>in a single transaction to</Text>
           <AddressWithCopyButton address={issueInfo.bitcoinAddress} />
         </Box>
+        <Box alignSelf="start">
+          <Text bold color="Red500">
+            Use this address only for this issue operation and do NOT send
+            tokens to this address more than once - otherwise they will be lost
+          </Text>
+        </Box>
         <Box>
           <canvas ref={qrRef} />
         </Box>
