@@ -11,6 +11,7 @@ import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
 import BN from 'bn.js';
+import { IssueTermsModal } from './components/IssueTermsModal/IssueTermsModal';
 
 export interface ITransaction {
   amount: string;
@@ -283,12 +284,40 @@ export class IssuePageStore extends StoreConstructor {
     }
   }
 
+  public showTermsModal({
+    securityDeposit,
+    btcAmount,
+  }: {
+    securityDeposit: string;
+    btcAmount: string;
+  }) {
+    this.stores.actionModals.open(IssueTermsModal, {
+      id: 'agree',
+      applyText: 'Agree',
+      initData: {
+        securityDeposit,
+        btcAmount,
+      },
+      closeText: 'Cancel',
+      noValidation: true,
+      width: '700px',
+      showOther: true,
+      onApply: () => {
+        return this.createIssue();
+      },
+      onClose: () => {
+        return Promise.resolve();
+      },
+    });
+  }
+
   @action.bound
   public async createIssue() {
     if (!this.stores.user.isAuthorized) {
       this.stores.user.openConnectWalletModal();
       return;
     }
+
     this.status = 'pending';
 
     const issueUiTx = this.stores.uiTransactionsStore.create(undefined, {

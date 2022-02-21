@@ -40,12 +40,16 @@ export const IssueForm: React.FC<Props> = observer(() => {
   } = useStores();
   const [form, setForm] = useState<MobxForm>();
   const [isCustomVault, setCustomVault] = useState(false);
+  const [securityDeposit, setSecurityDeposit] = useState('0');
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {
-      issuePageStore.createIssue();
+      issuePageStore.showTermsModal({
+        securityDeposit,
+        btcAmount: issuePageStore.form.amount,
+      });
     });
-  }, [form, issuePageStore]);
+  }, [form, issuePageStore, securityDeposit]);
 
   useEffect(() => {
     issuePageStore.updateSelectedVault();
@@ -87,8 +91,6 @@ export const IssueForm: React.FC<Props> = observer(() => {
   }, [issuePageStore, vaultStore, issuePageStore.form.vaultId]);
 
   const isFormDisabled = !user.isBridgeAvailable;
-
-  const [securityDeposit, setSecurityDeposit] = useState('0');
 
   useEffect(() => {
     const amount = bitcoinToSatoshi(issuePageStore.form.amount);
