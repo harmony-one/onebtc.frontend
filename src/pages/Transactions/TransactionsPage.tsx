@@ -42,8 +42,6 @@ export const TransactionsPage: React.FC<Props> = observer(() => {
     );
   }
 
-  console.log('### here');
-
   return (
     <BaseLayout>
       <Box gap="medium">

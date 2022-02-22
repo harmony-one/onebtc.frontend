@@ -18,8 +18,8 @@ export const DashboardCardBtcRelay: React.FC<Props> = observer(
   ({ showLink = false }) => {
     const { btcRelayStore, btcNodeStore } = useStores();
 
-    const status = btcRelayStore.isSynchronized ? 'success' : 'error';
-    const statusText = btcRelayStore.isSynchronized ? (
+    const status = btcRelayStore.isSynchronized() ? 'success' : 'error';
+    const statusText = btcRelayStore.isSynchronized() ? (
       <Text bold color="Green500">
         synchronized
       </Text>

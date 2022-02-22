@@ -7,6 +7,7 @@ import LinkBitcoin from '../../../../components/LinkBitcoin';
 import * as styles from './IssueDetailsModals.styl';
 import { useStores } from '../../../../stores';
 import cn from 'classnames';
+import { config } from '../../../../config';
 
 interface Props {
   issueId: string;
@@ -20,8 +21,9 @@ export const IssueDetailsModalWaitExecute: React.FC<Props> = ({ issueId }) => {
     issuePageStore.executeIssue(issueId, issueInfo.btcTx.hash);
   }, [issueId, issueInfo.btcTx.hash, issuePageStore]);
 
-  const isWaitingRelayer =
-    issueInfo.btcTx.height > btcRelayStore.relayInfo.height;
+  const isWaitingRelayer = !btcRelayStore.isRelayerHasConfirmation(
+    issueInfo.btcTx,
+  );
 
   return (
     <Box align="center" gap="small">
@@ -56,7 +58,11 @@ export const IssueDetailsModalWaitExecute: React.FC<Props> = ({ issueId }) => {
           Execute issue
         </Button>
         {isWaitingRelayer && (
-          <Text bold>Waiting relayer synchronization...</Text>
+          <Text bold>
+            Waiting relayer synchronization...{' '}
+            {btcRelayStore.relayInfo && btcRelayStore.relayInfo.height}/
+            {issueInfo.btcTx.height + config.bitcoin.waitConfirmationsCount}
+          </Text>
         )}
       </Box>
     </Box>
