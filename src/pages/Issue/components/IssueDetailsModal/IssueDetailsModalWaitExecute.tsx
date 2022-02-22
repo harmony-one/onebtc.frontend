@@ -7,23 +7,18 @@ import LinkBitcoin from '../../../../components/LinkBitcoin';
 import * as styles from './IssueDetailsModals.styl';
 import { useStores } from '../../../../stores';
 import cn from 'classnames';
-import { config } from '../../../../config';
 
 interface Props {
   issueId: string;
 }
 
 export const IssueDetailsModalWaitExecute: React.FC<Props> = ({ issueId }) => {
-  const { issueStore, issuePageStore, btcRelayStore } = useStores();
+  const { issueStore, issuePageStore } = useStores();
   const issueInfo = issueStore.getIssueInfo(issueId);
 
   const handleClaim = useCallback(() => {
     issuePageStore.executeIssue(issueId, issueInfo.btcTx.hash);
   }, [issueId, issueInfo.btcTx.hash, issuePageStore]);
-
-  const isWaitingRelayer = !btcRelayStore.isRelayerHasConfirmation(
-    issueInfo.btcTx,
-  );
 
   return (
     <Box align="center" gap="small">
@@ -52,18 +47,11 @@ export const IssueDetailsModalWaitExecute: React.FC<Props> = ({ issueId }) => {
       <Box align="center" gap="small">
         <Button
           bgColor="#46d7b6"
-          disabled={!issueInfo.isConfirmedBtcTX || isWaitingRelayer}
+          disabled={!issueInfo.isConfirmedBtcTX}
           onClick={handleClaim}
         >
           Execute issue
         </Button>
-        {isWaitingRelayer && (
-          <Text bold>
-            Waiting relayer synchronization...{' '}
-            {btcRelayStore.relayInfo && btcRelayStore.relayInfo.height}/
-            {issueInfo.btcTx.height + config.bitcoin.waitConfirmationsCount}
-          </Text>
-        )}
       </Box>
     </Box>
   );

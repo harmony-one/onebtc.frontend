@@ -1,5 +1,5 @@
 import { StoreConstructor } from './core/StoreConstructor';
-import { action, get, observable } from 'mobx';
+import { action, observable } from 'mobx';
 import { dashboardClient } from '../modules/dashboard/dashboardClient';
 import { IVault } from '../modules/dashboard/dashboardTypes';
 import { randomInt } from '../utils';
@@ -54,12 +54,10 @@ export class VaultListStore extends StoreConstructor {
       .filter(VaultStore.isVaultOnline);
   }
 
-  @get
   public get vaultActiveList() {
     return this.getActiveVaultList(this.vaultList);
   }
 
-  @get
   public isEnoughFunds = (
     vault: IVault,
     amountSat: number | string | BN,
@@ -92,7 +90,6 @@ export class VaultListStore extends StoreConstructor {
     return true;
   };
 
-  @get
   public get vaultRedeemList() {
     const oneBtcRate = this.stores.ratesStore.ONE_BTC;
     const hasToRedeem = (vault: IVault) =>

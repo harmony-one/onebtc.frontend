@@ -1,4 +1,4 @@
-import { action, get } from 'mobx';
+import { action } from 'mobx';
 import { dashboardClient } from '../modules/dashboard/dashboardClient';
 import { IRedeem } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
@@ -33,7 +33,6 @@ export class RedeemStore extends EntityStore<IRedeem> {
     }
   }
 
-  @get
   public getRedeemInfo(redeemId: string) {
     const redeem = this.getEntity(redeemId);
 

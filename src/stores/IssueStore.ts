@@ -1,4 +1,4 @@
-import { action, get } from 'mobx';
+import { action } from 'mobx';
 import { dashboardClient } from '../modules/dashboard/dashboardClient';
 import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { EntityStore } from './core/EntityStore';
@@ -34,7 +34,6 @@ export class IssueStore extends EntityStore<IIssue> {
     }
   }
 
-  @get
   getIssueExtendedStatus(issue: IIssue): IssueExtendedStatus {
     if (issue.status === IssueStatus.COMPLETED) {
       return IssueExtendedStatus.COMPLETED;
@@ -64,7 +63,6 @@ export class IssueStore extends EntityStore<IIssue> {
     return IssueExtendedStatus.UNEXPECTED;
   }
 
-  @get
   public getIssueInfo(issueId: string) {
     const issue = this.getEntity(issueId);
 

@@ -1,4 +1,4 @@
-import { action, get, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { vaultClient, VaultInfo } from '../modules/vaultClient/VaultClient';
 import { StoreConstructor } from '../../stores/core/StoreConstructor';
 import { routes } from '../routes/routes';
@@ -14,7 +14,6 @@ export class VaultAppStore extends StoreConstructor {
   public vaultInfo: VaultInfo;
   public vaultBalance: BN = new BN(0);
 
-  @get
   get vaultId() {
     if (this.vaultInfo) {
       return this.vaultInfo.vaultAddress;
@@ -75,7 +74,7 @@ export class VaultAppStore extends StoreConstructor {
     }
   }
 
-  @get
+  @computed
   get syncProgress() {
     return (this.vaultInfo && this.vaultInfo.syncProgress) || '0';
   }
