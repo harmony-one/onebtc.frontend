@@ -18,6 +18,7 @@ export interface VaultInfo {
     toBeReplaced: string;
   };
   contract: string;
+  error?: string;
 }
 
 export interface OperationAction {
