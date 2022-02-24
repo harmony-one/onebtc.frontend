@@ -3,7 +3,6 @@ import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import {
   IHistoryIssueItem,
   IHistoryVaultItem,
-  IListContainer,
 } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import { dateFormat } from '../../utils';
 import { getHmyBalance } from '../../services/hmyClient';
@@ -11,13 +10,13 @@ import utils from 'web3-utils';
 
 class DashboardPageStore {
   @observable
-  private _vaultHistory: IListContainer<IHistoryVaultItem> | null;
+  private _vaultHistory: IHistoryVaultItem[] | null;
 
   @observable
-  private _issueHistory: IListContainer<IHistoryIssueItem> | null;
+  private _issueHistory: IHistoryIssueItem[] | null;
 
   @observable
-  private _redeemHistory: IListContainer<IHistoryIssueItem> | null;
+  private _redeemHistory: IHistoryIssueItem[] | null;
 
   @observable capacity = '0';
 
@@ -40,17 +39,20 @@ class DashboardPageStore {
 
   @action.bound
   async loadVaultData() {
-    this._vaultHistory = await dashboardClient.loadHistoryVault();
+    const response = await dashboardClient.loadHistoryVault();
+    this._vaultHistory = response.content.reverse();
   }
 
   @action.bound
   async loadIssuesData() {
-    this._issueHistory = await dashboardClient.loadHistoryIssue();
+    const response = await dashboardClient.loadHistoryIssue();
+    this._issueHistory = response.content.reverse();
   }
 
   @action.bound
   async loadRedeemsData() {
-    this._redeemHistory = await dashboardClient.loadHistoryRedeem();
+    const response = await dashboardClient.loadHistoryRedeem();
+    this._redeemHistory = response.content.reverse();
   }
 
   @computed
@@ -86,7 +88,7 @@ class DashboardPageStore {
       return [];
     }
 
-    return this._issueHistory.content.reverse().map(item => {
+    return this._issueHistory.map(item => {
       return {
         x: dateFormat(item.date),
         issuedPerDay: item.amountPerDay / 1e8,
@@ -112,7 +114,7 @@ class DashboardPageStore {
       return [];
     }
 
-    return this._redeemHistory.content.reverse().map(item => {
+    return this._redeemHistory.map(item => {
       return {
         x: dateFormat(item.date),
         redeemedPerDay: item.amountPerDay / 1e8,
@@ -123,10 +125,10 @@ class DashboardPageStore {
 
   @computed
   get activeVaultCount() {
-    if (this._vaultHistory && this._vaultHistory.content.length) {
-      const len = this._vaultHistory.content.length;
+    if (this._vaultHistory && this._vaultHistory.length) {
+      const len = this._vaultHistory.length;
 
-      return this._vaultHistory.content[len - 1].activeVaults;
+      return this._vaultHistory[len - 1].activeVaults;
     }
 
     return 0;
@@ -134,10 +136,10 @@ class DashboardPageStore {
 
   @computed
   get totalCollateral() {
-    if (this._vaultHistory && this._vaultHistory.content.length) {
-      const len = this._vaultHistory.content.length;
+    if (this._vaultHistory && this._vaultHistory.length) {
+      const len = this._vaultHistory.length;
 
-      return this._vaultHistory.content[len - 1].totalCollateral / 1e18;
+      return this._vaultHistory[len - 1].totalCollateral / 1e18;
     }
 
     return '0';
@@ -149,9 +151,7 @@ class DashboardPageStore {
       return [];
     }
 
-    const list = this._vaultHistory.content;
-
-    return list.map(item => {
+    return this._vaultHistory.map(item => {
       return {
         x: dateFormat(item.date),
         active: item.activeVaults,
@@ -166,9 +166,7 @@ class DashboardPageStore {
       return [];
     }
 
-    const list = this._vaultHistory.content;
-
-    return list.map(item => {
+    return this._vaultHistory.map(item => {
       return {
         x: dateFormat(item.date),
         y: item.totalCollateral / 1e18,
