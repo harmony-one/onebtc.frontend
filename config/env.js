@@ -84,6 +84,7 @@ function getClientEnvironment(publicUrl) {
         SERVICE_AVAILABLE: process.env.SERVICE_AVAILABLE,
         SERVICE_AVAILABLE_WHITELIST_ADDRESSES:
           process.env.SERVICE_AVAILABLE_WHITELIST_ADDRESSES,
+        SENTRY_DSN: process.env.SENTRY_DSN,
       },
     );
   // Stringify all values so we can feed into Webpack DefinePlugin

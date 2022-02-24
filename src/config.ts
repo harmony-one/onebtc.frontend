@@ -7,6 +7,8 @@ interface Config {
   version: string;
   network: 'mainnet' | 'testnet';
   isTestnet: boolean;
+  sentryDSN: string;
+  appType: 'vault' | 'bridge';
   bitcoin: {
     waitConfirmationsCount: number;
     btcNodeUrl: string;
@@ -52,6 +54,8 @@ export const config: Config = {
   version: process.env.APP_VERSION,
   network: process.env.NETWORK as 'mainnet' | 'testnet',
   isTestnet: process.env.NETWORK === 'testnet',
+  sentryDSN: process.env.SENTRY_DSN || '',
+  appType: isVaultApp ? 'vault' : 'bridge',
   bitcoin: {
     waitConfirmationsCount: parseInt(
       process.env.BTC_WAIT_CONFIRMATIONS_COUNT || '2',

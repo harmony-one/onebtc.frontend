@@ -4,6 +4,9 @@ import { getOneBTCClient } from '../../services/oneBtcClient';
 import { IncreaseCollateralConfirmModal } from './components/IncreaseCollateralConfirmModal';
 import { VaultManageModal } from './components/VaultManageModal';
 import utils from 'web3-utils';
+import logger from '../../modules/logger';
+
+const log = logger.module('Vault');
 
 export class DashboardVaultDetailsStore extends StoreConstructor {
   @observable
@@ -75,7 +78,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
       uiTx.hideModal();
       uiTx.setStatusSuccess();
     } catch (error) {
-      console.log('### err', error);
+      log.error('Error Increase Collateral', { error });
       this.status = 'error';
       uiTx.setError(error);
       uiTx.setStatusFail();
@@ -119,7 +122,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
       uiTx.hideModal();
       uiTx.setStatusSuccess();
     } catch (error) {
-      console.log('### err', error);
+      log.error('Error Withdraw Collateral', { error });
       this.status = 'error';
       uiTx.setError(error);
       uiTx.setStatusFail();

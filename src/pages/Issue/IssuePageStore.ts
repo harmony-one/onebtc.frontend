@@ -12,6 +12,9 @@ import { IIssue, IVault } from '../../modules/dashboard/dashboardTypes';
 import { IssueCanceledModal } from './components/IssueCanceledModal';
 import BN from 'bn.js';
 import { IssueTermsModal } from './components/IssueTermsModal/IssueTermsModal';
+import logger from '../../modules/logger';
+
+const log = logger.module('Issue');
 
 export interface ITransaction {
   amount: string;
@@ -136,8 +139,9 @@ export class IssuePageStore extends StoreConstructor {
         },
       });
     } catch (err) {
-      console.log('### err execute cancelIssue error', err);
+      log.error('CancelIssue', { error: err, issueId });
       this.status = 'error';
+      issueUiTx.setError(err.message);
       issueUiTx.setStatusFail();
     }
   }
@@ -193,10 +197,11 @@ export class IssuePageStore extends StoreConstructor {
         },
       });
       this.status = 'success';
-      console.log('### execute redeem finished');
+      log.info('ExecuteIssue finished');
     } catch (err) {
-      console.log('### err execute redeem error', err);
+      log.error('ExecuteIssue', { error: err, issueId });
       this.status = 'error';
+      issueUiTx.setError(err.message);
       issueUiTx.setStatusFail();
     }
   }
@@ -257,12 +262,13 @@ export class IssuePageStore extends StoreConstructor {
       const issue = await this.stores.issueStore.loadIssue(issueId);
 
       if (!issue) {
+        log.error('Load issue', { issueId });
         return null;
       }
 
       return issue;
     } catch (err) {
-      console.log('### err', err);
+      log.error('Load issue', { error: err, issueId });
       return null;
     }
   }
@@ -388,7 +394,7 @@ export class IssuePageStore extends StoreConstructor {
       if (err.code === 4001) {
         issueUiTx.hideModal();
       }
-      console.log('### Error during create issuePageStore', err);
+      log.error('CreateIssue', { error: err });
       this.status = 'error';
     }
   }

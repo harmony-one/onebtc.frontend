@@ -15,6 +15,9 @@ import { UITransactionStatus } from '../../modules/uiTransaction/UITransactionsS
 import { RedeemCanceledModal } from './components/RedeemCanceledModal';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import BN from 'bn.js';
+import logger from '../../modules/logger';
+
+const log = logger.module('Redeem');
 
 export interface IDefaultForm {
   oneBTCAmount: string;
@@ -140,9 +143,9 @@ export class RedeemPageStore extends StoreConstructor {
         },
       });
       this.status = 'success';
-      console.log('### execute issuePageStore finished');
+      log.info('ExecuteRedeem finished');
     } catch (err) {
-      console.log('### err mock execute issuePageStore error', err);
+      log.error('EecuteRedeem', { error: err, redeemId });
       this.status = 'error';
       redeemUiTx.setError(err);
       redeemUiTx.setStatusFail();
@@ -256,7 +259,7 @@ export class RedeemPageStore extends StoreConstructor {
     } catch (err) {
       redeemUiTx.setError(err);
       redeemUiTx.setStatusFail();
-      console.log('### Error during create issuePageStore', err);
+      log.error('RequestRedeem', { error: err });
       this.status = 'error';
     }
   }
@@ -300,8 +303,9 @@ export class RedeemPageStore extends StoreConstructor {
         },
       });
     } catch (err) {
-      console.log('### err execute cancelRedeem error', err);
+      log.error('CancelRedeem', { error: err, redeemId });
       this.status = 'error';
+      uiTx.setError(err);
       uiTx.setStatusFail();
     }
   }
