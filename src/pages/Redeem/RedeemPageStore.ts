@@ -319,7 +319,6 @@ export class RedeemPageStore extends StoreConstructor {
 
     const c = new BN(collateralBalance).sub(new BN(collateralForIssued));
 
-    console.log('### c', c.toString());
     return BN.max(c, new BN(0)).toString();
   }
 }

@@ -153,7 +153,7 @@ export class UITransaction extends StoreConstructor {
       return this.error.message.split(':')[0];
     }
 
-    return 'Error';
+    return this.error.message;
   }
 
   @computed
