@@ -145,7 +145,7 @@ export class RedeemPageStore extends StoreConstructor {
       this.status = 'success';
       log.info('ExecuteRedeem finished');
     } catch (err) {
-      log.error('EecuteRedeem', { error: err, redeemId });
+      log.error('ExecuteRedeem', { error: err, redeemId });
       this.status = 'error';
       redeemUiTx.setError(err);
       redeemUiTx.setStatusFail();
