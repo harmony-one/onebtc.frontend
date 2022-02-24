@@ -40,7 +40,7 @@ class DashboardPageStore {
   @action.bound
   async loadVaultData() {
     const response = await dashboardClient.loadHistoryVault();
-    this._vaultHistory = response.content.reverse();
+    this._vaultHistory = response.content;
   }
 
   @action.bound
