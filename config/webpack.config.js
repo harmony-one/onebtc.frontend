@@ -42,7 +42,7 @@ const configProd = {
   app: [`${entryPoint}`],
   appFilename: 'static/js/app-[hash].js',
   vendorFilename: 'static/js/vendor-[contenthash].js',
-  devtool: '',
+  devtool: 'source-map',
   plugins: [
     new CleanWebpackPlugin(),
     // Minify the code.
