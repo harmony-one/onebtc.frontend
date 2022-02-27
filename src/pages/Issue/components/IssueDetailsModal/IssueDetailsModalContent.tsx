@@ -23,15 +23,13 @@ export const IssueDetailsModalContent: React.FC<Props> = observer(
     const { issueStore, btcRelayStore } = useStores();
     const issueInfo = issueStore.getIssueInfo(issueId);
 
-    useIssueWatcher({ issueId });
-
     const relayerHasConfirmation = useMemo(() => {
-      if (!issueInfo.btcTx) {
+      if (!issueInfo || !issueInfo.btcTx) {
         return false;
       }
 
       return btcRelayStore.isRelayerHasConfirmation(issueInfo.btcTx);
-    }, [btcRelayStore, issueInfo.btcTx]);
+    }, [btcRelayStore, issueInfo]);
 
     const waitTxConfirmation =
       issueInfo.extendedStatus === IssueExtendedStatus.WAIT_BTC_CONFIRMATION;

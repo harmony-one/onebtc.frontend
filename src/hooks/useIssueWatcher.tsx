@@ -6,14 +6,12 @@ interface WatcherProps {
   issueId: string;
 }
 
-export const useIssueWatcher = ({ issueId }: WatcherProps): string => {
+export const useIssueWatcher = ({ issueId }: WatcherProps) => {
   const { issueStore } = useStores();
 
   const loadIssue = useCallback(() => {
     issueStore.loadIssue(issueId);
   }, [issueStore, issueId]);
 
-  useInterval({ callback: loadIssue, timeout: 5000 });
-
-  return null;
+  return useInterval({ callback: loadIssue, timeout: 5000 });
 };
