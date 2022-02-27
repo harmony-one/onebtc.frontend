@@ -8,6 +8,14 @@ const SENTRY_LEVEL_MAP = {
   fatal: 'error',
 };
 
+function hasException(logMessage: TLogMessage) {
+  if (!logMessage.extendedData || !logMessage.extendedData.error) {
+    return false;
+  }
+
+  return logMessage.extendedData.error instanceof Error;
+}
+
 export function sentryTransport(logMessage: TLogMessage) {
   const level = SENTRY_LEVEL_MAP[logMessage.level];
 
@@ -19,6 +27,12 @@ export function sentryTransport(logMessage: TLogMessage) {
     });
 
     scope.setTag('module', logMessage.moduleName);
-    Sentry.captureMessage(logMessage.message);
+
+    if (hasException(logMessage)) {
+      const exMessage = logMessage.extendedData?.error?.message;
+      Sentry.captureMessage(`${logMessage.message}: ${exMessage}`);
+    } else {
+      Sentry.captureMessage(logMessage.message);
+    }
   });
 }

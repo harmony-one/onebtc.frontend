@@ -259,7 +259,7 @@ export class RedeemPageStore extends StoreConstructor {
     } catch (err) {
       redeemUiTx.setError(err);
       redeemUiTx.setStatusFail();
-      log.error('RequestRedeem', { error: err });
+      log.error('RequestRedeem', { error: err, ...this.form });
       this.status = 'error';
     }
   }

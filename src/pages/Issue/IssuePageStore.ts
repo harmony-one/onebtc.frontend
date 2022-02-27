@@ -394,7 +394,7 @@ export class IssuePageStore extends StoreConstructor {
       if (err.code === 4001) {
         issueUiTx.hideModal();
       }
-      log.error('CreateIssue', { error: err });
+      log.error('CreateIssue', { error: err, ...this.form });
       this.status = 'error';
     }
   }
