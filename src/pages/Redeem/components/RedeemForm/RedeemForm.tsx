@@ -11,6 +11,7 @@ import {
   MobxForm,
 } from 'components/Form';
 import {
+  btcAddressBech32,
   formatWithEightDecimals,
   lessThanSat,
   moreThanZero,
@@ -121,7 +122,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         disabled={isFormDisabled}
         placeholder="Enter your BTC address"
         style={{ width: '100%' }}
-        rules={[isRequired]}
+        rules={[isRequired, btcAddressBech32]}
       />
 
       {redeemPageStore.form.vaultId && (
