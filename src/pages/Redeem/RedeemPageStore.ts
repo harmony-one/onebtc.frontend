@@ -70,13 +70,24 @@ export class RedeemPageStore extends StoreConstructor {
   getActiveVaultList(vaultList: IVault[]) {
     const amountSat = bitcoinToSatoshi(this.form.oneBTCAmount);
 
-    return vaultList.filter(vault => {
+    const list = vaultList.filter(vault => {
       return this.stores.vaultListStore.isEnoughFunds(
         vault,
         amountSat,
         'redeem',
       );
     });
+
+    const hasLowCollateral = (p: number) => vault =>
+      this.stores.vaultStore.getVaultInfo(vault).collateralTotal < p;
+
+    let priorityList = list.filter(hasLowCollateral(135));
+
+    if (priorityList.length === 0) {
+      priorityList = list.filter(hasLowCollateral(150));
+    }
+
+    return (priorityList.length && priorityList) || list;
   }
 
   @action.bound
