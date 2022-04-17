@@ -3,3 +3,7 @@ from = "/*"
 to = "/"
 status = 200
 force = false
+
+[build]
+  # Default build command.
+  command = "npm cache clean --force & npm i & npm run build:prod"
