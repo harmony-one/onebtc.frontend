@@ -26,6 +26,8 @@ import { SupportPage } from './pages/Support/SupportPage';
 import { HelpPage } from './pages/Help/HelpPage';
 import { MyVaultPage } from './pages/MyVault/MyVaultPage';
 
+// test
+
 const App: React.FC = () => (
   <ErrorBoundary>
     <Providers>
