@@ -141,7 +141,7 @@ export class RedeemPageStore extends StoreConstructor {
 
       this.stores.actionModals.open(RedeemConfirmModal, {
         initData: {
-          total: satoshiToBitcoin(redeem.totalReceived),
+          total: redeem.totalReceived,
           txHash: result.transactionHash,
         },
         applyText: '',

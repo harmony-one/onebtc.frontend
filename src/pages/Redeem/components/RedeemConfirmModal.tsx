@@ -7,13 +7,13 @@ import { TActionModalProps } from '../../../components/ActionModals';
 
 export function RedeemConfirmModalContent({ total, txHash = '' }) {
   return (
-    <Box direction="column" justify="center">
-      <Box align="center">
+    <Box direction="column" justify="center" gap="xxsmall">
+      <Box align="center" gap="xxsmall">
         <Text>You will receive:</Text>
         <Text bold>{total} BTC</Text>
       </Box>
       <Box align="center">
-        <Text>
+        <Text align="center">
           Transaction:&nbsp;
           <LinkHarmony hash={txHash} type="tx" />
         </Text>
