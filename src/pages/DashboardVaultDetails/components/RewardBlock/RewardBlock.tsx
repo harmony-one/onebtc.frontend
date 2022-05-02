@@ -11,13 +11,17 @@ import { useStores } from '../../../../stores';
 import { fromWei } from 'web3-utils';
 import { Refresh } from 'grommet-icons';
 import { Button as GrommetButton, Spinner } from 'grommet';
+import { StakeInfo } from '../../../../stores/VaultStakeStore';
 
 interface Props {
   vaultId: string;
 }
 
-const defaultValue = {
-  lockExpireAt: null,
+const defaultValue: StakeInfo = {
+  lockStartAt: '0',
+  collateralDebt: '0',
+  lockPeriod: '0',
+  lockExpireAt: '0',
   accClaimableRewards: '0',
 };
 
@@ -26,7 +30,6 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
     dashboardVaultDetailsStore,
     vaultStore,
     vaultStakeStore,
-    user,
   } = useStores();
   const handleClickStake = useCallback(() => {
     dashboardVaultDetailsStore.openStakeModal(vaultId);
