@@ -1,29 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
-import {
-  Divider,
-  Button,
-  Text,
-  DividerVertical,
-  Loader,
-} from 'components/Base';
+import { Divider, Button, Text } from 'components/Base';
 import { observer } from 'mobx-react';
-import { Form, isRequired, MobxForm, NumberInput } from 'components/Form';
 import {
   dateFormat,
   formatWithEightDecimals,
   formatWithTwoDecimals,
-  formatZeroDecimals,
-  lessThanWei,
-  moreThanZero,
 } from '../../../../utils';
 import { useStores } from '../../../../stores';
-import utils, { fromWei } from 'web3-utils';
-import { InputLabelAvailableBalance } from '../../../../components/Form/components/InputLabelAvailableBalance';
-import { InputMaxAmountControl } from '../../../../components/Form/components/InputMaxAmountControl';
-import { useInterval } from '../../../../hooks/useInterval';
-import { ONE_SECOND } from '../../../../constants/date';
-import { observable } from 'mobx';
+import { fromWei } from 'web3-utils';
+import { Refresh } from 'grommet-icons';
 import { Button as GrommetButton, Spinner } from 'grommet';
 
 interface Props {
@@ -109,7 +95,7 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
                     disabled={inProgress}
                     onClick={handleClickRefresh}
                   >
-                    refresh
+                    <Refresh />
                   </GrommetButton>
                 )}
               </Box>
