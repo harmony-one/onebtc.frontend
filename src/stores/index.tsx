@@ -20,6 +20,7 @@ import { RatesStore } from './RatesStore';
 import { VaultAppStore } from '../vaultApp/stores/VaultAppStore';
 import { AdminConfigForm } from '../pages/admin/AdminConfigForm';
 import { VaultListStore } from './VaultListStore';
+import { VaultStakeStore } from './VaultStakeStore';
 
 export interface IStores {
   routing?: RouterStore;
@@ -45,6 +46,7 @@ export interface IStores {
   vaultApp?: {
     vaultAppStore?: VaultAppStore;
   };
+  vaultStakeStore?: VaultStakeStore;
 }
 
 const stores: IStores = {};
@@ -69,6 +71,7 @@ stores.redeemStore = new RedeemStore(stores);
 stores.ratesStore = new RatesStore(stores);
 stores.adminConfigForm = new AdminConfigForm(stores);
 stores.vaultListStore = new VaultListStore(stores);
+stores.vaultStakeStore = new VaultStakeStore(stores);
 
 stores.vaultApp = {
   vaultAppStore: new VaultAppStore(stores),

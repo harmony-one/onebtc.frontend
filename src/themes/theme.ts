@@ -142,6 +142,11 @@ export const Theme: any = {
     //   ${(props: any) => 'letter-spacing: 4px; text-align: center;'};
     // `,
   },
+  spinner: {
+    size: {
+      xsmall: '4px',
+    },
+  },
   select: {
     border: {
       radius: '2px',

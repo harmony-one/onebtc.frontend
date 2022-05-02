@@ -5,6 +5,9 @@ import { IncreaseCollateralConfirmModal } from './components/IncreaseCollateralC
 import { VaultManageModal } from './components/VaultManageModal';
 import utils from 'web3-utils';
 import logger from '../../modules/logger';
+import { VaultStakeModal } from './components/VaultStakeModal';
+import { VaultRewardsModal } from './components/VaultRewardsModal';
+import { StakeConfirmModal } from './components/StakeConfirmModal';
 
 const log = logger.module('Vault');
 
@@ -31,6 +34,40 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
       closeText: '',
       noValidation: true,
       width: '420px',
+      showOther: true,
+      onApply: () => {
+        return Promise.resolve();
+      },
+    });
+  }
+
+  @action.bound
+  public async openStakeModal(vaultId: string) {
+    this.stores.actionModals.open(VaultStakeModal, {
+      initData: {
+        vaultId: vaultId,
+      },
+      applyText: '',
+      closeText: '',
+      noValidation: true,
+      width: '520px',
+      showOther: true,
+      onApply: () => {
+        return Promise.resolve();
+      },
+    });
+  }
+
+  @action.bound
+  public async openRewardsModal(vaultId: string) {
+    this.stores.actionModals.open(VaultRewardsModal, {
+      initData: {
+        vaultId: vaultId,
+      },
+      applyText: 'Continue',
+      closeText: '',
+      noValidation: true,
+      width: '520px',
       showOther: true,
       onApply: () => {
         return Promise.resolve();
@@ -126,6 +163,65 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
       this.status = 'error';
       uiTx.setError(error);
       uiTx.setStatusFail();
+    }
+  }
+
+  @action.bound
+  public async extendVaultLockPeriod(vaultId: string, period: number) {
+    const uiTx = this.stores.uiTransactionsStore.create();
+    uiTx.setStatusProgress();
+    uiTx.showModal();
+
+    try {
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+
+      uiTx.setStatusWaitingSignIn();
+
+      const result = await hmyClient.extendVaultLockPeriod(
+        vaultId,
+        period,
+        txHash => {
+          uiTx.setTxHash(txHash);
+          uiTx.setStatusProgress();
+        },
+      );
+
+      await this.stores.vaultStakeStore.loadVault(vaultId);
+
+      this.stores.actionModals.open(StakeConfirmModal, {
+        initData: {
+          // total: utils.fromWei(amount),
+          // txHash: result.transactionHash,
+        },
+        applyText: '',
+        closeText: '',
+        noValidation: true,
+        width: '320px',
+        showOther: true,
+        onApply: () => {
+          return Promise.resolve();
+        },
+      });
+      this.status = 'success';
+      uiTx.hideModal();
+      uiTx.setStatusSuccess();
+    } catch (error) {
+      log.error('Error Withdraw Collateral', { error });
+      this.status = 'error';
+      uiTx.setError(error);
+      uiTx.setStatusFail();
+    }
+  }
+
+  @action.bound
+  public async updateVaultAccClaimableRewards(vaultId: string) {
+    try {
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+
+      await hmyClient.updateVaultAccClaimableRewards(vaultId);
+      await this.stores.vaultStakeStore.loadVault(vaultId);
+    } catch (error) {
+      console.log('### error', error);
     }
   }
 }
