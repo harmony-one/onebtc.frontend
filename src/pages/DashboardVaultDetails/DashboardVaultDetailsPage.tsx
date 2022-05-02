@@ -12,6 +12,7 @@ import { dashboardHistoryStore } from '../Dashboard/DashboardHistoryStore';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
 import { addressIsEq } from '../../utils/hmy';
 import { EntityModals } from '../../modules/entityModals/EntityModals';
+import RewardBlock from './components/RewardBlock/RewardBlock';
 
 interface Props {
   vaultId: string;
@@ -19,7 +20,12 @@ interface Props {
 
 export const DashboardVaultDetailsPage: React.FC<Props> = observer(
   ({ vaultId }) => {
-    const { vaultStore, user, dashboardVaultDetailsStore } = useStores();
+    const {
+      vaultStore,
+      vaultStakeStore,
+      user,
+      dashboardVaultDetailsStore,
+    } = useStores();
 
     const vault = vaultStore.getEntity(vaultId);
 
@@ -27,7 +33,8 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(
 
     useEffect(() => {
       dashboardHistoryStore.loadData();
-    }, []);
+      vaultStakeStore.loadVault(vaultId);
+    }, [vaultId, vaultStakeStore]);
 
     const handleClickManage = useCallback(() => {
       dashboardVaultDetailsStore.openManageModal(vaultId);
@@ -74,7 +81,8 @@ export const DashboardVaultDetailsPage: React.FC<Props> = observer(
               </Box>
               <Box basis="1/2">
                 <Paper fill pad="medium">
-                  <VaultIssuedChart />
+                  {isOwner && <RewardBlock vaultId={vaultId} />}
+                  {!isOwner && <VaultIssuedChart />}
                 </Paper>
               </Box>
             </Box>

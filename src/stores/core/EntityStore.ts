@@ -5,7 +5,7 @@ export class EntityStore<T> extends StoreConstructor {
   @observable
   public entityMap: Record<string, T> = {};
 
-  public getEntity(entityId: string) {
+  public getEntity(entityId: string): T {
     return this.entityMap[entityId];
   }
 }

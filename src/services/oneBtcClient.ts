@@ -26,6 +26,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
       nodeURL: dashboardConfig.relayerClient.hmyNodeUrl,
       btcNodeUrl: dashboardConfig.relayerClient.btcNodeUrl,
       contractAddress: dashboardConfig.mainEvents.contractAddress,
+      rewardContractAddress: '0x2bB7642EcbEC83Aa4D5B16A15AB8711E21c74005',
       chainId: 2,
       gasLimit: 6721900,
     });
@@ -37,6 +38,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
       nodeURL: dashboardConfig.relayerClient.hmyNodeUrl,
       btcNodeUrl: dashboardConfig.relayerClient.btcNodeUrl,
       contractAddress: dashboardConfig.mainEvents.contractAddress,
+      rewardContractAddress: '0x2bB7642EcbEC83Aa4D5B16A15AB8711E21c74005',
       chainId: 2,
       gasLimit: 6721900,
     });

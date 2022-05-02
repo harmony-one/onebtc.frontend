@@ -9895,10 +9895,10 @@
   dependencies:
     "wrappy" "1"
 
-"onebtc.sdk@^1.1.19", "onebtc.sdk@^1.1.9":
-  "integrity" "sha512-IOeVnDDrRVPXE+XsvxFu/8p1WDMBUUHO5War0Zs7sHDc3e+RUCeA0kXNFwq1Njm/67g2g8ylN3Yl5PpIuWS1hA=="
-  "resolved" "https://registry.npmjs.org/onebtc.sdk/-/onebtc.sdk-1.1.19.tgz"
-  "version" "1.1.19"
+"onebtc.sdk@^1.1.20", "onebtc.sdk@^1.1.9":
+  "integrity" "sha512-5+6ZanSclItEQ8ur0KQAxx4zvzPK+5K4dxM76Eb1OSHnxxe2k/YZcIYArgiQqgc99vfexfsfBszN/hR2EWORkA=="
+  "resolved" "https://registry.npmjs.org/onebtc.sdk/-/onebtc.sdk-1.1.20.tgz"
+  "version" "1.1.20"
   dependencies:
     "@harmony-js/core" "^0.1.55"
     "@summa-tx/bitcoin-spv-js-clients" "^0.1.4"
@@ -12143,6 +12143,7 @@
   "version" "3.0.1"
 
 "scrypt-shim@github:web3-js/scrypt-shim":
+  "integrity" "sha512-6IAk8+6BiN9lMNh5kgAYRPbi7+ejRsJIOX0jh4/I1V7phSsoaizjBGfDrZHpeAcq1IwOVlNetHS4/a+JR2hyZA=="
   "resolved" "git+ssh://git@github.com/web3-js/scrypt-shim.git#aafdadda13e660e25e1c525d1f5b2443f5eb1ebb"
   "version" "0.1.0"
   dependencies:
