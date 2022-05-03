@@ -70,6 +70,7 @@ function getClientEnvironment(publicUrl) {
         GAS_PRICE: process.env.GAS_PRICE,
         BTC_NODE_URL: process.env.BTC_NODE_URL,
         ONE_BTC_CONTRACT_ADDRESS: process.env.ONE_BTC_CONTRACT_ADDRESS,
+        STAKING_CONTRACT_ADDRESS: process.env.STAKING_CONTRACT_ADDRESS,
 
         BACKEND_URL: process.env.BACKEND_URL,
         BTC_WAIT_CONFIRMATIONS_COUNT: process.env.BTC_WAIT_CONFIRMATIONS_COUNT,

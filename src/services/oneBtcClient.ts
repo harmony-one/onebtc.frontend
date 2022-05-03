@@ -2,6 +2,7 @@ import * as onebtcSdk from 'onebtc.sdk';
 import { OneBTCClientWeb3 } from 'onebtc.sdk/lib/blockchain/hmy/OneBTCClientWeb3';
 import { OneBTCClientHmy } from 'onebtc.sdk/lib/blockchain/hmy/OneBTCClientHmy';
 import { dashboardClient } from '../modules/dashboard/dashboardClient';
+import { config } from '../config';
 
 interface Clients {
   metamask: OneBTCClientWeb3 | null;
@@ -26,7 +27,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
       nodeURL: dashboardConfig.relayerClient.hmyNodeUrl,
       btcNodeUrl: dashboardConfig.relayerClient.btcNodeUrl,
       contractAddress: dashboardConfig.mainEvents.contractAddress,
-      rewardContractAddress: '0x2bB7642EcbEC83Aa4D5B16A15AB8711E21c74005',
+      stakingContractAddress: config.harmony.stakingContractAddress,
       chainId: 2,
       gasLimit: 6721900,
     });
@@ -38,7 +39,7 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
       nodeURL: dashboardConfig.relayerClient.hmyNodeUrl,
       btcNodeUrl: dashboardConfig.relayerClient.btcNodeUrl,
       contractAddress: dashboardConfig.mainEvents.contractAddress,
-      rewardContractAddress: '0x2bB7642EcbEC83Aa4D5B16A15AB8711E21c74005',
+      stakingContractAddress: config.harmony.stakingContractAddress,
       chainId: 2,
       gasLimit: 6721900,
     });

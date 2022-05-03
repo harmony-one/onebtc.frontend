@@ -22,6 +22,7 @@ interface Config {
     nodeUrl: string;
     dashboardUrl: string;
     oneBtcContract: string;
+    stakingContractAddress: string;
     explorer: {
       transaction: string;
       address: string;
@@ -71,6 +72,7 @@ export const config: Config = {
   harmony: {
     nodeUrl: process.env.HMY_NODE_URL,
     oneBtcContract: process.env.ONE_BTC_CONTRACT_ADDRESS,
+    stakingContractAddress: process.env.STAKING_CONTRACT_ADDRESS,
     dashboardUrl: getDashboardUrl(isVaultApp),
     explorer: {
       transaction: process.env.HMY_EXPLORER_TX,

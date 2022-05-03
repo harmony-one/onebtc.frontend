@@ -9681,10 +9681,10 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
   dependencies:
     wrappy "1"
 
-onebtc.sdk@1.1.20:
-  version "1.1.20"
-  resolved "https://registry.yarnpkg.com/onebtc.sdk/-/onebtc.sdk-1.1.20.tgz#c637e44ea2f1324c4d6c5036677c26eb1070bf1f"
-  integrity sha512-5+6ZanSclItEQ8ur0KQAxx4zvzPK+5K4dxM76Eb1OSHnxxe2k/YZcIYArgiQqgc99vfexfsfBszN/hR2EWORkA==
+onebtc.sdk@1.1.21:
+  version "1.1.21"
+  resolved "https://registry.yarnpkg.com/onebtc.sdk/-/onebtc.sdk-1.1.21.tgz#0df01701b8c8ba8ee0042bdef75fa35a8efbdf62"
+  integrity sha512-94O9IapQH1hRQ9YvvrrnSV/Ax8CeviZJK2haaIxbs302WSWmww4zirrHx4qzcG1wvgW6dlYRNHmTwL4NmEJxIQ==
   dependencies:
     "@harmony-js/core" "^0.1.55"
     "@summa-tx/bitcoin-spv-js-clients" "^0.1.4"
