@@ -12,17 +12,19 @@ import { fromWei } from 'web3-utils';
 import { Refresh } from 'grommet-icons';
 import { Button as GrommetButton, Spinner } from 'grommet';
 import { StakeInfo } from '../../../../stores/VaultStakeStore';
+import { calcStakingARP, calcDaysLeftForReward } from 'utils/rewardHelpers';
 
 interface Props {
   vaultId: string;
 }
 
 const defaultValue: StakeInfo = {
-  lockStartAt: '0',
-  collateralDebt: '0',
-  lockPeriod: '0',
-  lockExpireAt: '0',
-  accClaimableRewards: '0',
+  lockStartAt: 0,
+  collateralDebt: 0,
+  lockPeriod: 0,
+  lockExpireAt: 0,
+  accClaimableRewards: 0,
+  rewardClaimAt: 0,
 };
 
 export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
@@ -60,8 +62,9 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
     return null;
   }
 
-  const hasStaking = !!Number(stakeInfo.lockExpireAt);
-  const stakedAmount = Number(stakeInfo.lockExpireAt) ? vault.collateral : '0';
+  const hasStaking = !!stakeInfo.lockExpireAt;
+  const stakedAmount = stakeInfo.lockExpireAt ? vault.collateral : 0;
+  const daysLeft = calcDaysLeftForReward(stakeInfo.rewardClaimAt);
 
   return (
     <Box gap="xsmall" direction="column">
@@ -70,12 +73,17 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
           <Box gap="xxsmall">
             <Text size="small">Total Staked:</Text>
             <Text size="large" bold>
-              {formatWithTwoDecimals(fromWei(stakedAmount))} ONE
+              {formatWithTwoDecimals(fromWei(String(stakedAmount)))} ONE
             </Text>
             {hasStaking && (
-              <Text size="small">
-                Until: {dateFormat(Number(stakeInfo.lockExpireAt) * 1000)}
-              </Text>
+              <>
+                <Text size="small">
+                  Until: {dateFormat(stakeInfo.lockExpireAt)}{' '}
+                </Text>
+                <Text size="small">
+                  APR: {calcStakingARP(stakeInfo.lockPeriod)}%
+                </Text>
+              </>
             )}
           </Box>
         </Box>
@@ -86,7 +94,7 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
             <Box direction="row" gap="small">
               <Text size="large" bold>
                 {formatWithEightDecimals(
-                  fromWei(stakeInfo.accClaimableRewards),
+                  fromWei(String(stakeInfo.accClaimableRewards)),
                 )}{' '}
                 ONE
               </Text>
@@ -104,6 +112,7 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
               </Box>
             </Box>
           </Box>
+          {hasStaking && <Text size="small">Days left: {daysLeft}</Text>}
         </Box>
       </Box>
 
@@ -122,7 +131,7 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
         <Box fill="horizontal">
           <Button
             bgColor="#00ADE8"
-            disabled={!Number(stakeInfo.accClaimableRewards)}
+            disabled={!stakeInfo.accClaimableRewards}
             onClick={handleClickRewards}
             transparent={false}
           >
@@ -130,18 +139,6 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
           </Button>
         </Box>
       </Box>
-
-      {/*<Box direction="row" gap="xsmall" justify="center">*/}
-      {/*  <Button bgColor="#00ADE8" onClick={handleClick} transparent={false}>*/}
-      {/*    3 months*/}
-      {/*  </Button>*/}
-      {/*  <Button bgColor="#00ADE8" onClick={handleClick} transparent={false}>*/}
-      {/*    6 months*/}
-      {/*  </Button>*/}
-      {/*  <Button bgColor="#00ADE8" onClick={handleClick} transparent={false}>*/}
-      {/*    12 months*/}
-      {/*  </Button>*/}
-      {/*</Box>*/}
     </Box>
   );
 });

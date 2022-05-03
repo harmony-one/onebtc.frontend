@@ -3,11 +3,21 @@ import { EntityStore } from './core/EntityStore';
 import { getOneBTCClient } from '../services/oneBtcClient';
 
 export interface StakeInfo {
+  lockPeriod: number;
+  lockStartAt: number;
+  lockExpireAt: number;
+  collateralDebt: number;
+  accClaimableRewards: number;
+  rewardClaimAt: number;
+}
+
+export interface OriginalStakeInfo {
   lockPeriod: string;
   lockStartAt: string;
   lockExpireAt: string;
   collateralDebt: string;
   accClaimableRewards: string;
+  rewardClaimAt: string;
 }
 
 export class VaultStakeStore extends EntityStore<StakeInfo> {
@@ -25,10 +35,21 @@ export class VaultStakeStore extends EntityStore<StakeInfo> {
         return null;
       }
 
-      this.entityMap[vaultId] = vaultStakeInfo;
+      this.entityMap[vaultId] = this.parseStakeInfo(vaultStakeInfo);
     } catch (err) {
       console.error('### err', err);
       return null;
     }
+  }
+
+  private parseStakeInfo(info: OriginalStakeInfo): StakeInfo {
+    return {
+      lockPeriod: Number(info.lockPeriod),
+      lockStartAt: Number(info.lockStartAt) * 1000,
+      lockExpireAt: Number(info.lockExpireAt) * 1000,
+      collateralDebt: Number(info.collateralDebt),
+      accClaimableRewards: Number(info.accClaimableRewards),
+      rewardClaimAt: Number(info.rewardClaimAt) * 1000,
+    };
   }
 }

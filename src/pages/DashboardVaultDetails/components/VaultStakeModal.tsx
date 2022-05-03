@@ -5,6 +5,7 @@ import { Button, Divider, Text } from '../../../components/Base';
 import { ModalHeader } from '../../../components/ActionModals/components/ModalHeader';
 import styled from 'styled-components';
 import { useStores } from '../../../stores';
+import { calcStakingARP, STAKING_PERIODS } from 'utils/rewardHelpers';
 
 const LockPeriod = styled(Box)<{ selected: boolean }>`
   background-color: ${props => (props.selected ? '#00ade8' : 'none')};
@@ -19,10 +20,42 @@ const LockPeriod = styled(Box)<{ selected: boolean }>`
     props.selected ? '2px solid #00ade8' : '2px solid #00ade8'};
 `;
 
+interface LockPeriodProps {
+  onClick: () => void;
+  selected: boolean;
+  period: number;
+  currentPeriod: number;
+  extend: boolean;
+}
+
+const LockPeriodBlock: React.FC<LockPeriodProps> = ({
+  onClick,
+  selected,
+  currentPeriod,
+  period,
+  extend,
+}) => {
+  return (
+    <LockPeriod
+      direction="column"
+      gap="xsmall"
+      onClick={onClick}
+      selected={selected}
+    >
+      <Text size="xlarge" align="center" color="inherit" bold>
+        {calcStakingARP(currentPeriod, period)}%
+      </Text>
+      <Text size="small" align="center" color="inherit" bold>
+        {extend ? '+' : ''} {period} months
+      </Text>
+    </LockPeriod>
+  );
+};
+
 export const VaultStakeModal: React.FC<TActionModalProps<{
   vaultId;
 }>> = props => {
-  const [period, setPeriod] = useState<3 | 6 | 12>(3);
+  const [period, setPeriod] = useState<STAKING_PERIODS>(STAKING_PERIODS.THREE);
 
   const { dashboardVaultDetailsStore, vaultStakeStore } = useStores();
 
@@ -41,24 +74,11 @@ export const VaultStakeModal: React.FC<TActionModalProps<{
   ]);
 
   const stakeInfo = vaultStakeStore.getEntity(props.actionData.data.vaultId);
-
-  const lockPeriod = stakeInfo && Number(stakeInfo.lockPeriod);
+  const currentLockPeriod = stakeInfo && stakeInfo.lockPeriod;
+  const extendMode = currentLockPeriod > 0;
 
   const checkLockPeriod = (lockPeriod: number, extendPeriod: number) => {
-    return lockPeriod + extendPeriod <= 12;
-  };
-
-  const calcAPY = (lockPeriod: number, extendPeriod: number) => {
-    const newPeriod = lockPeriod + extendPeriod;
-    if (newPeriod === 12) {
-      return 15;
-    }
-
-    if (newPeriod >= 6) {
-      return 10;
-    }
-
-    return 5;
+    return lockPeriod + extendPeriod <= STAKING_PERIODS.TWELVE;
   };
 
   return (
@@ -74,65 +94,48 @@ export const VaultStakeModal: React.FC<TActionModalProps<{
         allowed.
       </Text>
 
-      {lockPeriod > 0 && (
-        <Text>Current staking period: {lockPeriod} months</Text>
+      {currentLockPeriod > 0 && (
+        <Text>Current staking period: {currentLockPeriod} months</Text>
       )}
 
       <Box direction="row" gap="medium">
-        {checkLockPeriod(lockPeriod, 3) && (
-          <LockPeriod
-            direction="column"
-            gap="xsmall"
-            onClick={() => setPeriod(3)}
-            selected={period === 3}
-          >
-            <Text size="xlarge" align="center" color="inherit" bold>
-              {calcAPY(lockPeriod, 3)}%
-            </Text>
-            <Text size="small" align="center" color="inherit" bold>
-              3 months
-            </Text>
-          </LockPeriod>
+        {checkLockPeriod(currentLockPeriod, STAKING_PERIODS.THREE) && (
+          <LockPeriodBlock
+            extend={extendMode}
+            selected={period === STAKING_PERIODS.THREE}
+            onClick={() => setPeriod(STAKING_PERIODS.THREE)}
+            period={STAKING_PERIODS.THREE}
+            currentPeriod={currentLockPeriod}
+          />
         )}
-        {checkLockPeriod(lockPeriod, 6) && (
-          <LockPeriod
-            direction="column"
-            gap="xsmall"
-            onClick={() => setPeriod(6)}
-            selected={period === 6}
-          >
-            <Text size="xlarge" align="center" color="inherit" bold>
-              {calcAPY(lockPeriod, 6)}%
-            </Text>
-            <Text size="small" align="center" color="inherit" bold>
-              6 months
-            </Text>
-          </LockPeriod>
+        {checkLockPeriod(currentLockPeriod, STAKING_PERIODS.SIX) && (
+          <LockPeriodBlock
+            extend={extendMode}
+            selected={period === STAKING_PERIODS.SIX}
+            onClick={() => setPeriod(STAKING_PERIODS.SIX)}
+            period={STAKING_PERIODS.SIX}
+            currentPeriod={currentLockPeriod}
+          />
         )}
-        {checkLockPeriod(lockPeriod, 12) && (
-          <LockPeriod
-            direction="column"
-            gap="xsmall"
-            onClick={() => setPeriod(12)}
-            selected={period === 12}
-          >
-            <Text size="xlarge" align="center" color="inherit" bold>
-              {calcAPY(lockPeriod, 12)}%
-            </Text>
-            <Text size="small" align="center" color="inherit" bold>
-              12 months
-            </Text>
-          </LockPeriod>
+        {checkLockPeriod(currentLockPeriod, STAKING_PERIODS.TWELVE) && (
+          <LockPeriodBlock
+            extend={extendMode}
+            selected={period === STAKING_PERIODS.TWELVE}
+            onClick={() => setPeriod(STAKING_PERIODS.TWELVE)}
+            period={STAKING_PERIODS.TWELVE}
+            currentPeriod={currentLockPeriod}
+          />
         )}
       </Box>
 
       <Box direction="row" justify="end">
-        <Button disabled={lockPeriod >= 12} onClick={handleClickStake}>
+        <Button
+          disabled={currentLockPeriod >= STAKING_PERIODS.TWELVE}
+          onClick={handleClickStake}
+        >
           Stake
         </Button>
       </Box>
-
-      {/*<Text bold>You will receive {(200000 / 100) * Number(period)} ONE</Text>*/}
     </Box>
   );
 };
