@@ -8,6 +8,7 @@ import logger from '../../modules/logger';
 import { VaultStakeModal } from './components/VaultStakeModal';
 import { VaultRewardsModal } from './components/VaultRewardsModal';
 import { StakeConfirmModal } from './components/StakeConfirmModal';
+import { RewardConfirmModal } from './components/RewardConfirmModal';
 
 const log = logger.module('Vault');
 
@@ -64,7 +65,7 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
       initData: {
         vaultId: vaultId,
       },
-      applyText: 'Continue',
+      applyText: '',
       closeText: '',
       noValidation: true,
       width: '520px',
@@ -177,18 +178,64 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
       uiTx.setStatusWaitingSignIn();
 
-      const result = await hmyClient.extendVaultLockPeriod(
-        vaultId,
-        period,
-        txHash => {
-          uiTx.setTxHash(txHash);
-          uiTx.setStatusProgress();
-        },
-      );
+      await hmyClient.extendVaultLockPeriod(vaultId, period, txHash => {
+        uiTx.setTxHash(txHash);
+        uiTx.setStatusProgress();
+      });
 
       await this.stores.vaultStakeStore.loadVault(vaultId);
 
       this.stores.actionModals.open(StakeConfirmModal, {
+        initData: {
+          // total: utils.fromWei(amount),
+          // txHash: result.transactionHash,
+        },
+        applyText: '',
+        closeText: '',
+        noValidation: true,
+        width: '320px',
+        showOther: true,
+        onApply: () => {
+          return Promise.resolve();
+        },
+      });
+      this.status = 'success';
+      uiTx.hideModal();
+      uiTx.setStatusSuccess();
+    } catch (error) {
+      log.error('Error Withdraw Collateral', { error });
+      this.status = 'error';
+      uiTx.setError(error);
+      uiTx.setStatusFail();
+    }
+  }
+
+  @action.bound
+  public async claimRewards(vaultId: string, type: 'claim' | 'stake') {
+    const uiTx = this.stores.uiTransactionsStore.create();
+    uiTx.setStatusProgress();
+    uiTx.showModal();
+
+    try {
+      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
+
+      uiTx.setStatusWaitingSignIn();
+
+      if (type === 'claim') {
+        await hmyClient.claimRewards(vaultId, txHash => {
+          uiTx.setTxHash(txHash);
+          uiTx.setStatusProgress();
+        });
+      } else {
+        await hmyClient.claimRewardsAndLock(vaultId, txHash => {
+          uiTx.setTxHash(txHash);
+          uiTx.setStatusProgress();
+        });
+      }
+
+      await this.stores.vaultStakeStore.loadVault(vaultId);
+
+      this.stores.actionModals.open(RewardConfirmModal, {
         initData: {
           // total: utils.fromWei(amount),
           // txHash: result.transactionHash,

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { TActionModalProps } from '../../../components/ActionModals';
 import { Box } from 'grommet';
-import { VaultActions } from './VaultActions/VaultActions';
 import { Button, Divider, Text } from '../../../components/Base';
 import { ModalHeader } from '../../../components/ActionModals/components/ModalHeader';
 import styled from 'styled-components';
+import { useStores } from '../../../stores';
 
 const ActionType = styled(Box)<{ selected: boolean }>`
   background-color: ${props => (props.selected ? '#00ade8' : 'none')};
@@ -23,6 +23,22 @@ export const VaultRewardsModal: React.FC<TActionModalProps<{
   vaultId;
 }>> = props => {
   const [option, setOption] = useState<'claim' | 'stake'>('claim');
+
+  const { dashboardVaultDetailsStore } = useStores();
+
+  const handleContinue = useCallback(() => {
+    props.config.options.onApply();
+    dashboardVaultDetailsStore.claimRewards(
+      props.actionData.data.vaultId,
+      option,
+    );
+  }, [
+    dashboardVaultDetailsStore,
+    option,
+    props.actionData.data.vaultId,
+    props.config.options,
+  ]);
+
   return (
     <Box pad="large" gap="medium">
       <ModalHeader title="Rewards" onClose={props.config.options.onClose} />
@@ -56,8 +72,9 @@ export const VaultRewardsModal: React.FC<TActionModalProps<{
           </Text>
         </ActionType>
       </Box>
-
-      <Text bold>You will receive 100 ONE</Text>
+      <Box direction="row" justify="end">
+        <Button onClick={handleContinue}>Continue</Button>
+      </Box>
     </Box>
   );
 };
