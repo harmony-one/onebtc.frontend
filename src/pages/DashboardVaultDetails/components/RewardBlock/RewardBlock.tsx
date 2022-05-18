@@ -2,11 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Box } from 'grommet';
 import { Divider, Button, Text } from 'components/Base';
 import { observer } from 'mobx-react';
-import {
-  dateFormat,
-  formatWithEightDecimals,
-  formatWithTwoDecimals,
-} from '../../../../utils';
+import { dateFormat, formatWithTwoDecimals } from '../../../../utils';
 import { useStores } from '../../../../stores';
 import { fromWei } from 'web3-utils';
 import { Refresh } from 'grommet-icons';
@@ -20,10 +16,10 @@ interface Props {
 
 const defaultValue: StakeInfo = {
   lockStartAt: 0,
-  collateralDebt: 0,
+  collateralDebt: '0',
   lockPeriod: 0,
   lockExpireAt: 0,
-  accClaimableRewards: 0,
+  accClaimableRewards: '0',
   rewardClaimAt: 0,
 };
 
@@ -93,9 +89,7 @@ export const RewardBlock: React.FC<Props> = observer(({ vaultId }) => {
             <Text size="small">Rewards:</Text>
             <Box direction="row" gap="small">
               <Text size="large" bold>
-                {formatWithEightDecimals(
-                  fromWei(String(stakeInfo.accClaimableRewards)),
-                )}{' '}
+                {formatWithTwoDecimals(fromWei(stakeInfo.accClaimableRewards))}{' '}
                 ONE
               </Text>
               <Box>

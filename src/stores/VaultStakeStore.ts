@@ -6,8 +6,8 @@ export interface StakeInfo {
   lockPeriod: number;
   lockStartAt: number;
   lockExpireAt: number;
-  collateralDebt: number;
-  accClaimableRewards: number;
+  collateralDebt: string;
+  accClaimableRewards: string;
   rewardClaimAt: number;
 }
 
@@ -47,8 +47,8 @@ export class VaultStakeStore extends EntityStore<StakeInfo> {
       lockPeriod: Number(info.lockPeriod),
       lockStartAt: Number(info.lockStartAt) * 1000,
       lockExpireAt: Number(info.lockExpireAt) * 1000,
-      collateralDebt: Number(info.collateralDebt),
-      accClaimableRewards: Number(info.accClaimableRewards),
+      collateralDebt: info.collateralDebt,
+      accClaimableRewards: info.accClaimableRewards,
       rewardClaimAt: Number(info.rewardClaimAt) * 1000,
     };
   }

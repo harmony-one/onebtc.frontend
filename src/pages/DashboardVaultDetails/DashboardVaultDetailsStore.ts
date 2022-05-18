@@ -263,9 +263,22 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
   @action.bound
   public async updateVaultAccClaimableRewards(vaultId: string) {
     try {
+      const uiTx = this.stores.uiTransactionsStore.create();
+      uiTx.setStatusProgress();
+      uiTx.showModal();
+
       const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
 
-      await hmyClient.updateVaultAccClaimableRewards(vaultId);
+      uiTx.setStatusWaitingSignIn();
+
+      await hmyClient.updateVaultAccClaimableRewards(vaultId, txHash => {
+        uiTx.setTxHash(txHash);
+        uiTx.setStatusProgress();
+      });
+
+      uiTx.setStatusSuccess();
+      uiTx.hideModal();
+
       await this.stores.vaultStakeStore.loadVault(vaultId);
     } catch (error) {
       console.log('### error', error);
