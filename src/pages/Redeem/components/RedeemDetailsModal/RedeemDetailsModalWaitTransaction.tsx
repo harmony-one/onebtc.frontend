@@ -33,13 +33,13 @@ export const RedeemDetailsModalWaitTransaction: React.FC<{
         </SpinnerContainer>
       </Box>
       <Box>
-        <Text>BTC Transaction: {cutText(redeemInfo.btcTx.hash)}</Text>
+        <Text>BTC Transaction:</Text>
       </Box>
       <Box>
         <LinkBitcoin
           hash={redeemInfo.btcTx.hash}
           type="tx"
-          text="View on explorer"
+          text={redeemInfo.btcTx.hash}
         />
       </Box>
     </Box>

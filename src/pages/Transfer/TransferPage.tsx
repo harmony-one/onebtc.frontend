@@ -1,29 +1,23 @@
 import * as React from 'react';
 import { Box } from 'grommet';
-import * as styles from './TransferPageStyles.styl';
 
 import { NavigateTabs } from '../../components/NavigateTabs';
 import TransferForm from './components/TransferForm/TransferForm';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
+import { BridgeContentContainer } from '../../components/BridgeContentContainer';
+import { BridgeFormsSurface } from '../../components/BridgeFormsSurface';
 
 export const TransferPage = () => {
   return (
     <BaseLayout>
       <Box align="center">
-        <Box align="center" className={styles.contentContainer}>
+        <BridgeContentContainer>
           <NavigateTabs />
 
-          <Box
-            fill="horizontal"
-            direction="column"
-            align="center"
-            justify="center"
-            pad="medium"
-            className={styles.issueContainer}
-          >
+          <BridgeFormsSurface>
             <TransferForm />
-          </Box>
-        </Box>
+          </BridgeFormsSurface>
+        </BridgeContentContainer>
       </Box>
     </BaseLayout>
   );

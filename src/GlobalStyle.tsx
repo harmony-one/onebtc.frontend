@@ -6,7 +6,7 @@ export const GlobalStyle = createGlobalStyle<any>`
   }
   
   a {
-    color: #47b8eb;
+    color: #1F5AE2;
     text-decoration: none;
   }
   

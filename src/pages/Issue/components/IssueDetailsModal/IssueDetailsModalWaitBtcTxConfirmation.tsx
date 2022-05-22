@@ -33,13 +33,13 @@ export const IssueDetailsModalWaitBtcTxConfirmation: React.FC<Props> = ({
         </SpinnerContainer>
       </Box>
       <Box>
-        <Text>BTC Transaction: {cutText(issueInfo.btcTx.hash)}</Text>
+        <Text>BTC Transaction:</Text>
       </Box>
       <Box>
         <LinkBitcoin
           hash={issueInfo.btcTx.hash}
           type="tx"
-          text="View on explorer"
+          text={issueInfo.btcTx.hash}
         />
       </Box>
       <Box>

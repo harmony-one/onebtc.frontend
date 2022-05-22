@@ -35,39 +35,39 @@ export const SidebarMenu: React.FC<Props> = observer(() => {
         label="Bridge"
         active={router.isBelongsTo(ROUTE_NAMES.BRIDGE, routeName)}
         onClick={navigateToRoute(routes.issue)}
-        icon={<PowerCycle />}
+        icon={<PowerCycle color="white" />}
       />
       <SideBarButton
         label="My transactions"
         active={router.isBelongsTo(ROUTE_NAMES.TRANSACTIONS, routeName)}
         onClick={navigateToRoute(routes.transactions)}
-        icon={<Iteration />}
+        icon={<Iteration color="white" />}
       />
       {hasVault && (
         <SideBarButton
           label="My vault"
           active={router.isBelongsTo(ROUTE_NAMES.MY_VAULT, routeName)}
           onClick={navigateToRoute(routes.myVault)}
-          icon={<Cube />}
+          icon={<Cube color="white" />}
         />
       )}
       <SideBarButton
         label="Dashboard"
         active={router.isBelongsTo(ROUTE_NAMES.DASHBOARD, routeName)}
         onClick={navigateToRoute(routes.dashboard)}
-        icon={<BarChart />}
+        icon={<BarChart color="white" />}
       />
       <SideBarButton
         label="Help"
         active={router.isBelongsTo(ROUTE_NAMES.HELP, routeName)}
         onClick={navigateToRoute(routes.help)}
-        icon={<StatusUnknown />}
+        icon={<StatusUnknown color="white" />}
       />
       <SideBarButton
         label="Support"
         active={router.isBelongsTo(ROUTE_NAMES.SUPPORT, routeName)}
         onClick={navigateToRoute(routes.support)}
-        icon={<Support />}
+        icon={<Support color="white" />}
       />
     </Box>
   );

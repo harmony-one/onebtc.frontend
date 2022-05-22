@@ -262,8 +262,8 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
 
   @action.bound
   public async updateVaultAccClaimableRewards(vaultId: string) {
+    const uiTx = this.stores.uiTransactionsStore.create();
     try {
-      const uiTx = this.stores.uiTransactionsStore.create();
       uiTx.setStatusProgress();
       uiTx.showModal();
 
@@ -282,6 +282,10 @@ export class DashboardVaultDetailsStore extends StoreConstructor {
       await this.stores.vaultStakeStore.loadVault(vaultId);
     } catch (error) {
       console.log('### error', error);
+      log.error('Error update claim rewards', { error });
+      this.status = 'error';
+      uiTx.setError(error);
+      uiTx.setStatusFail();
     }
   }
 }

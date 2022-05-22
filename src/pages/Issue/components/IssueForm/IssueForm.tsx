@@ -123,7 +123,7 @@ export const IssueForm: React.FC<Props> = observer(() => {
             </Text>
             <DividerVertical />
             <InputButton onClick={handleMax}>
-              <Text color="inherit">MAX</Text>
+              <Text color="Link">MAX</Text>
             </InputButton>
             <DividerVertical />
             <Text bold>BTC</Text>
@@ -220,7 +220,6 @@ export const IssueForm: React.FC<Props> = observer(() => {
 
       <Box direction="row" align="center" gap="small">
         <Button
-          bgColor="#00ADE8"
           onClick={handleSubmit}
           transparent={false}
           disabled={isFormDisabled || issuePageStore.status === 'pending'}

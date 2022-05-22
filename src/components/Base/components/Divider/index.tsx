@@ -1,26 +1,39 @@
 import React from 'react';
-import cn from 'classnames';
-import * as styles from './styles.styl';
+import styled from 'styled-components';
 
 type Props = {
   colorful?: boolean;
   fullwidth?: boolean;
 };
 
-export const Divider: React.FC<Props> = ({
-  colorful = false,
-  fullwidth = false,
-}) => {
-  const classes = cn(styles.common, {
-    [styles.colorful]: colorful,
-    [styles.fullwidth]: fullwidth,
-  });
-  return <div className={classes} />;
+const DividerBase = styled.div`
+  height: 1px;
+  width: 100%;
+  background-color: ${props => props.theme.divider.color};
+`;
+
+const DividerColorful = styled(DividerBase)`
+  height: 2px;
+
+  background: rgb(0, 173, 232);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 173, 232, 1) 0%,
+    rgba(0, 232, 162, 1) 100%
+  );
+`;
+
+DividerColorful.displayName = 'DividerColorful';
+
+export const Divider: React.FC<Props> = ({ colorful = false }) => {
+  if (colorful) {
+    return <DividerColorful />;
+  }
+  return <DividerBase />;
 };
 
-interface DividerVerticalProps {}
+export const DividerVertical = styled.div`
+  border-left: 1px solid ${props => props.theme.divider.color};
+`;
 
-export const DividerVertical: React.FC<DividerVerticalProps> = () => {
-  const classes = cn(styles.verticalCommon);
-  return <div className={classes} />;
-};
+DividerVertical.displayName = 'DividerVertical';

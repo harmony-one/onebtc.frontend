@@ -14,7 +14,7 @@ Basic400 = #D7D7D7;
 :global(.rc-table) {
   th, td {
     border: none;
-    border-bottom: 1px solid Basic200;
+    border-bottom: 1px solid #1B1B1C;
   }
 
   td {
@@ -23,18 +23,27 @@ Basic400 = #D7D7D7;
     height 70px
   }
 
+  tbody {
+    tr {
+      td {
+        background-color: #1B1B1C;
+      }
+    }
+  }
+
   thead {
     th {
-      background-color: white;
-      border-top: 1px solid Basic200;
-      border-bottom: 1px solid Basic200;
+      background-color: #1B1B1C;
+      border-top: 1px solid #1B1B1C;
+      border-bottom: 1px solid #1B1B1C;
       text-align: left;
+      color: #777777;
     }
   }
 }
 
 :global(.rc-table-content) {
-  border: 1px solid Basic200;
+  border: 1px solid #1B1B1C;
   border-top: none;
   border-bottom: none;
 }

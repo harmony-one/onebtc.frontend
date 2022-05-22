@@ -64,7 +64,7 @@ export const IssueDetailsModalTransaction: React.FC<Props> = ({ issueId }) => {
       </Box>
       <Box direction="column" width="100%" align="start" justify="between">
         <Box>
-          <Text>Vault Account</Text>
+          <Text>Vault Account:</Text>
         </Box>
         <Box>
           <Text bold>

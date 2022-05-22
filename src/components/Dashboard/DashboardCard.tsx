@@ -10,7 +10,7 @@ export const DashboardCard: React.FC<Props> = ({
   height = 'medium',
 }) => {
   return (
-    <Card background="white" width={width} height={height} pad={pad}>
+    <Card width={width} height={height} pad={pad}>
       {children}
     </Card>
   );

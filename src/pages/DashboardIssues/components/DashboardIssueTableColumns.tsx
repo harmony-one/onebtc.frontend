@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from '../../../components/Base';
 import { IColumn } from '../../../components/Table';
 import { IIssue } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import cn from 'classnames';
@@ -77,7 +78,7 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
       const fee = utils.toBN(issue.fee);
       const totalAmount = amount.add(fee).toString();
       const totalBtcAmount = satoshiToBitcoin(totalAmount);
-      return <div>{formatWithEightDecimals(totalBtcAmount)} 1BTC</div>;
+      return <Text>{formatWithEightDecimals(totalBtcAmount)} 1BTC</Text>;
     },
   },
   {
@@ -86,7 +87,7 @@ export const DashboardIssueTableColumns: IColumn<IIssue>[] = [
     className: s.column,
     key: 'id',
     render: value => {
-      return <div>{dateTimeAgoFormat(Number(value.opentime) * 1000)}</div>;
+      return <Text>{dateTimeAgoFormat(Number(value.opentime) * 1000)}</Text>;
     },
   },
 ];

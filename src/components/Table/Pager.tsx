@@ -25,7 +25,11 @@ const PagerWrap = styled.div<any>`
   display: flex;
 `;
 
-function generatePageList(current: number, total: number, offset: number): IPageClickerProps[] {
+function generatePageList(
+  current: number,
+  total: number,
+  offset: number,
+): IPageClickerProps[] {
   let pageList: IPageClickerProps[] = [];
 
   if (current < 1) {
@@ -118,7 +122,12 @@ export const Pager: React.FunctionComponent<IPagerProps> = props => {
   return (
     <PagerWrap>
       {pageList.map(page => (
-        <PagerCell key={page.value} {...page} activeColor={activeColor} onClick={goToPage} />
+        <PagerCell
+          key={page.value}
+          {...page}
+          activeColor={activeColor}
+          onClick={goToPage}
+        />
       ))}
     </PagerWrap>
   );
@@ -133,22 +142,25 @@ function getBgColor(props: any) {
     return theme.palette[activeColor] || theme.palette.Purple500 || activeColor;
   }
 
-  return 'white';
+  return 'transparent';
 }
 
 const StyledPageCell = styled.div<any>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 32px;
-  width: 32px;
-  border-radius: 4px;
-  border: ${props => `1px solid ${props.type === 'dots' ? 'transparent' : '#e7ecf7'}`};
+  height: 46px;
+  width: 46px;
+  border-radius: 15px;
+  border: ${props =>
+    `4px solid ${
+      props.type !== 'active' ? 'transparent' : props.theme.palette.Basic200
+    }`};
   background-color: ${getBgColor};
-  color: ${props => (props.type === 'active' ? 'white' : 'black')};
+  color: ${props => (props.type === 'active' ? 'black' : 'white')};
   cursor: ${props => (props.type === 'default' ? 'pointer' : 'auto')};
-  margin-right: 8px;
   font-size: 14px;
+  font-weight: bold;
 `;
 
 const PagerCell: React.FunctionComponent<IPageClickerProps> = props => {

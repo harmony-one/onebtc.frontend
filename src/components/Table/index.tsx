@@ -8,6 +8,7 @@ import { CustomPagination } from './CustomPagination';
 import { CustomHeader } from './CustomHeader';
 import styled from 'styled-components';
 import { isFilterApplied } from './utils/filters';
+import { Text } from '../Base';
 
 import './styles.styl';
 import { TableProps } from 'rc-table/es/Table';
@@ -20,8 +21,13 @@ const LoaderWrap = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: ${props => props.theme.tableLoaderBackground};
+  opacity: 0.6;
   z-index: 2;
+`;
+
+const StyledCard = styled(Card)`
+  background-color: ${props => props.theme.surfaceColor};
 `;
 
 export interface IColumn<P = any> {
@@ -129,19 +135,15 @@ export class Table extends React.Component<IProps> {
           const content = this.props.columns.map(column => {
             return (
               <Box direction="row">
-                {column.title}:&nbsp;{column.render(item, item)}
+                <Text>{column.title}</Text>:&nbsp;{column.render(item, item)}
               </Box>
             );
           });
 
           return (
-            <Card
-              pad="medium"
-              background="white"
-              onClick={() => onRowClicked(item, index)}
-            >
+            <StyledCard pad="medium" onClick={() => onRowClicked(item, index)}>
               {content}
-            </Card>
+            </StyledCard>
           );
         })}
       </Box>
@@ -197,7 +199,7 @@ export class Table extends React.Component<IProps> {
         onChange={config => {
           onChangeDataFlow({ paginationData: config });
         }}
-        activeColor="Blue600"
+        activeColor="Gray"
       />
     );
   }

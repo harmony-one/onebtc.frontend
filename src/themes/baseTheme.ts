@@ -22,8 +22,15 @@ export interface IPalette {
   Purple500: string;
 
   Blue: string;
+  Link: string;
+  TextColor: string;
+  BorderColor: string;
+  SurfaceColor: string;
   Red: string;
   Red500: string;
+  Gray: string;
+  Gray100: string;
+  Gray200: string;
 
   Orange500: string;
 
@@ -31,6 +38,7 @@ export interface IPalette {
 
   StandardBlack: string;
   StandardWhite: string;
+  StandardGray: string;
   Shadow: string;
   Background: string;
 
@@ -58,7 +66,15 @@ const palette: IPalette = {
   Purple600: '#3F398F',
   Purple500: '#4740A1',
 
-  Blue: '#0066B3',
+  Gray: '#C4C4C4',
+  Gray100: '#777777',
+  Gray200: '#575757',
+
+  Blue: '#1F5AE2',
+  Link: '#1F5AE2',
+  TextColor: '#E7ECF7',
+  BorderColor: '#E7ECF7',
+  SurfaceColor: '#1b1b1c',
 
   Red: '#F15A22',
   Red500: '#EB4D4B',
@@ -68,7 +84,8 @@ const palette: IPalette = {
   Green500: '#3DBE98',
 
   StandardBlack: '#000000',
-  StandardWhite: '#ffffff',
+  StandardWhite: '#E7ECF7',
+  StandardGray: '#1B1B1C',
 
   Shadow: 'rgba(115, 115, 146, 0.16)',
   Background: 'linear-gradient(171.96deg, #4460DC 0%, #3247A2 89.05%)',
@@ -93,22 +110,29 @@ export const baseTheme: any = {
   // Typography
   fontBase: 'Nunito',
   fontCode: 'monospace',
+  surfaceColor: '#1b1b1c',
 
   // Text colors
-  textColor: palette.BlackTxt,
-  titleColor: palette.Basic800,
+  textColor: palette.TextColor,
+  titleColor: palette.TextColor,
   textInverseColor: palette.Basic700,
 
   // Toolbar default and active colors
   barTextColor: 'white',
   barSelectedColor: 'black',
   barBg: '#9a9a9a',
+  borderColor: palette.BorderColor,
 
   // Form colors
   inputBg: 'white',
   inputBorder: '#D6D6D6',
   inputTextColor: 'black',
   inputBorderRadius: 4,
+  tableLoaderBackground: '#000000',
+
+  divider: {
+    color: '#c2c2c2',
+  },
 
   brandTitle: 'Bridge base theme',
   brandUrl: 'https://example.com',
@@ -140,7 +164,8 @@ export const baseTheme: any = {
   },
 
   select: {
-    background: palette.Basic100,
+    background: palette.StandardBlack,
+    borderRadius: '15px',
     icons: {
       color: palette.Basic700,
     },
@@ -221,7 +246,7 @@ export const baseTheme: any = {
   styled: {
     button: {
       padding: '16px',
-      border: `1px solid ${palette.Purple500}`,
+      border: `1px solid ${palette.Blue}`,
       fontSize: '16px',
     },
 
@@ -242,10 +267,10 @@ export const baseTheme: any = {
     },
 
     input: {
-      bgColor: 'white',
-      textColor: '#212D5E',
+      bgColor: '#1B1B1C',
+      textColor: '#FFFFFF',
       border: `1px solid ${palette.Basic200}`,
-      borderRadius: '4px',
+      borderRadius: '15px',
       disabledColor: palette.Basic300,
       minHeight: '45px',
       customDDSeparator: {
@@ -259,9 +284,9 @@ export const baseTheme: any = {
     },
 
     colors: {
-      colorPrimary: palette.Purple500,
+      colorPrimary: palette.Blue,
       colorSecondary: 'white',
-      buttonBgColor: '#1c2a5e',
+      buttonBgColor: '#1F5AE2',
       // buttonBgColor: '#03ade8',
       buttonHoverBgColor: '#03ade8',
       buttonColor: 'white',

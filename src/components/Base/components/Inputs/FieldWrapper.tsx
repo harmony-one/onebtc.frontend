@@ -1,4 +1,5 @@
-import { Box, Text } from 'grommet';
+import { Box } from 'grommet';
+import { Text } from 'components/Base';
 import * as React from 'react';
 import styled from 'styled-components';
 
@@ -52,7 +53,7 @@ export const FieldWrapper = (props: IFieldWrapperProps) => {
                   margin={{ bottom: '8px' }}
                   style={{
                     fontSize: '18px',
-                    color: '#212D5E',
+                    color: '#FFFFFF',
                     fontWeight: 'bold',
                   }}
                 >
@@ -66,23 +67,19 @@ export const FieldWrapper = (props: IFieldWrapperProps) => {
           {isRowLabel && (
             <Box direction="row" align="start">
               {children}
-              {label && (
-                <Text color="#9698a7" margin={{ top: '4px' }}>
-                  {label}
-                </Text>
-              )}
+              {label && <Text margin={{ top: '4px' }}>{label}</Text>}
             </Box>
           )}
           {help && (
             <Box margin={{ top: 'xsmall' }}>
-              <Text size="14px" color="#FF0000">
+              <Text size="small" color="#FF0000">
                 {help}
               </Text>
             </Box>
           )}
           {error && (
             <Box margin={{ top: 'xsmall' }}>
-              <Text size="14px" color="#FF0000">
+              <Text size="small" color="#FF0000">
                 {error}
               </Text>
             </Box>

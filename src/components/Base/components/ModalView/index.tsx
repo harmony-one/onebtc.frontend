@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import styled, { CSSProperties } from 'styled-components';
+import styled from 'styled-components';
 
 interface IWrapProps {
   position: 'flex-start' | 'center';
@@ -51,7 +51,7 @@ const ModalWrap = styled.div`
 const Modal = styled.div`
   position: relative;
   z-index: 4;
-  background-color: #fff;
+  background-color: #1b1b1c;
   box-sizing: border-box;
   border-radius: 4px;
   cursor: auto;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from '../../../components/Base';
 import { IColumn } from '../../../components/Table';
 import { IRedeem } from 'onebtc.sdk/lib/dashboard-api/interfaces';
 import cn from 'classnames';
@@ -73,7 +74,7 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     sortable: true,
     render: (value, redeem) => {
       const amountBtc = satoshiToBitcoin(redeem.amountBtc);
-      return <div>{formatWithTenDecimals(amountBtc)} BTC</div>;
+      return <Text>{formatWithTenDecimals(amountBtc)} BTC</Text>;
     },
   },
   {
@@ -82,7 +83,7 @@ export const DashboardRedeemsTableColumns: IColumn<IRedeem>[] = [
     className: s.column,
     key: 'id',
     render: (value: IRedeem) => {
-      return <div>{dateTimeAgoFormat(Number(value.opentime) * 1000)}</div>;
+      return <Text>{dateTimeAgoFormat(Number(value.opentime) * 1000)}</Text>;
     },
   },
 ];

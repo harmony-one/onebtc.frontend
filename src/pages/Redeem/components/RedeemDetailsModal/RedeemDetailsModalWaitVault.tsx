@@ -49,13 +49,13 @@ export const RedeemDetailsModalWaitVault: React.FC<{ redeemId: string }> = ({
       {redeemInfo.btcTx && (
         <>
           <Box>
-            <Text>BTC Transaction: {cutText(redeemInfo.btcTx.hash)}</Text>
+            <Text>BTC Transaction:</Text>
           </Box>
           <Box>
             <LinkBitcoin
-              type="tx"
               hash={redeemInfo.btcTx.hash}
-              text="View on explorer"
+              type="tx"
+              text={redeemInfo.btcTx.hash}
             />
           </Box>
         </>

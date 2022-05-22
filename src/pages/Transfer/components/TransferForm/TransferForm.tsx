@@ -74,7 +74,7 @@ export const TransferForm: React.FC<Props> = () => {
         rules={[isRequired]}
       />
 
-      <Box gap="small">
+      <Box gap="medium">
         <Divider colorful fullwidth />
         <Button
           bgColor="#00ADE8"

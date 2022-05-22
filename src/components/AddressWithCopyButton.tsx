@@ -3,10 +3,16 @@ import { Box } from 'grommet';
 import { Text } from './Base';
 import { ONE_SECOND } from '../constants/date';
 import { Button } from './Button/Button';
+import styled from 'styled-components';
 
 interface Props {
   address: string;
 }
+
+const AddressContainer = styled(Box)`
+  border-radius: 15px;
+  border: 1px solid ${props => props.theme.borderColor};
+`;
 
 export const AddressWithCopyButton: React.FC<Props> = ({ address }) => {
   const [progress, setProgress] = useState(false);
@@ -30,12 +36,11 @@ export const AddressWithCopyButton: React.FC<Props> = ({ address }) => {
       align="center"
       gap="xsmall"
     >
-      <Box
+      <AddressContainer
         direction="row"
         justify="center"
         round="xxsmall"
         overflow="hidden"
-        border="all"
         width="100%"
       >
         <Box
@@ -56,7 +61,7 @@ export const AddressWithCopyButton: React.FC<Props> = ({ address }) => {
             Copy
           </Button>
         </Box>
-      </Box>
+      </AddressContainer>
       {/*<Button isLoading={progress} onClick={handleCopy}>*/}
       {/*  Copy*/}
       {/*</Button>*/}

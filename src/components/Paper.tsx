@@ -1,18 +1,23 @@
 import React from 'react';
 import { Box, BoxProps } from 'grommet';
-import cn from 'classnames';
-import * as s from './Paper.styl';
+import styled from 'styled-components';
 
 type Props = {
   className?: string;
 } & Pick<BoxProps, 'pad' | 'fill'>;
 
+const StyledBox = styled(Box)`
+  background: ${props => props.theme.surfaceColor};
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.04);
+  border-radius: 4px;
+`;
+
 export const Paper: React.FC<Props> = React.memo(
   ({ className = '', pad = 'small', fill, children }) => {
     return (
-      <Box fill={fill} pad={pad} className={cn(s.root, className)}>
+      <StyledBox fill={fill} pad={pad} className={className}>
         {children}
-      </Box>
+      </StyledBox>
     );
   },
 );

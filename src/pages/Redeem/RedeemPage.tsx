@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Box } from 'grommet';
-import * as styles from './RedeemPageStyles.styl';
 
 import { NavigateTabs } from '../../components/NavigateTabs';
 import RedeemForm from './components/RedeemForm/RedeemForm';
@@ -10,6 +9,8 @@ import { useCallback, useEffect } from 'react';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
 import { useInterval } from '../../hooks/useInterval';
 import { ONE_SECOND } from '../../constants/date';
+import { BridgeContentContainer } from '../../components/BridgeContentContainer';
+import { BridgeFormsSurface } from '../../components/BridgeFormsSurface';
 
 export const RedeemPage = () => {
   const { redeemId, modal } = useParams<{ redeemId?: string; modal: string }>();
@@ -38,20 +39,13 @@ export const RedeemPage = () => {
   return (
     <BaseLayout>
       <Box align="center">
-        <Box align="center" className={styles.contentContainer}>
+        <BridgeContentContainer>
           <NavigateTabs />
 
-          <Box
-            fill="horizontal"
-            direction="column"
-            align="center"
-            justify="center"
-            pad="medium"
-            className={styles.issueContainer}
-          >
+          <BridgeFormsSurface>
             <RedeemForm />
-          </Box>
-        </Box>
+          </BridgeFormsSurface>
+        </BridgeContentContainer>
       </Box>
     </BaseLayout>
   );

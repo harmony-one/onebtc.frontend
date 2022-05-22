@@ -19,7 +19,7 @@ export const CommonLayout: React.FC<Props> = ({ children, leftMenu }) => {
   const isMobileSize = size === 'small';
 
   return (
-    <Box fill>
+    <Box fill className={s.mainContainer}>
       <div className={s.bgImage} />
       {isOpen && leftMenu && (
         <Drawer onClose={() => setOpen(false)}>{leftMenu}</Drawer>

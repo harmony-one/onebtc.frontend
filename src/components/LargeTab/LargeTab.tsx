@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { Box } from 'grommet';
 import cn from 'classnames';
 import * as styles from './styles.styl';
-
 import { Text } from '../Base';
 
 type Props = {

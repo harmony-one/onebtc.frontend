@@ -35,13 +35,13 @@ export const RedeemDetailsModalConfirmation: React.FC<Props> = observer(
           <Checkmark size="xlarge" color="white" />
         </Box>
         <Box>
-          <Text>BTC Transaction: {cutText(redeemInfo.btcTx.hash)}</Text>
+          <Text>BTC Transaction:</Text>
         </Box>
         <Box>
           <LinkBitcoin
-            type="tx"
             hash={redeemInfo.btcTx.hash}
-            text="View on explorer"
+            type="tx"
+            text={redeemInfo.btcTx.hash}
           />
         </Box>
       </Box>

@@ -5,7 +5,7 @@ type Props = {};
 
 export const DashboardCardHead: React.FC<Props> = ({ children }) => {
   return (
-    <CardHeader background="light-1" gap="xsmall" justify="start" pad="small">
+    <CardHeader background="#1b1b1c" gap="xsmall" justify="start" pad="small">
       {children}
     </CardHeader>
   );

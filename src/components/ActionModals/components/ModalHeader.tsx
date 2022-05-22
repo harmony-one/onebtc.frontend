@@ -10,11 +10,7 @@ interface IProps {
 
 export const ModalHeader: React.FC<IProps> = ({ title, onClose }) => {
   return (
-    <Box
-      fill
-      style={{ position: 'relative', backgroundColor: 'white' }}
-      align="center"
-    >
+    <Box fill style={{ position: 'relative' }} align="center">
       <Title align="center" style={{ wordBreak: 'break-word' }}>
         {title}
       </Title>

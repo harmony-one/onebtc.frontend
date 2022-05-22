@@ -15,7 +15,7 @@ export const InputMaxAmountControl: React.FC<Props> = ({
   return (
     <Box direction="row" gap="8px">
       <InputButton onClick={onClick}>
-        <Text color="inherit">MAX</Text>
+        <Text color="Link">MAX</Text>
       </InputButton>
       <DividerVertical />
       <Text bold>{tokenName}</Text>

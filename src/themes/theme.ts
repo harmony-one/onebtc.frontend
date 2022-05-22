@@ -1,6 +1,9 @@
 import { css } from 'styled-components';
 
 export const Theme: any = {
+  divider: {
+    color: '#c2c2c2',
+  },
   global: {
     size: {
       medium: '250px',
@@ -38,23 +41,24 @@ export const Theme: any = {
       Grey400: '#d2d6e1',
       Blue500: '#4740a1',
 
-      border: '#323232',
+      border: {
+        dark: '',
+        light: '#323232',
+      },
       brand: 'white',
       focus: 0,
       active: '#FFCB02',
       icon: 'black',
       formBackground: '#f8f8f8',
-      text: {
-        dark: 'black',
-        light: '#323232',
-      },
+      text: '#ffffff',
+      background: '#111111',
       control: {
         dark: '#f5f5f5',
         light: '#f5f5f5',
       },
       'toggle-knob': 'black',
 
-      buttonBgColor: '#4740a1',
+      buttonBgColor: '#1F5AE2',
     },
     font: {
       family: 'Helvetica, sans-serif',
@@ -110,6 +114,7 @@ export const Theme: any = {
     `,
   },
   text: {
+    color: '#FFFFFF',
     font: {
       family: 'system-ui, sans-serif',
     },
