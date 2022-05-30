@@ -7,6 +7,7 @@ import {
 import { dateFormat } from '../../utils';
 import { getHmyBalance } from '../../services/hmyClient';
 import utils from 'web3-utils';
+import { HISTORY_INTERVAL } from '../../../../onebtc.sdk';
 
 class DashboardPageStore {
   @observable
@@ -14,6 +15,18 @@ class DashboardPageStore {
 
   @observable
   private _issueHistory: IHistoryIssueItem[] | null;
+
+  @observable
+  private _issueWeeklyHistory: IHistoryIssueItem[] | null;
+
+  @observable
+  private _redeemWeeklyHistory: IHistoryIssueItem[] | null;
+
+  @observable
+  private _issueMonthlyHistory: IHistoryIssueItem[] | null;
+
+  @observable
+  private _redeemMonthlyHistory: IHistoryIssueItem[] | null;
 
   @observable
   private _redeemHistory: IHistoryIssueItem[] | null;
@@ -26,6 +39,10 @@ class DashboardPageStore {
     this.loadVaultData();
     this.loadRedeemsData();
     this.loadCapacity();
+    this.loadIssuesWeeklyData();
+    this.loadRedeemsWeeklyData();
+    this.loadIssuesMonthlyData();
+    this.loadRedeemsMonthlyData();
   }
 
   @action.bound
@@ -49,10 +66,42 @@ class DashboardPageStore {
     this._issueHistory = response.content.reverse();
   }
 
+  @action
+  async loadIssuesWeeklyData() {
+    const response = await dashboardClient.loadHistoryIssue({
+      interval: HISTORY_INTERVAL.WEEK,
+    });
+    this._issueWeeklyHistory = response.content.reverse();
+  }
+
+  @action
+  async loadIssuesMonthlyData() {
+    const response = await dashboardClient.loadHistoryIssue({
+      interval: HISTORY_INTERVAL.MONTH,
+    });
+    this._issueMonthlyHistory = response.content.reverse();
+  }
+
   @action.bound
   async loadRedeemsData() {
     const response = await dashboardClient.loadHistoryRedeem();
     this._redeemHistory = response.content.reverse();
+  }
+
+  @action
+  async loadRedeemsWeeklyData() {
+    const response = await dashboardClient.loadHistoryRedeem({
+      interval: HISTORY_INTERVAL.WEEK,
+    });
+    this._redeemWeeklyHistory = response.content.reverse();
+  }
+
+  @action
+  async loadRedeemsMonthlyData() {
+    const response = await dashboardClient.loadHistoryRedeem({
+      interval: HISTORY_INTERVAL.MONTH,
+    });
+    this._redeemMonthlyHistory = response.content.reverse();
   }
 
   @computed
@@ -98,6 +147,36 @@ class DashboardPageStore {
   }
 
   @computed
+  get issueWeeklyChartData() {
+    if (!this._issueWeeklyHistory) {
+      return [];
+    }
+
+    return this._issueWeeklyHistory.map(item => {
+      return {
+        x: dateFormat(item.date),
+        amountPerWeek: item.amountPerWeek / 1e8,
+        total: item.total / 1e8,
+      };
+    });
+  }
+
+  @computed
+  get issueMonthlyChartData() {
+    if (!this._issueMonthlyHistory) {
+      return [];
+    }
+
+    return this._issueMonthlyHistory.map(item => {
+      return {
+        x: dateFormat(item.date),
+        amountPerMonth: item.amountPerMonth / 1e8,
+        total: item.total / 1e8,
+      };
+    });
+  }
+
+  @computed
   get redeemedToday() {
     if (!this.redeemChartData.length) {
       return 0;
@@ -118,6 +197,36 @@ class DashboardPageStore {
       return {
         x: dateFormat(item.date),
         redeemedPerDay: item.amountPerDay / 1e8,
+        total: item.total / 1e8,
+      };
+    });
+  }
+
+  @computed
+  get redeemWeeklyChartData() {
+    if (!this._redeemWeeklyHistory) {
+      return [];
+    }
+
+    return this._redeemWeeklyHistory.map(item => {
+      return {
+        x: dateFormat(item.date),
+        amountPerWeek: item.amountPerWeek / 1e8,
+        total: item.total / 1e8,
+      };
+    });
+  }
+
+  @computed
+  get redeemMonthlyChartData() {
+    if (!this._redeemMonthlyHistory) {
+      return [];
+    }
+
+    return this._redeemMonthlyHistory.map(item => {
+      return {
+        x: dateFormat(item.date),
+        amountPerMonth: item.amountPerMonth / 1e8,
         total: item.total / 1e8,
       };
     });

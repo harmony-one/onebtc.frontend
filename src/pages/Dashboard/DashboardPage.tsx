@@ -3,14 +3,19 @@ import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { observer } from 'mobx-react';
 import { DashboardCardBtcRelay } from '../../components/Dashboard/DashboardCardBtcRelay';
-import { DashboardIssueRedeemCard } from './components/DashboardIssueRedeemCard';
-import { DashboardVaultCard } from './components/DashboardVaultCard';
+import { DashboardIssueCard } from './components/DashboardIssueCard';
+import { DashboardCapacityCard } from './components/DashboardCapacityCard';
+import { DashboardTVLCard } from './components/DashboardTVLCard';
 import { dashboardHistoryStore } from './DashboardHistoryStore';
 import { DashboardVaultActivityCard } from './components/DashboardVaultActivityCard';
 import { DashboardVaults } from './components/DashboardVaults';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
 import { useInterval } from '../../hooks/useInterval';
 import { ONE_SECOND } from '../../constants/date';
+import { DashboardIssuedWeeklyCard } from './components/DashboardIssuedWeeklyCard';
+import { DashboardRedeemWeeklyCard } from './components/DashboardRedeemWeeklyCard';
+import { DashboardIssuedMonthlyCard } from './components/DashboardIssuedMonthlyCard';
+import { DashboardRedeemMonthlyCard } from './components/DashboardRedeemMonthlyCard';
 
 type Props = {};
 
@@ -35,19 +40,34 @@ export const DashboardPage: React.FC<Props> = observer(() => {
         </Box>
         <Box justify="center" direction="row-responsive" wrap>
           <Box pad="xxsmall" align="center">
-            <DashboardIssueRedeemCard />
+            <DashboardIssueCard />
           </Box>
           <Box pad="xxsmall" align="center">
             <DashboardCardBtcRelay showLink />
           </Box>
           <Box pad="xxsmall" align="center">
-            <DashboardVaultCard />
+            <DashboardCapacityCard />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardTVLCard />
           </Box>
           <Box pad="xxsmall" align="center">
             <DashboardVaultActivityCard />
           </Box>
           <Box pad="xxsmall" align="center">
             <DashboardVaults />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardIssuedWeeklyCard />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardRedeemWeeklyCard />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardIssuedMonthlyCard />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardRedeemMonthlyCard />
           </Box>
         </Box>
       </Box>

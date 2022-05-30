@@ -15,14 +15,16 @@ import { Box } from 'grommet';
 
 interface Props {}
 
-export const DashboardVaultCard: React.FC<Props> = observer(() => {
+export const DashboardCapacityCard: React.FC<Props> = observer(() => {
   const { ratesStore } = useStores();
   const capacity = formatZeroDecimals(dashboardHistoryStore.capacity);
 
   const capacityUsd =
     Number(dashboardHistoryStore.capacity) * ratesStore.ONE_USDT;
 
-  const issuedUsd = dashboardHistoryStore.issuedTotal * ratesStore.BTC_USDT;
+  const issuedUsd =
+    (dashboardHistoryStore.issuedTotal - dashboardHistoryStore.redeemedTotal) *
+    ratesStore.BTC_USDT;
   const collateralization = (capacityUsd / issuedUsd) * 100;
 
   return (
@@ -52,4 +54,4 @@ export const DashboardVaultCard: React.FC<Props> = observer(() => {
   );
 });
 
-DashboardVaultCard.displayName = 'DashboardVaultCard';
+DashboardCapacityCard.displayName = 'DashboardCapacityCard';

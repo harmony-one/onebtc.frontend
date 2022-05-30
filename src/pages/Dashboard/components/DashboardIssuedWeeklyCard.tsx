@@ -5,34 +5,23 @@ import { routes } from '../../../constants/routePaths';
 import { DashboardCard } from '../../../components/Dashboard/DashboardCard';
 import React from 'react';
 import { useStores } from '../../../stores';
-import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { observer } from 'mobx-react';
-import { DashboardIssueChart } from './DashboardIssueChart';
-import { formatWithTwoDecimals, formatZeroDecimals } from '../../../utils';
+import { DashboardIssuedWeeklyChart } from './DashboardIssuedWeeklyChart';
 import { DashboardCardBody } from '../../../components/Dashboard/DashboardCardBody';
 import { DashboardCardFooter } from '../../../components/Dashboard/DashboardCardFooter';
 
 interface Props {}
 
-export const DashboardIssueRedeemCard: React.FC<Props> = observer(() => {
-  const { routing, ratesStore } = useStores();
+export const DashboardIssuedWeeklyCard: React.FC<Props> = observer(() => {
+  const { routing } = useStores();
 
   return (
     <DashboardCard>
       <DashboardCardHead>
-        <Text>Issued:</Text>
-        <Text bold>
-          {formatWithTwoDecimals(dashboardHistoryStore.issuedTotal)} 1BTC
-        </Text>
-        <Text bold>
-          ≈$
-          {formatZeroDecimals(
-            dashboardHistoryStore.issuedTotal * ratesStore.BTC_USDT,
-          )}
-        </Text>
+        <Text>Issued Weekly:</Text>
       </DashboardCardHead>
       <DashboardCardBody>
-        <DashboardIssueChart />
+        <DashboardIssuedWeeklyChart />
       </DashboardCardBody>
       <DashboardCardFooter>
         <Text>
@@ -50,4 +39,4 @@ export const DashboardIssueRedeemCard: React.FC<Props> = observer(() => {
   );
 });
 
-DashboardIssueRedeemCard.displayName = 'DashboardIssueRedeemCard';
+DashboardIssuedWeeklyCard.displayName = 'DashboardIssuedWeeklyCard';
