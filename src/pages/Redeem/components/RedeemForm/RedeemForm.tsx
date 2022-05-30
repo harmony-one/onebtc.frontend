@@ -39,6 +39,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
 
   const activeVaultList = redeemPageStore.getActiveVaultList(
     vaultListStore.vaultList,
+    isCustomVault,
   );
 
   const vaultOptions = useMemo(() => {
@@ -51,8 +52,8 @@ export const RedeemForm: React.FC<Props> = observer(() => {
   }, [activeVaultList]);
 
   useEffect(() => {
-    redeemPageStore.updateSelectedVault();
-  }, [redeemPageStore, redeemPageStore.form.oneBTCAmount]);
+    redeemPageStore.updateSelectedVault(isCustomVault);
+  }, [isCustomVault, redeemPageStore, redeemPageStore.form.oneBTCAmount]);
 
   const handleSubmit = useCallback(() => {
     form.validateFields().then(() => {

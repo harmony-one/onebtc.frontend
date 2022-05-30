@@ -59,15 +59,16 @@ export class RedeemPageStore extends StoreConstructor {
   }
 
   @action.bound
-  updateSelectedVault() {
+  updateSelectedVault(ignorePriority: boolean = false) {
     const vaultList = this.getActiveVaultList(
       this.stores.vaultListStore.vaultList,
+      ignorePriority,
     );
 
     this.form.vaultId = this.stores.vaultListStore.getDefaultVaultId(vaultList);
   }
 
-  getActiveVaultList(vaultList: IVault[]) {
+  getActiveVaultList(vaultList: IVault[], ignorePriority: boolean = false) {
     const amountSat = bitcoinToSatoshi(this.form.oneBTCAmount);
 
     const list = vaultList.filter(vault => {
@@ -85,6 +86,10 @@ export class RedeemPageStore extends StoreConstructor {
 
     if (priorityList.length === 0) {
       priorityList = list.filter(hasLowCollateral(150));
+    }
+
+    if (ignorePriority) {
+      return list;
     }
 
     return (priorityList.length && priorityList) || list;

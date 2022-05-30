@@ -65,7 +65,7 @@ const Modal = styled.div`
 export const ModalView: React.FC<{
   width: string;
   onClose: () => void;
-  style: CSSProperties;
+  style: React.CSSProperties;
   children: React.ReactNode;
   isOverlayClose?: boolean;
   config?: any;

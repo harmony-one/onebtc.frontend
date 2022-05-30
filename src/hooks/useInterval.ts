@@ -20,7 +20,7 @@ export const useInterval = ({
   }, [callback]);
 
   const watcherRun = useCallback(() => {
-    return setTimeout(() => {
+    return window.setTimeout(() => {
       setCounter(counter + 1);
       callback();
     }, timeout);
