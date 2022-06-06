@@ -7,7 +7,7 @@ import {
 import { dateFormat } from '../../utils';
 import { getHmyBalance } from '../../services/hmyClient';
 import utils from 'web3-utils';
-import { HISTORY_INTERVAL } from '../../../../onebtc.sdk';
+import { HISTORY_INTERVAL } from 'onebtc.sdk';
 
 class DashboardPageStore {
   @observable
