@@ -40,7 +40,7 @@ export const DashboardPage: React.FC<Props> = observer(() => {
         </Box>
         <Box justify="center" direction="row-responsive" wrap>
           <Box pad="xxsmall" align="center">
-            <DashboardIssueCard />
+            <DashboardTVLCard />
           </Box>
           <Box pad="xxsmall" align="center">
             <DashboardCardBtcRelay showLink />
@@ -49,7 +49,7 @@ export const DashboardPage: React.FC<Props> = observer(() => {
             <DashboardCapacityCard />
           </Box>
           <Box pad="xxsmall" align="center">
-            <DashboardTVLCard />
+            <DashboardIssueCard />
           </Box>
           <Box pad="xxsmall" align="center">
             <DashboardVaultActivityCard />
