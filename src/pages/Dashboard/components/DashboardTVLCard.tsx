@@ -18,14 +18,11 @@ interface Props {}
 export const DashboardTVLCard: React.FC<Props> = observer(() => {
   const { ratesStore } = useStores();
 
-  const lockedUSD =
-    Number(dashboardHistoryStore.capacity) * ratesStore.ONE_USDT;
-
   const issued1BTC =
     dashboardHistoryStore.issuedTotal - dashboardHistoryStore.redeemedTotal;
   const issuedUSD = issued1BTC * ratesStore.BTC_USDT;
 
-  const TVL = issuedUSD + lockedUSD;
+  const TVL = issuedUSD;
 
   return (
     <DashboardCard>
