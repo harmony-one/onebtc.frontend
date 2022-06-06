@@ -9,6 +9,7 @@ import { observer } from 'mobx-react';
 import { DashboardCardBody } from '../../../components/Dashboard/DashboardCardBody';
 import { DashboardCardFooter } from '../../../components/Dashboard/DashboardCardFooter';
 import { DashboardIssuedMonthlyChart } from './DashboardIssuedMonthlyChart';
+import { DashboardRedeemMonthlyChart } from './DashboardRedeemMonthlyChart';
 
 interface Props {}
 
@@ -21,7 +22,7 @@ export const DashboardRedeemMonthlyCard: React.FC<Props> = observer(() => {
         <Text>Redeemed Monthly:</Text>
       </DashboardCardHead>
       <DashboardCardBody>
-        <DashboardIssuedMonthlyChart />
+        <DashboardRedeemMonthlyChart />
       </DashboardCardBody>
       <DashboardCardFooter>
         <Text>

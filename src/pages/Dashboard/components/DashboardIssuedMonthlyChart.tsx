@@ -11,7 +11,7 @@ export const DashboardIssuedMonthlyChart: React.FC<Props> = observer(() => {
       data={{
         datasets: [
           {
-            label: 'Issued per week',
+            label: 'Issued per month',
             data: dashboardHistoryStore.issueMonthlyChartData,
             parsing: {
               yAxisKey: 'amountPerMonth',

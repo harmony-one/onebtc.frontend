@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 
 interface Props {}
 
-export const DashboardIssuedMonthlyChart: React.FC<Props> = observer(() => {
+export const DashboardRedeemMonthlyChart: React.FC<Props> = observer(() => {
   return (
     <Line
       data={{
@@ -34,4 +34,4 @@ export const DashboardIssuedMonthlyChart: React.FC<Props> = observer(() => {
   );
 });
 
-DashboardIssuedMonthlyChart.displayName = 'DashboardIssuedMonthlyChart';
+DashboardRedeemMonthlyChart.displayName = 'DashboardIssuedMonthlyChart';
