@@ -28,7 +28,7 @@ export const DashboardTVLCard: React.FC<Props> = observer(() => {
     <DashboardCard>
       <DashboardCardHead>
         <Text>Total Value Locked:</Text>
-        <Text bold>ONE + BTC</Text>
+        <Text bold>BTC</Text>
       </DashboardCardHead>
       <DashboardCardBody>
         <DashboardCardCircle
