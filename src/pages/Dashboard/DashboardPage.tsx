@@ -50,13 +50,13 @@ export const DashboardPage: React.FC<Props> = observer(() => {
             <DashboardVaultActivityCard />
           </Box>
           <Box pad="xxsmall" align="center">
-            <DashboardVaults />
-          </Box>
-          <Box pad="xxsmall" align="center">
             <DashboardIssuedDaily />
           </Box>
           <Box pad="xxsmall" align="center">
             <DashboardRedeemedDaily />
+          </Box>
+          <Box pad="xxsmall" align="center">
+            <DashboardVaults />
           </Box>
         </Box>
       </Box>
