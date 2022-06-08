@@ -3,7 +3,7 @@ import { Divider, Title } from '../../components/Base';
 import { Box } from 'grommet';
 import { Text } from '../../components/Base';
 import { DashboardIssuesTable } from './components/DashboardIssuesTable';
-import { DashboardIssuedWeeklyChart } from '../Dashboard/components/DashboardIssuedWeeklyChart';
+import { DashboardIssueChart } from '../Dashboard/components/DashboardIssueChart';
 import { observer } from 'mobx-react';
 import { dashboardHistoryStore } from '../Dashboard/DashboardHistoryStore';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
@@ -37,7 +37,7 @@ export const DashboardIssuesPage: React.FC<Props> = observer(() => {
               <Text bold>Issued: {dashboardHistoryStore.issuedTotal} 1BTC</Text>
             </DashboardCardHead>
             <DashboardCardBody>
-              <DashboardIssuedWeeklyChart />
+              <DashboardIssueChart />
             </DashboardCardBody>
           </DashboardCard>
         </Box>

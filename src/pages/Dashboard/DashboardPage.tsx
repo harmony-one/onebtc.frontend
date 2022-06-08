@@ -12,10 +12,8 @@ import { DashboardVaults } from './components/DashboardVaults';
 import { BaseLayout } from '../../components/Layouts/BaseLayout';
 import { useInterval } from '../../hooks/useInterval';
 import { ONE_SECOND } from '../../constants/date';
-import { DashboardIssuedWeeklyCard } from './components/DashboardIssuedWeeklyCard';
-import { DashboardRedeemWeeklyCard } from './components/DashboardRedeemWeeklyCard';
-import { DashboardIssuedMonthlyCard } from './components/DashboardIssuedMonthlyCard';
-import { DashboardRedeemMonthlyCard } from './components/DashboardRedeemMonthlyCard';
+import { DashboardIssuedDaily } from './components/DashboardIssuedDaily';
+import { DashboardRedeemedDaily } from './components/DashboardRedeemedDaily';
 
 type Props = {};
 
@@ -43,13 +41,10 @@ export const DashboardPage: React.FC<Props> = observer(() => {
             <DashboardTVLCard />
           </Box>
           <Box pad="xxsmall" align="center">
-            <DashboardCardBtcRelay showLink />
-          </Box>
-          <Box pad="xxsmall" align="center">
             <DashboardCapacityCard />
           </Box>
           <Box pad="xxsmall" align="center">
-            <DashboardIssueCard />
+            <DashboardCardBtcRelay showLink />
           </Box>
           <Box pad="xxsmall" align="center">
             <DashboardVaultActivityCard />
@@ -58,16 +53,10 @@ export const DashboardPage: React.FC<Props> = observer(() => {
             <DashboardVaults />
           </Box>
           <Box pad="xxsmall" align="center">
-            <DashboardIssuedWeeklyCard />
+            <DashboardIssuedDaily />
           </Box>
           <Box pad="xxsmall" align="center">
-            <DashboardRedeemWeeklyCard />
-          </Box>
-          <Box pad="xxsmall" align="center">
-            <DashboardIssuedMonthlyCard />
-          </Box>
-          <Box pad="xxsmall" align="center">
-            <DashboardRedeemMonthlyCard />
+            <DashboardRedeemedDaily />
           </Box>
         </Box>
       </Box>

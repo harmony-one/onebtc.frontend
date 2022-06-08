@@ -115,6 +115,30 @@ class DashboardPageStore {
     );
   }
 
+  @computed
+  get issuedWeekly() {
+    if (!this.issueChartData.length) {
+      return 0;
+    }
+
+    return this.issueChartData
+      .reverse()
+      .slice(0, 7)
+      .reduce((acc, item) => acc + item.issuedPerDay, 0);
+  }
+
+  @computed
+  get issuedMonthly() {
+    if (!this.issueChartData.length) {
+      return 0;
+    }
+
+    return this.issueChartData
+      .reverse()
+      .slice(0, 30)
+      .reduce((acc, item) => acc + item.issuedPerDay, 0);
+  }
+
   get issuedTotal() {
     if (!this.issueChartData.length) {
       return 0;
@@ -185,6 +209,30 @@ class DashboardPageStore {
     return (
       this.redeemChartData[this.redeemChartData.length - 1].redeemedPerDay / 1e8
     );
+  }
+
+  @computed
+  get redeemedWeekly() {
+    if (!this.redeemChartData.length) {
+      return 0;
+    }
+
+    return this.redeemChartData
+      .reverse()
+      .slice(0, 7)
+      .reduce((acc, item) => acc + item.redeemedPerDay, 0);
+  }
+
+  @computed
+  get redeemedMonthly() {
+    if (!this.redeemChartData.length) {
+      return 0;
+    }
+
+    return this.redeemChartData
+      .reverse()
+      .slice(0, 30)
+      .reduce((acc, item) => acc + item.redeemedPerDay, 0);
   }
 
   @computed
