@@ -12,6 +12,7 @@ import { Box } from 'grommet/components/Box';
 import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { formatZeroDecimals, formatWithTwoDecimals } from '../../../utils';
 import { RowInfo } from './RowInfo';
+import { PriceView } from '../../../components/PriceView';
 
 interface Props {}
 
@@ -28,31 +29,31 @@ export const DashboardRedeemedDaily: React.FC<Props> = observer(() => {
           <RowInfo>
             <Text bold>Today:&nbsp;</Text>
             <Text bold>
-              {formatWithTwoDecimals(dashboardHistoryStore.redeemedToday)} 1BTC
-              : $
-              {formatZeroDecimals(
-                dashboardHistoryStore.redeemedToday * ratesStore.BTC_USDT,
-              )}
+              <PriceView
+                tokenName="1BTC"
+                value={dashboardHistoryStore.redeemedToday}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
           <RowInfo>
             <Text bold>Weekly:&nbsp;</Text>
             <Text bold>
-              {formatWithTwoDecimals(dashboardHistoryStore.redeemedWeekly)} 1BTC
-              : $
-              {formatZeroDecimals(
-                dashboardHistoryStore.redeemedWeekly * ratesStore.BTC_USDT,
-              )}
+              <PriceView
+                tokenName="1BTC"
+                value={dashboardHistoryStore.redeemedWeekly}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
           <RowInfo>
             <Text bold>Monthly:&nbsp;</Text>
             <Text bold>
-              {formatWithTwoDecimals(dashboardHistoryStore.redeemedMonthly)}{' '}
-              1BTC : $
-              {formatZeroDecimals(
-                dashboardHistoryStore.redeemedMonthly * ratesStore.BTC_USDT,
-              )}
+              <PriceView
+                tokenName="1BTC"
+                value={dashboardHistoryStore.redeemedMonthly}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
         </Box>

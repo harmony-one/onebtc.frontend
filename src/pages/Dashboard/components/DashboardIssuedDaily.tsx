@@ -13,6 +13,7 @@ import { dashboardHistoryStore } from '../DashboardHistoryStore';
 import { DashboardCardCircle } from '../../../components/Dashboard/DashboardCardCircle';
 import { formatZeroDecimals, formatWithTwoDecimals } from '../../../utils';
 import { RowInfo } from './RowInfo';
+import { PriceView } from '../../../components/PriceView';
 
 interface Props {}
 
@@ -29,31 +30,31 @@ export const DashboardIssuedDaily: React.FC<Props> = observer(() => {
           <RowInfo>
             <Text bold>Today:&nbsp;</Text>
             <Text bold>
-              {formatWithTwoDecimals(dashboardHistoryStore.issuedToday)} 1BTC :
-              $
-              {formatZeroDecimals(
-                dashboardHistoryStore.issuedToday * ratesStore.BTC_USDT,
-              )}
+              <PriceView
+                tokenName="1BTC"
+                value={dashboardHistoryStore.issuedToday}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
           <RowInfo>
             <Text bold>Weekly:&nbsp;</Text>
             <Text bold>
-              {formatWithTwoDecimals(dashboardHistoryStore.issuedWeekly)} 1BTC :
-              $
-              {formatZeroDecimals(
-                dashboardHistoryStore.issuedWeekly * ratesStore.BTC_USDT,
-              )}
+              <PriceView
+                tokenName="1BTC"
+                value={dashboardHistoryStore.issuedWeekly}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
           <RowInfo>
             <Text bold>Monthly:&nbsp;</Text>
             <Text bold>
-              {formatWithTwoDecimals(dashboardHistoryStore.issuedMonthly)} 1BTC
-              : $
-              {formatZeroDecimals(
-                dashboardHistoryStore.issuedMonthly * ratesStore.BTC_USDT,
-              )}
+              <PriceView
+                tokenName="1BTC"
+                value={dashboardHistoryStore.issuedMonthly}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
         </Box>

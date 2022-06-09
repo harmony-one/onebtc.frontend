@@ -12,6 +12,7 @@ import { formatZeroDecimals, formatWithTwoDecimals } from '../../../utils';
 import { useStores } from '../../../stores';
 import { Box } from 'grommet';
 import { RowInfo } from './RowInfo';
+import { PriceView } from '../../../components/PriceView';
 
 interface Props {}
 
@@ -37,22 +38,31 @@ export const DashboardTVLCard: React.FC<Props> = observer(() => {
           <RowInfo>
             <Text bold>Locked:</Text>
             <Text bold>
-              {formatWithTwoDecimals(lockedBTC)} 1BTC : $
-              {formatZeroDecimals(lockedUSD)}
+              <PriceView
+                tokenName="1BTC"
+                value={lockedBTC}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
           <RowInfo>
             <Text bold>Issued:</Text>
             <Text bold>
-              {formatWithTwoDecimals(issuedBTC)} 1BTC : $
-              {formatZeroDecimals(issuedUSD)}
+              <PriceView
+                tokenName="1BTC"
+                value={issuedBTC}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
           <RowInfo>
             <Text bold>Redeemed:</Text>
             <Text bold>
-              {formatWithTwoDecimals(redeemedBTC)} 1BTC : $
-              {formatZeroDecimals(redeemedUSD)}
+              <PriceView
+                tokenName="1BTC"
+                value={redeemedBTC}
+                rate={ratesStore.BTC_USDT}
+              />
             </Text>
           </RowInfo>
         </Box>

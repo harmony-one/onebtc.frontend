@@ -11,7 +11,7 @@ interface Props {}
 
 export const RowInfo: React.FC<Props> = ({ children }) => {
   return (
-    <BoxStyled justify="between" direction="row">
+    <BoxStyled justify="between" direction="row" align="baseline">
       {children}
     </BoxStyled>
   );
