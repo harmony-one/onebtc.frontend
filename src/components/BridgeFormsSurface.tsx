@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Box } from 'grommet';
+import { prop } from 'bitcoinjs-lib/types/payments/lazy';
 
 const StyledBox = styled(Box)`
-  background: ${props => props.theme.surfaceColor};
+  background: ${props => props.theme.surface.color};
   border-radius: 25px;
-  //box-shadow: 0 4px 4px rgba(0, 0, 0, 0.04);
-  //border: 1px solid #dedede;
+  box-shadow: ${props => props.theme.surface.boxShadow};
+  border: ${props => props.theme.surface.border};
 `;
 
 interface Props {}

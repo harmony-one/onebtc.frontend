@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '../Base';
 import { Box } from 'grommet';
-import { Theme } from '../../themes';
+import { baseTheme } from '../../themes';
 import styled from 'styled-components';
 
 interface Props {
@@ -10,7 +10,9 @@ interface Props {
 
 export const VaultStatusDot = styled.div<Props>`
   background-color: ${props =>
-    props.isActive ? Theme.global.colors.Green600 : Theme.global.colors.Red600};
+    props.isActive
+      ? baseTheme.global.colors.Green600
+      : baseTheme.global.colors.Red600};
   border-radius: 10px;
   content: ' ';
   display: block;
@@ -23,7 +25,7 @@ export const VaultStatus: React.FC<Props> = ({ isActive }) => {
     return (
       <Box
         style={{ borderRadius: '7px', padding: '4px 16px' }}
-        background={Theme.global.colors.Green500}
+        background={baseTheme.global.colors.Green500}
         align="center"
       >
         <Text bold color="Green">
@@ -37,7 +39,7 @@ export const VaultStatus: React.FC<Props> = ({ isActive }) => {
     <Box
       round
       style={{ borderRadius: '7px', padding: '4px 16px' }}
-      background={Theme.global.colors.Red500}
+      background={baseTheme.global.colors.Red500}
       align="center"
     >
       <Text bold color="Red">

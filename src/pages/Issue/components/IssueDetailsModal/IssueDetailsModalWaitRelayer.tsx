@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box } from 'grommet';
 import { Text, Title } from '../../../../components/Base';
-import { cutText } from '../../../../services/cutText';
 import LinkBitcoin from '../../../../components/LinkBitcoin';
 import * as styles from './IssueDetailsModals.styl';
 import { useStores } from '../../../../stores';

@@ -51,7 +51,7 @@ const ModalWrap = styled.div`
 const Modal = styled.div`
   position: relative;
   z-index: 4;
-  background-color: #1b1b1c;
+  background-color: ${props => props.theme.modal.background};
   box-sizing: border-box;
   border-radius: 4px;
   cursor: auto;

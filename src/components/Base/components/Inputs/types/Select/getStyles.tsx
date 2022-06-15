@@ -55,9 +55,9 @@ const defaultPreset: StylesConfig = {
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isFocused
-      ? state.theme.palette.Gray100
+      ? state.theme.selectPresetDefault.option.backgroundColorFocused
       : state.isSelected
-      ? state.theme.palette.Gray200
+      ? state.theme.selectPresetDefault.option.backgroundColorSelected
       : 'transparent',
     color: state.theme.textColor,
     padding: '16px',
@@ -74,7 +74,7 @@ const defaultPreset: StylesConfig = {
     borderRight: getInputBorder(props, 'Right'),
     borderBottom: getInputBorder(props, 'Bottom'),
     borderLeft: getInputBorder(props, 'Left'),
-    backgroundColor: props.theme.palette.StandardGray,
+    backgroundColor: props.theme.selectPresetDefault.control.backgroundColor,
     color: props.theme.styled.input.textColor,
     padding: '4px 8px',
     borderRadius: props.theme.select.borderRadius,
@@ -96,11 +96,11 @@ const defaultPreset: StylesConfig = {
   menu: (provided, props) => ({
     ...provided,
     borderRadius: '15px',
-    border: `1px solid ${props.theme.palette.StandardBlack}`,
+    border: `1px solid ${props.theme.selectPresetDefault.control.borderColor}`,
     overflow: 'hidden',
     padding: '0px',
-    borderColor: `${props.theme.palette.StandardWhite} !important`,
-    backgroundColor: props.theme.palette.StandardGray,
+    borderColor: `${props.theme.selectPresetDefault.control.borderColor} !important`,
+    backgroundColor: props.theme.selectPresetDefault.control.backgroundColor,
   }),
 };
 
@@ -108,9 +108,9 @@ const filterPreset: StylesConfig = {
   option: (provided, state) => ({
     ...provided,
     backgroundColor: state.isFocused
-      ? state.theme.palette.Gray100
+      ? state.theme.selectPresetFilter.option.backgroundColorFocused
       : state.isSelected
-      ? state.theme.palette.Gray200
+      ? state.theme.selectPresetFilter.option.backgroundColorSelected
       : 'transparent',
     color: state.theme.textColor,
     padding: '16px',
@@ -122,12 +122,12 @@ const filterPreset: StylesConfig = {
     width: getSize(props.selectProps.size, props.theme),
     fontFamily: props.theme.fontBase,
     fontSize: '15px',
-    border: props.theme.styled.input.border,
-    backgroundColor: props.theme.select.background,
+    border: '1px solid',
+    backgroundColor: props.theme.selectPresetFilter.control.backgroundColor,
     color: props.theme.styled.input.textColor,
     padding: '4px 8px',
     borderRadius: props.theme.select.borderRadius,
-    borderColor: `${props.theme.palette.Basic200} !important`,
+    borderColor: `${props.theme.selectPresetFilter.control.borderColor} !important`,
     boxShadow: 'none',
     minHeight: '32px',
   }),
@@ -140,11 +140,11 @@ const filterPreset: StylesConfig = {
   menu: (provided, props) => ({
     ...provided,
     borderRadius: '15px',
-    border: `1px solid ${props.theme.palette.StandardBlack}`,
+    border: `1px solid`,
     overflow: 'hidden',
     padding: '0px',
-    borderColor: `${props.theme.palette.StandardWhite} !important`,
-    backgroundColor: props.theme.palette.StandardBlack,
+    borderColor: `${props.theme.selectPresetFilter.menu.borderColor} !important`,
+    backgroundColor: props.theme.selectPresetFilter.menu.backgroundColor,
   }),
 };
 

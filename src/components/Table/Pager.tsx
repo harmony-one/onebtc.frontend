@@ -7,7 +7,6 @@ interface IPagerProps {
   offset?: number;
   goToPage(page: number): void;
   theme?: object;
-  activeColor?: string;
 }
 
 type TPAGECLICKER = 'default' | 'active' | 'dots';
@@ -18,7 +17,6 @@ interface IPageClickerProps {
   value: number;
   onClick?(page: number): void;
   theme?: object;
-  activeColor?: string;
 }
 
 const PagerWrap = styled.div<any>`
@@ -116,30 +114,25 @@ function generatePageList(
 }
 
 export const Pager: React.FunctionComponent<IPagerProps> = props => {
-  const { current, offset = 2, total, goToPage, activeColor } = props;
+  const { current, offset = 2, total, goToPage } = props;
   const pageList = generatePageList(current, total, offset);
 
   return (
     <PagerWrap>
       {pageList.map(page => (
-        <PagerCell
-          key={page.value}
-          {...page}
-          activeColor={activeColor}
-          onClick={goToPage}
-        />
+        <PagerCell key={page.value} {...page} onClick={goToPage} />
       ))}
     </PagerWrap>
   );
 };
 
 function getBgColor(props: any) {
-  const { type, theme, activeColor } = props;
+  const { type, theme } = props;
   if (type === 'dots') {
     return 'transparent';
   }
   if (type === 'active') {
-    return theme.palette[activeColor] || theme.palette.Purple500 || activeColor;
+    return theme.pager.backgroundColorActive;
   }
 
   return 'transparent';
@@ -153,23 +146,25 @@ const StyledPageCell = styled.div<any>`
   width: 46px;
   border-radius: 15px;
   border: ${props =>
-    `4px solid ${
-      props.type !== 'active' ? 'transparent' : props.theme.palette.Basic200
+    `${props.theme.pager.border} ${
+      props.type !== 'active' ? 'transparent' : props.theme.pager.borderColor
     }`};
   background-color: ${getBgColor};
-  color: ${props => (props.type === 'active' ? 'black' : 'white')};
+  color: ${props =>
+    props.type === 'active'
+      ? props.theme.pager.colorActive
+      : props.theme.pager.color};
   cursor: ${props => (props.type === 'default' ? 'pointer' : 'auto')};
   font-size: 14px;
   font-weight: bold;
 `;
 
 const PagerCell: React.FunctionComponent<IPageClickerProps> = props => {
-  const { text, value, type, onClick, theme, activeColor } = props;
+  const { text, value, type, onClick, theme } = props;
 
   return (
     <StyledPageCell
       type={type}
-      activeColor={activeColor}
       onClick={() => type === 'default' && onClick(value)}
       theme={theme}
     >

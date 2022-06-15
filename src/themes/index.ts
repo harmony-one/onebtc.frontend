@@ -1,2 +1,2 @@
 export * from './baseTheme';
-export * from './theme';
+export * from './lightTheme';

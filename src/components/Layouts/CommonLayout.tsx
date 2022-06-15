@@ -7,20 +7,29 @@ import { Menu } from 'grommet-icons';
 import { Button } from 'grommet/components/Button';
 import { Drawer } from './Drawer';
 import { BridgeLogo } from '../BridgeLogo';
+import styled from 'styled-components';
+import { ThemeContext } from '../../themes/ThemeContext';
+import { ThemeButton } from '../ThemeButton';
 
 interface Props {
   leftMenu: React.ReactNode;
 }
+
+const BgImage = styled.div`
+  background: ${props => props.theme.layout.bgImage};
+`;
 
 export const CommonLayout: React.FC<Props> = ({ children, leftMenu }) => {
   const size = useContext(ResponsiveContext);
   const [isOpen, setOpen] = useState(false);
 
   const isMobileSize = size === 'small';
+  const themeContext = useContext(ThemeContext);
+  const iconColor = themeContext.themeType === 'dark' ? 'white' : 'black';
 
   return (
-    <Box fill className={s.mainContainer}>
-      <div className={s.bgImage} />
+    <Box fill>
+      <BgImage className={s.bgImage} />
       {isOpen && leftMenu && (
         <Drawer onClose={() => setOpen(false)}>{leftMenu}</Drawer>
       )}
@@ -35,7 +44,13 @@ export const CommonLayout: React.FC<Props> = ({ children, leftMenu }) => {
           {isMobileSize && (
             <Header pad="medium">
               <BridgeLogo />
-              <Button onClick={() => setOpen(true)} icon={<Menu />} />
+              <Box direction="row">
+                <ThemeButton />
+                <Button
+                  onClick={() => setOpen(true)}
+                  icon={<Menu color={iconColor} />}
+                />
+              </Box>
             </Header>
           )}
           <Box pad="medium">{children}</Box>

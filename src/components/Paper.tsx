@@ -7,8 +7,9 @@ type Props = {
 } & Pick<BoxProps, 'pad' | 'fill'>;
 
 const StyledBox = styled(Box)`
-  background: ${props => props.theme.surfaceColor};
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.04);
+  background: ${props => props.theme.surface.color};
+  box-shadow: ${props => props.theme.surface.boxShadow};
+  border: ${props => props.theme.surface.border};
   border-radius: 4px;
 `;
 

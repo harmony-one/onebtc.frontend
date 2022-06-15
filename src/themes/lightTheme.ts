@@ -1,58 +1,5 @@
 import { css } from 'styled-components';
-
-export interface IStyledProps {
-  theme?: ITheme;
-}
-
-export interface ITheme {
-  palette: IPalette;
-  container: IBaseContainer;
-}
-
-export interface IPalette {
-  Basic1000: string;
-  Basic900: string;
-  Basic800: string;
-  Basic700: string;
-  Basic500: string;
-  Basic400: string;
-  Basic300: string;
-  Basic200: string;
-  Basic100: string;
-  Purple800: string;
-  Purple600: string;
-  Purple500: string;
-
-  Blue: string;
-  Link: string;
-  TextColor: string;
-  BorderColor: string;
-  SurfaceColor: string;
-  Red: string;
-  Red500: string;
-  Gray: string;
-  Gray100: string;
-  Gray200: string;
-
-  Orange500: string;
-
-  Green500: string;
-
-  StandardBlack: string;
-  StandardWhite: string;
-  StandardGray: string;
-  Shadow: string;
-  Background: string;
-
-  Green: string;
-  Black: string;
-  BlackTxt: string;
-}
-
-export interface IBaseContainer {
-  minWidth?: string;
-  maxWidth?: string;
-}
+import { IPalette } from './types';
 
 const palette: IPalette = {
   Basic1000: '#323846',
@@ -72,7 +19,10 @@ const palette: IPalette = {
   Gray100: '#777777',
   Gray200: '#575757',
 
-  Blue: '#1F5AE2',
+  Blue: '#0066B3',
+
+  StandardGray: '#1B1B1C',
+
   Link: '#1F5AE2',
   TextColor: '#E7ECF7',
   BorderColor: '#E7ECF7',
@@ -86,8 +36,7 @@ const palette: IPalette = {
   Green500: '#3DBE98',
 
   StandardBlack: '#000000',
-  StandardWhite: '#E7ECF7',
-  StandardGray: '#1B1B1C',
+  StandardWhite: '#ffffff',
 
   Shadow: 'rgba(115, 115, 146, 0.16)',
   Background: 'linear-gradient(171.96deg, #4460DC 0%, #3247A2 89.05%)',
@@ -98,24 +47,45 @@ const palette: IPalette = {
   BlackTxt: '#212D5E',
 };
 
-export const baseTheme: any = {
+export const lightTheme: any = {
   layout: {
-    bgImage:
-      'url("/harmony_bglogo_black.svg") no-repeat bottom right, linear-gradient(0deg, #0D0D0D, #0D0D0D), linear-gradient(0deg, rgba(33, 53, 75, 0.15), rgba(33, 53, 75, 0.15)), #111111',
+    bgImage: 'url("/harmony_logo_background.svg") no-repeat bottom right',
   },
 
   sidebarMenu: {
     icon: {
-      color: 'white',
+      color: 'black',
     },
-    color: 'white',
+    color: 'black',
     backgroundColorActive: 'rgba(221,221,221,0.4)',
   },
 
   largeTab: {
-    background: '#1b1b1c',
-    disabledBackground: '#767676',
-    boxShadow: '',
+    background: '#FFFFFF',
+    disabledBackground: '#c2c2c2',
+    boxShadow: '0px 10px 21px rgba(0, 173, 232, 0.13)',
+  },
+
+  surface: {
+    color: '#fff',
+    boxShadow: '0 4px 4px rgba(0, 0, 0, 0.04)',
+    border: '1px solid #dedede',
+  },
+  dashboardCard: {
+    background: '#F8F8F8',
+    bodyBackground: '#FFFFFF',
+  },
+
+  modal: {
+    background: '#FFFFFF',
+  },
+
+  pager: {
+    border: '1px solid',
+    color: palette.Gray100,
+    colorActive: palette.Gray100,
+    backgroundColorActive: 'white',
+    borderColor: palette.Gray200,
   },
 
   // storybook theming
@@ -131,98 +101,31 @@ export const baseTheme: any = {
   // Typography
   fontBase: 'Nunito',
   fontCode: 'monospace',
-  surface: {
-    color: '#1b1b1c',
-    boxShadow: '',
-    border: '',
-  },
-
-  dashboardCard: {
-    background: '#1b1b1c',
-    bodyBackground: '#333333',
-  },
-
-  modal: {
-    background: '#1b1b1c',
-  },
-
-  pager: {
-    border: '4px solid',
-    color: palette.StandardWhite,
-    colorActive: palette.StandardBlack,
-    backgroundColorActive: palette.Gray,
-    borderColor: '#E7ECF7',
-  },
-
-  card: {
-    container: {
-      elevation: 'none',
-    },
-  },
 
   // Text colors
-  textColor: palette.TextColor,
-  titleColor: palette.TextColor,
+  textColor: palette.BlackTxt,
+  titleColor: palette.Basic800,
   textInverseColor: palette.Basic700,
 
   // Toolbar default and active colors
   barTextColor: 'white',
   barSelectedColor: 'black',
   barBg: '#9a9a9a',
-  borderColor: palette.BorderColor,
 
   // Form colors
   inputBg: 'white',
   inputBorder: '#D6D6D6',
   inputTextColor: 'black',
   inputBorderRadius: 4,
-  tableLoaderBackground: '#000000',
-
-  divider: {
-    color: '#c2c2c2',
-  },
 
   brandTitle: 'Bridge base theme',
   brandUrl: 'https://example.com',
   brandImage: 'https://placehold.it/350x150',
 
   // grommet styling
-  button: {
-    color: 'dark',
-    border: {
-      radius: '22px',
-    },
-    padding: {
-      horizontal: '24px',
-      vertical: '18px',
-    },
-    disabled: {
-      opacity: 1.0,
-    },
-    // extend: css`
-    //   ${(props: any) => 'letter-spacing: 4px; text-align: center;'};
-    // `,
-  },
 
-  spinner: {
-    size: {
-      xsmall: '4px',
-    },
-  },
-
-  table: {
-    header: {
-      pad: { vertical: 'xxsmall' },
-      border: undefined,
-    },
-    body: {
-      pad: { vertical: 'medium' },
-      verticalAlign: 'top',
-    },
-    extend: css`
-      ${() =>
-        'border-collapse: separate; width: 100%; table-layout: fixed; word-break: break-all;}'}
-    `,
+  divider: {
+    color: '#c2c2c2',
   },
 
   global: {
@@ -230,7 +133,6 @@ export const baseTheme: any = {
       // medium: '250px',
     },
     control: {
-      brand: palette.Basic700,
       disabled: {
         opacity: 0.5,
       },
@@ -240,6 +142,47 @@ export const baseTheme: any = {
     },
     border: {
       radius: '2px',
+    },
+    colors: {
+      brand: palette.Basic700,
+
+      White1000: '#ffffff',
+      Basic1000: '#000000',
+      Basic800: '#30303d',
+      Basic600: '#939393',
+      Basic400: '#D7D7D7',
+      Basic300: '#E6E6E6',
+      Basic200: '#F5F5F5',
+      Basic100: '#FFFFFF',
+      Yellow600: '#FFCB02',
+      Yellow400: '#FFE06E',
+      Yellow200: '#FFF5CC',
+      Green500: 'rgba(0,201,167,0.1)',
+      Green600: '#00A825',
+      Red500: 'rgba(201,0,0,0.1)',
+      Red600: '#FF0000',
+      Grey700: '#b5b5b5',
+      Grey600: '#afb1c0',
+      Grey500: '#9698a7',
+      Grey400: '#d2d6e1',
+      Blue500: '#4740a1',
+
+      border: '#323232',
+      focus: 0,
+      active: '#FFCB02',
+      icon: 'black',
+      formBackground: '#f8f8f8',
+      text: {
+        dark: 'black',
+        light: '#323232',
+      },
+      control: {
+        dark: '#f5f5f5',
+        light: '#f5f5f5',
+      },
+      'toggle-knob': 'black',
+
+      buttonBgColor: '#4740a1',
     },
     font: {
       family: 'Helvetica, sans-serif',
@@ -279,55 +222,12 @@ export const baseTheme: any = {
       xlarge: '40px',
       responsiveBreakpoint: 'small',
     },
-    colors: {
-      White1000: '#ffffff',
-      Basic1000: '#000000',
-      Basic800: '#30303d',
-      Basic600: '#939393',
-      Basic400: '#D7D7D7',
-      Basic300: '#E6E6E6',
-      Basic200: '#F5F5F5',
-      Basic100: '#FFFFFF',
-      Yellow600: '#FFCB02',
-      Yellow400: '#FFE06E',
-      Yellow200: '#FFF5CC',
-      Green500: 'rgba(0,201,167,0.1)',
-      Green600: '#00A825',
-      Red500: 'rgba(201,0,0,0.1)',
-      Red600: '#FF0000',
-      Grey700: '#b5b5b5',
-      Grey600: '#afb1c0',
-      Grey500: '#9698a7',
-      Grey400: '#d2d6e1',
-      Blue500: '#4740a1',
-
-      border: {
-        dark: '',
-        light: '#323232',
-      },
-      brand: 'white',
-      focus: 0,
-      active: '#FFCB02',
-      icon: 'black',
-      formBackground: '#f8f8f8',
-      text: '#ffffff',
-      background: '#111111',
-      control: {
-        dark: '#f5f5f5',
-        light: '#f5f5f5',
-      },
-      'toggle-knob': 'black',
-
-      buttonBgColor: '#1F5AE2',
-    },
   },
-
   textInput: {
     extend: css`
       ${() => 'font-size: 16px; padding: 8px;'}
     `,
   },
-
   heading: {
     font: {
       family: 'system-ui, sans-serif',
@@ -354,6 +254,46 @@ export const baseTheme: any = {
       ${(props: any) => props.size === 'small' && 'letter-spacing: 4px;'};
     `,
   },
+  text: {
+    font: {
+      family: 'system-ui, sans-serif',
+    },
+    small: {
+      size: '14px',
+      height: '18px',
+    },
+    medium: {
+      size: '16px',
+      height: '19px',
+    },
+    large: {
+      size: '30px',
+      height: '20px',
+    },
+  },
+
+  button: {
+    color: 'dark',
+    border: {
+      radius: '22px',
+    },
+    padding: {
+      horizontal: '24px',
+      vertical: '18px',
+    },
+    disabled: {
+      opacity: 1.0,
+    },
+    // extend: css`
+    //   ${(props: any) => 'letter-spacing: 4px; text-align: center;'};
+    // `,
+  },
+
+  spinner: {
+    size: {
+      xsmall: '4px',
+    },
+  },
 
   checkBox: {
     color: {
@@ -365,34 +305,52 @@ export const baseTheme: any = {
         light: 'toggle-knob',
       },
     },
+    // icons: {
+    //   checked: CheckMarkIcon,
+    // },
+  },
+
+  table: {
+    header: {
+      pad: { vertical: 'xxsmall' },
+      border: undefined,
+    },
+    body: {
+      pad: { vertical: 'medium' },
+      verticalAlign: 'top',
+    },
+    extend: css`
+      ${() =>
+        'border-collapse: separate; width: 100%; table-layout: fixed; word-break: break-all;}'}
+    `,
   },
 
   selectPresetDefault: {
     option: {
-      backgroundColorFocused: palette.Gray100,
-      backgroundColorSelected: palette.Gray200,
+      backgroundColorFocused: palette.Basic100,
+      backgroundColorSelected: palette.Basic200,
     },
     control: {
-      backgroundColor: palette.StandardGray,
+      backgroundColor: palette.StandardWhite,
     },
     menu: {
-      borderColor: palette.StandardWhite,
-      backgroundColor: palette.StandardBlack,
+      borderColor: palette.Gray200,
+      backgroundColor: palette.StandardWhite,
     },
   },
 
   selectPresetFilter: {
     option: {
-      backgroundColorFocused: palette.Gray100,
-      backgroundColorSelected: palette.Gray200,
+      backgroundColorFocused: palette.Basic100,
+      backgroundColorSelected: palette.Basic200,
     },
     control: {
-      borderColor: palette.StandardWhite,
-      backgroundColor: palette.StandardGray,
+      borderColor: palette.Gray200,
+      backgroundColor: palette.StandardWhite,
     },
     menu: {
-      borderColor: palette.StandardWhite,
-      backgroundColor: palette.StandardBlack,
+      borderColor: palette.Gray200,
+      backgroundColor: palette.StandardWhite,
     },
   },
 
@@ -400,9 +358,9 @@ export const baseTheme: any = {
     border: {
       radius: '2px',
     },
-    color: 'black',
-    background: palette.StandardBlack,
     borderRadius: '15px',
+    color: 'black',
+    background: palette.Basic100,
     icons: {
       color: palette.Basic700,
     },
@@ -435,25 +393,6 @@ export const baseTheme: any = {
           font-size: 16px;
         }
       `,
-    },
-  },
-
-  text: {
-    color: '#FFFFFF',
-    font: {
-      family: 'system-ui, sans-serif',
-    },
-    small: {
-      size: '14px',
-      height: '18px',
-    },
-    medium: {
-      size: '16px',
-      height: '19px',
-    },
-    large: {
-      size: '30px',
-      height: '20px',
     },
   },
 
@@ -502,7 +441,7 @@ export const baseTheme: any = {
   styled: {
     button: {
       padding: '16px',
-      border: `1px solid ${palette.Blue}`,
+      border: `1px solid ${palette.Purple500}`,
       fontSize: '16px',
     },
 
@@ -523,10 +462,10 @@ export const baseTheme: any = {
     },
 
     input: {
-      bgColor: '#1B1B1C',
-      textColor: '#FFFFFF',
+      bgColor: 'white',
+      textColor: '#212D5E',
       border: `1px solid ${palette.Basic200}`,
-      borderRadius: '15px',
+      borderRadius: '4px',
       disabledColor: palette.Basic300,
       minHeight: '45px',
       customDDSeparator: {
@@ -540,9 +479,9 @@ export const baseTheme: any = {
     },
 
     colors: {
-      colorPrimary: palette.Blue,
+      colorPrimary: palette.Purple500,
       colorSecondary: 'white',
-      buttonBgColor: '#1F5AE2',
+      buttonBgColor: '#1c2a5e',
       // buttonBgColor: '#03ade8',
       buttonHoverBgColor: '#03ade8',
       buttonColor: 'white',

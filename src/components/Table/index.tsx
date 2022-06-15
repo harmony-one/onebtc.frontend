@@ -199,7 +199,6 @@ export class Table extends React.Component<IProps> {
         onChange={config => {
           onChangeDataFlow({ paginationData: config });
         }}
-        activeColor="Gray"
       />
     );
   }

@@ -10,7 +10,6 @@ import { useInterval } from '../../hooks/useInterval';
 import { ONE_SECOND } from '../../constants/date';
 import { BridgeContentContainer } from 'components/BridgeContentContainer';
 import { BridgeFormsSurface } from '../../components/BridgeFormsSurface';
-import { Spinner } from '../../ui';
 
 export const IssuePage = () => {
   const { issueId, modal } = useParams<{ issueId?: string; modal: string }>();

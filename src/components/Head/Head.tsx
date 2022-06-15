@@ -7,10 +7,11 @@ import { SignInButton } from './components/SignInButton';
 import { HeadBalance } from './components/HeadBalance';
 import { config } from '../../config';
 import { FaucetButtons } from './components/FaucetButtons';
+import { ThemeButton } from '../ThemeButton';
 
 export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
   observer(({ theme }: IStyledChildrenProps<BoxProps>) => {
-    const { palette, container } = theme;
+    const { container } = theme;
     const { minWidth, maxWidth } = container;
 
     return (
@@ -29,6 +30,7 @@ export const Head: React.FC<IStyledChildrenProps<BoxProps>> = withTheme(
         }}
       >
         <Box direction="row" align="center" gap="xsmall">
+          <ThemeButton />
           <HeadBalance />
           {config.isTestnet && <FaucetButtons />}
           <SignInButton />

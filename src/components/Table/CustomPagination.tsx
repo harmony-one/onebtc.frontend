@@ -6,7 +6,6 @@ import { Box } from 'grommet';
 import { Pager } from './Pager';
 
 interface IPaginationPanelProps {
-  activeColor?: string;
   theme?: any;
   config: IPaginationConfig;
   onChange?: (props: any) => void;
@@ -45,7 +44,7 @@ export class CustomPagination extends React.Component<IPaginationPanelProps> {
   };
 
   render() {
-    const { activeColor, config } = this.props;
+    const { config } = this.props;
     const { currentPage, totalPages, pageSize } = config;
 
     return (
@@ -54,7 +53,6 @@ export class CustomPagination extends React.Component<IPaginationPanelProps> {
           current={currentPage}
           total={totalPages}
           offset={2}
-          activeColor={activeColor}
           goToPage={this.goToPage}
         />
         <Box width="266px">
