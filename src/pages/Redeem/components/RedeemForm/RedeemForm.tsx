@@ -82,7 +82,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vault]);
 
-  const isFormDisabled = !user.isBridgeAvailable;
+  const isFormDisabled = !user.isBridgeAvailable || !vaultOptions.length;
 
   return (
     <Form ref={ref => setForm(ref)} data={redeemPageStore.form}>
@@ -125,6 +125,19 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         style={{ width: '100%' }}
         rules={[isRequired, btcAddressBech32]}
       />
+
+      {!vaultOptions.length && (
+        <Box
+          pad="small"
+          style={{ border: '1px solid #bebebe', borderRadius: 5 }}
+        >
+          <Text color="red">
+            We are migrating the internal vaults and conducting a security audit
+            of all services. For some time, redeem will be unavailable. <br />
+            We apologize for the inconvenience.
+          </Text>
+        </Box>
+      )}
 
       {redeemPageStore.form.vaultId && (
         <Box>
