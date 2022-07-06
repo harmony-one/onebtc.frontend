@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import { useRouteMatch } from 'react-router';
 import { useStores } from '../../stores';
 import { ROUTE_NAMES, router, routes } from '../../constants/routePaths';
@@ -10,9 +10,19 @@ import {
   PowerCycle,
   StatusUnknown,
   Support,
+  Login,
+  Logout
 } from 'grommet-icons';
-import { Box } from 'grommet';
+import { Box, ResponsiveContext } from 'grommet';
 import { observer } from 'mobx-react';
+import {
+  formatWithEightDecimals,
+  formatWithTwoDecimals,
+  ones,
+} from '../../utils';
+import { Text } from '../Base';
+import { satoshiToBitcoin } from '../../services/bitcoin';
+
 
 interface Props {}
 
@@ -28,6 +38,19 @@ export const SidebarMenu: React.FC<Props> = observer(() => {
   };
 
   const hasVault = !!user.vault;
+
+  const handleOpenModal = useCallback(() => {
+    user.openConnectWalletModal();
+  }, [user]);
+
+  const handleSignOut = useCallback(() => {
+    user.signOut();
+  }, [user]);
+
+  const btcAmount = satoshiToBitcoin(user.oneBTCBalance);
+  const size = useContext(ResponsiveContext);
+
+  const isMobileSize = size === 'small';
 
   return (
     <Box gap="xsmall">
@@ -69,6 +92,41 @@ export const SidebarMenu: React.FC<Props> = observer(() => {
         onClick={navigateToRoute(routes.support)}
         icon={<Support />}
       />
+
+      {!user.isAuthorized && isMobileSize && (
+        <SideBarButton
+          label="Connect Wallet"
+          onClick={handleOpenModal}
+          icon={<Login />}
+        >
+          Connect wallet
+        </SideBarButton>
+      )}
+      {user.isAuthorized && isMobileSize && (
+       <><SideBarButton
+          label="Logout"
+          onClick={handleSignOut}
+          icon={<Logout />}
+        >
+          Logout
+        </SideBarButton>
+            <Box direction="column" justify="center" align="center">
+              <hr />
+              Wallet Balances
+            <Box direction="row">
+              <Text size="small" bold>
+                {formatWithTwoDecimals(ones(user.balance))}
+              </Text>
+              <Text size="small">&nbsp;&nbsp;ONE</Text>
+            </Box>
+            <Box direction="row">
+              <Text size="small" bold>
+                {formatWithEightDecimals(btcAmount)}
+              </Text>
+              <Text size="small">&nbsp;1BTC</Text>
+            </Box>
+          </Box></>
+      )}
     </Box>
   );
 });
