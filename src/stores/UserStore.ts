@@ -289,6 +289,12 @@ export class UserStoreEx extends StoreConstructor {
         .catch(err => {
           console.error('### error signOut', err.message);
         });
+    } else {
+      this.sessionType = null;
+      this.address = null;
+      this.isAuthorized = false;
+      this.syncLocalStorage();
+      return Promise.resolve();
     }
   }
 
