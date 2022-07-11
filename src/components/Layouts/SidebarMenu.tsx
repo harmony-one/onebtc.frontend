@@ -111,7 +111,6 @@ export const SidebarMenu: React.FC<Props> = observer(() => {
           Logout
         </SideBarButton>
             <Box direction="column" justify="center" align="center">
-              <hr />
               Wallet Balances
             <Box direction="row">
               <Text size="small" bold>
