@@ -17,6 +17,10 @@ import { Box } from 'grommet';
 import stores from 'stores';
 import { ListStoreConstructor } from '../../../../stores/core/ListStoreConstructor';
 
+const OPERATION_TYPES = {
+  ['RETURN_WRONG_PAY']: 'Return wrong payment'
+}
+
 export const getOperationListTableColumns = (operationListStore: ListStoreConstructor<Operation>): IColumn<Operation>[] => [
   {
     title: 'Vault Address',
@@ -37,7 +41,7 @@ export const getOperationListTableColumns = (operationListStore: ListStoreConstr
     key: 'id',
     width: '33',
     render: (value: Operation) => {
-      return <Text>{value.type}</Text>;
+      return <Text>{OPERATION_TYPES[value.type] || value.type}</Text>;
     },
   },
   {

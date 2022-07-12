@@ -8,6 +8,7 @@ export enum ROUTE_NAMES {
   INIT_ERROR = 'initError',
   OPERATION_LIST = 'operationList',
   ADMIN_HOME = 'adminHome',
+  PAYMENTS = 'payments',
 }
 
 const routeTree: RouteNode<ROUTE_NAMES> = {
@@ -33,6 +34,10 @@ const routeTree: RouteNode<ROUTE_NAMES> = {
     {
       name: ROUTE_NAMES.OPERATION_LIST,
       path: '/operations',
+    },
+    {
+      name: ROUTE_NAMES.PAYMENTS,
+      path: '/payments',
     },
     {
       name: ROUTE_NAMES.ADMIN_HOME,

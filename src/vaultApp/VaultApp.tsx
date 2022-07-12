@@ -15,6 +15,7 @@ import { RegistrationPage } from './pages/registration/RegistrationPage';
 import { InitErrorPage } from './pages/initError/InitErrorPage';
 import { WatcherVaultInfo } from './components/WatcherVaultInfo';
 import { OperationListPage } from './pages/operations/OperationListPage';
+import { PaymentsListPage } from './pages/payments';
 import { Bootstrap } from './Bootstrap';
 
 const VaultApp: React.FC = () => (
@@ -29,6 +30,7 @@ const VaultApp: React.FC = () => (
           path={routes.operationList}
           component={OperationListPage}
         />
+        <Route exact path={routes.payments} component={PaymentsListPage} />
         <Route exact path={routes.registration} component={RegistrationPage} />
         <Route exact path={routes.initError} component={InitErrorPage} />
         <Redirect to={routes.init} />

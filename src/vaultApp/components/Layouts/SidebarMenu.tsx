@@ -38,6 +38,12 @@ export const SidebarMenu: React.FC<Props> = () => {
         onClick={navigateToRoute(routes.operationList)}
         icon={<Iteration />}
       />
+      <SideBarButton
+        label="Check Payments"
+        active={router.isBelongsTo(ROUTE_NAMES.PAYMENTS, routeName)}
+        onClick={navigateToRoute(routes.payments)}
+        icon={<Iteration />}
+      />
     </Box>
   );
 };
