@@ -29,13 +29,18 @@ export const NavigateTabs: React.FC<Props> = () => {
       gap="medium"
       margin={{ bottom: 'medium' }}
     >
-      <LargeTab
+      {/* <LargeTab
         title="Issue"
         onClick={handleNavigate(routes.issue)}
         active={isActive(path, routes.issue)}
+      /> */}
+      <LargeTab
+        title="Redeem via Harmony"
+        onClick={handleNavigate(routes['redeem-harmony'])}
+        active={isActive(path, routes['redeem-harmony'])}
       />
       <LargeTab
-        title="Redeem"
+        title="Redeem via Vaults"
         onClick={handleNavigate(routes.redeem)}
         active={isActive(path, routes.redeem)}
       />

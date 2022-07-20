@@ -16,7 +16,6 @@ import { RedeemCanceledModal } from './components/RedeemCanceledModal';
 import { dashboardClient } from '../../modules/dashboard/dashboardClient';
 import BN from 'bn.js';
 import logger from '../../modules/logger';
-import Web3 from 'web3';
 
 const log = logger.module('Redeem');
 
@@ -273,102 +272,6 @@ export class RedeemPageStore extends StoreConstructor {
       redeemUiTx.setStatusSuccess();
       redeemUiTx.hideModal();
       this.status = 'success';
-    } catch (err) {
-      redeemUiTx.setError(err);
-      redeemUiTx.setStatusFail();
-      log.error('RequestRedeem', { error: err, ...this.form });
-      this.status = 'error';
-    }
-  }
-
-  @action.bound
-  public async createHarmonyRedeem() {
-    if (!this.stores.user.isAuthorized) {
-      this.stores.user.openConnectWalletModal();
-      return;
-    }
-    this.status = 'pending';
-
-    const redeemUiTx = this.stores.uiTransactionsStore.create(undefined, {
-      titles: {
-        [UITransactionStatus.WAITING_SIGN_IN]:
-          'Waiting for user to sign request redeem request',
-        [UITransactionStatus.PROGRESS]:
-          'Waiting for confirmation of redeem request',
-      },
-    });
-
-    redeemUiTx.setStatusWaitingSignIn();
-    redeemUiTx.showModal();
-    try {
-      const hmyClient = await getOneBTCClient(this.stores.user.sessionType);
-
-      const redeemAmount = bitcoinToSatoshi(this.form.oneBTCAmount);
-      const btcAddress = this.form.bitcoinAddress;
-
-      const _btcAddress = btcAddressBech32ToHex(btcAddress);
-
-      let transactionHash = null;
-
-      const web3 = new Web3(window.web3.currentProvider);
-
-      const contract = new web3.eth.Contract(
-        [
-          {
-            inputs: [
-              {
-                internalType: 'uint256',
-                name: 'amount',
-                type: 'uint256',
-              },
-              {
-                internalType: 'address',
-                name: 'btcAddress',
-                type: 'address',
-              },
-            ],
-            name: 'transferToClaim',
-            outputs: [],
-            stateMutability: 'nonpayable',
-            type: 'function',
-          },
-        ],
-        hmyClient.contractAddress,
-      );
-
-      //@ts-ignore
-      const accounts = await ethereum.enable();
-
-      await contract.methods
-        .transferToClaim(redeemAmount, _btcAddress)
-        .send({
-          from: accounts[0],
-          gasLimit: 672190,
-          gasPrice: new BN(await web3.eth.getGasPrice()).mul(new BN(1)),
-        })
-        .on('transactionHash', txHash => {
-          transactionHash = txHash;
-          redeemUiTx.setTxHash(txHash);
-          redeemUiTx.setStatusProgress();
-        });
-
-      if (transactionHash) {
-        await dashboardClient.addEvent(transactionHash);
-      }
-
-      // const redeem = await retry(
-      //   () => this.stores.redeemStore.loadRedeem(redeemRequest.redeem_id),
-      //   result => !!result,
-      //   10,
-      // );
-
-      // this.stores.routing.gotToRedeemModal(redeem.id, 'withdraw');
-
-      redeemUiTx.setStatusSuccess();
-      setTimeout(() => redeemUiTx.hideModal(), 3000);
-      this.status = 'success';
-
-      this.form = this.defaultForm
     } catch (err) {
       redeemUiTx.setError(err);
       redeemUiTx.setStatusFail();

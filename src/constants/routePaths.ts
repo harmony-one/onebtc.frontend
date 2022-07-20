@@ -6,6 +6,7 @@ export enum ROUTE_NAMES {
   BRIDGE = 'bridge',
   BRIDGE_ISSUE = 'issue',
   BRIDGE_REDEEM = 'redeem',
+  BRIDGE_REDEEM_HARMONY = 'redeem-harmony',
   BRIDGE_TRANSFER = 'transfer',
   BRIDGE_BURN = 'burn',
   TRANSACTIONS = 'transactions',
@@ -36,6 +37,10 @@ const routeTree: RouteNode<ROUTE_NAMES> = {
         {
           name: ROUTE_NAMES.BRIDGE_REDEEM,
           path: '/bridge/redeem/:redeemId?/:modal(withdraw|details)?',
+        },
+        {
+          name: ROUTE_NAMES.BRIDGE_REDEEM_HARMONY,
+          path: '/bridge/redeem-harmony',
         },
         {
           name: ROUTE_NAMES.BRIDGE_TRANSFER,

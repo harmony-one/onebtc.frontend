@@ -36,8 +36,8 @@ export const LargeTab: React.FC<Props> = props => {
       })}
       onClick={handleClick}
     >
-      <Box align="center">
-        <Text size="large" className={styles.title}>
+      <Box align="center" justify="center">
+        <Text size="large" align="center" className={styles.title}>
           {title}
         </Text>
       </Box>

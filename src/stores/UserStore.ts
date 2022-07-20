@@ -156,7 +156,11 @@ export class UserStoreEx extends StoreConstructor {
         return acc;
       }
 
-      return addressIsEq(item, this.address);
+      try {
+        return addressIsEq(item, this.address);
+      } catch (e) {
+        return false;
+      }
     }, false);
   }
 

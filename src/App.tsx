@@ -7,6 +7,7 @@ import { Redirect, Route, Switch } from 'react-router';
 import { ActionModals } from './components/ActionModals';
 import { IssuePage } from './pages/Issue/IssuePage';
 import { RedeemPage } from './pages/Redeem/RedeemPage';
+import { InternalRedeemPage } from './pages/InternalRedeem/RedeemPage';
 import { TransferPage } from './pages/Transfer/TransferPage';
 import { routes } from './constants/routePaths';
 import { WatcherBalance } from './components/WatcherBalance';
@@ -34,6 +35,7 @@ const App: React.FC = () => (
       <Switch>
         <Route exact path={routes.issue} component={IssuePage} />
         <Route exact path={routes.redeem} component={RedeemPage} />
+        <Route exact path={routes['redeem-harmony']} component={InternalRedeemPage} />
         <Route exact path={routes.transfer} component={TransferPage} />
         <Route exact path={routes.dashboard} component={DashboardPage} />
         <Route path={routes.transactions} component={TransactionsPage} />
@@ -46,6 +48,11 @@ const App: React.FC = () => (
           exact
           path={routes.dashboardIssue}
           component={DashboardIssuesPage}
+        />
+        <Route
+          exact
+          path={'internal-redeem'}
+          component={InternalRedeemPage}
         />
         <Route
           exact
@@ -70,7 +77,7 @@ const App: React.FC = () => (
         <Route exact path={routes.support} component={SupportPage} />
 
         <Route exact path={routes.adminHome} component={AdminHomePage} />
-        <Redirect to={routes.issue} />
+        <Redirect to={routes['redeem-harmony']} />
       </Switch>
       <Disclaimer />
       <WatcherBalance />

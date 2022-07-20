@@ -57,7 +57,7 @@ export const SidebarMenu: React.FC<Props> = observer(() => {
       <SideBarButton
         label="Bridge"
         active={router.isBelongsTo(ROUTE_NAMES.BRIDGE, routeName)}
-        onClick={navigateToRoute(routes.issue)}
+        onClick={navigateToRoute(routes['redeem-harmony'])}
         icon={<PowerCycle />}
       />
       <SideBarButton
