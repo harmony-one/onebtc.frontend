@@ -111,7 +111,8 @@ export const SidebarMenu: React.FC<Props> = observer(() => {
           Logout
         </SideBarButton>
             <Box direction="column" justify="center" align="center">
-              Wallet Balances
+              <Text size="medium" bold>Wallet Balances</Text>
+              <Text size="small">{user.address}</Text>
             <Box direction="row">
               <Text size="small" bold>
                 {formatWithTwoDecimals(ones(user.balance))}
