@@ -15,6 +15,7 @@ import {
   formatWithEightDecimals,
   lessThanSat,
   moreThanZero,
+  minAmount,
 } from '../../../../utils';
 import { IStores, useStores } from '../../../../stores';
 import { PriceView } from '../../../../components/PriceView';
@@ -137,6 +138,7 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         rules={[
           isRequired,
           moreThanZero,
+          minAmount(0.0001),
           lessThanSat(user.oneBTCBalance, `redeem amount exceeds balance`),
         ].filter(Boolean)}
       />
