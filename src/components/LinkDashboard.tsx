@@ -19,29 +19,16 @@ const typeMap = {
   block: config.bitcoin.explorer.block,
 };
 
-const LinkBitcoin: React.FC<Props> = ({
+const LinkDashboard: React.FC<Props> = ({
   hash = '',
   type,
   text,
   cut = true,
   mono = false,
 }) => {
-  const link = typeMap[type] + hash;
-  const content = useMemo(() => {
-    if (text) {
-      return text;
-    }
-
-    if (!cut) {
-      return hash;
-    }
-
-    return cutText(hash);
-  }, [hash, text, cut]);
-
   return (
     <Box direction="row" align="center" gap="xxsmall">
-      <img src="/bitcoin.svg" alt="harmony" className={s.icon} />
+      <img src="/one.svg" alt="harmony" className={s.icon} />
       <a
         className={cn(s.link, {
           [s.mono]: mono,
@@ -49,12 +36,12 @@ const LinkBitcoin: React.FC<Props> = ({
         target="_blank"
         rel="noreferrer"
         title={hash}
-        href={link}
+        href={`https://btc.harmony.one/dashboard/issues/${hash}`}
       >
-        {content}
+        {cutText(hash)}
       </a>
     </Box>
   );
 };
 
-export default LinkBitcoin;
+export default LinkDashboard;

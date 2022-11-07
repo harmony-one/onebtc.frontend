@@ -1,3 +1,4 @@
+import { observable } from 'mobx';
 import * as agent from 'superagent';
 import { config } from '../../../config';
 
@@ -84,6 +85,22 @@ class VaultClient {
     }
   }
 
+  async loadPayments(params: {
+    page: number;
+    size: number;
+    vault: number;
+  }): Promise<{ content: Operation[] }> {
+    try {
+      const response = await agent
+        .get(`${this.host}/check-txs/${params.vault}/latest`)
+        .query(params);
+      return response.body;
+    } catch (err) {
+      console.error('### err', err);
+      return { content: [] };
+    }
+  }
+
   async restartOperation(operationId: string): Promise<{ content: Operation[] }> {
     try {
       const response = await agent
@@ -96,6 +113,17 @@ class VaultClient {
       console.error('### err', err);
       return { content: [] };
     }
+  }
+
+  @observable returnBtcAddress = ''; 
+
+  async returnWrongPayment(tx: string, btcAddress: string): Promise<{ content: Operation[] }> {
+    const response = await agent
+      .post(`${this.host}/check-txs/return`)
+      .set('Content-Type', 'application/json')
+      .send({ tx, btcAddress });
+
+    return response.body;
   }
 }
 
