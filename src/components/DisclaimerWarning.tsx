@@ -56,9 +56,9 @@ const styles = {
 export const Disclaimer = () => (
   <CookieBanner
     styles={styles}
-    message="The BTC bridge is still in beta, please exercise caution while using the bridge"
+    message="The Harmony Bitcoin bridge has been sunset. Users would not be able to bridge Bitcoin to Harmony. Existing users may redeem Bitcoin, which will be manually processed."
     onAccept={() => {}}
-    cookie="onebtc-info-accept"
+    cookie=""
     dismissOnScroll={false}
     dismissOnClick={false}
   />

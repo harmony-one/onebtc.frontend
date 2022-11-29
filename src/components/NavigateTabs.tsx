@@ -39,7 +39,7 @@ export const NavigateTabs: React.FC<Props> = () => {
         onClick={handleNavigate(routes['redeem-harmony'])}
         active={isActive(path, routes['redeem-harmony'])}
       />
-      <LargeTab
+      {/* <LargeTab
         title="Redeem via Vaults"
         onClick={handleNavigate(routes.redeem)}
         active={isActive(path, routes.redeem)}
@@ -48,7 +48,7 @@ export const NavigateTabs: React.FC<Props> = () => {
         title="Transfer"
         onClick={handleNavigate(routes.transfer)}
         active={isActive(path, routes.transfer)}
-      />
+      /> */}
     </Box>
   );
 };
