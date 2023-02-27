@@ -95,11 +95,18 @@ export const RedeemForm: React.FC<Props> = observer(() => {
         <Text color="green">
           You will be prompted to sign a transfer transaction that will transfer
           your 1BTC to a Harmony address. Upon receiving the 1BTC, we will
-          manually transfer the bitcoin to your BTC address within 24-48 hours.
-          If you have not received your bitcoins after the 48 hour window,
+          manually transfer the bitcoin to your BTC address within 2-5 days.
+          If you have not received your bitcoins after the 5 days window,
           please raise a support ticket, by going through the support page on
           the left panel. Note that, this redeem operation will not be displayed
           under the redeem operations list in the dashboard.
+        </Text>
+
+        <br />
+
+        <Text color="#0049af">
+          For users who withdraw 1BTC from a Tranquil account, only 10% of the withdrawal amount will be compensated. 
+          For example, for 1 1BTC you will get 0.1 BTC.
         </Text>
       </Box>
 

@@ -14,6 +14,8 @@ export class VaultAppStore extends StoreConstructor {
   public vaultInfo: VaultInfo;
   public vaultBalance: BN = new BN(0);
 
+  @observable loading = false;
+
   get vaultId() {
     if (this.vaultInfo) {
       return this.vaultInfo.vaultAddress;
@@ -36,6 +38,13 @@ export class VaultAppStore extends StoreConstructor {
     });
 
     return this.vaultInfo;
+  }
+
+  @action.bound
+  async sendBtcToHarmony() {
+    this.loading = true;
+
+    return await vaultClient.sendBtcToHarmony().finally(() => this.loading = false)
   }
 
   @action.bound

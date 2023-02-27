@@ -58,7 +58,7 @@ export const Disclaimer = () => (
     styles={styles}
     message="The Harmony Bitcoin bridge has been sunset. Users would not be able to bridge Bitcoin to Harmony. Existing users may redeem Bitcoin, which will be manually processed."
     onAccept={() => {}}
-    cookie=""
+    cookie="btc-sunset-disclaimer"
     dismissOnScroll={false}
     dismissOnClick={false}
   />

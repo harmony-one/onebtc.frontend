@@ -4,7 +4,7 @@ import 'rc-tooltip/assets/bootstrap_white.css';
 import * as React from 'react';
 import styled, { withTheme } from 'styled-components';
 
-import './styles.scss';
+import './styles.styl';
 
 import { TooltipBody } from './Body';
 

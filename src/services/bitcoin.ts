@@ -3,6 +3,11 @@ import { config } from '../config';
 
 export const btcAddressHexToBech32 = (address: string) => {
   const prefix = config.isTestnet ? 'tb' : 'bc';
+
+  if (address.slice(0, 2) === prefix) {
+    return address;
+  }
+
   return bitcoin.address.toBech32(
     Buffer.from(address.slice(2), 'hex'),
     0,

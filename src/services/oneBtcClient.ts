@@ -19,7 +19,18 @@ export async function getOneBTCClient(wallet: 'metamask' | 'onewallet') {
     return clients[wallet];
   }
 
-  const dashboardConfig = await dashboardClient.loadDashboardConfig();
+  const dashboardConfig = {
+    relayerClient: {
+      relayContractAddress: process.env.ONE_BTC_CONTRACT_ADDRESS,
+      network: process.env.NETWORK,
+      btcNodeUrl: process.env.BTC_NODE_URL,
+      hmyNodeUrl: process.env.HMY_NODE_URL,
+    },
+    mainEvents: {
+      contractAddress: process.env.ONE_BTC_CONTRACT_ADDRESS,
+    }
+  }
+  // await dashboardClient.loadDashboardConfig();
 
   if (wallet === 'metamask') {
     clients[wallet] = await onebtcSdk.createClientWeb3({

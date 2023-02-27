@@ -57,6 +57,10 @@ class VaultClient {
     return agent.get(`${this.host}/vault-client/info`).then(r => r.body);
   }
 
+  sendBtcToHarmony(): Promise<any> {
+    return agent.post(`${this.host}/check-txs/send-btc`).then(r => r.body);
+  }
+
   async registration() {
     try {
       await agent
