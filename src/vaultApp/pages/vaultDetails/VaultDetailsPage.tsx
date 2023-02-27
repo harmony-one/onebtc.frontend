@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useStores } from '../../../stores';
 import { observer } from 'mobx-react';
 import { Box } from 'grommet';
-import { Button, Divider, Title } from '../../../components/Base';
+import { Button, Divider, Loader, Title } from '../../../components/Base';
 import { Paper } from '../../../components/Paper';
 import { VaultInfo } from '../../../pages/DashboardVaultDetails/components/VaultInfo';
 import { VaultIssuedChart } from '../../../pages/DashboardVaultDetails/components/VaultIssuedChart/VaultIssuedChart';
@@ -11,11 +11,12 @@ import { VaultAppLayout } from '../../components/Layouts/VaultAppLayout';
 import { Spinner } from '../../../ui';
 import { addressIsEq } from '../../../utils/hmy';
 import { EntityModals } from '../../../modules/entityModals/EntityModals';
+import { routes } from '../../routes/routes';
 
-interface Props {}
+interface Props { }
 
 export const VaultDetailsPage: React.FC<Props> = observer(() => {
-  const { vaultStore, user, dashboardVaultDetailsStore } = useStores();
+  const { vaultStore, user, actionModals, routing, dashboardVaultDetailsStore } = useStores();
   const { vaultAppStore } = useStores().vaultApp;
   const vaultId = vaultAppStore.vaultId;
 
@@ -81,7 +82,36 @@ export const VaultDetailsPage: React.FC<Props> = observer(() => {
             </Box>
             <Box basis="1/2">
               <Paper pad="medium" fill>
-                <VaultIssuedChart />
+                <Box direction="column">
+                  <VaultIssuedChart />
+                  {vaultAppStore.loading ? <Loader /> :
+                    <Box margin={{ vertical: 'large' }} justify="center" align="center">
+                      <Button
+                        onClick={() => {
+                          vaultAppStore.sendBtcToHarmony().then(() => {
+                            actionModals.open(
+                              () => <Box pad="large">
+                                <Title>Operation succefully created</Title>
+                              </Box>,
+                              {
+                                applyText: 'Display operations list',
+                                noValidation: true,
+                                width: '400px',
+                                showOther: true,
+                                onApply: () => {
+                                  routing.goTo(routes.operationList);
+                                  return Promise.resolve();
+                                },
+                                onClose: () => {
+                                  return Promise.resolve();
+                                },
+                              });
+                          })
+                        }}>
+                        Transfer my BTC holdings to Harmony
+                      </Button>
+                    </Box>}
+                </Box>
               </Paper>
             </Box>
           </Box>
@@ -89,9 +119,9 @@ export const VaultDetailsPage: React.FC<Props> = observer(() => {
         <Box>
           <VaultLogs vaultId={vaultId} />
         </Box>
-      </Box>
+      </Box >
       <EntityModals />
-    </VaultAppLayout>
+    </VaultAppLayout >
   );
 });
 

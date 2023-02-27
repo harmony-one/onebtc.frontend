@@ -336,7 +336,20 @@ export class UserStoreEx extends StoreConstructor {
 
   public async addTokenToMetamask() {
     try {
-      const dashboardConfig = await dashboardClient.loadDashboardConfig();
+      // const dashboardConfig = await dashboardClient.loadDashboardConfig();
+
+      const dashboardConfig = {
+        relayerClient: {
+          relayContractAddress: process.env.ONE_BTC_CONTRACT_ADDRESS,
+          network: process.env.NETWORK,
+          btcNodeUrl: process.env.BTC_NODE_URL,
+          hmyNodeUrl: process.env.HMY_NODE_URL,
+        },
+        mainEvents: {
+          contractAddress: process.env.ONE_BTC_CONTRACT_ADDRESS,
+        }
+      }
+
       const contractAddress = dashboardConfig.mainEvents.contractAddress;
 
       // @ts-ignore
