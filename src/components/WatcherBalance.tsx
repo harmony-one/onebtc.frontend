@@ -16,13 +16,17 @@ export const WatcherBalance: React.FC = React.memo(() => {
       </Text>
       <br />
       <Text>
-        You will be prompted to sign a transfer transaction that will transfer your 1BTC to a Harmony address. Upon receiving the 1BTC, we will manually transfer the bitcoin to your BTC address within 2-5 days. If you have not received your bitcoins after the 5 day window, please raise a support ticket, by going through the support page on the left panel. Note that, this redeem operation will not be displayed under the redeem operations list in the dashboard.
+        You will be prompted to sign a transfer transaction that will transfer your 1BTC to a Harmony address. Upon receiving the 1BTC, we will manually transfer the bitcoin to your BTC address within 1-2 weeks. If you have not received your bitcoins after the 2 weeks window, please raise a support ticket, by going through the support page on the left panel. Note that, this redeem operation will not be displayed under the redeem operations list in the dashboard.
       </Text>
       <br />
       <Text color="#0049af">
-          For users who withdraw 1BTC from a Tranquil account, only 10% of the withdrawal amount will be compensated. 
-          For example, for 1 1BTC you will get 0.1 BTC.
-        </Text>
+        Existing users may redeem Bitcoin at 10% parity aligned with overall recovery, for the next 3 months. 
+        For example, for withdrawing 1 1BTC, you will receive 0.1 BTC.
+      </Text>
+      <br />
+      <Text color="red">
+        Note: BTC acquired via DEXs will accrue the same 10% parity.
+      </Text>
       <br />
       <Text>
         If you are the owner of Vault - turn it off and withdraw collateral. In case of problems, please contact the Harmony support channel.
